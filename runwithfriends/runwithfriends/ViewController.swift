@@ -10,57 +10,58 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let stackView = UIStackView()
+    let textStackView = UIStackView()
+    let signInButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .black
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
-        ])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
+        addTextStack()
+        addSignInButton()
+    }
+    
+    private func addTextStack() {
+        textStackView.axis = .vertical
+        textStackView.distribution = .equalSpacing
         
         let firstText = UILabel().largeFont().white()
         firstText.text = "The"
-        stackView.addArrangedSubview(firstText)
+        textStackView.addArrangedSubview(firstText)
         
         let secondText = UILabel().largeFont().orange()
         secondText.text = "Solemate"
-        stackView.addArrangedSubview(secondText)
+        textStackView.addArrangedSubview(secondText)
         
         let thirdText = UILabel().largeFont().white().multiLine()
         thirdText.text = "you have been looking\nfor"
-        stackView.addArrangedSubview(thirdText)
+        textStackView.addArrangedSubview(thirdText)
         
-        let spacing = UIView()
-        stackView.addArrangedSubview(spacing)
-    }
-}
-
-extension UILabel {
-    func largeFont() -> UILabel {
-        self.font = UIFont(name: "Helvetica Neue", size: 70)
-        return self
+        view.addSubview(textStackView)
+        textStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            textStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
+            textStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
+        ])
     }
     
-    func orange() -> UILabel {
-        self.textColor = .systemOrange
-        return self
-    }
-    
-    func white() -> UILabel {
-        self.textColor = .white
-        return self
-    }
-    
-    func multiLine() -> UILabel {
-        self.numberOfLines = 0
-        return self
+    private func addSignInButton() {
+        let bottomGuide = UILayoutGuide()
+        view.addLayoutGuide(bottomGuide)
+        NSLayoutConstraint.activate([
+            bottomGuide.topAnchor.constraint(equalTo: textStackView.bottomAnchor, constant: 0),
+            bottomGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
+            bottomGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            bottomGuide.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+        ])
+        signInButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(signInButton)
+        NSLayoutConstraint.activate([
+            signInButton.centerXAnchor.constraint(equalTo: bottomGuide.centerXAnchor),
+            signInButton.centerYAnchor.constraint(equalTo: bottomGuide.centerYAnchor),
+            signInButton.widthAnchor.constraint(equalTo: bottomGuide.widthAnchor),
+            signInButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
 }
