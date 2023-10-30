@@ -21,9 +21,10 @@ import UIKit
 
 extension UILabel {
     func largeFont() -> UILabel {
-        guard let customFont = UIFont(name: "Helvetica Neue", size: 70) else {
+        guard let customFont = UIFont(name: "HelveticaNeue-Light", size: 70) else {
             fatalError("Failed to load the largeFont() font.")
         }
+//        let customFont = UIFont.systemFont(ofSize: 70)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self
