@@ -20,11 +20,19 @@ import UIKit
 //}
 
 extension UILabel {
-    func largeFont() -> UILabel {
-        guard let customFont = UIFont(name: "HelveticaNeue-Light", size: 70) else {
+    func largeLight() -> UILabel {
+        guard let customFont = UIFont(name: "HelveticaNeue-Light", size: 50) else {
             fatalError("Failed to load the largeFont() font.")
         }
-//        let customFont = UIFont.systemFont(ofSize: 70)
+        self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
+        self.adjustsFontForContentSizeCategory = true
+        return self
+    }
+    
+    func largeRegular() -> UILabel {
+        guard let customFont = UIFont(name: "HelveticaNeue", size: 50) else {
+            fatalError("Failed to load the largeFont() font.")
+        }
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self
