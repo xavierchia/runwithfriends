@@ -7,30 +7,11 @@
 
 import UIKit
 
-
-// ** GET SOME DYNAMIC FONT SIZING HAPPENING **
-
-// Set the clock font size according to the height.
-//  Design was done on iPhone XR with height of 896 points and font size of 98.
-//if (UIScreen.main.bounds.height != 896). // Only need code if not on original design size.
-//{
-//    let scaleFactor: Float = Float(UIScreen.main.bounds.height) / 896.0
-//    let fontSize = CGFloat(98.0 * scaleFactor)
-//    self.clock.font = self.clock.font.withSize(fontSize)
-//}
-
 extension UILabel {
     func largeLight() -> UILabel {
-        guard let customFont = UIFont(name: "HelveticaNeue-Light", size: 50) else {
-            fatalError("Failed to load the largeFont() font.")
-        }
-        self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
-        self.adjustsFontForContentSizeCategory = true
-        return self
-    }
-    
-    func largeRegular() -> UILabel {
-        guard let customFont = UIFont(name: "HelveticaNeue", size: 50) else {
+        let scaleFactor: Float = Float(UIScreen.main.bounds.height) / 852.0
+        let fontSize = CGFloat(70 * scaleFactor)
+        guard let customFont = UIFont(name: "HelveticaNeue-Light", size: fontSize) else {
             fatalError("Failed to load the largeFont() font.")
         }
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
@@ -40,6 +21,11 @@ extension UILabel {
     
     func orange() -> UILabel {
         self.textColor = .systemOrange
+        return self
+    }
+    
+    func accent() -> UILabel {
+        self.textColor = .accent
         return self
     }
     

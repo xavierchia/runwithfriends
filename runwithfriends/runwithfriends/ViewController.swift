@@ -26,18 +26,34 @@ class ViewController: UIViewController {
     // MARK: User interface
     
     private func addTextStack() {
+        print(UIScreen.main.bounds.height)
         textStackView.axis = .vertical
         textStackView.distribution = .equalSpacing
-        textStackView.alignment = .trailing
+        textStackView.alignment = .leading
         
-        let firstText = UILabel().largeLight().white().multiLine()
-        firstText.text = "Go as far as you can see and when you get there go\n"
+        let firstText = UILabel().largeLight().white()
+        firstText.text = "The"
         textStackView.addArrangedSubview(firstText)
         
-        let secondText = UILabel().largeLight().white()
-        secondText.textAlignment = .left
-        secondText.text = "Further"
+        let secondText = UILabel().largeLight().accent()
+        secondText.text = "Solemate"
         textStackView.addArrangedSubview(secondText)
+        
+        let thirdText = UILabel().largeLight().white()
+        thirdText.text = "you have"
+        textStackView.addArrangedSubview(thirdText)
+        
+        let fourthText = UILabel().largeLight().white()
+        fourthText.text = "been"
+        textStackView.addArrangedSubview(fourthText)
+        
+        let fifthText = UILabel().largeLight().white()
+        fifthText.text = "looking"
+        textStackView.addArrangedSubview(fifthText)
+        
+        let sixthText = UILabel().largeLight().white()
+        sixthText.text = "for"
+        textStackView.addArrangedSubview(sixthText)
                 
         view.addSubview(textStackView)
         textStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,10 +62,9 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             textStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             textStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            firstText.widthAnchor.constraint(equalTo: textStackView.widthAnchor)
         ])
         textStackView.layoutIfNeeded()
-        topConstraint?.constant = textStackView.frame.height / 6
+        topConstraint?.constant = textStackView.frame.height / 8
     }
     
     private func addSignInButton() {
@@ -59,8 +74,8 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             signInButton.leadingAnchor.constraint(equalTo: textStackView.leadingAnchor),
             signInButton.trailingAnchor.constraint(equalTo: textStackView.trailingAnchor),
-            signInButton.heightAnchor.constraint(equalToConstant: constantHeight/6),
-            signInButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -constantHeight/6)
+            signInButton.heightAnchor.constraint(equalToConstant: constantHeight/8),
+            signInButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -constantHeight/8)
         ])
         
         signInButton.addTarget(self, action: #selector(signInButtonPressed), for: .touchUpInside)
