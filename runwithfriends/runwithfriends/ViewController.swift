@@ -19,6 +19,8 @@ class ViewController: UIViewController {
         view.backgroundColor = .black
         addTextStack()
         addSignInButton()
+        print(try? AppKeychain.get("username"))
+        print(try? AppKeychain.get("userId"))
     }
     
     // MARK: User interface
@@ -42,8 +44,9 @@ class ViewController: UIViewController {
         topConstraint = textStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
         topConstraint?.isActive = true
         NSLayoutConstraint.activate([
-            textStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            textStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            textStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            textStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            firstText.widthAnchor.constraint(equalTo: textStackView.widthAnchor)
         ])
         textStackView.layoutIfNeeded()
         topConstraint?.constant = textStackView.frame.height / 6
@@ -86,6 +89,20 @@ extension ViewController: ASAuthorizationControllerDelegate, ASAuthorizationCont
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         print("authorized")
+        switch authorization.credential {
+        case let credentials as ASAuthorizationAppleIDCredential:
+            let username = credentials.fullName?.givenName ?? "Friendly"
+            let userId = credentials.user
+            do {
+                try AppKeychain.set(username, key: "username")
+                try AppKeychain.set(userId, key: "userId")
+            } catch {
+                print("user credentials could not be saved to keychain")
+            }
+            break
+        default:
+            break
+        }
     }
     
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {

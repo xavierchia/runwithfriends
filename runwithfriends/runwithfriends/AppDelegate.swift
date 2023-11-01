@@ -7,6 +7,11 @@
 
 import UIKit
 import CoreData
+import CloudKit
+import KeychainAccess
+
+let bundleID = "com.wholesomeapps.runwithfriends"
+let AppKeychain = Keychain(service: bundleID).synchronizable(true)
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
