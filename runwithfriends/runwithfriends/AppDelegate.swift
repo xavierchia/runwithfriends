@@ -10,13 +10,22 @@ import CoreData
 import CloudKit
 import KeychainAccess
 
-let bundleID = "com.wholesomeapps.runwithfriends"
-let AppKeychain = Keychain(service: bundleID).synchronizable(true)
+let AppKeychain = Keychain(service: Bundle.main.bundleIdentifier!).synchronizable(true)
+
+enum AppKeys {
+        static let userId = "userId"
+        static let username = "username"
+}
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    override init() {
+        super.init()
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white,
+                                                                 NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 34)!]
+//                                                                 ]
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

@@ -8,50 +8,46 @@
 import AuthenticationServices
 import UIKit
 
-class ViewController: UIViewController {
+class LoginViewController: UIViewController {
     let textStackView = UIStackView()
     let signInButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
     var topConstraint: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .black
         addTextStack()
         addSignInButton()
-        print(try? AppKeychain.get("username"))
-        print(try? AppKeychain.get("userId"))
     }
     
     // MARK: User interface
     
     private func addTextStack() {
-        print(UIScreen.main.bounds.height)
         textStackView.axis = .vertical
         textStackView.distribution = .equalSpacing
         textStackView.alignment = .leading
         
-        let firstText = UILabel().largeLight().white()
+        let firstText = UILabel().largeLightScaled().white()
         firstText.text = "The"
         textStackView.addArrangedSubview(firstText)
         
-        let secondText = UILabel().largeLight().accent()
+        let secondText = UILabel().largeLightScaled().accent()
         secondText.text = "Solemate"
         textStackView.addArrangedSubview(secondText)
         
-        let thirdText = UILabel().largeLight().white()
+        let thirdText = UILabel().largeLightScaled().white()
         thirdText.text = "you have"
         textStackView.addArrangedSubview(thirdText)
         
-        let fourthText = UILabel().largeLight().white()
+        let fourthText = UILabel().largeLightScaled().white()
         fourthText.text = "been"
         textStackView.addArrangedSubview(fourthText)
         
-        let fifthText = UILabel().largeLight().white()
+        let fifthText = UILabel().largeLightScaled().white()
         fifthText.text = "looking"
         textStackView.addArrangedSubview(fifthText)
         
-        let sixthText = UILabel().largeLight().white()
+        let sixthText = UILabel().largeLightScaled().white()
         sixthText.text = "for"
         textStackView.addArrangedSubview(sixthText)
                 
@@ -96,7 +92,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         print("error")
@@ -106,14 +102,16 @@ extension ViewController: ASAuthorizationControllerDelegate, ASAuthorizationCont
         print("authorized")
         switch authorization.credential {
         case let credentials as ASAuthorizationAppleIDCredential:
-            let username = credentials.fullName?.givenName ?? "Friendly"
+            // add username to firebase
+//            let username = credentials.fullName?.givenName ?? "Friendly"
             let userId = credentials.user
             do {
-                try AppKeychain.set(username, key: "username")
-                try AppKeychain.set(userId, key: "userId")
+                // TODO: set username in firebase
+                try AppKeychain.set(userId, key: AppKeys.userId)
             } catch {
                 print("user credentials could not be saved to keychain")
             }
+            self.view.window?.rootViewController = TabViewController()
             break
         default:
             break
