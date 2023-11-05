@@ -21,10 +21,25 @@ enum AppKeys {
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override init() {
-        super.init()
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white,
-                                                                 NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 34)!]
-//                                                                 ]
+        super.init()        
+        // MARK: Navigation bar appearance
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.configureWithOpaqueBackground()
+        navigationBarAppearance.backgroundColor = UIColor.black
+        navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
+                                                            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 34)!]
+        UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+        UINavigationBar.appearance().compactAppearance = navigationBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+        
+        // MARK: Tab bar appearance
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = UIColor.black
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+                                                                 
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

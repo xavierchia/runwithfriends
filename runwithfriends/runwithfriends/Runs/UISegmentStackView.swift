@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol UISegmentStackViewProtocol {
+protocol UISegmentStackViewProtocol: AnyObject {
     func runsButtonPressed()
     func unlockedButtonPressed()
 }
@@ -15,13 +15,13 @@ protocol UISegmentStackViewProtocol {
 class UISegmentStackView: UIStackView {
     private let runsButton = UIButton()
     private let unlockedButton = UIButton()
-    var delegate: UISegmentStackViewProtocol?
+    weak var delegate: UISegmentStackViewProtocol?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.axis = .horizontal
         self.distribution = .fillEqually
-        
+
         runsButton.titleLabel?.textAlignment = .center
         _ = runsButton.titleLabel?.mediumLight()
         unlockedButton.setTitleColor(.white, for: .normal)
@@ -35,7 +35,6 @@ class UISegmentStackView: UIStackView {
         unlockedButton.setTitleColor(.gray, for: .normal)
         unlockedButton.addTarget(self, action: #selector(unlockedButtonPressed), for: .touchUpInside)
         self.addArrangedSubview(unlockedButton)
-        self.translatesAutoresizingMaskIntoConstraints = false
     }
     
     required init(coder: NSCoder) {
