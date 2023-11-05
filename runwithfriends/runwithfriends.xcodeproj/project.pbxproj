@@ -13,6 +13,7 @@
 		952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */; };
 		952825C02AE1F74E0032B04B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952825BF2AE1F74E0032B04B /* Assets.xcassets */; };
 		952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952825C12AE1F74E0032B04B /* LaunchScreen.storyboard */; };
+		954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BB92AF723E800018E01 /* UISegmentStackView.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
@@ -28,6 +29,7 @@
 		952825BF2AE1F74E0032B04B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		952825C22AE1F74E0032B04B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952825C42AE1F74E0032B04B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		954F4BB92AF723E800018E01 /* UISegmentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentStackView.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +72,7 @@
 				952825B52AE1F74D0032B04B /* SceneDelegate.swift */,
 				952825B72AE1F74D0032B04B /* LoginViewController.swift */,
 				95966EB32AF329450086DABB /* TabViewController.swift */,
-				95966EB52AF32B6C0086DABB /* RunsViewController.swift */,
+				954F4BB82AF723CB00018E01 /* Runs */,
 				95659B8C2AEF1F9B008D7BA8 /* Extensions */,
 				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
 				952825C12AE1F74E0032B04B /* LaunchScreen.storyboard */,
@@ -78,6 +80,15 @@
 				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
 			);
 			path = runwithfriends;
+			sourceTree = "<group>";
+		};
+		954F4BB82AF723CB00018E01 /* Runs */ = {
+			isa = PBXGroup;
+			children = (
+				95966EB52AF32B6C0086DABB /* RunsViewController.swift */,
+				954F4BB92AF723E800018E01 /* UISegmentStackView.swift */,
+			);
+			path = Runs;
 			sourceTree = "<group>";
 		};
 		95659B8C2AEF1F9B008D7BA8 /* Extensions */ = {
@@ -171,6 +182,7 @@
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
+				954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
