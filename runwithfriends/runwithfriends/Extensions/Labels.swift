@@ -7,22 +7,24 @@
 
 import UIKit
 
+// Colors
+// Background button color: .darkGray
+// Disabled or unselected font color: .systemGray
+// Accent: .accentColor
+
+
 extension UILabel {
     func largeLightScaled() -> UILabel {
         let scaleFactor: Float = Float(UIScreen.main.bounds.height) / 852.0
         let fontSize = CGFloat(70 * scaleFactor)
-        guard let customFont = UIFont(name: "HelveticaNeue-Light", size: fontSize) else {
-            fatalError("Failed to load the largeFont() font.")
-        }
+        let customFont = UIFont.systemFont(ofSize: fontSize, weight: .light)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self
     }
     
-    func mediumLight() -> UILabel {
-        guard let customFont = UIFont(name: "HelveticaNeue-Light", size: 20) else {
-            fatalError("Failed to load the mediumRegular() font.")
-        }
+    func mediumRegular() -> UILabel {
+        let customFont = UIFont.systemFont(ofSize: 20, weight: .bold)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self
@@ -44,7 +46,7 @@ extension UILabel {
     }
     
     func gray() -> UILabel {
-        self.textColor = .gray
+        self.textColor = .systemGray
         return self
     }
     

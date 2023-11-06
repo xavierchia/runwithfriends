@@ -23,16 +23,16 @@ class UISegmentStackView: UIStackView {
         self.distribution = .fillEqually
 
         runsButton.titleLabel?.textAlignment = .center
-        _ = runsButton.titleLabel?.mediumLight()
+        _ = runsButton.titleLabel?.mediumRegular()
         unlockedButton.setTitleColor(.white, for: .normal)
         runsButton.setTitle("Upcoming", for: .normal)
         runsButton.addTarget(self, action: #selector(runsButtonPressed), for: .touchUpInside)
         self.addArrangedSubview(runsButton)
         
         unlockedButton.titleLabel?.textAlignment = .center
-        _ = unlockedButton.titleLabel?.mediumLight()
+        _ = unlockedButton.titleLabel?.mediumRegular()
         unlockedButton.setTitle("Unlocked", for: .normal)
-        unlockedButton.setTitleColor(.gray, for: .normal)
+        unlockedButton.setTitleColor(.systemGray, for: .normal)
         unlockedButton.addTarget(self, action: #selector(unlockedButtonPressed), for: .touchUpInside)
         self.addArrangedSubview(unlockedButton)
     }
@@ -48,7 +48,7 @@ class UISegmentStackView: UIStackView {
             self.runsButton.setTitleColor(.white, for: .normal)
         }
         UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
-            self.unlockedButton.setTitleColor(.gray, for: .normal)
+            self.unlockedButton.setTitleColor(.systemGray, for: .normal)
         }
     }
     
@@ -56,7 +56,7 @@ class UISegmentStackView: UIStackView {
         delegate?.unlockedButtonPressed()
         
         UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
-            self.runsButton.setTitleColor(.gray, for: .normal)
+            self.runsButton.setTitleColor(.systemGray, for: .normal)
         }
         UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
             self.unlockedButton.setTitleColor(.white, for: .normal)
