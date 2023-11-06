@@ -13,6 +13,7 @@
 		952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */; };
 		952825C02AE1F74E0032B04B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952825BF2AE1F74E0032B04B /* Assets.xcassets */; };
 		952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952825C12AE1F74E0032B04B /* LaunchScreen.storyboard */; };
+		95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95457DFB2AF8C31400E4414C /* ProfileViewController.swift */; };
 		954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BB92AF723E800018E01 /* UISegmentStackView.swift */; };
 		954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */; };
 		954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */; };
@@ -31,6 +32,7 @@
 		952825BF2AE1F74E0032B04B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		952825C22AE1F74E0032B04B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952825C42AE1F74E0032B04B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		95457DFB2AF8C31400E4414C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		954F4BB92AF723E800018E01 /* UISegmentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentStackView.swift; sourceTree = "<group>"; };
 		954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRunTableViewCell.swift; sourceTree = "<group>"; };
 		954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UIRunTableViewCell.xib; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				952825B72AE1F74D0032B04B /* LoginViewController.swift */,
 				95966EB32AF329450086DABB /* TabViewController.swift */,
 				954F4BB82AF723CB00018E01 /* Runs */,
+				95457DFA2AF8C2F300E4414C /* Profile */,
 				95659B8C2AEF1F9B008D7BA8 /* Extensions */,
 				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
 				952825C12AE1F74E0032B04B /* LaunchScreen.storyboard */,
@@ -84,6 +87,14 @@
 				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
 			);
 			path = runwithfriends;
+			sourceTree = "<group>";
+		};
+		95457DFA2AF8C2F300E4414C /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		954F4BB82AF723CB00018E01 /* Runs */ = {
@@ -184,6 +195,7 @@
 			files = (
 				952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */,
 				95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */,
+				95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */,
 				95966EB42AF329450086DABB /* TabViewController.swift in Sources */,
 				95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
