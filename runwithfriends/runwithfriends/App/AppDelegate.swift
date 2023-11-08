@@ -8,14 +8,6 @@
 import UIKit
 import CoreData
 import CloudKit
-import KeychainAccess
-
-let AppKeychain = Keychain(service: Bundle.main.bundleIdentifier!).synchronizable(true)
-
-enum AppKeys {
-        static let userId = "userId"
-        static let username = "username"
-}
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

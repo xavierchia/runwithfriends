@@ -14,11 +14,15 @@ class ProfileViewController: UIViewController {
         setupNavigationController()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = UserData.shared.getUsername(withPrefix: true)
+    }
+    
     // MARK: SetupUI
     
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.title = "Xavier"
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     }

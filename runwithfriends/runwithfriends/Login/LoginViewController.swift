@@ -102,11 +102,15 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
         print("authorized")
         switch authorization.credential {
         case let credentials as ASAuthorizationAppleIDCredential:
-            // add username to firebase
-//            let username = credentials.fullName?.givenName ?? "Friendly"
+            if credentials.fullName == nil {
+                print("User fullName is not provided at login, we will use the defaultUsername")
+            }
+            
             let userId = credentials.user
+            let username = credentials.fullName?.givenName ?? UserData.defaultUsername
+
             do {
-                // TODO: set username in firebase
+                UserData.shared.setUsername(username)
                 try AppKeychain.set(userId, key: AppKeys.userId)
             } catch {
                 print("user credentials could not be saved to keychain")
