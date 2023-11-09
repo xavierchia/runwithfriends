@@ -13,9 +13,9 @@ class ProfileViewController: UIViewController {
     let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     let friendsTableView = UITableView(frame: .zero, style: .insetGrouped)
     let tableCellTitles = [
-        ["Profile", "Run settings"],
-        ["How it works", "Privacy"],
-        ["FAQ", "Review", "Contact"]
+        ["🥸 Profile", "🏃‍♂️ Run settings"],
+        ["🤷‍♀️ How it works", "🕵️‍♂️ Privacy"],
+        ["🧐 FAQ", "⭐️ Review", "💌 Contact"]
     ]
 
     override func viewDidLoad() {
