@@ -27,10 +27,10 @@ class UIRunTableViewCell: UITableViewCell {
         // Configure the time label
         let attributedString = NSMutableAttributedString()
         let timeString = NSAttributedString(string: cellData.time,
-                                            attributes: [.font: UIFont.systemFont(ofSize: 54, weight: .light),
+                                            attributes: [.font: UIFont.systemFont(ofSize: 34, weight: .light),
                                                          .foregroundColor: textColor])
         let amOrPmString =  NSAttributedString(string: cellData.amOrPm,
-                                               attributes: [.font: UIFont.systemFont(ofSize: 27, weight: .light),
+                                               attributes: [.font: UIFont.systemFont(ofSize: 17, weight: .light),
                                                             .foregroundColor: textColor])
         attributedString.append(timeString)
         attributedString.append(amOrPmString)
@@ -42,6 +42,7 @@ class UIRunTableViewCell: UITableViewCell {
         
         // Configure the right button
         self.rightButton.titleLabel?.text = cellData.canJoin ? "JOIN" : "FULL"
+//        self.rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         self.rightButton.isEnabled = cellData.canJoin
     }
 }

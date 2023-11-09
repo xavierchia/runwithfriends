@@ -22,6 +22,7 @@
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
+		95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */; };
 		95E9BB2C2AF1C8DB00A0EF96 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 95E9BB2B2AF1C8DB00A0EF96 /* KeychainAccess */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
+		95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prefixes.swift; sourceTree = "<group>"; };
 		95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runwithfriends.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				952825B22AE1F74D0032B04B /* runwithfriends */,
+				952825C42AE1F74E0032B04B /* Info.plist */,
 				952825B12AE1F74D0032B04B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -83,9 +86,7 @@
 				954F4BB82AF723CB00018E01 /* Runs */,
 				95457DFA2AF8C2F300E4414C /* Profile */,
 				95659B8C2AEF1F9B008D7BA8 /* Extensions */,
-				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
-				952825C42AE1F74E0032B04B /* Info.plist */,
-				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
+				95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */,
 			);
 			path = runwithfriends;
 			sourceTree = "<group>";
@@ -106,6 +107,8 @@
 			children = (
 				952825B72AE1F74D0032B04B /* LoginViewController.swift */,
 				95966EB32AF329450086DABB /* TabViewController.swift */,
+				9536C16E2AF9ADA100263871 /* UserData.swift */,
+				95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -114,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
-				9536C16E2AF9ADA100263871 /* UserData.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -122,8 +124,8 @@
 		954F4BB82AF723CB00018E01 /* Runs */ = {
 			isa = PBXGroup;
 			children = (
-				95966EB52AF32B6C0086DABB /* RunsViewController.swift */,
 				954F4BB92AF723E800018E01 /* UISegmentStackView.swift */,
+				95966EB52AF32B6C0086DABB /* RunsViewController.swift */,
 				954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */,
 				954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */,
 			);
@@ -136,6 +138,15 @@
 				95659B8D2AEF1FA4008D7BA8 /* Labels.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */ = {
+			isa = PBXGroup;
+			children = (
+				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
+				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
+			);
+			path = AssetsCoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,6 +238,7 @@
 				9536C1732AF9AF0300263871 /* AppKeys.swift in Sources */,
 				954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */,
 				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
+				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -30,6 +30,6 @@ class TabViewController: UITabBarController {
         setViewControllers([runsNav, profileNav], animated: true)
         
         // xxavier temp select for testing
-        self.selectedIndex = 1
+        self.selectedIndex = 0
     }
 }

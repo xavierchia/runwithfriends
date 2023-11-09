@@ -11,6 +11,7 @@ class ProfileViewController: UIViewController {
     
     let segmentStackView = UISegmentStackView(leftTitle: "Settings", rightTitle: "Friends")
     let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
+    let friendsTableView = UITableView(frame: .zero, style: .insetGrouped)
     let tableCellTitles = [
         ["Profile", "Run settings"],
         ["How it works", "Privacy"],
@@ -22,6 +23,7 @@ class ProfileViewController: UIViewController {
         setupNavigationController()
         segmentStackView.delegate = self
         setupSettingsTableView()
+        setupFriendsTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,31 +53,67 @@ class ProfileViewController: UIViewController {
         segmentStackView.frame = CGRect(x: 0, y: 0, width: settingsTableView.frame.width, height: 50)
         settingsTableView.tableHeaderView = segmentStackView
     }
+    
+    private func setupFriendsTableView() {
+        friendsTableView.delegate = self
+        friendsTableView.dataSource = self
+        view.addSubview(friendsTableView)
+        friendsTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            friendsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            friendsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            friendsTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            friendsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        friendsTableView.isHidden = true
+    }
 }
 
 extension ProfileViewController: UISegmentStackViewProtocol {
     func leftButtonPressed() {
-        print("settings button pressed in vc")
+        settingsTableView.isHidden = false
+        friendsTableView.isHidden = true
+        friendsTableView.tableHeaderView = nil
+        settingsTableView.tableHeaderView = segmentStackView
     }
     
     func rightButtonPressed() {
-        print("friends button pressed in vc")
+        settingsTableView.isHidden = true
+        friendsTableView.isHidden = false
+        settingsTableView.tableHeaderView = nil
+        friendsTableView.tableHeaderView = segmentStackView
     }
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return tableCellTitles.count
+        if tableView == settingsTableView {
+            return tableCellTitles.count
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableCellTitles[section].count
+        if tableView == settingsTableView {
+            return tableCellTitles[section].count
+        } else {
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-        cell.textLabel?.text = tableCellTitles[indexPath.section][indexPath.row]
-        cell.accessoryType = .disclosureIndicator
-        return cell
+        
+        if tableView == settingsTableView {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+            cell.textLabel?.text = tableCellTitles[indexPath.section][indexPath.row]
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        } else {
+            let cell = UITableViewCell()
+            cell.textLabel?.text = "Coming Soon!"
+            return cell
+        }
+
     }
 }
