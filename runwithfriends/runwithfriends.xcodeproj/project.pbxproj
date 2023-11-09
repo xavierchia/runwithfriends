@@ -64,7 +64,6 @@
 			isa = PBXGroup;
 			children = (
 				952825B22AE1F74D0032B04B /* runwithfriends */,
-				952825C42AE1F74E0032B04B /* Info.plist */,
 				952825B12AE1F74D0032B04B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,6 +86,7 @@
 				95457DFA2AF8C2F300E4414C /* Profile */,
 				95659B8C2AEF1F9B008D7BA8 /* Extensions */,
 				95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */,
+				952825C42AE1F74E0032B04B /* Info.plist */,
 			);
 			path = runwithfriends;
 			sourceTree = "<group>";
