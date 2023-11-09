@@ -16,20 +16,20 @@ struct CellData {
 
 class RunsViewController: UIViewController {
     let runsTableView = UITableView(frame: .zero, style: .grouped)
-    let segmentStackView = UISegmentStackView()
+    let segmentStackView = UISegmentStackView(leftTitle: "Upcoming", rightTitle: "Upcoming")
         
     let data = [
         CellData(time: "11:00", amOrPm: "AM", runners: "25/25 runners", canJoin: false),
-        CellData(time: "1:00", amOrPm: "PM", runners: "25/25 runners", canJoin: false),
+        CellData(time: "11:30", amOrPm: "AM", runners: "25/25 runners", canJoin: false),
+        CellData(time: "12:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
+        CellData(time: "12:30", amOrPm: "PM", runners: "20/25 runners", canJoin: true),
+        CellData(time: "1:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
+        CellData(time: "1:30", amOrPm: "PM", runners: "25/25 runners", canJoin: false),
         CellData(time: "2:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
-        CellData(time: "3:00", amOrPm: "PM", runners: "20/25 runners", canJoin: true),
+        CellData(time: "2:30", amOrPm: "PM", runners: "25/25 runners", canJoin: false),
+        CellData(time: "3:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
+        CellData(time: "3:30", amOrPm: "PM", runners: "12/25 runners", canJoin: true),
         CellData(time: "4:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
-        CellData(time: "5:00", amOrPm: "PM", runners: "25/25 runners", canJoin: false),
-        CellData(time: "6:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
-        CellData(time: "7:00", amOrPm: "PM", runners: "25/25 runners", canJoin: false),
-        CellData(time: "8:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
-        CellData(time: "9:00", amOrPm: "PM", runners: "12/25 runners", canJoin: true),
-        CellData(time: "10:00", amOrPm: "PM", runners: "15/25 runners", canJoin: true),
     ]
     
     override func viewDidLoad() {
@@ -68,11 +68,11 @@ class RunsViewController: UIViewController {
 }
 
 extension RunsViewController: UISegmentStackViewProtocol {
-    func runsButtonPressed() {
+    func leftButtonPressed() {
         print("runs button pressed in vc")
     }
     
-    func unlockedButtonPressed() {
+    func rightButtonPressed() {
         print("unlocked button pressed in vc")
     }
 }

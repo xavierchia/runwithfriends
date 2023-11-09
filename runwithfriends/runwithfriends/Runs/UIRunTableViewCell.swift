@@ -22,7 +22,7 @@ class UIRunTableViewCell: UITableViewCell {
     }
     
     func configure(with cellData: CellData) {
-        let textColor: UIColor = cellData.canJoin ? .white : .systemGray
+        let textColor: UIColor = cellData.canJoin ? .white : .secondaryLabel
         
         // Configure the time label
         let attributedString = NSMutableAttributedString()

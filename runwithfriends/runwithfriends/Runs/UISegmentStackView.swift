@@ -8,8 +8,8 @@
 import UIKit
 
 protocol UISegmentStackViewProtocol: AnyObject {
-    func runsButtonPressed()
-    func unlockedButtonPressed()
+    func leftButtonPressed()
+    func rightButtonPressed()
 }
 
 class UISegmentStackView: UIStackView {
@@ -17,22 +17,22 @@ class UISegmentStackView: UIStackView {
     private let unlockedButton = UIButton()
     weak var delegate: UISegmentStackViewProtocol?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(leftTitle: String, rightTitle: String) {
+        super.init(frame: .zero)
         self.axis = .horizontal
         self.distribution = .fillEqually
 
         runsButton.titleLabel?.textAlignment = .center
         _ = runsButton.titleLabel?.mediumRegular()
         unlockedButton.setTitleColor(.white, for: .normal)
-        runsButton.setTitle("Upcoming", for: .normal)
+        runsButton.setTitle(leftTitle, for: .normal)
         runsButton.addTarget(self, action: #selector(runsButtonPressed), for: .touchUpInside)
         self.addArrangedSubview(runsButton)
         
         unlockedButton.titleLabel?.textAlignment = .center
         _ = unlockedButton.titleLabel?.mediumRegular()
-        unlockedButton.setTitle("Unlocked", for: .normal)
-        unlockedButton.setTitleColor(.systemGray, for: .normal)
+        unlockedButton.setTitle(rightTitle, for: .normal)
+        unlockedButton.setTitleColor(.secondaryLabel, for: .normal)
         unlockedButton.addTarget(self, action: #selector(unlockedButtonPressed), for: .touchUpInside)
         self.addArrangedSubview(unlockedButton)
     }
@@ -42,21 +42,21 @@ class UISegmentStackView: UIStackView {
     }
     
     @objc private func runsButtonPressed() {
-        delegate?.runsButtonPressed()
+        delegate?.leftButtonPressed()
         
         UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
             self.runsButton.setTitleColor(.white, for: .normal)
         }
         UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
-            self.unlockedButton.setTitleColor(.systemGray, for: .normal)
+            self.unlockedButton.setTitleColor(.secondaryLabel, for: .normal)
         }
     }
     
     @objc private func unlockedButtonPressed() {
-        delegate?.unlockedButtonPressed()
+        delegate?.rightButtonPressed()
         
         UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
-            self.runsButton.setTitleColor(.systemGray, for: .normal)
+            self.runsButton.setTitleColor(.secondaryLabel, for: .normal)
         }
         UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
             self.unlockedButton.setTitleColor(.white, for: .normal)

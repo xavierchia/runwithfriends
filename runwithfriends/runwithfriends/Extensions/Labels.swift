@@ -8,8 +8,8 @@
 import UIKit
 
 // Colors
-// Background button color: .darkGray
-// Disabled or unselected font color: .systemGray
+// Background button color: .systemFill
+// Disabled or unselected font color: .secondaryLabel
 // Accent: .accentColor
 
 
@@ -42,11 +42,6 @@ extension UILabel {
     
     func white() -> UILabel {
         self.textColor = .white
-        return self
-    }
-    
-    func gray() -> UILabel {
-        self.textColor = .systemGray
         return self
     }
     

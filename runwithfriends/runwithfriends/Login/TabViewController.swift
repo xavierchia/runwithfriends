@@ -28,5 +28,8 @@ class TabViewController: UITabBarController {
         profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.crop.circle.fill")
         
         setViewControllers([runsNav, profileNav], animated: true)
+        
+        // xxavier temp select for testing
+        self.selectedIndex = 1
     }
 }
