@@ -16,7 +16,7 @@ struct UserData {
         return
     }
     
-    public func getUsername(withPrefix: Bool) -> String {
+    public func getUsername(withPrefix: Bool = false) -> String {
         var username = UserDefaults.standard.string(forKey: AppKeys.username) ?? UserData.defaultUsername
         // add prefix
         if withPrefix,

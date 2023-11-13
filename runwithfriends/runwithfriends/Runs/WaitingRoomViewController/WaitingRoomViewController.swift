@@ -13,6 +13,10 @@ class WaitingRoomViewController: UIViewController {
     
     let mapView = MKMapView()
     let bottomRow = BottomRow()
+    let locationManager = CLLocationManager()
+    
+    // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
+    let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,15 +28,18 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupLocationManager() {
-        // Create a CLLocationManager and assign a delegate
-        let locationManager = CLLocationManager()
-        
         locationManager.requestWhenInUseAuthorization()
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        // Request a user’s location once
-        locationManager.requestLocation()
+        
+        if locationManager.authorizationStatus == .notDetermined {
+            print("Authorization status not determined, requesting authorization")
+            locationManager.requestWhenInUseAuthorization()
+        } else {
+            print("Authorization permitted, requesting location")
+            locationManager.requestLocation()
+        }
     }
     
     private func setupBottomRow() {
@@ -65,12 +72,13 @@ class WaitingRoomViewController: UIViewController {
     private func setMapRegion(with coordinate: CLLocationCoordinate2D) {
         let obscuredCoordinate = coordinate.obscured()
         // Handle location update
-        let span = MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100)
+        let span = MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 50)
         let region = MKCoordinateRegion(center: obscuredCoordinate, span: span)
         mapView.setRegion(region, animated: true)
         
         let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🤣"))
         newPin.coordinate = obscuredCoordinate
+        newPin.title = UserData.shared.getUsername()
         mapView.addAnnotation(newPin)
                 
         let secondPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "😉"))
@@ -84,17 +92,27 @@ class WaitingRoomViewController: UIViewController {
 }
 
 extension WaitingRoomViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            setMapRegion(with: location.coordinate)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if manager.authorizationStatus == .authorizedWhenInUse ||
+            manager.authorizationStatus == .authorizedAlways {
+            if let location = manager.location {
+                print("Location authorized, setting user location")
+                setMapRegion(with: location.coordinate)
+            }
+        } else if manager.authorizationStatus == .notDetermined {
+            print("Location not authorized yet, just wait.")
+        } else {
+            print("Did not authorize, setting default location")
+            setMapRegion(with: defaultLocation)
         }
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("Getting location passed")
+    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("getting location failed")
-        // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
-        let coordinate = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
-        setMapRegion(with: coordinate)
+        print("Getting location failed")
     }
 }
 
