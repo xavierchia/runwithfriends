@@ -8,8 +8,8 @@
 import UIKit
 
 protocol UISegmentStackViewProtocol: AnyObject {
-    func leftButtonPressed()
-    func rightButtonPressed()
+    func segmentLeftButtonPressed()
+    func segmentRightButtonPressed()
 }
 
 class UISegmentStackView: UIStackView {
@@ -42,7 +42,7 @@ class UISegmentStackView: UIStackView {
     }
     
     @objc private func runsButtonPressed() {
-        delegate?.leftButtonPressed()
+        delegate?.segmentLeftButtonPressed()
         
         UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
             self.runsButton.setTitleColor(.white, for: .normal)
@@ -53,7 +53,7 @@ class UISegmentStackView: UIStackView {
     }
     
     @objc private func unlockedButtonPressed() {
-        delegate?.rightButtonPressed()
+        delegate?.segmentRightButtonPressed()
         
         UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
             self.runsButton.setTitleColor(.secondaryLabel, for: .normal)

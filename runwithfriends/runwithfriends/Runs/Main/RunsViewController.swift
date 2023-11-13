@@ -68,11 +68,11 @@ class RunsViewController: UIViewController {
 }
 
 extension RunsViewController: UISegmentStackViewProtocol {
-    func leftButtonPressed() {
+    func segmentLeftButtonPressed() {
         print("runs button pressed in vc")
     }
     
-    func rightButtonPressed() {
+    func segmentRightButtonPressed() {
         print("unlocked button pressed in vc")
     }
 }
@@ -86,6 +86,7 @@ extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
         if tableView == runsTableView,
             let cell = tableView.dequeueReusableCell(withIdentifier: "UIRunTableViewCell") as? UIRunTableViewCell {
             cell.configure(with: data[indexPath.row])
+            cell.delegate = self
             return cell
         }
 
@@ -104,5 +105,13 @@ extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         segmentStackView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50)
         return segmentStackView
+    }
+}
+
+extension RunsViewController: UIRunTableViewCellProtocol {
+    func cellButtonPressed() {
+        let waitingRoomVC = WaitingRoomViewController()
+        waitingRoomVC.modalPresentationStyle = .currentContext
+        present(waitingRoomVC, animated: true)
     }
 }

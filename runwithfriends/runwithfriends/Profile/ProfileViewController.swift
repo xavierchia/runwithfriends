@@ -70,14 +70,14 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UISegmentStackViewProtocol {
-    func leftButtonPressed() {
+    func segmentLeftButtonPressed() {
         settingsTableView.isHidden = false
         friendsTableView.isHidden = true
         friendsTableView.tableHeaderView = nil
         settingsTableView.tableHeaderView = segmentStackView
     }
     
-    func rightButtonPressed() {
+    func segmentRightButtonPressed() {
         settingsTableView.isHidden = true
         friendsTableView.isHidden = false
         settingsTableView.tableHeaderView = nil

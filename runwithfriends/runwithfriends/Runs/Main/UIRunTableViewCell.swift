@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol UIRunTableViewCellProtocol: AnyObject {
+    func cellButtonPressed()
+}
+
 class UIRunTableViewCell: UITableViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var runnersLabel: UILabel!
     @IBOutlet weak var rightButton: UIButton!
+    
+    weak var delegate: UIRunTableViewCellProtocol?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -19,6 +25,7 @@ class UIRunTableViewCell: UITableViewCell {
     
     @IBAction func rightButtonPressed(_ sender: Any) {
         print("right button press")
+        self.delegate?.cellButtonPressed()
     }
     
     func configure(with cellData: CellData) {
@@ -42,7 +49,6 @@ class UIRunTableViewCell: UITableViewCell {
         
         // Configure the right button
         self.rightButton.titleLabel?.text = cellData.canJoin ? "JOIN" : "FULL"
-//        self.rightButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         self.rightButton.isEnabled = cellData.canJoin
     }
 }
