@@ -24,6 +24,9 @@
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
 		95AC65852B021CE50084FF15 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* CustomAnnotation.swift */; };
+		95AC65872B0224150084FF15 /* BottomRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95AC65862B0224150084FF15 /* BottomRow.xib */; };
+		95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65882B0226B30084FF15 /* BottomRow.swift */; };
+		95AC658B2B0227860084FF15 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC658A2B0227860084FF15 /* UIView.swift */; };
 		95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */; };
 		95E9BB2C2AF1C8DB00A0EF96 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 95E9BB2B2AF1C8DB00A0EF96 /* KeychainAccess */; };
 		95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6970E2AFF6CD800B10EB2 /* String.swift */; };
@@ -49,6 +52,9 @@
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
 		95AC65842B021CE50084FF15 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		95AC65862B0224150084FF15 /* BottomRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomRow.xib; sourceTree = "<group>"; };
+		95AC65882B0226B30084FF15 /* BottomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRow.swift; sourceTree = "<group>"; };
+		95AC658A2B0227860084FF15 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prefixes.swift; sourceTree = "<group>"; };
 		95F6970E2AFF6CD800B10EB2 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runwithfriends.entitlements; sourceTree = "<group>"; };
@@ -141,6 +147,7 @@
 			children = (
 				95659B8D2AEF1FA4008D7BA8 /* Labels.swift */,
 				95F6970E2AFF6CD800B10EB2 /* String.swift */,
+				95AC658A2B0227860084FF15 /* UIView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -150,6 +157,8 @@
 			children = (
 				950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */,
 				95AC65842B021CE50084FF15 /* CustomAnnotation.swift */,
+				95AC65882B0226B30084FF15 /* BottomRow.swift */,
+				95AC65862B0224150084FF15 /* BottomRow.xib */,
 			);
 			path = WaitingRoomViewController;
 			sourceTree = "<group>";
@@ -241,6 +250,7 @@
 				952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */,
 				954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */,
 				952825C02AE1F74E0032B04B /* Assets.xcassets in Resources */,
+				95AC65872B0224150084FF15 /* BottomRow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,11 +271,13 @@
 				95AC65852B021CE50084FF15 /* CustomAnnotation.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
+				95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
 				9536C1732AF9AF0300263871 /* AppKeys.swift in Sources */,
 				954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */,
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
 				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
+				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

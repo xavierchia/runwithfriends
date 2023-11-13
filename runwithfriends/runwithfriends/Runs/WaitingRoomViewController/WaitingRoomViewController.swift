@@ -12,12 +12,14 @@ import CoreLocation
 class WaitingRoomViewController: UIViewController {
     
     let mapView = MKMapView()
+    let bottomRow = BottomRow()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemPurple
         
         setupLocationManager()
+        setupBottomRow()
         setupMapView()
     }
     
@@ -33,19 +35,30 @@ class WaitingRoomViewController: UIViewController {
         locationManager.requestLocation()
     }
     
+    private func setupBottomRow() {
+        view.addSubview(bottomRow)
+        
+        NSLayoutConstraint.activate([
+            bottomRow.heightAnchor.constraint(equalToConstant: 100),
+            bottomRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomRow.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
     private func setupMapView() {
-//        mapView.delegate = self
         mapView.mapType = .satelliteFlyover
         mapView.overrideUserInterfaceStyle = .dark
         view.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mapView.topAnchor.constraint(equalTo: view.topAnchor),
-            mapView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            mapView.bottomAnchor.constraint(equalTo: bottomRow.topAnchor)
         ])
-        
+                
         mapView.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
     }
     
