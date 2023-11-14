@@ -20,11 +20,10 @@ class UIRunTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .none
     }
     
     @IBAction func rightButtonPressed(_ sender: Any) {
-        print("right button press")
+        print("join button press")
         guard let indexPath else { return }
         self.delegate?.cellButtonPressed(with: indexPath)
     }

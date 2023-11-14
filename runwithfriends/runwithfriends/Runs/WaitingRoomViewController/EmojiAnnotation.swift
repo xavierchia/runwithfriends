@@ -33,6 +33,7 @@ class EmojiAnnotationView: MKMarkerAnnotationView {
     private func update(for annotation: MKAnnotation?) {
         glyphImage = (annotation as? EmojiAnnotation)?.emojiImage
         markerTintColor = .white
+        self.displayPriority = .required
     }
 }
 

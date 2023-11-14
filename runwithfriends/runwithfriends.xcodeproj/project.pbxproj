@@ -24,7 +24,7 @@
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
-		95AC65852B021CE50084FF15 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* CustomAnnotation.swift */; };
+		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
 		95AC65872B0224150084FF15 /* BottomRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95AC65862B0224150084FF15 /* BottomRow.xib */; };
 		95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65882B0226B30084FF15 /* BottomRow.swift */; };
 		95AC658B2B0227860084FF15 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC658A2B0227860084FF15 /* UIView.swift */; };
@@ -53,7 +53,7 @@
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
-		95AC65842B021CE50084FF15 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAnnotation.swift; sourceTree = "<group>"; };
 		95AC65862B0224150084FF15 /* BottomRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomRow.xib; sourceTree = "<group>"; };
 		95AC65882B0226B30084FF15 /* BottomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRow.swift; sourceTree = "<group>"; };
 		95AC658A2B0227860084FF15 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
@@ -159,7 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */,
-				95AC65842B021CE50084FF15 /* CustomAnnotation.swift */,
+				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
 				95AC65882B0226B30084FF15 /* BottomRow.swift */,
 				95AC65862B0224150084FF15 /* BottomRow.xib */,
 			);
@@ -271,7 +271,7 @@
 				95966EB42AF329450086DABB /* TabViewController.swift in Sources */,
 				95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */,
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
-				95AC65852B021CE50084FF15 /* CustomAnnotation.swift in Sources */,
+				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
 				95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */,

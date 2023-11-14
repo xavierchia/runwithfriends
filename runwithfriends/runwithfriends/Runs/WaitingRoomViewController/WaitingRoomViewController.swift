@@ -86,18 +86,30 @@ class WaitingRoomViewController: UIViewController {
         let region = MKCoordinateRegion(center: obscuredCoordinate, span: span)
         mapView.setRegion(region, animated: true)
         
-        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🤣"))
+        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇸🇬"))
         newPin.coordinate = obscuredCoordinate
         newPin.title = UserData.shared.getUsername()
         mapView.addAnnotation(newPin)
                 
-        let secondPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "😉"))
-        secondPin.coordinate = CLLocationCoordinate2D(latitude: 39.9, longitude: 116.3)
-        mapView.addAnnotation(secondPin)
+        let chinaPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇨🇳"))
+        chinaPin.coordinate = CLLocationCoordinate2D(latitude: 39.9, longitude: 116.3)
+        chinaPin.title = "Xiao Ming"
+        mapView.addAnnotation(chinaPin)
         
-        let thirdPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "😘"))
-        thirdPin.coordinate = CLLocationCoordinate2D(latitude: 10.8, longitude: 106.6)
-        mapView.addAnnotation(thirdPin)
+        let vietPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇻🇳"))
+        vietPin.coordinate = CLLocationCoordinate2D(latitude: 10.8, longitude: 106.6)
+        vietPin.title = "Phuong"
+        mapView.addAnnotation(vietPin)
+        
+        let thaiPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇹🇭"))
+        thaiPin.coordinate = CLLocationCoordinate2D(latitude: 13.75, longitude: 100.5)
+        thaiPin.title = "Pang"
+        mapView.addAnnotation(thaiPin)
+        
+        let philPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇵🇭"))
+        philPin.coordinate = CLLocationCoordinate2D(latitude: 14.59, longitude: 120.98)
+        philPin.title = "Kurt"
+        mapView.addAnnotation(philPin)
     }
 }
 
