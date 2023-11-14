@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UIRunTableViewCellProtocol: AnyObject {
-    func cellButtonPressed()
+    func cellButtonPressed(with indexPath: IndexPath)
 }
 
 class UIRunTableViewCell: UITableViewCell {
@@ -25,7 +25,8 @@ class UIRunTableViewCell: UITableViewCell {
     
     @IBAction func rightButtonPressed(_ sender: Any) {
         print("right button press")
-        self.delegate?.cellButtonPressed()
+        guard let indexPath else { return }
+        self.delegate?.cellButtonPressed(with: indexPath)
     }
     
     func configure(with cellData: CellData) {

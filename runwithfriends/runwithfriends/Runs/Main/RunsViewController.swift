@@ -109,8 +109,8 @@ extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension RunsViewController: UIRunTableViewCellProtocol {
-    func cellButtonPressed() {
-        let waitingRoomVC = WaitingRoomViewController()
+    func cellButtonPressed(with indexPath: IndexPath) {
+        let waitingRoomVC = WaitingRoomViewController(with: data[indexPath.row])
         waitingRoomVC.modalPresentationStyle = .currentContext
         present(waitingRoomVC, animated: true)
     }

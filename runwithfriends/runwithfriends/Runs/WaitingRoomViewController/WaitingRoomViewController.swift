@@ -12,16 +12,23 @@ import CoreLocation
 class WaitingRoomViewController: UIViewController {
     
     let mapView = MKMapView()
-    let bottomRow = BottomRow()
+    let bottomRow: BottomRow
     let locationManager = CLLocationManager()
     
     // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
     let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
-
+    
+    init(with cellData: CellData) {
+        bottomRow = BottomRow(cellData: cellData)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemPurple
-        
         setupLocationManager()
         setupBottomRow()
         setupMapView()
@@ -42,21 +49,24 @@ class WaitingRoomViewController: UIViewController {
         }
     }
     
+    // MARK: Setup UI
     private func setupBottomRow() {
+        bottomRow.delegate = self
         view.addSubview(bottomRow)
         
         NSLayoutConstraint.activate([
-            bottomRow.heightAnchor.constraint(equalToConstant: 100),
+            bottomRow.heightAnchor.constraint(equalToConstant: 80),
             bottomRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomRow.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
+    // MARK: Setup location manager
     private func setupMapView() {
         mapView.mapType = .satelliteFlyover
         mapView.overrideUserInterfaceStyle = .dark
-        view.addSubview(mapView)
+        view.insertSubview(mapView, belowSubview: bottomRow)
         mapView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -91,6 +101,7 @@ class WaitingRoomViewController: UIViewController {
     }
 }
 
+// MARK: CLLocationManagerDelegate
 extension WaitingRoomViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         if manager.authorizationStatus == .authorizedWhenInUse ||
@@ -116,6 +127,13 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
     }
 }
 
+extension WaitingRoomViewController: BottomRowProtocol {
+    func leaveButtonPressed() {
+        self.dismiss(animated: true)
+    }
+}
+
+// MARK: Helpers
 extension CLLocationCoordinate2D {
     func obscured() -> CLLocationCoordinate2D {
         let latitude = self.latitude + Double.random(in: -0.05...0.05)
