@@ -32,6 +32,7 @@ class WaitingRoomViewController: UIViewController {
         setupLocationManager()
         setupBottomRow()
         setupMapView()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     private func setupLocationManager() {
@@ -141,7 +142,7 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
 
 extension WaitingRoomViewController: BottomRowProtocol {
     func leaveButtonPressed() {
-        self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

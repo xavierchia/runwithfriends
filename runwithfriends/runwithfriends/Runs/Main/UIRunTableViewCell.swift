@@ -31,6 +31,9 @@ class UIRunTableViewCell: UITableViewCell {
     func configure(with cellData: CellData) {
         let textColor: UIColor = cellData.canJoin ? .white : .secondaryLabel
         
+        // Stops line separator from disappearing when tapped
+        self.selectionStyle = .none
+        
         // Configure the time label
         let attributedString = NSMutableAttributedString()
         let timeString = NSAttributedString(string: cellData.time,
