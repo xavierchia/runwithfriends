@@ -51,7 +51,8 @@ class UIRunTableViewCell: UITableViewCell {
         self.runnersLabel.textColor = textColor
         
         // Configure the right button
-        self.rightButton.titleLabel?.text = cellData.canJoin ? "JOIN" : "FULL"
         self.rightButton.isEnabled = cellData.canJoin
+        self.rightButton.setTitle("JOIN", for: .normal)
+        self.rightButton.setTitle("FULL", for: .disabled)
     }
 }

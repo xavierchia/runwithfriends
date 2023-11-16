@@ -133,6 +133,18 @@ class WaitingRoomViewController: UIViewController {
             countdownTimer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countdownTimer.bottomAnchor.constraint(equalTo: bottomRow.topAnchor, constant: -20)
         ])
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunction))
+        countdownTimer.addGestureRecognizer(tap)
+        countdownTimer.isUserInteractionEnabled = true
+    }
+    
+    @objc private func tapFunction() {
+        print("tapped")
+        let runningVC = RunningViewController()
+        runningVC.modalPresentationStyle = .overFullScreen
+        
+        self.present(runningVC, animated: true)
     }
 }
 
