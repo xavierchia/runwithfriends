@@ -14,24 +14,7 @@ class RunningViewController: UIViewController {
         view.backgroundColor = .accent
     
         setupDistanceStack()
-        
-        let endButton = UIButton()
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-        let largeStopCircle = UIImage(systemName: "stop.circle.fill", withConfiguration: largeConfig)
-        endButton.setImage(largeStopCircle, for: .normal)
-        endButton.tintColor = .black
-        
-        view.addSubview(endButton)
-        endButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            endButton.widthAnchor.constraint(equalToConstant: 100),
-            endButton.heightAnchor.constraint(equalToConstant: 100),
-            endButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            endButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
-        ])
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunction))
-        endButton.addGestureRecognizer(tap)
+        setupEndButton()
     }
 
     @objc private func tapFunction() {
@@ -67,5 +50,26 @@ class RunningViewController: UIViewController {
             distanceStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             distanceStack.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+    }
+    
+    private func setupEndButton() {
+        let endButton = UIButton()
+        var config = UIImage.SymbolConfiguration(paletteColors: [.white, .black])
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
+        config = config.applying(largeConfig)
+        let largeStopCircle = UIImage(systemName: "stop.circle.fill", withConfiguration: config)
+        endButton.setImage(largeStopCircle, for: .normal)
+        
+        view.addSubview(endButton)
+        endButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            endButton.widthAnchor.constraint(equalToConstant: 100),
+            endButton.heightAnchor.constraint(equalToConstant: 100),
+            endButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            endButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
+        ])
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunction))
+        endButton.addGestureRecognizer(tap)
     }
 }
