@@ -13,7 +13,7 @@ class RunningViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .accent
     
-        setupPlaceStack()
+        setupPaceStack()
         setupTimeStack()
         setupDistanceStack()
         setupEndButton()
@@ -26,23 +26,23 @@ class RunningViewController: UIViewController {
     
     
     // MARK: Setup UI
-    private func setupPlaceStack() {
-        let placeValueLabel = UILabel().topBarTitle()
-        placeValueLabel.text = "10th"
-        let placeMetricLabel = UILabel().topBarSubtitle()
-        placeMetricLabel.text = "Place"
+    private func setupPaceStack() {
+        let paceValueLabel = UILabel().topBarTitle()
+        paceValueLabel.text = "7'10\""
+        let paceMetricLabel = UILabel().topBarSubtitle()
+        paceMetricLabel.text = "Pace"
         
-        let placeStack = UIStackView().verticalStack()
-        placeStack.addArrangedSubview(placeValueLabel)
-        placeStack.addArrangedSubview(placeMetricLabel)
+        let paceStack = UIStackView().verticalStack()
+        paceStack.addArrangedSubview(paceValueLabel)
+        paceStack.addArrangedSubview(paceMetricLabel)
         
-        view.addSubview(placeStack)
-        placeStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(paceStack)
+        paceStack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            placeStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            placeStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            placeStack.widthAnchor.constraint(equalToConstant: 125),
-            placeStack.heightAnchor.constraint(equalToConstant: 70)
+            paceStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            paceStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            paceStack.widthAnchor.constraint(equalToConstant: 140),
+            paceStack.heightAnchor.constraint(equalToConstant: 70)
         ])
     }
     
@@ -59,7 +59,7 @@ class RunningViewController: UIViewController {
         view.addSubview(timeStack)
         timeStack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            timeStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            timeStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             timeStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
             timeStack.widthAnchor.constraint(equalToConstant: 125),
             timeStack.heightAnchor.constraint(equalToConstant: 70)
