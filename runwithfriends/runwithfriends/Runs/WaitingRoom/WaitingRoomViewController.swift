@@ -19,7 +19,7 @@ class WaitingRoomViewController: UIViewController {
     // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
     let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
     
-    init(with cellData: CellData) {
+    init(with cellData: RunCellData) {
         bottomRow = BottomRow(cellData: cellData)
         super.init(nibName: nil, bundle: nil)
     }

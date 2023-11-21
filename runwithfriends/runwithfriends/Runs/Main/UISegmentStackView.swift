@@ -23,14 +23,14 @@ class UISegmentStackView: UIStackView {
         self.distribution = .fillEqually
 
         runsButton.titleLabel?.textAlignment = .center
-        _ = runsButton.titleLabel?.mediumRegular()
+        _ = runsButton.titleLabel?.mediumBold()
         unlockedButton.setTitleColor(.white, for: .normal)
         runsButton.setTitle(leftTitle, for: .normal)
         runsButton.addTarget(self, action: #selector(runsButtonPressed), for: .touchUpInside)
         self.addArrangedSubview(runsButton)
         
         unlockedButton.titleLabel?.textAlignment = .center
-        _ = unlockedButton.titleLabel?.mediumRegular()
+        _ = unlockedButton.titleLabel?.mediumBold()
         unlockedButton.setTitle(rightTitle, for: .normal)
         unlockedButton.setTitleColor(.secondaryLabel, for: .normal)
         unlockedButton.addTarget(self, action: #selector(unlockedButtonPressed), for: .touchUpInside)

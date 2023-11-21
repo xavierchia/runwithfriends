@@ -12,10 +12,11 @@ protocol UIRunTableViewCellProtocol: AnyObject {
 }
 
 class UIRunTableViewCell: UITableViewCell {
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var runnersLabel: UILabel!
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var rightButton: UIButton!
     
+    static let identifier = "UIRunTableViewCell"
     weak var delegate: UIRunTableViewCellProtocol?
     
     override func awakeFromNib() {
@@ -28,7 +29,7 @@ class UIRunTableViewCell: UITableViewCell {
         self.delegate?.cellButtonPressed(with: indexPath)
     }
     
-    func configure(with cellData: CellData) {
+    func configure(with cellData: RunCellData) {
         let textColor: UIColor = cellData.canJoin ? .white : .secondaryLabel
         
         // Stops line separator from disappearing when tapped
@@ -44,15 +45,50 @@ class UIRunTableViewCell: UITableViewCell {
                                                             .foregroundColor: textColor])
         attributedString.append(timeString)
         attributedString.append(amOrPmString)
-        self.timeLabel.attributedText = attributedString
+        title.attributedText = attributedString
         
         // Configure the runners label
-        self.runnersLabel.text = cellData.runners
-        self.runnersLabel.textColor = textColor
+        subtitle.text = cellData.runners
+        subtitle.textColor = textColor
+        subtitle.font = UIFont.systemFont(ofSize: 17, weight: .light)
         
         // Configure the right button
-        self.rightButton.isEnabled = cellData.canJoin
-        self.rightButton.setTitle("JOIN", for: .normal)
-        self.rightButton.setTitle("FULL", for: .disabled)
+        rightButton.isEnabled = cellData.canJoin
+        rightButton.setTitle("JOIN", for: .normal)
+        rightButton.setTitle("FULL", for: .disabled)
+    }
+    
+    func configure(with cellData: FriendCellData) {
+        // Stops line separator from disappearing when tapped
+        self.selectionStyle = .none
+        
+        title.text = cellData.name
+        
+        // Friend has not joined an upcoming run
+        if let runsTogether = cellData.runsTogether {
+            subtitle.text = "ran together \(runsTogether) times"
+            subtitle.font = UIFont.systemFont(ofSize: 17, weight: .light)
+            rightButton.isHidden = true
+            return
+        }
+        
+        // Friend is in an upcoming run
+        if let time = cellData.time,
+           let amOrPm = cellData.amOrPm,
+           let canJoin = cellData.canJoin {
+            // Configure the time label
+            let attributedString = NSMutableAttributedString()
+            let timeString = NSAttributedString(string: "is running at \(time)",
+                                                attributes: [.font: UIFont.systemFont(ofSize: 17, weight: .light)])
+            let amOrPmString =  NSAttributedString(string: amOrPm,
+                                                   attributes: [.font: UIFont.systemFont(ofSize: 8.5, weight: .light)])
+            attributedString.append(timeString)
+            attributedString.append(amOrPmString)
+            subtitle.attributedText = attributedString
+            
+            rightButton.isEnabled = canJoin
+            rightButton.setTitle("JOIN", for: .normal)
+            rightButton.setTitle("FULL", for: .disabled)
+        }
     }
 }

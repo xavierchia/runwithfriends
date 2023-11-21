@@ -19,7 +19,7 @@ class BottomRow: UIView, CustomViewProtocol {
     let identifier = "BottomRow"
     weak var delegate: BottomRowProtocol?
     
-    convenience init(cellData: CellData) {
+    convenience init(cellData: RunCellData) {
         self.init(frame: .zero)
         
         // Configure the time label

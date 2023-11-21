@@ -23,8 +23,8 @@ extension UILabel {
         return self
     }
     
-    func mediumRegular() -> UILabel {
-        let customFont = UIFont.systemFont(ofSize: 34/1.64, weight: .bold)
+    func mediumBold() -> UILabel {
+        let customFont = UIFont.systemFont(ofSize: 24, weight: .bold)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self

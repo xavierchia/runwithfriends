@@ -76,8 +76,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="rightButton" destination="3PD-8s-qID" id="W9B-qD-Cdt"/>
-                <outlet property="runnersLabel" destination="AzZ-9z-Cw2" id="vgk-9e-YlI"/>
-                <outlet property="timeLabel" destination="5B2-tE-Ubf" id="rjK-Sg-aWX"/>
+                <outlet property="subtitle" destination="AzZ-9z-Cw2" id="Xep-NP-AiN"/>
+                <outlet property="title" destination="5B2-tE-Ubf" id="f2y-dP-JrS"/>
             </connections>
             <point key="canvasLocation" x="-154.19847328244273" y="38.028169014084511"/>
         </tableViewCell>
@@ -87,10 +87,10 @@
             <color red="0.61960784313725492" green="1" blue="0.61176470588235299" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemFillColor">
-            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
