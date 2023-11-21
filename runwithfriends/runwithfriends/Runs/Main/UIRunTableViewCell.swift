@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UIRunTableViewCellProtocol: AnyObject {
-    func cellButtonPressed(with indexPath: IndexPath)
+    func cellButtonPressed(with indexPath: IndexPath, from tableView: UITableView)
 }
 
 class UIRunTableViewCell: UITableViewCell {
@@ -25,11 +25,12 @@ class UIRunTableViewCell: UITableViewCell {
     
     @IBAction func rightButtonPressed(_ sender: Any) {
         print("join button press")
-        guard let indexPath else { return }
-        self.delegate?.cellButtonPressed(with: indexPath)
+        guard let indexPath, 
+            let tableView else { return }
+        self.delegate?.cellButtonPressed(with: indexPath, from: tableView)
     }
     
-    func configure(with cellData: RunCellData) {
+    func configure(with cellData: JoinRunData) {
         let textColor: UIColor = cellData.canJoin ? .white : .secondaryLabel
         
         // Stops line separator from disappearing when tapped
@@ -73,9 +74,9 @@ class UIRunTableViewCell: UITableViewCell {
         }
         
         // Friend is in an upcoming run
-        if let time = cellData.time,
-           let amOrPm = cellData.amOrPm,
-           let canJoin = cellData.canJoin {
+        if let time = cellData.joinRunData?.time,
+           let amOrPm = cellData.joinRunData?.amOrPm,
+           let canJoin = cellData.joinRunData?.canJoin {
             // Configure the time label
             let attributedString = NSMutableAttributedString()
             let timeString = NSAttributedString(string: "is running at \(time)",

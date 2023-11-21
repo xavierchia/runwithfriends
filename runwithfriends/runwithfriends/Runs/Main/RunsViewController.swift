@@ -7,19 +7,17 @@
 
 import UIKit
 
-struct RunCellData {
-    let time: String
-    let amOrPm: String
-    let runners: String
-    let canJoin: Bool
+struct JoinRunData {
+    var time: String
+    var amOrPm: String
+    var runners: String
+    var canJoin: Bool
 }
 
 struct FriendCellData {
     let name: String
     var runsTogether: Int? = nil
-    var time: String? = nil
-    var amOrPm: String? = nil
-    var canJoin: Bool? = nil
+    var joinRunData: JoinRunData? = nil
 }
 
 class RunsViewController: UIViewController {
@@ -28,22 +26,22 @@ class RunsViewController: UIViewController {
     let segmentStackView = UISegmentStackView(leftTitle: "Runs", rightTitle: "Friends")
         
     let runData = [
-        RunCellData(time: "11:00", amOrPm: "AM", runners: "25 / 25 runners", canJoin: false),
-        RunCellData(time: "11:30", amOrPm: "AM", runners: "25 / 25 runners", canJoin: false),
-        RunCellData(time: "12:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        RunCellData(time: "12:30", amOrPm: "PM", runners: "20 / 25 runners", canJoin: true),
-        RunCellData(time: "1:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        RunCellData(time: "1:30", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false),
-        RunCellData(time: "2:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        RunCellData(time: "2:30", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false),
-        RunCellData(time: "3:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        RunCellData(time: "3:30", amOrPm: "PM", runners: "12 / 25 runners", canJoin: true),
-        RunCellData(time: "4:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
+        JoinRunData(time: "11:00", amOrPm: "AM", runners: "25 / 25 runners", canJoin: false),
+        JoinRunData(time: "11:30", amOrPm: "AM", runners: "25 / 25 runners", canJoin: false),
+        JoinRunData(time: "12:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
+        JoinRunData(time: "12:30", amOrPm: "PM", runners: "20 / 25 runners", canJoin: true),
+        JoinRunData(time: "1:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
+        JoinRunData(time: "1:30", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false),
+        JoinRunData(time: "2:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
+        JoinRunData(time: "2:30", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false),
+        JoinRunData(time: "3:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
+        JoinRunData(time: "3:30", amOrPm: "PM", runners: "12 / 25 runners", canJoin: true),
+        JoinRunData(time: "4:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
     ]
     
     let friendsData = [
-        FriendCellData(name: "Timmy 🇺🇸", time: "7:00", amOrPm: "PM", canJoin: true),
-        FriendCellData(name: "Fiiv 🇹🇭", time: "7:00", amOrPm: "AM", canJoin: false),
+        FriendCellData(name: "Timmy 🇺🇸", joinRunData: JoinRunData(time: "7:00", amOrPm: "PM", runners: "13 / 25 runners", canJoin: true)),
+        FriendCellData(name: "Fiiv 🇹🇭", joinRunData: JoinRunData(time: "8:00", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false)),
         FriendCellData(name: "Michelle 🇺🇸", runsTogether: 9),
     ]
     
@@ -157,9 +155,15 @@ extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension RunsViewController: UIRunTableViewCellProtocol {
-    func cellButtonPressed(with indexPath: IndexPath) {
-        // xavier fix this
-        let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row])
-        show(waitingRoomVC, sender: self)
+    func cellButtonPressed(with indexPath: IndexPath, from tableView: UITableView) {
+        if tableView == runsTableView {
+            let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row])
+            show(waitingRoomVC, sender: self)
+        } else {
+            let friendData = friendsData[indexPath.row]
+            guard let runData = friendData.joinRunData else { return }
+            let waitingRoomVC = WaitingRoomViewController(with: runData)
+            show(waitingRoomVC, sender: self)
+        }
     }
 }
