@@ -9,11 +9,26 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+    struct CellData {
+        let emoji: UIImage
+        let title: String
+    }
+    
     let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     let tableCellTitles = [
-        ["🥸 Profile", "🏃‍♂️ Run settings"],
-        ["🤷‍♀️ How it works", "🕵️‍♂️ Privacy"],
-        ["🧐 FAQ", "⭐️ Review", "💌 Contact"]
+        [
+            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
+            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
+        ],
+        [
+            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
+            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
+        ],
+        [
+            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
+            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
+            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
+        ]
     ]
 
     override func viewDidLoad() {
@@ -59,9 +74,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
             let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-            cell.textLabel?.text = tableCellTitles[indexPath.section][indexPath.row]
+            let data = tableCellTitles[indexPath.section][indexPath.row]
+            cell.textLabel?.text = data.title
+            cell.imageView?.image = data.emoji
             cell.accessoryType = .disclosureIndicator
             return cell
     }

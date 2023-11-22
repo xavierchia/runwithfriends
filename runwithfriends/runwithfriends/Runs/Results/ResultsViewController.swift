@@ -13,29 +13,11 @@ class ResultsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupNavigationController()
-        
-        let closeBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(popToRoot))
-//        let closeBarButtonItem = UIBarButtonItem(
-//            title: "Close",
-//            style: .done,
-//            target: self,
-//            action: #selector(popToRoot)
-//        )
-
-        self.navigationItem.rightBarButtonItem = closeBarButtonItem
     }
     
     @objc private func popToRoot() {
-        if let waitingVC = self.presentingViewController?.presentingViewController as? TabViewController {
-            print("setting tabs")
-//            print(waitingVC.self)
-            waitingVC.dismiss(animated: false)
-//            print(waitingVC is RunsViewController)
-//            print(waitingVC.navigationController?.viewControllers)
+        if let waitingVC = self.presentingViewController?.presentingViewController as? TabViewController {            waitingVC.dismiss(animated: false)
             waitingVC.setupTabs()
-            
-//            waitingVC.dismiss(animated: false)
-//            waitingVC.navigationController?.popViewController(animated: false)
         }
     }
     
@@ -44,5 +26,11 @@ class ResultsViewController: UIViewController {
         self.navigationItem.title = "🎊 Great Job!"
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
+        let closeBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close
+                                                 , target: self,
+                                                 action: #selector(popToRoot))
+
+        self.navigationItem.rightBarButtonItem = closeBarButtonItem
     }
 }
