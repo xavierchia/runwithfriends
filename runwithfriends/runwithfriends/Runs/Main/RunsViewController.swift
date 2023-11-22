@@ -80,7 +80,7 @@ class RunsViewController: UIViewController {
         NSLayoutConstraint.activate([
             runsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             runsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            runsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            runsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             runsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
@@ -101,7 +101,7 @@ class RunsViewController: UIViewController {
         NSLayoutConstraint.activate([
             friendsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             friendsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            friendsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            friendsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             friendsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         friendsTableView.isHidden = true
