@@ -23,6 +23,7 @@
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
 		95698B722B058625009B78F3 /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95698B712B058625009B78F3 /* RunningViewController.swift */; };
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
+		9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
 		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
@@ -53,6 +54,7 @@
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		95698B712B058625009B78F3 /* RunningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
 		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAnnotation.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				95F6970B2AFF66D600B10EB2 /* Main */,
 				95AC65832B021CD60084FF15 /* WaitingRoom */,
 				95698B702B0585E9009B78F3 /* Running */,
+				9590E91A2B0D721800B2A2A4 /* Results */,
 			);
 			path = Runs;
 			sourceTree = "<group>";
@@ -164,6 +167,14 @@
 				95698B712B058625009B78F3 /* RunningViewController.swift */,
 			);
 			path = Running;
+			sourceTree = "<group>";
+		};
+		9590E91A2B0D721800B2A2A4 /* Results */ = {
+			isa = PBXGroup;
+			children = (
+				9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */,
+			);
+			path = Results;
 			sourceTree = "<group>";
 		};
 		95AC65832B021CD60084FF15 /* WaitingRoom */ = {
@@ -292,6 +303,7 @@
 				954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */,
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
 				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
+				9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
 				95877BC32B042F7500A81839 /* Cell.swift in Sources */,

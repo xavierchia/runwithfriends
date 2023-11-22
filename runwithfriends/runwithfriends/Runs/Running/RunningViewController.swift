@@ -19,9 +19,15 @@ class RunningViewController: UIViewController {
         setupEndButton()
     }
 
-    @objc private func tapFunction() {
-        print("tapped")
+    @objc private func endButtonPressed() {
         self.dismiss(animated: true)
+    }
+    
+    @objc private func resultsButtonPressed() {
+        let resultsVC = ResultsViewController()
+        let resultsNav = UINavigationController(rootViewController: resultsVC)
+        resultsNav.modalPresentationStyle = .overFullScreen
+        present(resultsNav, animated: true)
     }
     
     
@@ -91,6 +97,9 @@ class RunningViewController: UIViewController {
             distanceStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             distanceStack.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(resultsButtonPressed))
+        distanceStack.addGestureRecognizer(tap)
     }
     
     private func setupEndButton() {
@@ -110,7 +119,7 @@ class RunningViewController: UIViewController {
             endButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunction))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endButtonPressed))
         endButton.addGestureRecognizer(tap)
     }
 }

@@ -35,6 +35,12 @@ class WaitingRoomViewController: UIViewController {
         setupBottomRow()
         setupMapView()
         setupCountdownTimer()
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
+//            print("dismissing")
+//            self.dismiss(animated: false)
+//            self.navigationController?.popViewController(animated: false)
+//        }
     }
     
     private func setupLocationManager() {
@@ -48,7 +54,7 @@ class WaitingRoomViewController: UIViewController {
             locationManager.requestWhenInUseAuthorization()
         } else {
             print("Authorization permitted, requesting location")
-            locationManager.requestLocation()
+            locationManager.startUpdatingLocation()
         }
     }
     
@@ -170,6 +176,7 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
            let location = manager.location {
             print("Getting location passed")
             setMapRegion(with: location.coordinate)
+            locationManager.stopUpdatingLocation()
         }
     }
     
@@ -183,7 +190,7 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
 
 extension WaitingRoomViewController: BottomRowProtocol {
     func leaveButtonPressed() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
 }
 

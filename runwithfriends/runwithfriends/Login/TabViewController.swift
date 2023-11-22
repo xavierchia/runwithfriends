@@ -14,7 +14,7 @@ class TabViewController: UITabBarController {
         setupTabs()
     }
     
-    private func setupTabs() {
+    func setupTabs() {
         let runsVC = RunsViewController()
         let runsNav = UINavigationController(rootViewController: runsVC)
         runsNav.tabBarItem.title = "Runs"
