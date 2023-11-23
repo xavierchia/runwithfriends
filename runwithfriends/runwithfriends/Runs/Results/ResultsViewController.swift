@@ -16,7 +16,7 @@ class ResultsViewController: UIViewController {
     }
     
     @objc private func popToRoot() {
-        if let waitingVC = self.presentingViewController?.presentingViewController as? TabViewController {            waitingVC.dismiss(animated: false)
+        if let waitingVC = self.presentingViewController?.presentingViewController as? TabViewController {            waitingVC.dismiss(animated: true)
             waitingVC.setupTabs()
         }
     }
@@ -27,8 +27,15 @@ class ResultsViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
-        let closeBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close
-                                                 , target: self,
+        var config = UIImage.SymbolConfiguration(weight: .bold)
+        let largeConfig = UIImage.SymbolConfiguration(scale: .large)
+        let pointConfig = UIImage.SymbolConfiguration(pointSize: 20)
+        config = config.applying(largeConfig).applying(pointConfig)
+        let closeButtonImage = UIImage(systemName: "xmark", withConfiguration: config)
+        
+        let closeBarButtonItem = UIBarButtonItem(image: closeButtonImage,
+                                                 style: .plain,
+                                                 target: self,
                                                  action: #selector(popToRoot))
 
         self.navigationItem.rightBarButtonItem = closeBarButtonItem

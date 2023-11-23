@@ -30,6 +30,7 @@ class ProfileViewController: UIViewController {
             CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
         ]
     ]
+    let navImageView = UIImageView(image: "🇸🇬".image(pointSize: 20))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +49,7 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.setImageView(navImageView)
     }
     
     private func setupSettingsTableView() {
@@ -80,5 +82,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.imageView?.image = data.emoji
             cell.accessoryType = .disclosureIndicator
             return cell
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let height = navigationController?.navigationBar.frame.height else { return }
+        navigationController?.navigationBar.moveAndResizeImage(for: height, and: navImageView)
     }
 }

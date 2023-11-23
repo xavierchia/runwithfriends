@@ -23,7 +23,7 @@ struct FriendCellData {
 class RunsViewController: UIViewController {
     let runsTableView = UITableView(frame: .zero, style: .grouped)
     let friendsTableView = UITableView(frame: .zero, style: .grouped)
-    let segmentStackView = UISegmentStackView(leftTitle: "Runs", rightTitle: "Friends")
+    let segmentStackView = UISegmentStackView(leftTitle: "🏃 Runs", rightTitle: "🕺 Friends")
         
     let runData = [
         JoinRunData(time: "11:00", amOrPm: "AM", runners: "25 / 25 runners", canJoin: false),
@@ -44,7 +44,7 @@ class RunsViewController: UIViewController {
         FriendCellData(name: "Fiiv 🇹🇭", joinRunData: JoinRunData(time: "8:00", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false)),
         FriendCellData(name: "Michelle 🇺🇸", runsTogether: 9),
     ]
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationController()
@@ -150,7 +150,7 @@ extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 90
     }
 }
 

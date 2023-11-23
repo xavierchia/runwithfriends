@@ -9,6 +9,7 @@ import UIKit
 
 // Colors
 // Background button color: .systemFill
+// Background button color if content behind like map: .backgroundContentFill
 // Disabled or unselected font color: .secondaryLabel
 // Accent: .accentColor
 
@@ -27,11 +28,6 @@ extension UILabel {
         let customFont = UIFont.systemFont(ofSize: 24, weight: .bold)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
-        return self
-    }
-    
-    func orange() -> UILabel {
-        self.textColor = .systemOrange
         return self
     }
     

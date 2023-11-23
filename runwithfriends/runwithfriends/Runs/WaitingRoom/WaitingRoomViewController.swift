@@ -34,13 +34,8 @@ class WaitingRoomViewController: UIViewController {
         setupLocationManager()
         setupBottomRow()
         setupMapView()
-        setupCountdownTimer()
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-//            print("dismissing")
-//            self.dismiss(animated: false)
-//            self.navigationController?.popViewController(animated: false)
-//        }
+        setupWaitingRoomTitle()
+        setupCloseButton()
     }
     
     private func setupLocationManager() {
@@ -67,7 +62,7 @@ class WaitingRoomViewController: UIViewController {
             bottomRow.heightAnchor.constraint(equalToConstant: 80),
             bottomRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomRow.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            bottomRow.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
     
@@ -82,7 +77,7 @@ class WaitingRoomViewController: UIViewController {
             mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mapView.topAnchor.constraint(equalTo: view.topAnchor),
-            mapView.bottomAnchor.constraint(equalTo: bottomRow.topAnchor)
+            mapView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
                 
         mapView.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
@@ -93,7 +88,8 @@ class WaitingRoomViewController: UIViewController {
         
         let obscuredCoordinate = coordinate.obscured()
         // Handle location update
-        let span = MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 50)
+        // Bigger span zooms out more
+        let span = MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40)
         let region = MKCoordinateRegion(center: obscuredCoordinate, span: span)
         mapView.setRegion(region, animated: true)
         
@@ -123,26 +119,43 @@ class WaitingRoomViewController: UIViewController {
         mapView.addAnnotation(philPin)
     }
     
-    private func setupCountdownTimer() {
-        let countdownTimer = UILabel()
-        countdownTimer.text = "Countdown: 5:00"
-        countdownTimer.font = UIFont.systemFont(ofSize: countdownTimer.font.pointSize, weight: .bold)
-        countdownTimer.textAlignment = .center
-        countdownTimer.backgroundColor = .black
-        countdownTimer.layer.cornerRadius = 10
-        countdownTimer.layer.masksToBounds = true
-        view.addSubview(countdownTimer)
-        countdownTimer.translatesAutoresizingMaskIntoConstraints = false
+    private func setupWaitingRoomTitle() {
+        let waitingRoomTitle = UILabel()
+        waitingRoomTitle.text = "Waiting Room"
+        waitingRoomTitle.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        waitingRoomTitle.textColor = .white
+        waitingRoomTitle.textAlignment = .center
+        waitingRoomTitle.backgroundColor = .clear
+        view.addSubview(waitingRoomTitle)
+        waitingRoomTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            countdownTimer.widthAnchor.constraint(equalToConstant: 170),
-            countdownTimer.heightAnchor.constraint(equalToConstant: 40),
-            countdownTimer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            countdownTimer.bottomAnchor.constraint(equalTo: bottomRow.topAnchor, constant: -20)
+            waitingRoomTitle.widthAnchor.constraint(equalToConstant: 190),
+            waitingRoomTitle.heightAnchor.constraint(equalToConstant: 28),
+            waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunction))
-        countdownTimer.addGestureRecognizer(tap)
-        countdownTimer.isUserInteractionEnabled = true
+        waitingRoomTitle.addGestureRecognizer(tap)
+        waitingRoomTitle.isUserInteractionEnabled = true
+    }
+    
+    private func setupCloseButton() {
+        let closeButton = UIButton()
+        var config = UIImage.SymbolConfiguration(weight: .bold)
+        let largeConfig = UIImage.SymbolConfiguration(scale: .large)
+        let pointConfig = UIImage.SymbolConfiguration(pointSize: 20)
+        config = config.applying(largeConfig).applying(pointConfig)
+        let closeButtonImage = UIImage(systemName: "xmark", withConfiguration: config)
+        closeButton.setImage(closeButtonImage, for: .normal)
+        closeButton.tintColor = .white
+
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(closeButton)
+        NSLayoutConstraint.activate([
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            closeButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12)
+        ])
+        closeButton.addTarget(self, action: #selector(pop), for: .touchUpInside)
     }
     
     @objc private func tapFunction() {
@@ -151,6 +164,10 @@ class WaitingRoomViewController: UIViewController {
         runningVC.modalPresentationStyle = .overFullScreen
         
         self.present(runningVC, animated: true)
+    }
+    
+    @objc private func pop() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -189,8 +206,8 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
 }
 
 extension WaitingRoomViewController: BottomRowProtocol {
-    func leaveButtonPressed() {
-        self.navigationController?.popViewController(animated: false)
+    func inviteButtonPressed() {
+        print("invite friends")
     }
 }
 

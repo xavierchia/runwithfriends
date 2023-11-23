@@ -8,7 +8,7 @@
 import UIKit
 
 protocol BottomRowProtocol: AnyObject {
-    func leaveButtonPressed()
+    func inviteButtonPressed()
 }
 
 class BottomRow: UIView, CustomViewProtocol {
@@ -24,10 +24,11 @@ class BottomRow: UIView, CustomViewProtocol {
         
         // Configure the time label
         let attributedString = NSMutableAttributedString()
+        // If less than 1 hour, change to 'run will auto-start in 30:21"
         let timeString = NSAttributedString(string: "Run will auto-start at \(cellData.time)",
-                                            attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .regular)])
+                                            attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)])
         let amOrPmString =  NSAttributedString(string: cellData.amOrPm,
-                                               attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .regular)])
+                                               attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .bold)])
         attributedString.append(timeString)
         attributedString.append(amOrPmString)
         self.title.attributedText = attributedString
@@ -45,7 +46,7 @@ class BottomRow: UIView, CustomViewProtocol {
         commonInit(for: identifier)
     }
     
-    @IBAction func leaveButtonPressed(_ sender: Any) {
-        self.delegate?.leaveButtonPressed()
+    @IBAction func inviteButtonPressed(_ sender: Any) {
+        self.delegate?.inviteButtonPressed()
     }
 }

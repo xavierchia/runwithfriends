@@ -51,7 +51,7 @@ class UIRunTableViewCell: UITableViewCell {
         // Configure the runners label
         subtitle.text = cellData.runners
         subtitle.textColor = textColor
-        subtitle.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        subtitle.font = UIFont.systemFont(ofSize: 13, weight: .light)
         
         // Configure the right button
         rightButton.isEnabled = cellData.canJoin
@@ -60,10 +60,17 @@ class UIRunTableViewCell: UITableViewCell {
     }
     
     func configure(with cellData: FriendCellData) {
+        var textColor: UIColor = .secondaryLabel
+        if let canJoin = cellData.joinRunData?.canJoin, canJoin {
+            textColor = .white
+        }
+
         // Stops line separator from disappearing when tapped
         self.selectionStyle = .none
         
         title.text = cellData.name
+        title.textColor = textColor
+        subtitle.textColor = textColor
         
         // Friend has not joined an upcoming run
         if let runsTogether = cellData.runsTogether {

@@ -19,24 +19,24 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="left" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="cdc-LI-8mS">
-                        <rect key="frame" x="8" y="12" width="130.33333333333334" height="72"/>
+                        <rect key="frame" x="16" y="20.000000000000004" width="130.33333333333334" height="56.333333333333343"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00PM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5B2-tE-Ubf">
-                                <rect key="frame" x="0.0" y="0.0" width="130.33333333333334" height="48"/>
+                                <rect key="frame" x="0.0" y="0.0" width="130.33333333333334" height="40.666666666666664"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="34"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 / 25 runners" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AzZ-9z-Cw2">
-                                <rect key="frame" x="0.0" y="48" width="111.33333333333333" height="24"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                <rect key="frame" x="0.0" y="40.666666666666664" width="89" height="15.666666666666664"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3PD-8s-qID">
-                        <rect key="frame" x="242" y="32" width="70" height="32"/>
+                        <rect key="frame" x="234" y="29.666666666666671" width="70" height="37"/>
                         <color key="backgroundColor" systemColor="systemFillColor"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="70" id="Y8k-lo-A9B"/>
@@ -65,12 +65,10 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="3PD-8s-qID" secondAttribute="trailing" constant="8" id="C7c-xh-tnh"/>
-                    <constraint firstAttribute="bottom" secondItem="3PD-8s-qID" secondAttribute="bottom" constant="32" id="KSd-js-lF1"/>
-                    <constraint firstItem="cdc-LI-8mS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="Lxo-CX-MdV"/>
-                    <constraint firstAttribute="bottom" secondItem="cdc-LI-8mS" secondAttribute="bottom" constant="12" id="PgR-CH-qCN"/>
-                    <constraint firstItem="3PD-8s-qID" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="32" id="W60-nf-Gsu"/>
-                    <constraint firstItem="cdc-LI-8mS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="nTA-Dm-H1s"/>
+                    <constraint firstItem="cdc-LI-8mS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3pr-fz-wqF"/>
+                    <constraint firstAttribute="trailing" secondItem="3PD-8s-qID" secondAttribute="trailing" constant="16" id="C7c-xh-tnh"/>
+                    <constraint firstItem="3PD-8s-qID" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="hcy-CJ-mfJ"/>
+                    <constraint firstItem="cdc-LI-8mS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="nTA-Dm-H1s"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -87,10 +85,10 @@
             <color red="0.61960784313725492" green="1" blue="0.61176470588235299" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemFillColor">
-            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
