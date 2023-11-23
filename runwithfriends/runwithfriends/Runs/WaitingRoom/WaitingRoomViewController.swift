@@ -122,7 +122,7 @@ class WaitingRoomViewController: UIViewController {
     private func setupWaitingRoomTitle() {
         let waitingRoomTitle = UILabel()
         waitingRoomTitle.text = "Waiting Room"
-        waitingRoomTitle.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        waitingRoomTitle.font = UIFont.systemFont(ofSize: 26, weight: .bold)
         waitingRoomTitle.textColor = .white
         waitingRoomTitle.textAlignment = .center
         waitingRoomTitle.backgroundColor = .clear

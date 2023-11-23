@@ -26,8 +26,8 @@ class RunsViewController: UIViewController {
     let segmentStackView = UISegmentStackView(leftTitle: "🏃 Runs", rightTitle: "🕺 Friends")
         
     let runData = [
-        JoinRunData(time: "11:00", amOrPm: "AM", runners: "25 / 25 runners", canJoin: false),
-        JoinRunData(time: "11:30", amOrPm: "AM", runners: "25 / 25 runners", canJoin: false),
+        JoinRunData(time: "11:00", amOrPm: "AM", runners: "23 / 25 runners", canJoin: true),
+        JoinRunData(time: "11:30", amOrPm: "AM", runners: "20 / 25 runners", canJoin: true),
         JoinRunData(time: "12:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
         JoinRunData(time: "12:30", amOrPm: "PM", runners: "20 / 25 runners", canJoin: true),
         JoinRunData(time: "1:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),

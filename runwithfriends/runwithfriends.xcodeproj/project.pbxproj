@@ -22,6 +22,7 @@
 		954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
 		95698B722B058625009B78F3 /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95698B712B058625009B78F3 /* RunningViewController.swift */; };
+		957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A4EA12B1015D200C746A4 /* TableHeaderView.swift */; };
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
 		9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
@@ -54,6 +55,7 @@
 		954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UIRunTableViewCell.xib; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		95698B712B058625009B78F3 /* RunningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
+		957A4EA12B1015D200C746A4 /* TableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeaderView.swift; sourceTree = "<group>"; };
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */,
+				957A4EA12B1015D200C746A4 /* TableHeaderView.swift */,
 			);
 			path = Results;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				9536C1732AF9AF0300263871 /* AppKeys.swift in Sources */,
 				954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */,
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
+				957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */,
 				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
 				9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
