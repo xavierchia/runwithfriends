@@ -40,8 +40,10 @@ class ResultsViewController: UIViewController {
     
     private func setupTableView() {
         resultsTableView.delegate = self
+        resultsTableView.dataSource = self
         view.addSubview(resultsTableView)
         resultsTableView.translatesAutoresizingMaskIntoConstraints = false
+        resultsTableView.sectionHeaderTopPadding = 0
         NSLayoutConstraint.activate([
             resultsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             resultsTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -62,11 +64,37 @@ class ResultsViewController: UIViewController {
 
 extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UIPaddingLabel()
+        label.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50)
+        label.text = "Your run"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.textAlignment = .left
+        label.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        50
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        cell.backgroundColor = .cyan
+        cell.textLabel?.textColor = .white
+        cell.textLabel?.text = "hi"
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
 }
