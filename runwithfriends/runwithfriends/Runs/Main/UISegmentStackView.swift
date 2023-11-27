@@ -34,7 +34,7 @@ extension RunsViewController {
             _ = unlockedButton.titleLabel?.mediumBold()
             unlockedButton.setTitle(rightTitle, for: .normal)
             unlockedButton.setTitleColor(.secondaryLabel, for: .normal)
-            unlockedButton.addTarget(self, action: #selector(unlockedButtonPressed), for: .touchUpInside)
+            unlockedButton.addTarget(self, action: #selector(friendsButtonPressed), for: .touchUpInside)
             self.addArrangedSubview(unlockedButton)
         }
         
@@ -42,7 +42,7 @@ extension RunsViewController {
             fatalError("init(coder:) has not been implemented")
         }
         
-        @objc private func runsButtonPressed() {
+        @objc public func runsButtonPressed() {
             delegate?.segmentLeftButtonPressed()
             
             UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
@@ -53,7 +53,7 @@ extension RunsViewController {
             }
         }
         
-        @objc private func unlockedButtonPressed() {
+        @objc public func friendsButtonPressed() {
             delegate?.segmentRightButtonPressed()
             
             UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {

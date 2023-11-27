@@ -7,9 +7,34 @@
 
 import UIKit
 
+enum Relationship {
+    case you, friends, everyone
+}
+
+struct Result {
+    let relationship: Relationship
+    let name: String
+    let distance: String
+    let clapped: Bool
+}
+
 class ResultsViewController: UIViewController {
     
     let resultsTableView = UITableView()
+    
+    let results = [
+        [
+            Result(relationship: .you, name: "XavyBoy 🇸🇬", distance: "2.23km", clapped: false)
+        ],
+        [
+            Result(relationship: .friends, name: "Timmy 🇺🇸", distance: "3.31km 🏃", clapped: false),
+            Result(relationship: .friends, name: "Fiiv 🇹🇭", distance: "4.01km 🏅", clapped: true)
+        ],
+        [
+            Result(relationship: .everyone, name: "Michelle 🇺🇸", distance: "3.51km", clapped: true)
+        ]
+        
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +68,11 @@ class ResultsViewController: UIViewController {
         resultsTableView.dataSource = self
         view.addSubview(resultsTableView)
         resultsTableView.translatesAutoresizingMaskIntoConstraints = false
-        resultsTableView.sectionHeaderTopPadding = 0
+        
+        // removes unnecessary padding between table header view and first section
+        resultsTableView.sectionHeaderTopPadding = .leastNonzeroMagnitude
+        
+        resultsTableView.separatorStyle = .none
         NSLayoutConstraint.activate([
             resultsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             resultsTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -53,10 +82,12 @@ class ResultsViewController: UIViewController {
         
         let tableHeaderView = TableHeaderView(frame: CGRect(x: 0, y: 0, width: resultsTableView.frame.width, height: 50))
         resultsTableView.tableHeaderView = tableHeaderView
+        resultsTableView.register(ResultsTableViewCell.self, forCellReuseIdentifier: "resultsCell")
     }
         
     @objc private func popToRoot() {
-        if let waitingVC = self.presentingViewController?.presentingViewController as? TabViewController {            waitingVC.dismiss(animated: true)
+        if let waitingVC = self.presentingViewController?.presentingViewController as? TabViewController {
+            waitingVC.dismiss(animated: true)
             waitingVC.setupTabs()
         }
     }
@@ -64,21 +95,43 @@ class ResultsViewController: UIViewController {
 
 extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        results[section].count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        results.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UIPaddingLabel()
         label.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50)
-        label.text = "Your run"
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .left
         label.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        switch results[section].first?.relationship {
+        case .you:
+            label.text = "Your run"
+        case.friends:
+            label.text = "Friends"
+        case.everyone:
+            label.text = "Everyone"
+        default:
+            label.text = ""
+        }
+        
+        let separator = UIView()
+        separator.backgroundColor = .accent
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        label.addSubview(separator)
+        
+        NSLayoutConstraint.activate([
+            separator.bottomAnchor.constraint(equalTo: label.bottomAnchor),
+            separator.leftAnchor.constraint(equalTo: label.leftAnchor, constant: 16),
+            separator.rightAnchor.constraint(equalTo: label.rightAnchor, constant: -16),
+            separator.heightAnchor.constraint(equalToConstant: 1)
+        ])
+        
         return label
     }
     
@@ -87,10 +140,11 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-        cell.backgroundColor = .cyan
-        cell.textLabel?.textColor = .white
-        cell.textLabel?.text = "hi"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "resultsCell", for: indexPath) as? ResultsTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        cell.configure(with: results[indexPath.section][indexPath.row])
         return cell
     }
     

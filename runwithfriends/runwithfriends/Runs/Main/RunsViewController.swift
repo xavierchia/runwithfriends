@@ -21,8 +21,8 @@ struct FriendCellData {
 }
 
 class RunsViewController: UIViewController {
-    let runsTableView = UITableView(frame: .zero, style: .grouped)
-    let friendsTableView = UITableView(frame: .zero, style: .grouped)
+    let runsTableView = UITableView(frame: .zero, style: .insetGrouped)
+    let friendsTableView = UITableView()
     let segmentStackView = UISegmentStackView(leftTitle: "🏃 Runs", rightTitle: "🕺 Friends")
         
     let runData = [
@@ -51,6 +51,7 @@ class RunsViewController: UIViewController {
         segmentStackView.delegate = self
         setupRunsTableView()
         setupFriendsTableView()
+        chooseTable()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,7 +72,6 @@ class RunsViewController: UIViewController {
         runsTableView.delegate = self
         runsTableView.dataSource = self
         runsTableView.backgroundColor = .black
-        runsTableView.separatorColor = .darkGray
         runsTableView.showsVerticalScrollIndicator = false
         runsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
 
@@ -85,14 +85,12 @@ class RunsViewController: UIViewController {
         ])
         
         segmentStackView.frame = CGRect(x: 0, y: 0, width: runsTableView.frame.width, height: 50)
-        runsTableView.tableHeaderView = segmentStackView
     }
     
     private func setupFriendsTableView() {
         friendsTableView.delegate = self
         friendsTableView.dataSource = self
         friendsTableView.backgroundColor = .black
-        friendsTableView.separatorColor = .darkGray
         friendsTableView.showsVerticalScrollIndicator = false
         friendsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
 
@@ -104,7 +102,14 @@ class RunsViewController: UIViewController {
             friendsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             friendsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        friendsTableView.isHidden = true
+    }
+    
+    private func chooseTable() {
+        if friendsData.isEmpty {
+            segmentStackView.runsButtonPressed()
+        } else {
+            segmentStackView.friendsButtonPressed()
+        }
     }
 }
 
@@ -145,6 +150,8 @@ extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             cell.configure(with: friendsData[indexPath.row])
         }
+        
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 16)
         return cell
         
     }
