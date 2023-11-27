@@ -7,23 +7,48 @@
 
 import UIKit
 
+protocol ResultsTableViewCellProtocol {
+    func clapPressed(with indexPath: IndexPath?)
+}
+
 class ResultsTableViewCell: UITableViewCell {
     let nameLabel = UILabel()
     let distanceLabel = UILabel()
+    let clap = UIButton()
+    var delegate: ResultsTableViewCellProtocol?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(nameLabel)
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+
         contentView.backgroundColor = .black
-        
         self.selectionStyle = .none
         
+        setupName()
+        setupDistance()
+        setupClap()
+        setupSeparator()
+    }
+    
+    func configure(with result: Result) {
+        nameLabel.text = result.name
+        distanceLabel.text = result.distance
+        
+        let config = UIImage.SymbolConfiguration(paletteColors: [.accent, .systemOrange])
+        let handsFilled = UIImage(systemName: "hands.clap.fill", withConfiguration: config)
+        let clapImage = result.clapped ? handsFilled : UIImage(systemName: "hands.clap")
+        clap.setImage(clapImage, for: .normal)
+    }
+    
+    private func setupName() {
+        contentView.addSubview(nameLabel)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16)
         ])
-        
+    }
+    
+    private func setupDistance() {
         contentView.addSubview(distanceLabel)
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -34,15 +59,19 @@ class ResultsTableViewCell: UITableViewCell {
             distanceLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             distanceLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: middleOffset)
         ])
-        
-        let clap = UIImageView(image: UIImage(systemName: "figure.run.circle"))
+    }
+    
+    private func setupClap() {
         clap.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(clap)
         NSLayoutConstraint.activate([
             clap.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             clap.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
         ])
-        
+        clap.addTarget(self, action: #selector(clapPressed), for: .touchUpInside)
+    }
+    
+    private func setupSeparator() {
         let separator = UIView(frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: 1))
         separator.backgroundColor = .separator
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -56,9 +85,9 @@ class ResultsTableViewCell: UITableViewCell {
         ])
     }
     
-    func configure(with result: Result) {
-        nameLabel.text = result.name
-        distanceLabel.text = result.distance
+    @objc func clapPressed() {
+        print("clap pressed")
+        delegate?.clapPressed(with: indexPath)
     }
     
     required init?(coder: NSCoder) {

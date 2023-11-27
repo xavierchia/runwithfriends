@@ -21,7 +21,7 @@ struct FriendCellData {
 }
 
 class RunsViewController: UIViewController {
-    let runsTableView = UITableView(frame: .zero, style: .insetGrouped)
+    let runsTableView = UITableView()
     let friendsTableView = UITableView()
     let segmentStackView = UISegmentStackView(leftTitle: "🏃 Runs", rightTitle: "🕺 Friends")
         
