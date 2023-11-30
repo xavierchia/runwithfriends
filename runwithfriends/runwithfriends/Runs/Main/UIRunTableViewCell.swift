@@ -36,12 +36,20 @@ class UIRunTableViewCell: UITableViewCell {
         // Stops line separator from disappearing when tapped
         self.selectionStyle = .none
         
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        let dateInString = dateFormatter.string(from: cellData.date as Date)
+        let dateArray = dateInString.split(separator: " ")
+        guard let rawTimeString = dateArray.first,
+              let rawAmOrPmString = dateArray.last else { return }
+        
         // Configure the time label
         let attributedString = NSMutableAttributedString()
-        let timeString = NSAttributedString(string: cellData.time,
+        let timeString = NSAttributedString(string: String(rawTimeString),
                                             attributes: [.font: UIFont.systemFont(ofSize: 34, weight: .light),
                                                          .foregroundColor: textColor])
-        let amOrPmString =  NSAttributedString(string: cellData.amOrPm,
+        let amOrPmString =  NSAttributedString(string: String(rawAmOrPmString),
                                                attributes: [.font: UIFont.systemFont(ofSize: 17, weight: .light),
                                                             .foregroundColor: textColor])
         attributedString.append(timeString)
@@ -81,17 +89,17 @@ class UIRunTableViewCell: UITableViewCell {
         }
         
         // Friend is in an upcoming run
-        if let time = cellData.joinRunData?.time,
-           let amOrPm = cellData.joinRunData?.amOrPm,
+        if let time = cellData.joinRunData?.date,
+//           let amOrPm = cellData.joinRunData?.amOrPm,
            let canJoin = cellData.joinRunData?.canJoin {
             // Configure the time label
             let attributedString = NSMutableAttributedString()
             let timeString = NSAttributedString(string: "is running at \(time)",
                                                 attributes: [.font: UIFont.systemFont(ofSize: 17, weight: .light)])
-            let amOrPmString =  NSAttributedString(string: amOrPm,
-                                                   attributes: [.font: UIFont.systemFont(ofSize: 8.5, weight: .light)])
+//            let amOrPmString =  NSAttributedString(string: amOrPm,
+//                                                   attributes: [.font: UIFont.systemFont(ofSize: 8.5, weight: .light)])
             attributedString.append(timeString)
-            attributedString.append(amOrPmString)
+//            attributedString.append(amOrPmString)
             subtitle.attributedText = attributedString
             
             rightButton.isEnabled = canJoin

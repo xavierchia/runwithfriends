@@ -10,6 +10,8 @@ struct UserData {
     static let shared = UserData()
     static let defaultUsername = "Pea"
     
+    private init() {}
+    
     public func setUsername(_ username: String) {
         UserDefaults.standard.setValue(username, forKey: AppKeys.username)
         // set on firebase as well

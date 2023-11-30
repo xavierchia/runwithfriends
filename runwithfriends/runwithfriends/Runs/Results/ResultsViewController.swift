@@ -77,6 +77,7 @@ class ResultsViewController: UIViewController {
     private func setupTableView() {
         resultsTableView.delegate = self
         resultsTableView.dataSource = self
+        resultsTableView.showsVerticalScrollIndicator = false
         view.addSubview(resultsTableView)
         resultsTableView.translatesAutoresizingMaskIntoConstraints = false
         

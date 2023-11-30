@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Run With Friends uses location to drop a pin in the waiting room map</string>
+	<string>Run With Friends uses location to record your run</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
 	<key>UIApplicationSceneManifest</key>

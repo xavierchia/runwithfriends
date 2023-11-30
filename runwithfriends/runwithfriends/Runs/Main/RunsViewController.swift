@@ -8,8 +8,7 @@
 import UIKit
 
 struct JoinRunData {
-    var time: String
-    var amOrPm: String
+    var date: Date
     var runners: String
     var canJoin: Bool
 }
@@ -23,35 +22,54 @@ struct FriendCellData {
 class RunsViewController: UIViewController {
     let runsTableView = UITableView()
     let friendsTableView = UITableView()
-    let segmentStackView = UISegmentStackView(leftTitle: "🏃 Runs", rightTitle: "🕺 Friends")
-        
-    let runData = [
-        JoinRunData(time: "11:00", amOrPm: "AM", runners: "23 / 25 runners", canJoin: true),
-        JoinRunData(time: "11:30", amOrPm: "AM", runners: "20 / 25 runners", canJoin: true),
-        JoinRunData(time: "12:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        JoinRunData(time: "12:30", amOrPm: "PM", runners: "20 / 25 runners", canJoin: true),
-        JoinRunData(time: "1:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        JoinRunData(time: "1:30", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false),
-        JoinRunData(time: "2:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        JoinRunData(time: "2:30", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false),
-        JoinRunData(time: "3:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-        JoinRunData(time: "3:30", amOrPm: "PM", runners: "12 / 25 runners", canJoin: true),
-        JoinRunData(time: "4:00", amOrPm: "PM", runners: "15 / 25 runners", canJoin: true),
-    ]
+    let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
+
+    let calendar = Calendar.current
+    var runData = [JoinRunData]()
     
-    let friendsData = [
-        FriendCellData(name: "Timmy 🇺🇸", joinRunData: JoinRunData(time: "7:00", amOrPm: "PM", runners: "13 / 25 runners", canJoin: true)),
-        FriendCellData(name: "Fiiv 🇹🇭", joinRunData: JoinRunData(time: "8:00", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false)),
-        FriendCellData(name: "Michelle 🇺🇸", runsTogether: 9),
-    ]
+    let friendsData = [FriendCellData]()
+//        FriendCellData(name: "Timmy 🇺🇸", joinRunData: JoinRunData(time: "7:00", amOrPm: "PM", runners: "13 / 25 runners", canJoin: true)),
+//        FriendCellData(name: "Fiiv 🇹🇭", joinRunData: JoinRunData(time: "8:00", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false)),
+//        FriendCellData(name: "Michelle 🇺🇸", runsTogether: 9),
+//    ]
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        tempCreateRunData()
+        
         setupNavigationController()
         segmentStackView.delegate = self
         setupRunsTableView()
         setupFriendsTableView()
         chooseTable()
+    }
+    
+    private func tempCreateRunData() {
+        var currentTimeToAdd = Date()
+        
+        // Round to the nearest half hour and add as first element
+        let currentHour = calendar.component(.hour, from: currentTimeToAdd)
+        let currentMinute = calendar.component(.minute, from: currentTimeToAdd)
+        switch currentMinute {
+        case ...30:
+            currentTimeToAdd = calendar.date(bySettingHour: currentHour, minute: 30, second: 0, of: currentTimeToAdd)!
+        default:
+            currentTimeToAdd = calendar.date(bySettingHour: currentHour + 1, minute: 0, second: 0, of: currentTimeToAdd)!
+        }
+        let firstRunData = JoinRunData(date: currentTimeToAdd, runners: "3 / 25 Runners", canJoin: true)
+        runData.append(firstRunData)
+        
+        for index in 1...23 {
+            
+            let canJoin = Bool.random()
+            let runners = canJoin ? index : 25
+            
+            let joinRunData = JoinRunData(
+                date: calendar.date(byAdding: .minute, value: 30 * index, to: currentTimeToAdd)!,
+                runners: "\(runners) / 25 Runners",
+                canJoin: canJoin)
+            runData.append(joinRunData)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

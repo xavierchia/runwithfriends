@@ -8,16 +8,24 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Combine
 
 class WaitingRoomViewController: UIViewController {
     
-    let mapView = MKMapView()
-    let bottomRow: BottomRow
+    // Location
     let locationManager = CLLocationManager()
     var pinsSet = false
-    
     // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
     let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
+    
+    // Run
+    let runSession = RunSession(runStartdate: .now + 900)
+    
+    // UI
+    let mapView = MKMapView()
+    let bottomRow: BottomRow
+    
+    private var cancellables = Set<AnyCancellable>()
     
     init(with cellData: JoinRunData) {
         bottomRow = BottomRow(cellData: cellData)
@@ -30,17 +38,12 @@ class WaitingRoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
         setupLocationManager()
-        setupBottomRow()
-        setupMapView()
-        setupWaitingRoomTitle()
-        setupCloseButton()
+        setupRunSession()
+        setupUI()
     }
     
     private func setupLocationManager() {
-        locationManager.requestWhenInUseAuthorization()
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         
@@ -49,11 +52,22 @@ class WaitingRoomViewController: UIViewController {
             locationManager.requestWhenInUseAuthorization()
         } else {
             print("Authorization permitted, requesting location")
-            locationManager.startUpdatingLocation()
+            locationManager.requestLocation()
         }
     }
     
+    private func setupRunSession() {
+    }
+    
     // MARK: Setup UI
+    private func setupUI() {
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        setupBottomRow()
+        setupMapView()
+        setupWaitingRoomTitle()
+        setupCloseButton()
+    }
+    
     private func setupBottomRow() {
         bottomRow.delegate = self
         view.addSubview(bottomRow)

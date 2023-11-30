@@ -22,3 +22,9 @@ extension String {
         return image.withRenderingMode(.alwaysOriginal)
      }
 }
+
+extension Int {
+    func leadingZero() -> String {
+        String(format: "%02d", self)
+    }
+}

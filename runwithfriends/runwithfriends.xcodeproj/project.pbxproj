@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
 		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
+		951F42C62B1812F7004E2BEA /* RunSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F42C52B1812F7004E2BEA /* RunSession.swift */; };
+		951F42CA2B1817FE004E2BEA /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F42C92B1817FE004E2BEA /* Combine.swift */; };
 		952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B32AE1F74D0032B04B /* AppDelegate.swift */; };
 		952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B52AE1F74D0032B04B /* SceneDelegate.swift */; };
 		952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B72AE1F74D0032B04B /* LoginViewController.swift */; };
@@ -41,6 +43,8 @@
 /* Begin PBXFileReference section */
 		950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewController.swift; sourceTree = "<group>"; };
 		950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
+		951F42C52B1812F7004E2BEA /* RunSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSession.swift; sourceTree = "<group>"; };
+		951F42C92B1817FE004E2BEA /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
 		952825B02AE1F74D0032B04B /* runwithfriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runwithfriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		952825B32AE1F74D0032B04B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		952825B52AE1F74D0032B04B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +88,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		951F42C72B1817E1004E2BEA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				95659B8D2AEF1FA4008D7BA8 /* Labels.swift */,
+				95877BC22B042F7500A81839 /* Cell.swift */,
+				95AC658A2B0227860084FF15 /* UIView.swift */,
+				95BC85302B0ECA9E00DD81BB /* NavigationController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		951F42C82B1817F0004E2BEA /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				95F6970E2AFF6CD800B10EB2 /* String.swift */,
+				951F42C92B1817FE004E2BEA /* Combine.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		952825A72AE1F74D0032B04B = {
 			isa = PBXGroup;
 			children = (
@@ -159,11 +183,8 @@
 		95659B8C2AEF1F9B008D7BA8 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				95659B8D2AEF1FA4008D7BA8 /* Labels.swift */,
-				95877BC22B042F7500A81839 /* Cell.swift */,
-				95F6970E2AFF6CD800B10EB2 /* String.swift */,
-				95AC658A2B0227860084FF15 /* UIView.swift */,
-				95BC85302B0ECA9E00DD81BB /* NavigationController.swift */,
+				951F42C72B1817E1004E2BEA /* Views */,
+				951F42C82B1817F0004E2BEA /* Data */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -172,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				95698B712B058625009B78F3 /* RunningViewController.swift */,
+				951F42C52B1812F7004E2BEA /* RunSession.swift */,
 			);
 			path = Running;
 			sourceTree = "<group>";
@@ -297,6 +319,7 @@
 			files = (
 				952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */,
 				95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */,
+				951F42C62B1812F7004E2BEA /* RunSession.swift in Sources */,
 				950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */,
 				95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */,
 				950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */,
@@ -315,6 +338,7 @@
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
 				957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */,
 				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
+				951F42CA2B1817FE004E2BEA /* Combine.swift in Sources */,
 				9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,

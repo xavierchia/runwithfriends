@@ -25,12 +25,12 @@ class BottomRow: UIView, CustomViewProtocol {
         // Configure the time label
         let attributedString = NSMutableAttributedString()
         // If less than 1 hour, change to 'run will auto-start in 30:21"
-        let timeString = NSAttributedString(string: "Run will auto-start at \(cellData.time)",
+        let timeString = NSAttributedString(string: "Run will auto-start at \(cellData.date)",
                                             attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)])
-        let amOrPmString =  NSAttributedString(string: cellData.amOrPm,
-                                               attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .bold)])
+//        let amOrPmString =  NSAttributedString(string: cellData.amOrPm,
+//                                               attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .bold)])
         attributedString.append(timeString)
-        attributedString.append(amOrPmString)
+//        attributedString.append(amOrPmString)
         self.title.attributedText = attributedString
         
         self.subtitle.text = cellData.runners
