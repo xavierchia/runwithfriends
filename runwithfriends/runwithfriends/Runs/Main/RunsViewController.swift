@@ -27,11 +27,7 @@ class RunsViewController: UIViewController {
     let calendar = Calendar.current
     var runData = [JoinRunData]()
     
-    let friendsData = [FriendCellData]()
-//        FriendCellData(name: "Timmy 🇺🇸", joinRunData: JoinRunData(time: "7:00", amOrPm: "PM", runners: "13 / 25 runners", canJoin: true)),
-//        FriendCellData(name: "Fiiv 🇹🇭", joinRunData: JoinRunData(time: "8:00", amOrPm: "PM", runners: "25 / 25 runners", canJoin: false)),
-//        FriendCellData(name: "Michelle 🇺🇸", runsTogether: 9),
-//    ]
+    var friendsData = [FriendCellData]()
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +66,47 @@ class RunsViewController: UIViewController {
                 canJoin: canJoin)
             runData.append(joinRunData)
         }
+        
+        let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
+        var isRunningCanJoinArray = [FriendCellData]()
+        var isRunningCantJoinArray = [FriendCellData]()
+        var isNotRunningArray = [FriendCellData]()
+        
+        friends.forEach { friend in
+            let isRunning = Bool.random()
+            let friendCellData: FriendCellData
+            if isRunning {
+                guard let randomRun = runData.randomElement() else { return }
+                let joinRunData = JoinRunData(date: randomRun.date, runners: randomRun.runners, canJoin: randomRun.canJoin)
+                friendCellData = FriendCellData(name: friend, joinRunData: joinRunData)
+                randomRun.canJoin ? isRunningCanJoinArray.append(friendCellData) : isRunningCantJoinArray.append(friendCellData)
+            } else {
+                friendCellData = FriendCellData(name: friend, runsTogether: Int.random(in: 5...10))
+                isNotRunningArray.append(friendCellData)
+            }
+        }
+        
+        isRunningCanJoinArray.sort { firstFriend, secondFriend in
+            guard let firstDate = firstFriend.joinRunData?.date,
+                  let secondDate = secondFriend.joinRunData?.date else { return true }
+            return firstDate < secondDate
+        }
+        
+        isRunningCantJoinArray.sort { firstFriend, secondFriend in
+            guard let firstDate = firstFriend.joinRunData?.date,
+                  let secondDate = secondFriend.joinRunData?.date else { return true }
+            return firstDate < secondDate
+        }
+        
+        isNotRunningArray.sort { firstFriend, secondFriend in
+            guard let firstRuns = firstFriend.runsTogether,
+                  let secondRuns = secondFriend.runsTogether else { return true }
+            return firstRuns < secondRuns
+        }
+        
+        friendsData.append(contentsOf: isRunningCanJoinArray)
+        friendsData.append(contentsOf: isRunningCantJoinArray)
+        friendsData.append(contentsOf: isNotRunningArray)
     }
     
     override func viewWillAppear(_ animated: Bool) {

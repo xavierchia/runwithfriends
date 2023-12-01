@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
 		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
+		9519A6C52B19593A000B952F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519A6C42B19593A000B952F /* Date.swift */; };
 		951F42C62B1812F7004E2BEA /* RunSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F42C52B1812F7004E2BEA /* RunSession.swift */; };
 		951F42CA2B1817FE004E2BEA /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F42C92B1817FE004E2BEA /* Combine.swift */; };
 		952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B32AE1F74D0032B04B /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewController.swift; sourceTree = "<group>"; };
 		950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
+		9519A6C42B19593A000B952F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		951F42C52B1812F7004E2BEA /* RunSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSession.swift; sourceTree = "<group>"; };
 		951F42C92B1817FE004E2BEA /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
 		952825B02AE1F74D0032B04B /* runwithfriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runwithfriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				95F6970E2AFF6CD800B10EB2 /* String.swift */,
+				9519A6C42B19593A000B952F /* Date.swift */,
 				951F42C92B1817FE004E2BEA /* Combine.swift */,
 			);
 			path = Data;
@@ -342,6 +345,7 @@
 				9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
+				9519A6C52B19593A000B952F /* Date.swift in Sources */,
 				95877BC32B042F7500A81839 /* Cell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
