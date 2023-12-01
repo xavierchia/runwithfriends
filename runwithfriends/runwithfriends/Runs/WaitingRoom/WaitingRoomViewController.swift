@@ -19,7 +19,7 @@ class WaitingRoomViewController: UIViewController {
     let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
     
     // Run
-    let runSession = RunSession(runStartdate: .now + 900)
+    let runSession: RunSession
     
     // UI
     let mapView = MKMapView()
@@ -28,7 +28,8 @@ class WaitingRoomViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     init(with cellData: JoinRunData) {
-        bottomRow = BottomRow(cellData: cellData)
+        self.bottomRow = BottomRow(cellData: cellData)
+        self.runSession = RunSession(runStartdate: cellData.date)
         super.init(nibName: nil, bundle: nil)
     }
     

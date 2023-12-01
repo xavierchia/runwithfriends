@@ -13,7 +13,6 @@ class RunSession {
     
     enum RunStage {
         case waitingRunStart
-        case oneHourToRunStart(String)
         case threeSecondsToRunStart
         case runStart(String)
         case runEnd
