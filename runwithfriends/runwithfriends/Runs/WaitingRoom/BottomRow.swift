@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 protocol BottomRowProtocol: AnyObject {
     func inviteButtonPressed()
@@ -18,18 +19,38 @@ class BottomRow: UIView, CustomViewProtocol {
     @IBOutlet weak var subtitle: UILabel!
     let identifier = "BottomRow"
     weak var delegate: BottomRowProtocol?
-    var timer = Timer()
     var runData: JoinRunData?
+    var runStage: RunSession.RunStage? {
+        didSet {
+            guard let runData else { return }
+            let startingTime = runData.date
+            switch runStage {
+            case .waitingRunStart:
+                guard let displayTime = startingTime.getDisplayTime() else { return }
+                // Configure the time label
+                let attributedString = NSMutableAttributedString()
+                let timeString = NSAttributedString(string: "Run will auto-start at \(displayTime.time)",
+                                                    attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .light)])
+                attributedString.append(timeString)
+                
+                // Add AM/PM if showing display time
+                let amOrPmString =  NSAttributedString(string: displayTime.amOrPm,
+                                                       attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)])
+                attributedString.append(amOrPmString)
+                
+                self.title.attributedText = attributedString
+            case .oneHourToRunStart, .threeSecondsToRunStart:
+                guard let countdownTime = startingTime.getCountdownTime() else { return }
+                self.title.text = "Run will auto-start in \(countdownTime)"
+            default:
+                return
+            }
+        }
+    }
     
     convenience init(cellData: JoinRunData) {
         self.init(frame: .zero)
         self.runData = cellData
-        fireTimer()
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
-            guard let self else { return }
-            self.fireTimer()
-        })
     }
     
     override init(frame: CGRect) {
@@ -40,38 +61,6 @@ class BottomRow: UIView, CustomViewProtocol {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit(for: identifier)
-    }
-    
-    
-    func fireTimer() {
-        guard let runData else { return }
-        let startingTime = runData.date
-        let intervalToStart = startingTime.timeIntervalSince(Date())
-        let runStartsInLessThanOneHour = intervalToStart < 60 * 60
-        if runStartsInLessThanOneHour {
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.minute, .second], from: Date(), to: startingTime)
-            guard let minuteInt = components.minute,
-                  let secondInt = components.second else { return }
-            let minuteString = String(format: "%02d", minuteInt)
-            let secondString = String(format: "%02d", secondInt)
-            let countdownTime = "\(minuteString):\(secondString)"
-            self.title.text = "Run will auto-start in \(countdownTime)"
-        } else {
-            guard let displayTime = startingTime.getDisplayTime() else { return }
-            // Configure the time label
-            let attributedString = NSMutableAttributedString()
-            let timeString = NSAttributedString(string: "Run will auto-start at \(displayTime.time)",
-                                                attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)])
-            attributedString.append(timeString)
-            
-            // Add AM/PM if showing display time
-            let amOrPmString =  NSAttributedString(string: displayTime.amOrPm,
-                                                   attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .bold)])
-            attributedString.append(amOrPmString)
-            
-            self.title.attributedText = attributedString
-        }
     }
     
     @IBAction func inviteButtonPressed(_ sender: Any) {

@@ -29,7 +29,7 @@ class WaitingRoomViewController: UIViewController {
     
     init(with cellData: JoinRunData) {
         self.bottomRow = BottomRow(cellData: cellData)
-        self.runSession = RunSession(runStartdate: cellData.date)
+        self.runSession = RunSession(runStartDate: cellData.date)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -58,6 +58,15 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupRunSession() {
+        runSession.$runStage.sink { [weak self] runStage in
+            guard let self else { return }
+            switch runStage {
+            case .waitingRunStart, .oneHourToRunStart, .threeSecondsToRunStart:
+                bottomRow.runStage = runStage
+            default:
+                break
+            }
+        }.store(in: &cancellables)
     }
     
     // MARK: Setup UI

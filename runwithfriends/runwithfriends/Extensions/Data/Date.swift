@@ -22,4 +22,14 @@ extension Date {
               let rawAmOrPmString = dateArray.last else { return nil }
         return DisplayTime(time: String(rawTimeString), amOrPm: String(rawAmOrPmString))
     }
+    
+    func getCountdownTime() -> String? {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.minute, .second], from: Date(), to: self)
+        guard let minuteInt = components.minute,
+              let secondInt = components.second else { return nil }
+        let minuteString = String(format: "%02d", minuteInt)
+        let secondString = String(format: "%02d", secondInt)
+        return "\(minuteString):\(secondString)"
+    }
 }
