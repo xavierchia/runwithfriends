@@ -20,14 +20,14 @@ struct FriendCellData {
 }
 
 class RunsViewController: UIViewController {
-    let runsTableView = UITableView()
-    let friendsTableView = UITableView()
-    let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
+    private let runsTableView = UITableView()
+    private let friendsTableView = UITableView()
+    private let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
 
-    let calendar = Calendar.current
-    var runData = [JoinRunData]()
+    private let calendar = Calendar.current
     
-    var friendsData = [FriendCellData]()
+    private var runData = [JoinRunData]()
+    private var friendsData = [FriendCellData]()
         
     override func viewDidLoad() {
         super.viewDidLoad()

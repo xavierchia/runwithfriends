@@ -12,7 +12,7 @@ import Combine
 class RunningViewController: UIViewController {
     
     // initial countdown on top of running
-    let countdownLabel = UILabel()
+    private let countdownLabel = UILabel()
     
     private let locationManager = CLLocationManager()
     private var lastLocation: CLLocation?
@@ -24,6 +24,7 @@ class RunningViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private let distanceValueLabel = UILabel()
+    private let distanceMetricLabel = UILabel()
     private let timeValueLabel = UILabel().topBarTitle()
     
     init(with runSession: RunSession) {
@@ -152,7 +153,6 @@ class RunningViewController: UIViewController {
         distanceValueLabel.font = UIFont.systemFont(ofSize: 120).boldItalic
         distanceValueLabel.textAlignment = .center
         
-        let distanceMetricLabel = UILabel()
         distanceMetricLabel.text = "Meters"
         distanceMetricLabel.textColor = .black
         distanceMetricLabel.font = UIFont.systemFont(ofSize: 17.51, weight: .bold)
@@ -203,7 +203,6 @@ extension RunningViewController: CLLocationManagerDelegate {
               currentLocation.timestamp >= startingTime + 5 else { return }
         if let lastLocation {
             totalDistance += currentLocation.distance(from: lastLocation)
-            print(totalDistance)
             distanceValueLabel.text = String(format: "%.0f", totalDistance)
         }
         

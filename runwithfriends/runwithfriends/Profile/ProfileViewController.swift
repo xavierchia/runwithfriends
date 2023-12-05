@@ -14,8 +14,8 @@ class ProfileViewController: UIViewController {
         let title: String
     }
     
-    let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
-    let tableCellTitles = [
+    private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let tableCellTitles = [
         [
             CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
             CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
@@ -30,7 +30,7 @@ class ProfileViewController: UIViewController {
             CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
         ]
     ]
-    let navImageView = UIImageView(image: "🇸🇬".image(pointSize: 20))
+    private let navImageView = UIImageView(image: "🇸🇬".image(pointSize: 20))
 
     override func viewDidLoad() {
         super.viewDidLoad()

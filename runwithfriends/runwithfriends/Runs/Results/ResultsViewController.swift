@@ -20,9 +20,9 @@ struct Result {
 
 class ResultsViewController: UIViewController {
     
-    let resultsTableView = UITableView()
+    private let resultsTableView = UITableView()
     
-    var results = [
+    private var results = [
         [
             Result(relationship: .you, name: "XavyBoy 🇸🇬", distance: "2.23km", clapped: false)
         ],

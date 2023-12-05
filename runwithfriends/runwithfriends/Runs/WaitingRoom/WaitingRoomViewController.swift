@@ -13,17 +13,17 @@ import Combine
 class WaitingRoomViewController: UIViewController {
     
     // Location
-    let locationManager = CLLocationManager()
-    var pinsSet = false
+    private let locationManager = CLLocationManager()
+    private var pinsSet = false
     // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
-    let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
+    private let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
     
     // Run
-    let runSession: RunSession
+    private let runSession: RunSession
     
     // UI
-    let mapView = MKMapView()
-    let bottomRow: BottomRow
+    private let mapView = MKMapView()
+    private let bottomRow: BottomRow
     
     private var cancellables = Set<AnyCancellable>()
     
