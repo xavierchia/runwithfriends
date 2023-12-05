@@ -61,8 +61,10 @@ class WaitingRoomViewController: UIViewController {
         runSession.$runStage.sink { [weak self] runStage in
             guard let self else { return }
             switch runStage {
-            case .waitingRunStart, .oneHourToRunStart, .threeSecondsToRunStart:
+            case .waitingRunStart, .oneHourToRunStart:
                 bottomRow.runStage = runStage
+            case .fiveSecondsToRunStart:
+                presentRunningVC()
             default:
                 break
             }
@@ -158,7 +160,7 @@ class WaitingRoomViewController: UIViewController {
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunction))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(presentRunningVC))
         waitingRoomTitle.addGestureRecognizer(tap)
         waitingRoomTitle.isUserInteractionEnabled = true
     }
@@ -182,9 +184,9 @@ class WaitingRoomViewController: UIViewController {
         closeButton.addTarget(self, action: #selector(pop), for: .touchUpInside)
     }
     
-    @objc private func tapFunction() {
+    @objc private func presentRunningVC() {
         print("tapped")
-        let runningVC = RunningViewController()
+        let runningVC = RunningViewController(with: runSession)
         runningVC.modalPresentationStyle = .overFullScreen
         
         self.present(runningVC, animated: true)

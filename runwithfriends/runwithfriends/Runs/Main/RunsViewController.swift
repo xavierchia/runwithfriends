@@ -48,13 +48,14 @@ class RunsViewController: UIViewController {
         let currentMinute = calendar.component(.minute, from: currentTimeToAdd)
         switch currentMinute {
         case ...30:
-            // for testing add custom time
-//            currentTimeToAdd = calendar.date(bySettingHour: currentHour, minute: 17, second: 0, of: currentTimeToAdd)!
-
             currentTimeToAdd = calendar.date(bySettingHour: currentHour, minute: 30, second: 0, of: currentTimeToAdd)!
         default:
             currentTimeToAdd = calendar.date(bySettingHour: currentHour + 1, minute: 0, second: 0, of: currentTimeToAdd)!
         }
+        
+        // for testing add custom time
+        // currentTimeToAdd = Date().addingTimeInterval(15)
+        
         let firstRunData = JoinRunData(date: currentTimeToAdd, runners: "3 / 25 Runners", canJoin: true)
         runData.append(firstRunData)
         

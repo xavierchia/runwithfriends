@@ -13,8 +13,8 @@ class RunSession {
     
     enum RunStage {
         case waitingRunStart
-        case oneHourToRunStart
-        case threeSecondsToRunStart
+        case oneHourToRunStart(String)
+        case fiveSecondsToRunStart(Int)
         case runStart
         case runEnd
     }
@@ -48,14 +48,17 @@ class RunSession {
     
     private func fireTimer() {
         let currentDate = Date()
-        let intervalToStart = self.runStartDate.timeIntervalSince(currentDate)
+        let intervalToStart = runStartDate.timeIntervalSince(currentDate).rounded()
         switch intervalToStart {
         case 3600...:
             runStage = .waitingRunStart
-        case 4...3600:
-            runStage = .oneHourToRunStart
-        case 0...4:
-            runStage = .threeSecondsToRunStart
+        case 6...3600:
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.minute, .second]
+            let countdownTime = formatter.string(from: intervalToStart)!
+            runStage = .oneHourToRunStart(countdownTime)
+        case 0...5:
+            runStage = .fiveSecondsToRunStart(Int(intervalToStart))
         case -1800...0:
             runStage = .runStart
         case ...(-1800):

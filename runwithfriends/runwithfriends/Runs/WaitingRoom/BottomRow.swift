@@ -39,8 +39,7 @@ class BottomRow: UIView, CustomViewProtocol {
                 attributedString.append(amOrPmString)
                 
                 self.title.attributedText = attributedString
-            case .oneHourToRunStart, .threeSecondsToRunStart:
-                guard let countdownTime = startingTime.getCountdownTime() else { return }
+            case .oneHourToRunStart(let countdownTime):
                 self.title.text = "Run will auto-start in \(countdownTime)"
             default:
                 return

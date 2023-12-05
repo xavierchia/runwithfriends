@@ -11,22 +11,70 @@ import Combine
 
 class RunningViewController: UIViewController {
     
-    let locationManager = CLLocationManager()
-    var lastLocation: CLLocation?
-    var totalDistance: CLLocationDistance = 0
-    let startingTime = Date()
-    var timer = Timer()
+    // initial countdown on top of running
+    let countdownLabel = UILabel()
     
-    let distanceValueLabel = UILabel()
-    let timeValueLabel = UILabel().topBarTitle()
-
+    private let locationManager = CLLocationManager()
+    private var lastLocation: CLLocation?
+    private var totalDistance: CLLocationDistance = 0
+    private let startingTime = Date()
+    private var timer = Timer()
+    
+    private let runSession: RunSession
+    private var cancellables = Set<AnyCancellable>()
+    
+    private let distanceValueLabel = UILabel()
+    private let timeValueLabel = UILabel().topBarTitle()
+    
+    init(with runSession: RunSession) {
+        self.runSession = runSession
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accent
         setupLocationManager()
         setupUI()
         startTimer()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presentCountdownVC()
+    }
+    
+    private func presentCountdownVC() {
+        runSession.$runStage.sink { [weak self] runStage in
+            guard let self else { return }
+            switch runStage {
+            case .fiveSecondsToRunStart(let seconds):
+                countdownLabel.text = String(seconds)
+            case .runStart:
+                countdownLabel.removeFromSuperview()
+            default:
+                return
+            }
+        }.store(in: &cancellables)
         
+        countdownLabel.text = "5"
+        countdownLabel.textColor = .black
+        countdownLabel.font = UIFont.systemFont(ofSize: 200).boldItalic
+        countdownLabel.textAlignment = .center
+        countdownLabel.backgroundColor = .systemOrange
+        
+        view.addSubview(countdownLabel)
+        countdownLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            countdownLabel.widthAnchor.constraint(equalTo: view.widthAnchor),
+            countdownLabel.heightAnchor.constraint(equalTo: view.heightAnchor),
+            countdownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
         
     private func startTimer() {
