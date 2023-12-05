@@ -185,7 +185,10 @@ class WaitingRoomViewController: UIViewController {
     }
     
     @objc private func presentRunningVC() {
-        print("tapped")
+        guard !(presentedViewController is RunningViewController) else {
+            return
+        }
+        print("Presenting running vc")
         let runningVC = RunningViewController(with: runSession)
         runningVC.modalPresentationStyle = .overFullScreen
         

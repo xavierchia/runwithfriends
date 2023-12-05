@@ -15,7 +15,7 @@ class RunSession {
         case waitingRunStart
         case oneHourToRunStart(String)
         case fiveSecondsToRunStart(Int)
-        case runStart
+        case runStart(String)
         case runEnd
     }
         
@@ -53,14 +53,13 @@ class RunSession {
         case 3600...:
             runStage = .waitingRunStart
         case 6...3600:
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.minute, .second]
-            let countdownTime = formatter.string(from: intervalToStart)!
+            let countdownTime = intervalToStart.getMinuteSecondsString()
             runStage = .oneHourToRunStart(countdownTime)
         case 0...5:
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
         case -1800...0:
-            runStage = .runStart
+            let countupTime = (-intervalToStart).getMinuteSecondsString(withZeroPadding: true)
+            runStage = .runStart(countupTime)
         case ...(-1800):
             runStage = .runEnd
         default:

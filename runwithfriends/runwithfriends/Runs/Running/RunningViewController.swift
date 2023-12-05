@@ -40,55 +40,28 @@ class RunningViewController: UIViewController {
         view.backgroundColor = .accent
         setupLocationManager()
         setupUI()
-        startTimer()
+        respondToRunStage()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presentCountdownVC()
-    }
-    
-    private func presentCountdownVC() {
+    private func respondToRunStage() {
         runSession.$runStage.sink { [weak self] runStage in
             guard let self else { return }
             switch runStage {
             case .fiveSecondsToRunStart(let seconds):
-                countdownLabel.text = String(seconds)
-            case .runStart:
+                switch seconds {
+                case 0:
+                    countdownLabel.font = countdownLabel.font.withSize(100)
+                    countdownLabel.text = "START"
+                default:
+                    countdownLabel.text = String(seconds)
+                }
+            case .runStart(let countupTime):
                 countdownLabel.removeFromSuperview()
+                timeValueLabel.text = countupTime
             default:
                 return
             }
         }.store(in: &cancellables)
-        
-        countdownLabel.text = "5"
-        countdownLabel.textColor = .black
-        countdownLabel.font = UIFont.systemFont(ofSize: 200).boldItalic
-        countdownLabel.textAlignment = .center
-        countdownLabel.backgroundColor = .systemOrange
-        
-        view.addSubview(countdownLabel)
-        countdownLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            countdownLabel.widthAnchor.constraint(equalTo: view.widthAnchor),
-            countdownLabel.heightAnchor.constraint(equalTo: view.heightAnchor),
-            countdownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
-        
-    private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [ weak self ] timer in
-            guard let self else { return }
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.minute, .second], from: startingTime, to: Date())
-            guard let minuteInt = components.minute,
-                  let secondInt = components.second else { return }
-            let minuteString = String(format: "%02d", minuteInt)
-            let secondString = String(format: "%02d", secondInt)
-            let timeString = "\(minuteString):\(secondString)"
-            timeValueLabel.text = timeString
-        })
     }
 
     @objc private func endButtonPressed() {
@@ -114,6 +87,24 @@ class RunningViewController: UIViewController {
         setupTimeStack()
         setupDistanceStack()
         setupEndButton()
+        setupCountdownView()
+    }
+    
+    private func setupCountdownView() {
+        countdownLabel.text = "5"
+        countdownLabel.textColor = .black
+        countdownLabel.font = UIFont.systemFont(ofSize: 200).boldItalic
+        countdownLabel.textAlignment = .center
+        countdownLabel.backgroundColor = .systemOrange
+        
+        view.addSubview(countdownLabel)
+        countdownLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            countdownLabel.widthAnchor.constraint(equalTo: view.widthAnchor),
+            countdownLabel.heightAnchor.constraint(equalTo: view.heightAnchor),
+            countdownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
     private func setupPaceStack() {

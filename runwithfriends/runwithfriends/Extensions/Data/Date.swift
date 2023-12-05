@@ -23,3 +23,15 @@ extension Date {
         return DisplayTime(time: String(rawTimeString), amOrPm: String(rawAmOrPmString))
     }
 }
+
+extension TimeInterval {
+    func getMinuteSecondsString(withZeroPadding: Bool = false) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second]
+
+        if withZeroPadding {
+            formatter.zeroFormattingBehavior = .pad
+        }
+        return formatter.string(from: self)!
+    }
+}
