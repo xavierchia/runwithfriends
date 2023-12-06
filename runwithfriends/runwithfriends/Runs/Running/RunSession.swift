@@ -15,7 +15,7 @@ class RunSession {
         case waitingRunStart
         case oneHourToRunStart(String)
         case fiveSecondsToRunStart(Int)
-        case runStart(String)
+        case runStart(TimeInterval)
         case runEnd
     }
         
@@ -32,18 +32,10 @@ class RunSession {
     }
     
     private func setupTimer() {
-        let calendar = Calendar.current
-        let currentDate = Date()
-        let currentHour = calendar.component(.hour, from: currentDate)
-        let currentMinute = calendar.component(.minute, from: currentDate)
-        let currentSecond = calendar.component(.second, from: currentDate)
-        let nextWholeSecond = Calendar.current.date(bySettingHour: currentHour, minute: currentMinute, second: currentSecond + 1, of: currentDate)!
-        timer = Timer(fire: nextWholeSecond, interval: 1.0, repeats: true, block: { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             fireTimer()
         })
-        
-        RunLoop.main.add(timer, forMode: .common)
     }
     
     private func fireTimer() {
@@ -58,8 +50,7 @@ class RunSession {
         case 0...5:
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
         case -1800...0:
-            let countupTime = (-intervalToStart).getMinuteSecondsString(withZeroPadding: true)
-            runStage = .runStart(countupTime)
+            runStage = .runStart(-intervalToStart)
         case ...(-1800):
             runStage = .runEnd
         default:

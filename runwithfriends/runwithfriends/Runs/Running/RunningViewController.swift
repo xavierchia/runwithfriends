@@ -17,15 +17,16 @@ class RunningViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var lastLocation: CLLocation?
     private var totalDistance: CLLocationDistance = 0
+    private var totalTime: TimeInterval = 0
     private let startingTime = Date()
-    private var timer = Timer()
     
     private let runSession: RunSession
     private var cancellables = Set<AnyCancellable>()
     
+    private let paceValueLabel = UILabel().topBarTitle()
+    private let timeValueLabel = UILabel().topBarTitle()
     private let distanceValueLabel = UILabel()
     private let distanceMetricLabel = UILabel()
-    private let timeValueLabel = UILabel().topBarTitle()
     
     init(with runSession: RunSession) {
         self.runSession = runSession
@@ -56,9 +57,19 @@ class RunningViewController: UIViewController {
                 default:
                     countdownLabel.text = String(seconds)
                 }
-            case .runStart(let countupTime):
+            case .runStart(let seconds):
                 countdownLabel.removeFromSuperview()
+                totalTime = seconds
+                
+                // update time
+                let countupTime = seconds.getMinuteSecondsString(withZeroPadding: true)
                 timeValueLabel.text = countupTime
+                
+//                for testing we move faster
+//                totalDistance += 0.5
+//                updateDistanceLabel()
+//                updatePaceLabel()
+
             default:
                 return
             }
@@ -79,6 +90,7 @@ class RunningViewController: UIViewController {
     private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
         locationManager.startUpdatingLocation()
     }
     
@@ -109,8 +121,8 @@ class RunningViewController: UIViewController {
     }
     
     private func setupPaceStack() {
-        let paceValueLabel = UILabel().topBarTitle()
-        paceValueLabel.text = "7'10\""
+        paceValueLabel.text = "0'00\""
+        paceValueLabel.adjustsFontSizeToFitWidth = true
         let paceMetricLabel = UILabel().topBarSubtitle()
         paceMetricLabel.text = "Pace"
         
@@ -202,15 +214,11 @@ extension RunningViewController: CLLocationManagerDelegate {
         guard let currentLocation = locations.last,
               currentLocation.timestamp >= startingTime + 5 else { return }
         
-        // for testing
-        let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.totalDistance += 50
-            self.updateDistanceLabel()
-        }
-        
         if let lastLocation {
             totalDistance += currentLocation.distance(from: lastLocation)
+            print("location updated \(totalDistance)")
             updateDistanceLabel()
+            updatePaceLabel()
         }
         
         self.lastLocation = currentLocation
@@ -223,6 +231,15 @@ extension RunningViewController: CLLocationManagerDelegate {
         } else {
             distanceValueLabel.text = String(format: "%.0f", totalDistance)
         }
+    }
+    
+    private func updatePaceLabel() {
+        guard totalDistance > 0 else { return }
+        let pace = totalTime / (totalDistance / 1000)
+        var paceString = pace.getMinuteSecondsString()
+        paceString = paceString.replacingOccurrences(of: ":", with: "'")
+        paceString += "\""
+        paceValueLabel.text = paceString
     }
 }
 

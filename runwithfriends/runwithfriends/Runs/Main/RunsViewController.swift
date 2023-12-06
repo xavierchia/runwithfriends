@@ -55,6 +55,7 @@ class RunsViewController: UIViewController {
         
         // for testing add custom time
          currentTimeToAdd = Date().addingTimeInterval(10)
+//        currentTimeToAdd = calendar.date(bySettingHour: currentHour, minute: 41, second: 0, of: currentTimeToAdd)!
         
         let firstRunData = JoinRunData(date: currentTimeToAdd, runners: "3 / 25 Runners", canJoin: true)
         runData.append(firstRunData)

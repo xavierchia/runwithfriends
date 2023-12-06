@@ -495,10 +495,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RunFriends;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Run With Friends uses location to record your run";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -527,10 +529,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RunFriends;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Run With Friends uses location to record your run";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
