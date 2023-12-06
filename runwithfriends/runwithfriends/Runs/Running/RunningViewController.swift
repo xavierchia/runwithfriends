@@ -201,12 +201,28 @@ extension RunningViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last,
               currentLocation.timestamp >= startingTime + 5 else { return }
+        
+        // for testing
+        let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.totalDistance += 50
+            self.updateDistanceLabel()
+        }
+        
         if let lastLocation {
             totalDistance += currentLocation.distance(from: lastLocation)
-            distanceValueLabel.text = String(format: "%.0f", totalDistance)
+            updateDistanceLabel()
         }
         
         self.lastLocation = currentLocation
+    }
+    
+    private func updateDistanceLabel() {
+        if totalDistance > 1000 {
+            distanceValueLabel.text = String(format: "%.2f", totalDistance / 1000)
+            distanceMetricLabel.text = "Kilometers"
+        } else {
+            distanceValueLabel.text = String(format: "%.0f", totalDistance)
+        }
     }
 }
 
