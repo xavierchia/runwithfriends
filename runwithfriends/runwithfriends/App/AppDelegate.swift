@@ -8,12 +8,33 @@
 import UIKit
 import CoreData
 import CloudKit
+import FirebaseCore
+import FirebaseFirestore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
+        setupGlobalUI()
+        let db = Firestore.firestore()
+        var ref: DocumentReference? = nil
+        ref = db.collection("users").addDocument(data: [
+          "first": "Ada",
+          "last": "Lovelace",
+          "born": 1815
+        ]) { err in
+          if let err = err {
+            print("Error adding document: \(err)")
+          } else {
+            print("Document added with ID: \(ref!.documentID)")
+          }
+        }
+        return true
+    }
+    
+    private func setupGlobalUI() {
         // MARK: Navigation bar appearance
         let navigationBarAppearance = UINavigationBarAppearance()
         navigationBarAppearance.configureWithOpaqueBackground()
@@ -33,7 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarAppearance.backgroundColor = UIColor.black
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().standardAppearance = tabBarAppearance
-        return true
     }
 
     // MARK: UISceneSession Lifecycle
@@ -62,17 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let container = NSPersistentContainer(name: "runwithfriends")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
@@ -87,8 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 try context.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }

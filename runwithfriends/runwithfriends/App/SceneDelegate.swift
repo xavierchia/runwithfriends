@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AuthenticationServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,13 +17,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 //        try? AppKeychain.removeAll()
-        if AppKeychain[AppKeys.userId] != nil {
-            print("User is logged in, skip to tabVC")
-            window.rootViewController = TabViewController()
-        } else {
-            print("Showing login screen")
-            window.rootViewController = LoginViewController()
+        
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        appleIDProvider.getCredentialState(forUserID: AppKeychain[AppKeys.userId] ?? "") { (credentialState, error) in
+            switch credentialState {
+            case .authorized:
+                DispatchQueue.main.async {
+                    window.rootViewController = TabViewController()
+                }
+            default:
+                // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
+                DispatchQueue.main.async {
+                    window.rootViewController = LoginViewController()
+                }
+            }
         }
+        
         self.window = window
         self.window?.makeKeyAndVisible()
     }
