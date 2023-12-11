@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25A8B3152B26EA03009502BA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 25A8B3142B26EA03009502BA /* FirebaseAuth */; };
 		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
 		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
 		9519A6C52B19593A000B952F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519A6C42B19593A000B952F /* Date.swift */; };
@@ -115,6 +116,7 @@
 				9522E9562B2568BA0098584A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				9522E95C2B2568BA0098584A /* FirebaseAppCheck in Frameworks */,
 				95E9BB2C2AF1C8DB00A0EF96 /* KeychainAccess in Frameworks */,
+				25A8B3152B26EA03009502BA /* FirebaseAuth in Frameworks */,
 				9522E9722B256DE10098584A /* FirebaseFunctions in Frameworks */,
 				9522E96A2B256DE10098584A /* FirebaseCrashlytics in Frameworks */,
 				9522E9622B256DE10098584A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
@@ -126,6 +128,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		25A8B3132B26EA03009502BA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		951F42C72B1817E1004E2BEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +161,7 @@
 			children = (
 				952825B22AE1F74D0032B04B /* runwithfriends */,
 				952825B12AE1F74D0032B04B /* Products */,
+				25A8B3132B26EA03009502BA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -314,6 +324,7 @@
 				9522E9712B256DE10098584A /* FirebaseFunctions */,
 				9522E9732B256DE10098584A /* FirebaseFunctionsCombine-Community */,
 				9522E9752B256DE10098584A /* FirebasePerformance */,
+				25A8B3142B26EA03009502BA /* FirebaseAuth */,
 			);
 			productName = runwithfriends;
 			productReference = 952825B02AE1F74D0032B04B /* runwithfriends.app */;
@@ -650,6 +661,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		25A8B3142B26EA03009502BA /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9522E9522B2568BA0098584A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
 		9522E9532B2568BA0098584A /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9522E9522B2568BA0098584A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

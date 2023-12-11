@@ -8,12 +8,17 @@
 import AuthenticationServices
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
+import CryptoKit
+import CommonCrypto
 
 class LoginViewController: UIViewController {
-    let textStackView = UIStackView()
-    let signInButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
-    var topConstraint: NSLayoutConstraint?
-    let spinner = UIActivityIndicatorView(style: .large)
+    private var currentNonce: String?
+    
+    private let textStackView = UIStackView()
+    private let signInButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
+    private var topConstraint: NSLayoutConstraint?
+    private let spinner = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +90,9 @@ class LoginViewController: UIViewController {
         let provider = ASAuthorizationAppleIDProvider()
         let request = provider.createRequest()
         request.requestedScopes = [.fullName]
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        request.nonce = sha256(nonce)
         let controller = ASAuthorizationController(authorizationRequests: [request])
         
         controller.delegate = self
@@ -102,8 +110,27 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         print("authorized")
-        switch authorization.credential {
-        case let credentials as ASAuthorizationAppleIDCredential:
+        guard let credentials = authorization.credential as? ASAuthorizationAppleIDCredential,
+              let nonce = currentNonce else {
+            fatalError("Invalid state: A login callback was received, but no login request was sent.")
+        }
+        guard let appleIDToken = credentials.identityToken,
+              let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+            print("Unable to fetch identity token or serialize token string from data")
+            return
+        }
+        
+        let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
+                                                       rawNonce: nonce,
+                                                       fullName: credentials.fullName)
+        
+        Auth.auth().signIn(with: credential) { [weak self] (authResult, error) in
+            guard let self else { return }
+            if let error {
+                print(error.localizedDescription)
+                return
+            }
+            print("user is signed in to firebase with apple")
             let db = Firestore.firestore()
             let appleID = credentials.user
             
@@ -124,8 +151,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                         saveUserCredentialsInDB(with: credentials)
                     }
                 }
-        default:
-            break
         }
         
         func saveUserCredentialsInDB(with credentials: ASAuthorizationAppleIDCredential) {
@@ -161,4 +186,40 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return view.window!
     }
+}
+
+// MARK: Helper methods for security
+extension LoginViewController {
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+        
+        let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        
+        let nonce = randomBytes.map { byte in
+            // Pick a random character from the set, wrapping around if needed.
+            charset[Int(byte) % charset.count]
+        }
+        
+        return String(nonce)
+    }
+    
+    @available(iOS 13, *)
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
+    }
+    
 }

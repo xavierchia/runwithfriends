@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 struct JoinRunData {
     var date: Date
@@ -38,6 +39,9 @@ class RunsViewController: UIViewController {
         setupRunsTableView()
         setupFriendsTableView()
         chooseTable()
+        
+        let db = Firestore.firestore()
+//        db.
     }
     
     private func tempCreateRunData() {
