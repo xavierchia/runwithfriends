@@ -7,6 +7,7 @@
 
 import UIKit
 import AuthenticationServices
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,20 +17,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-//        try? AppKeychain.removeAll()
-        
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: AppKeychain[AppKeys.userId] ?? "") { (credentialState, error) in
-            switch credentialState {
-            case .authorized:
-                DispatchQueue.main.async {
-                    window.rootViewController = TabViewController()
-                }
-            default:
-                // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
-                DispatchQueue.main.async {
-                    window.rootViewController = LoginViewController()
-                }
+
+        if Auth.auth().currentUser?.uid != nil {
+            DispatchQueue.main.async {
+                window.rootViewController = TabViewController()
+            }
+        } else {
+            DispatchQueue.main.async {
+                window.rootViewController = LoginViewController()
             }
         }
         

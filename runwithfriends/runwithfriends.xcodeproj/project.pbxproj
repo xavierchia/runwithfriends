@@ -56,7 +56,6 @@
 		95AC658B2B0227860084FF15 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC658A2B0227860084FF15 /* UIView.swift */; };
 		95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BC85302B0ECA9E00DD81BB /* NavigationController.swift */; };
 		95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */; };
-		95E9BB2C2AF1C8DB00A0EF96 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 95E9BB2B2AF1C8DB00A0EF96 /* KeychainAccess */; };
 		95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6970E2AFF6CD800B10EB2 /* String.swift */; };
 /* End PBXBuildFile section */
 
@@ -115,7 +114,6 @@
 				9522E9542B2568BA0098584A /* FirebaseAnalytics in Frameworks */,
 				9522E9562B2568BA0098584A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				9522E95C2B2568BA0098584A /* FirebaseAppCheck in Frameworks */,
-				95E9BB2C2AF1C8DB00A0EF96 /* KeychainAccess in Frameworks */,
 				25A8B3152B26EA03009502BA /* FirebaseAuth in Frameworks */,
 				9522E9722B256DE10098584A /* FirebaseFunctions in Frameworks */,
 				9522E96A2B256DE10098584A /* FirebaseCrashlytics in Frameworks */,
@@ -306,7 +304,6 @@
 			);
 			name = runwithfriends;
 			packageProductDependencies = (
-				95E9BB2B2AF1C8DB00A0EF96 /* KeychainAccess */,
 				9522E9532B2568BA0098584A /* FirebaseAnalytics */,
 				9522E9552B2568BA0098584A /* FirebaseAnalyticsOnDeviceConversion */,
 				9522E9572B2568BA0098584A /* FirebaseAnalyticsSwift */,
@@ -355,7 +352,6 @@
 			);
 			mainGroup = 952825A72AE1F74D0032B04B;
 			packageReferences = (
-				95E9BB2A2AF1C8DB00A0EF96 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				9522E9522B2568BA0098584A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 952825B12AE1F74D0032B04B /* Products */;
@@ -650,14 +646,6 @@
 				minimumVersion = 10.19.0;
 			};
 		};
-		95E9BB2A2AF1C8DB00A0EF96 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -750,11 +738,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9522E9522B2568BA0098584A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebasePerformance;
-		};
-		95E9BB2B2AF1C8DB00A0EF96 /* KeychainAccess */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 95E9BB2A2AF1C8DB00A0EF96 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
-			productName = KeychainAccess;
 		};
 /* End XCSwiftPackageProductDependency section */
 

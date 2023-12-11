@@ -8,10 +8,8 @@
 import Foundation
 import KeychainAccess
 
-let AppKeychain = Keychain(service: Bundle.main.bundleIdentifier!).synchronizable(true)
-
 enum AppKeys {
-        static let userId = "userId"
+        static let appleUserID = "appleUserID"
         static let username = "username"
 }
 

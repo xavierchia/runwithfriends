@@ -124,15 +124,18 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                                                        rawNonce: nonce,
                                                        fullName: credentials.fullName)
         
+        // sign in to firebase
         Auth.auth().signIn(with: credential) { [weak self] (authResult, error) in
-            guard let self else { return }
-            if let error {
-                print(error.localizedDescription)
+            guard let self,
+            let authResult else {
+                print("We have an authentication error during sign in")
                 return
             }
+            
             print("user is signed in to firebase with apple")
             let db = Firestore.firestore()
-            let appleID = credentials.user
+            let username = credentials.fullName?.givenName ?? UserData.defaultUsername
+            let googleUserID = authResult.user.uid
             
             spinner.center = view.center
             self.view.addSubview(spinner)
@@ -140,46 +143,39 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             
             // check if user is already in the database
             db.collection(CollectionKeys.users)
-                .document(appleID)
+                .document(googleUserID)
                 .getDocument { (document, error) in
                     if let document = document, document.exists {
-                        print("user exists, getting user")
-                        saveKeychainAndRoute(with: appleID)
+                        print("user exists in DB")
+                        route()
                     } else {
                         // save new user
                         print("User does not exist, creating new user")
-                        saveUserCredentialsInDB(with: credentials)
+                        saveUserCredentialsInDB(with: googleUserID, and: username)
                     }
                 }
         }
         
-        func saveUserCredentialsInDB(with credentials: ASAuthorizationAppleIDCredential) {
+        func saveUserCredentialsInDB(with googleUserID: String, and username: String) {
             let db = Firestore.firestore()
-            let username = credentials.fullName?.givenName ?? UserData.defaultUsername
-            let appleID = credentials.user
-            db.collection(CollectionKeys.users).document(appleID).setData([
+            db.collection(CollectionKeys.users).document(googleUserID).setData([
                 UserKeys.username: username,
             ]) { err in
                 if let err {
                     print("Error writing document: \(err)")
                 } else {
-                    print("Document successfully written!")
-                    saveKeychainAndRoute(with: appleID)
+                    print("We have saved a new user to the DB!")
+                    route()
                 }
             }
         }
         
-        func saveKeychainAndRoute(with appleID: String){
-            // saving user-bundle-specific appleID in keychain
-            do {
-                print("saving appleID in keychain")
-                try AppKeychain.set(appleID, key: AppKeys.userId)
-            } catch {
-                print("user credentials could not be saved to keychain")
-            }
+        func route(){
             spinner.stopAnimating()
             print("Presenting TabViewController")
-            present(TabViewController(), animated: true)
+            let tabVC = TabViewController()
+            tabVC.modalPresentationStyle = .overFullScreen
+            present(tabVC, animated: true)
         }
     }
     

@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 struct JoinRunData {
     var date: Date
@@ -40,8 +41,17 @@ class RunsViewController: UIViewController {
         setupFriendsTableView()
         chooseTable()
         
-        let db = Firestore.firestore()
-//        db.
+//        let db = Firestore.firestore()
+//        db.collection(CollectionKeys.users).document(appleID).setData([
+//            UserKeys.username: "boonga44",
+//        ]) { err in
+//            if let err {
+//                print("Error writing document: \(err)")
+//            } else {
+//                print("Document successfully written!")
+//            }
+//        }
+//        try? Auth.auth().signOut()
     }
     
     private func tempCreateRunData() {
