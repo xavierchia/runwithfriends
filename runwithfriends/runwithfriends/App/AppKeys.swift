@@ -14,3 +14,11 @@ enum AppKeys {
         static let userId = "userId"
         static let username = "username"
 }
+
+enum CollectionKeys {
+    static let users = "users"
+}
+
+enum UserKeys {
+    static let username = "username"
+}

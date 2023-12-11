@@ -114,11 +114,6 @@ class RunsViewController: UIViewController {
         friendsData.append(contentsOf: isNotRunningArray)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
     // MARK: SetupUI
     
     private func setupNavigationController() {

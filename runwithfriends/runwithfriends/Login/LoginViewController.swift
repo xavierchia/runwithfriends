@@ -7,12 +7,14 @@
 
 import AuthenticationServices
 import UIKit
+import FirebaseFirestore
 
 class LoginViewController: UIViewController {
     let textStackView = UIStackView()
     let signInButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
     var topConstraint: NSLayoutConstraint?
-
+    let spinner = UIActivityIndicatorView(style: .large)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -102,23 +104,57 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
         print("authorized")
         switch authorization.credential {
         case let credentials as ASAuthorizationAppleIDCredential:
-            if credentials.fullName == nil {
-                print("User fullName is not provided at login, we will use the defaultUsername")
-            }
+            let db = Firestore.firestore()
+            let appleID = credentials.user
             
-            let userId = credentials.user
+            spinner.center = view.center
+            self.view.addSubview(spinner)
+            spinner.startAnimating()
+            
+            // check if user is already in the database
+            db.collection(CollectionKeys.users)
+                .document(appleID)
+                .getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        print("user exists, getting user")
+                        saveKeychainAndRoute(with: appleID)
+                    } else {
+                        // save new user
+                        print("User does not exist, creating new user")
+                        saveUserCredentialsInDB(with: credentials)
+                    }
+                }
+        default:
+            break
+        }
+        
+        func saveUserCredentialsInDB(with credentials: ASAuthorizationAppleIDCredential) {
+            let db = Firestore.firestore()
             let username = credentials.fullName?.givenName ?? UserData.defaultUsername
-
+            let appleID = credentials.user
+            db.collection(CollectionKeys.users).document(appleID).setData([
+                UserKeys.username: username,
+            ]) { err in
+                if let err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Document successfully written!")
+                    saveKeychainAndRoute(with: appleID)
+                }
+            }
+        }
+        
+        func saveKeychainAndRoute(with appleID: String){
+            // saving user-bundle-specific appleID in keychain
             do {
-                UserData.shared.setUsername(username)
-                try AppKeychain.set(userId, key: AppKeys.userId)
+                print("saving appleID in keychain")
+                try AppKeychain.set(appleID, key: AppKeys.userId)
             } catch {
                 print("user credentials could not be saved to keychain")
             }
-            self.view.window?.rootViewController = TabViewController()
-            break
-        default:
-            break
+            spinner.stopAnimating()
+            print("Presenting TabViewController")
+            present(TabViewController(), animated: true)
         }
     }
     
