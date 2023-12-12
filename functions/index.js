@@ -8,9 +8,7 @@
  */
 
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
-const { logger } = require("firebase-functions");
-const { onRequest } = require("firebase-functions/v2/https");
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const functions = require("firebase-functions");
 
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require("firebase-admin/app");
@@ -18,34 +16,41 @@ const { getFirestore } = require("firebase-admin/firestore");
 
 initializeApp();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into
-// Firestore under the path /messages/:documentId/original
-exports.addmessage = onRequest(async (req, res) => {
-    // Grab the text parameter.
-    const original = req.query.text;
-    // Push the new message into Firestore using the Firebase Admin SDK.
-    const writeResult = await getFirestore()
-        .collection("messages")
-        .add({ original: original });
-    // Send back a message that we've successfully written the message
-    res.json({ result: `Message with ID: ${writeResult.id} added.` });
-});
+// Your Cloud Function
+exports.myScheduledFunction = functions.pubsub.schedule('56 * * * *').onRun(async (context) => {
+    // Your code to be executed at the top of every hour
+    console.log('Running at the top of every hour!');
 
-// Listens for new messages added to /messages/:documentId/original
-// and saves an uppercased version of the message
-// to /messages/:documentId/uppercase
-exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event) => {
-    // Grab the current value of what was written to Firestore.
-    const original = event.data.data().original;
+    const firestore = getFirestore()
 
-    // Access the parameter `{documentId}` with `event.params`
-    logger.log("Uppercasing", event.params.documentId, original);
+    // Get the current Unix hour in milliseconds
+    let currentUnixTime = new Date()
+    currentUnixTime = currentUnixTime.setMinutes(0, 0, 0)
 
-    const uppercase = original.toUpperCase();
+    const next36Hours = Array.from({ length: 36 }, (_, i) => currentUnixTime + i * 60 * 60);
 
-    // You must return a Promise when performing
-    // asynchronous tasks inside a function
-    // such as writing to Firestore.
-    // Setting an 'uppercase' field in Firestore document returns a Promise.
-    return event.data.ref.set({ uppercase }, { merge: true });
+    // Fetch all runs
+    const runsSnapshot = await firestore.collection('runs').get();
+
+    // Create a local array to track existing runs
+    const existingRuns = runsSnapshot.docs.map(doc => doc.data().startTimeUnix);
+
+    // Create runs for the next 36 hours if they don't exist
+    const createRunsPromises = [];
+    for (const hourToCheck of next36Hours) {
+        if (!existingRuns.includes(hourToCheck)) {
+            // Create a new run on the hour
+            const newRun = {
+                startTimeUnix: hourToCheck,
+                endTimeUnix: hourToCheck + 30 * 60 * 1000,
+            };
+
+            createRunsPromises.push(firestore.collection('runs').add(newRun));
+        }
+    }
+
+    // Wait for all new runs to be created
+    await Promise.all(createRunsPromises);
+
+    return null;
 });

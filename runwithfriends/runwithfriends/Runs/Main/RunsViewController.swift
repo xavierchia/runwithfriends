@@ -41,6 +41,24 @@ class RunsViewController: UIViewController {
         setupFriendsTableView()
         chooseTable()
         
+        let db = Firestore.firestore()
+//        db.collection("runs")
+//            .getDocuments(completion: { snapshot, error in
+//                for document in snapshot!.documents {
+//                    if let startTime = document.get("startTimeUnix") as? TimeInterval {
+//                        let date = NSDate(timeIntervalSince1970: startTime / 1000)
+//                        let dateFormatter = DateFormatter()
+//                        dateFormatter.timeStyle = DateFormatter.Style.medium //Set time style
+//                        dateFormatter.dateStyle = DateFormatter.Style.medium //Set date style
+//                        dateFormatter.timeZone = .current
+//                        let localDate = dateFormatter.string(from: date as Date)
+//                        print(localDate)
+//                    }
+//                }
+//            })
+        
+        print(Date().timeIntervalSince1970)
+        
 //        let db = Firestore.firestore()
 //        db.collection(CollectionKeys.users).document(appleID).setData([
 //            UserKeys.username: "boonga44",
