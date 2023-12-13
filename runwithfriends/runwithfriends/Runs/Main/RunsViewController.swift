@@ -44,6 +44,8 @@ class RunsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+
         let db = Firestore.firestore()
         db.collection(CollectionKeys.runs)
             .getDocuments(completion: { (snapshot, error) in
