@@ -16,12 +16,31 @@ const { getFirestore } = require("firebase-admin/firestore");
 
 initializeApp();
 
+const firestore = getFirestore()
+
+// Cloud Function to delete runs older than 12 hours
+exports.deleteOldRuns = functions.pubsub.schedule('0 2 * * *').onRun(async (context) => {
+    console.log("Running the delete function every 2 hours")
+    // Get the current Unix hour in seconds
+    let currentUnixTime = new Date()
+    currentUnixTime.setMinutes(0, 0, 0)
+    currentUnixTime = currentUnixTime.getTime() / 1000
+    const twelveHoursAgo = currentUnixTime - 60 * 60 * 12
+
+    const runsSnapshot = await firestore.collection('runs').where('startTimeUnix', '<', twelveHoursAgo).get();
+
+    const deletePromises = [];
+    runsSnapshot.forEach((doc) => {
+        deletePromises.push(doc.ref.delete());
+    });
+
+    return Promise.all(deletePromises);
+});
+
 // Your Cloud Function
 exports.myScheduledFunction = functions.pubsub.schedule('0-59/15 * * * *').onRun(async (context) => {
     // Your code to be executed at the top of every hour
-    console.log('Running every 3 minutes!');
-
-    const firestore = getFirestore()
+    console.log('Running the create function every 15 minutes!');
 
     // Get the current Unix hour in seconds
     let currentUnixTime = new Date()
@@ -51,8 +70,12 @@ exports.myScheduledFunction = functions.pubsub.schedule('0-59/15 * * * *').onRun
         }
     }
 
-    // Wait for all new runs to be created
-    await Promise.all(createRunsPromises);
+    for (const run of existingRuns) {
+        if (run < twelveHoursAgo) {
+            createRunsPromises.push(fire)
+        }
+    }
 
-    return null;
+    // Wait for all new runs to be created
+    return Promise.all(createRunsPromises);
 });
