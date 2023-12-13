@@ -17,17 +17,19 @@ const { getFirestore } = require("firebase-admin/firestore");
 initializeApp();
 
 // Your Cloud Function
-exports.myScheduledFunction = functions.pubsub.schedule('56 * * * *').onRun(async (context) => {
+exports.myScheduledFunction = functions.pubsub.schedule('0-59/15 * * * *').onRun(async (context) => {
     // Your code to be executed at the top of every hour
-    console.log('Running at the top of every hour!');
+    console.log('Running every 3 minutes!');
 
     const firestore = getFirestore()
 
-    // Get the current Unix hour in milliseconds
+    // Get the current Unix hour in seconds
     let currentUnixTime = new Date()
-    currentUnixTime = currentUnixTime.setMinutes(0, 0, 0)
+    currentUnixTime.setMinutes(0, 0, 0)
+    currentUnixTime = currentUnixTime.getTime() / 1000
 
-    const next36Hours = Array.from({ length: 36 }, (_, i) => currentUnixTime + i * 60 * 60);
+    // Create a run for every half hour for the next 24 hours
+    const next36Hours = Array.from({ length: 48 }, (_, i) => currentUnixTime + i * 30 * 60);
 
     // Fetch all runs
     const runsSnapshot = await firestore.collection('runs').get();
@@ -35,14 +37,14 @@ exports.myScheduledFunction = functions.pubsub.schedule('56 * * * *').onRun(asyn
     // Create a local array to track existing runs
     const existingRuns = runsSnapshot.docs.map(doc => doc.data().startTimeUnix);
 
-    // Create runs for the next 36 hours if they don't exist
+    // Create runs for the next 24 hours if they don't exist
     const createRunsPromises = [];
     for (const hourToCheck of next36Hours) {
         if (!existingRuns.includes(hourToCheck)) {
-            // Create a new run on the hour
+            // Each run ends in half an hour
             const newRun = {
                 startTimeUnix: hourToCheck,
-                endTimeUnix: hourToCheck + 30 * 60 * 1000,
+                endTimeUnix: hourToCheck + 30 * 60,
             };
 
             createRunsPromises.push(firestore.collection('runs').add(newRun));

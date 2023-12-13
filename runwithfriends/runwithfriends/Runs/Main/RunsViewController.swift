@@ -40,69 +40,61 @@ class RunsViewController: UIViewController {
         setupRunsTableView()
         setupFriendsTableView()
         chooseTable()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         let db = Firestore.firestore()
-//        db.collection("runs")
-//            .getDocuments(completion: { snapshot, error in
-//                for document in snapshot!.documents {
-//                    if let startTime = document.get("startTimeUnix") as? TimeInterval {
-//                        let date = NSDate(timeIntervalSince1970: startTime / 1000)
-//                        let dateFormatter = DateFormatter()
-//                        dateFormatter.timeStyle = DateFormatter.Style.medium //Set time style
-//                        dateFormatter.dateStyle = DateFormatter.Style.medium //Set date style
-//                        dateFormatter.timeZone = .current
-//                        let localDate = dateFormatter.string(from: date as Date)
-//                        print(localDate)
-//                    }
-//                }
-//            })
-        
-        print(Date().timeIntervalSince1970)
-        
-//        let db = Firestore.firestore()
-//        db.collection(CollectionKeys.users).document(appleID).setData([
-//            UserKeys.username: "boonga44",
-//        ]) { err in
-//            if let err {
-//                print("Error writing document: \(err)")
-//            } else {
-//                print("Document successfully written!")
-//            }
-//        }
-//        try? Auth.auth().signOut()
+        db.collection(CollectionKeys.runs)
+            .getDocuments(completion: { (snapshot, error) in
+                guard let snapshot else { return }
+                let runs = snapshot.documents
+                let processedRuns = runs.sorted { left, right in
+                    right.get("startTimeUnix") as! TimeInterval > left.get("startTimeUnix") as! TimeInterval
+                }
+                
+                for run in processedRuns {
+                    if let startTime = run.get("startTimeUnix") as? TimeInterval {
+                        let date = NSDate(timeIntervalSince1970: startTime)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "dd:hh:mm"
+                        let localDate = dateFormatter.string(from: date as Date)
+                        print(localDate)
+                    }
+                }
+            })
     }
     
     private func tempCreateRunData() {
-        var currentTimeToAdd = Date()
-        
-        // Round to the nearest half hour and add as first element
-        let currentHour = calendar.component(.hour, from: currentTimeToAdd)
-        let currentMinute = calendar.component(.minute, from: currentTimeToAdd)
-        switch currentMinute {
-        case ...30:
-            currentTimeToAdd = calendar.date(bySettingHour: currentHour, minute: 30, second: 0, of: currentTimeToAdd)!
-        default:
-            currentTimeToAdd = calendar.date(bySettingHour: currentHour + 1, minute: 0, second: 0, of: currentTimeToAdd)!
-        }
-        
-        // for testing add custom time
-         currentTimeToAdd = Date().addingTimeInterval(10)
-//        currentTimeToAdd = calendar.date(bySettingHour: currentHour, minute: 41, second: 0, of: currentTimeToAdd)!
-        
-        let firstRunData = JoinRunData(date: currentTimeToAdd, runners: "3 / 25 Runners", canJoin: true)
-        runData.append(firstRunData)
-        
-        for index in 1...23 {
-            
-            let canJoin = Bool.random()
-            let runners = canJoin ? index : 25
-            
-            let joinRunData = JoinRunData(
-                date: calendar.date(byAdding: .minute, value: 30 * index, to: currentTimeToAdd)!,
-                runners: "\(runners) / 25 Runners",
-                canJoin: canJoin)
-            runData.append(joinRunData)
-        }
+        let db = Firestore.firestore()
+        db.collection(CollectionKeys.runs)
+            .getDocuments(completion: { [weak self] (snapshot, error) in
+                guard let self,
+                      let snapshot else { return }
+                
+                let runs = snapshot.documents
+                let processedRuns = runs.filter {
+                    let runTime = $0.get("startTimeUnix") as! TimeInterval
+                    
+                    return Date().timeIntervalSince1970 < runTime &&
+                    runTime < Date().timeIntervalSince1970 + 60 * 60 * 12
+                }.sorted { left, right in
+                    right.get("startTimeUnix") as! TimeInterval > left.get("startTimeUnix") as! TimeInterval
+                }
+                                
+                for run in processedRuns {
+                    if let startTime = run.get("startTimeUnix") as? TimeInterval {
+                        let date = NSDate(timeIntervalSince1970: startTime) as Date
+                        let canJoin = Bool.random()
+                        let runners = canJoin ? Int.random(in: 5...20) : 25
+                        
+                        let joinRunData = JoinRunData(date: date, runners: "\(runners) / 25", canJoin: canJoin)
+                        runData.append(joinRunData)
+                    }
+                }
+                
+                runsTableView.reloadData()
+            })
         
         let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
         var isRunningCanJoinArray = [FriendCellData]()

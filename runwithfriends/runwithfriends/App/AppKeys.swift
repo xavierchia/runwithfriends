@@ -14,6 +14,7 @@ enum AppKeys {
 
 enum CollectionKeys {
     static let users = "users"
+    static let runs = "runs"
 }
 
 enum UserKeys {
