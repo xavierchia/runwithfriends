@@ -25,12 +25,12 @@ class RunsViewController: UIViewController {
     private let runsTableView = UITableView()
     private let friendsTableView = UITableView()
     private let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
-
+    
     private let calendar = Calendar.current
     
     private var runData = [JoinRunData]()
     private var friendsData = [FriendCellData]()
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tempCreateRunData()
@@ -45,47 +45,44 @@ class RunsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
-
-//        let db = Firestore.firestore()
-//        db.collection(CollectionKeys.runs)
-//            .getDocuments(completion: { (snapshot, error) in
-//                guard let snapshot else { return }
-//                let runs = snapshot.documents
-//                let processedRuns = runs.sorted { left, right in
-//                    right.get("startTimeUnix") as! TimeInterval > left.get("startTimeUnix") as! TimeInterval
-//                }
-//                
-//                for run in processedRuns {
-//                    if let startTime = run.get("startTimeUnix") as? TimeInterval {
-//                        let date = NSDate(timeIntervalSince1970: startTime)
-//                        let dateFormatter = DateFormatter()
-//                        dateFormatter.dateFormat = "dd:hh:mm"
-//                        let localDate = dateFormatter.string(from: date as Date)
-//                        print(localDate)
-//                    }
-//                }
-//            })
     }
     
     private func tempCreateRunData() {
+        guard let startTimeString = Date.startOfWeekUTCString(weekOffset: 0) else {
+            assertionFailure("Getting start of week timestamp has failed")
+            return
+        }
         let db = Firestore.firestore()
         db.collection(CollectionKeys.runs)
-            .getDocuments(completion: { [weak self] (snapshot, error) in
+            .document(startTimeString)
+            .getDocument(completion: { [weak self] (snapshot, error) in
                 guard let self,
-                      let snapshot else { return }
-                
-                let runs = snapshot.documents
-                let processedRuns = runs.filter {
-                    let runTime = $0.get("startTimeUnix") as! TimeInterval
-                    
-                    return Date().timeIntervalSince1970 < runTime &&
-                    runTime < Date().timeIntervalSince1970 + 60 * 60 * 12
-                }.sorted { left, right in
-                    right.get("startTimeUnix") as! TimeInterval > left.get("startTimeUnix") as! TimeInterval
+                      let snapshot,
+                      let runs = snapshot.get(CollectionKeys.runs) as? [[String: TimeInterval]] else {
+                    assertionFailure("Casting runs has failed")
+                    return
                 }
-                                
+                
+                let processedRuns = runs.filter { run in
+                    guard let runTime = run[FieldKeys.startTimeUnix] else {
+                        assertionFailure("Filtering runs has failed")
+                        return false
+                    }
+                    
+                    let laterThanNow = Date().timeIntervalSince1970 < runTime
+                    let earlierThan12Hours = runTime < Date().timeIntervalSince1970 + 60 * 60 * 12
+                    return laterThanNow && earlierThan12Hours
+                }.sorted { left, right in
+                    guard let leftTime = left[FieldKeys.startTimeUnix],
+                          let rightTime = right[FieldKeys.startTimeUnix] else {
+                        assertionFailure("Sorting runs has failed")
+                        return false
+                    }
+                    return rightTime > leftTime
+                }
+                
                 for run in processedRuns {
-                    if let startTime = run.get("startTimeUnix") as? TimeInterval {
+                    if let startTime = run[FieldKeys.startTimeUnix] {
                         let date = NSDate(timeIntervalSince1970: startTime) as Date
                         let canJoin = Bool.random()
                         let runners = canJoin ? Int.random(in: 5...20) : 25
@@ -155,7 +152,7 @@ class RunsViewController: UIViewController {
         runsTableView.backgroundColor = .black
         runsTableView.showsVerticalScrollIndicator = false
         runsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
-
+        
         view.addSubview(runsTableView)
         runsTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -174,7 +171,7 @@ class RunsViewController: UIViewController {
         friendsTableView.backgroundColor = .black
         friendsTableView.showsVerticalScrollIndicator = false
         friendsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
-
+        
         view.addSubview(friendsTableView)
         friendsTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

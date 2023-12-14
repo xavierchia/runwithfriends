@@ -20,3 +20,7 @@ enum CollectionKeys {
 enum UserKeys {
     static let username = "username"
 }
+
+enum FieldKeys {
+    static let startTimeUnix = "startTimeUnix"
+}
