@@ -22,6 +22,20 @@ extension Date {
               let rawAmOrPmString = dateArray.last else { return nil }
         return DisplayTime(time: String(rawTimeString), amOrPm: String(rawAmOrPmString))
     }
+    
+    func startOfWeekUTC(weekOffset: Int) -> TimeInterval? {
+        let currentDate = Date()
+        var calendar = Calendar(identifier: .iso8601)
+        calendar.timeZone = .gmt
+        
+        // Calculate the start of the week based on the given offset
+        if let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: currentDate)) {
+            let startOfWeekUTC = startOfWeek.addingTimeInterval(TimeInterval(weekOffset) * 7 * 24 * 60 * 60)
+            return startOfWeekUTC.timeIntervalSince1970
+        }
+        
+        return nil
+    }
 }
 
 extension TimeInterval {

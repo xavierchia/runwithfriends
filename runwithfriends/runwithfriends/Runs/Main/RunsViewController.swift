@@ -46,25 +46,25 @@ class RunsViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
 
-        let db = Firestore.firestore()
-        db.collection(CollectionKeys.runs)
-            .getDocuments(completion: { (snapshot, error) in
-                guard let snapshot else { return }
-                let runs = snapshot.documents
-                let processedRuns = runs.sorted { left, right in
-                    right.get("startTimeUnix") as! TimeInterval > left.get("startTimeUnix") as! TimeInterval
-                }
-                
-                for run in processedRuns {
-                    if let startTime = run.get("startTimeUnix") as? TimeInterval {
-                        let date = NSDate(timeIntervalSince1970: startTime)
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "dd:hh:mm"
-                        let localDate = dateFormatter.string(from: date as Date)
-                        print(localDate)
-                    }
-                }
-            })
+//        let db = Firestore.firestore()
+//        db.collection(CollectionKeys.runs)
+//            .getDocuments(completion: { (snapshot, error) in
+//                guard let snapshot else { return }
+//                let runs = snapshot.documents
+//                let processedRuns = runs.sorted { left, right in
+//                    right.get("startTimeUnix") as! TimeInterval > left.get("startTimeUnix") as! TimeInterval
+//                }
+//                
+//                for run in processedRuns {
+//                    if let startTime = run.get("startTimeUnix") as? TimeInterval {
+//                        let date = NSDate(timeIntervalSince1970: startTime)
+//                        let dateFormatter = DateFormatter()
+//                        dateFormatter.dateFormat = "dd:hh:mm"
+//                        let localDate = dateFormatter.string(from: date as Date)
+//                        print(localDate)
+//                    }
+//                }
+//            })
     }
     
     private func tempCreateRunData() {
