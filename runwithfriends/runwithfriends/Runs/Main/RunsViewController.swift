@@ -53,14 +53,20 @@ class RunsViewController: UIViewController {
             return
         }
         let db = Firestore.firestore()
-        db.collection(CollectionKeys.runs)
-            .document(startTimeString)
-            .getDocument(completion: { [weak self] (snapshot, error) in
+        db
+            .collection(CollectionKeys.runs)
+            .getDocuments(completion: { [weak self] (snapshot, error) in
                 guard let self,
-                      let snapshot,
-                      let runs = snapshot.get(CollectionKeys.runs) as? [[String: TimeInterval]] else {
+                      let snapshot else {
                     assertionFailure("Casting runs has failed")
                     return
+                }
+                
+                var runs = [[String: TimeInterval]]()
+                let documents = snapshot.documents
+                documents.forEach { document in
+                    guard let documentRuns = document.get(CollectionKeys.runs) as? [[String: TimeInterval]] else { return }
+                    runs += documentRuns
                 }
                 
                 let processedRuns = runs.filter { run in
