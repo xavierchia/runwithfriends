@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 258508702B2BCEB8005FD81F /* SkeletonView */; };
 		25A8B3152B26EA03009502BA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 25A8B3142B26EA03009502BA /* FirebaseAuth */; };
 		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
 		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
@@ -104,6 +105,7 @@
 			files = (
 				9522E9642B256DE10098584A /* FirebaseAnalyticsSwift in Frameworks */,
 				9522E9742B256DE10098584A /* FirebaseFunctionsCombine-Community in Frameworks */,
+				258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */,
 				9522E9762B256DE10098584A /* FirebasePerformance in Frameworks */,
 				9522E96C2B256DE10098584A /* FirebaseFirestore in Frameworks */,
 				9522E9662B256DE10098584A /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
@@ -322,6 +324,7 @@
 				9522E9732B256DE10098584A /* FirebaseFunctionsCombine-Community */,
 				9522E9752B256DE10098584A /* FirebasePerformance */,
 				25A8B3142B26EA03009502BA /* FirebaseAuth */,
+				258508702B2BCEB8005FD81F /* SkeletonView */,
 			);
 			productName = runwithfriends;
 			productReference = 952825B02AE1F74D0032B04B /* runwithfriends.app */;
@@ -353,6 +356,7 @@
 			mainGroup = 952825A72AE1F74D0032B04B;
 			packageReferences = (
 				9522E9522B2568BA0098584A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				2585086F2B2BCEB8005FD81F /* XCRemoteSwiftPackageReference "SkeletonView" */,
 			);
 			productRefGroup = 952825B12AE1F74D0032B04B /* Products */;
 			projectDirPath = "";
@@ -638,6 +642,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2585086F2B2BCEB8005FD81F /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:Juanpe/SkeletonView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.30.4;
+			};
+		};
 		9522E9522B2568BA0098584A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -649,6 +661,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		258508702B2BCEB8005FD81F /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2585086F2B2BCEB8005FD81F /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
+		};
 		25A8B3142B26EA03009502BA /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9522E9522B2568BA0098584A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -31,6 +31,13 @@ class UIRunTableViewCell: UITableViewCell {
     }
     
     func configure(with cellData: JoinRunData) {
+        guard cellData.runners != "dummy" else {
+            self.showAnimatedGradientSkeleton()
+            return
+        }
+        self.stopSkeletonAnimation()
+        self.hideSkeleton()
+        
         let textColor: UIColor = cellData.canJoin ? .white : .secondaryLabel
         self.selectionStyle = .none // Stops line separator from disappearing when tapped
 

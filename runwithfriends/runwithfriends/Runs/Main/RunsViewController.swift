@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import SkeletonView
 
 struct JoinRunData {
     var date: Date
@@ -28,7 +29,11 @@ class RunsViewController: UIViewController {
     
     private let calendar = Calendar.current
     
-    private var runData = [JoinRunData]()
+    private var runData = [JoinRunData(date: Date(), runners: "dummy", canJoin: true),
+                           JoinRunData(date: Date(), runners: "dummy", canJoin: true),
+                           JoinRunData(date: Date(), runners: "dummy", canJoin: true),
+                           JoinRunData(date: Date(), runners: "dummy", canJoin: true),
+                           JoinRunData(date: Date(), runners: "dummy", canJoin: true)]
     private var friendsData = [FriendCellData]()
     
     override func viewDidLoad() {
@@ -48,10 +53,6 @@ class RunsViewController: UIViewController {
     }
     
     private func tempCreateRunData() {
-        guard let startTimeString = Date.startOfWeekUTCString(weekOffset: 0) else {
-            assertionFailure("Getting start of week timestamp has failed")
-            return
-        }
         let db = Firestore.firestore()
         db
             .collection(CollectionKeys.runs)
@@ -86,7 +87,7 @@ class RunsViewController: UIViewController {
                     }
                     return rightTime > leftTime
                 }
-                
+                runData = []
                 for run in processedRuns {
                     if let startTime = run[FieldKeys.startTimeUnix] {
                         let date = NSDate(timeIntervalSince1970: startTime) as Date
@@ -155,6 +156,7 @@ class RunsViewController: UIViewController {
     private func setupRunsTableView() {
         runsTableView.delegate = self
         runsTableView.dataSource = self
+        runsTableView.isSkeletonable = true
         runsTableView.backgroundColor = .black
         runsTableView.showsVerticalScrollIndicator = false
         runsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
@@ -194,6 +196,9 @@ class RunsViewController: UIViewController {
         } else {
             segmentStackView.friendsButtonPressed()
         }
+        
+        // for testing
+        segmentStackView.runsButtonPressed()
     }
 }
 
@@ -213,7 +218,11 @@ extension RunsViewController: UISegmentStackViewProtocol {
     }
 }
 
-extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
+extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        UIRunTableViewCell.identifier
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == runsTableView {
             return runData.count
@@ -224,7 +233,7 @@ extension RunsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: UIRunTableViewCell.identifier) as? UIRunTableViewCell else {
-            return UITableViewCell()
+            return UIRunTableViewCell()
         }
         
         cell.delegate = self
