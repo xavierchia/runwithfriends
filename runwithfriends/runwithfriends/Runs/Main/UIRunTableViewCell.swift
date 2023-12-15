@@ -32,6 +32,8 @@ class UIRunTableViewCell: UITableViewCell {
     
     func configure(with cellData: JoinRunData) {
         guard cellData.runners != "dummy" else {
+            title.linesCornerRadius = 3
+            subtitle.linesCornerRadius = 3
             self.showAnimatedGradientSkeleton()
             return
         }
