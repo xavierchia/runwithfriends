@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseAuth
 import SkeletonView
 
 struct JoinRunData {
@@ -53,54 +51,54 @@ class RunsViewController: UIViewController {
     }
     
     private func tempCreateRunData() {
-        let db = Firestore.firestore()
-        db
-            .collection(CollectionKeys.runs)
-            .getDocuments(completion: { [weak self] (snapshot, error) in
-                guard let self,
-                      let snapshot else {
-                    assertionFailure("Casting runs has failed")
-                    return
-                }
-                
-                var runs = [[String: TimeInterval]]()
-                let documents = snapshot.documents
-                documents.forEach { document in
-                    guard let documentRuns = document.get(CollectionKeys.runs) as? [[String: TimeInterval]] else { return }
-                    runs += documentRuns
-                }
-                
-                let processedRuns = runs.filter { run in
-                    guard let runTime = run[FieldKeys.startTimeUnix] else {
-                        assertionFailure("Filtering runs has failed")
-                        return false
-                    }
-                    
-                    let laterThanNow = Date().timeIntervalSince1970 < runTime
-                    let earlierThan12Hours = runTime < Date().timeIntervalSince1970 + 60 * 60 * 12
-                    return laterThanNow && earlierThan12Hours
-                }.sorted { left, right in
-                    guard let leftTime = left[FieldKeys.startTimeUnix],
-                          let rightTime = right[FieldKeys.startTimeUnix] else {
-                        assertionFailure("Sorting runs has failed")
-                        return false
-                    }
-                    return rightTime > leftTime
-                }
-                runData = []
-                for run in processedRuns {
-                    if let startTime = run[FieldKeys.startTimeUnix] {
-                        let date = NSDate(timeIntervalSince1970: startTime) as Date
-                        let canJoin = Bool.random()
-                        let runners = canJoin ? Int.random(in: 5...20) : 25
-                        
-                        let joinRunData = JoinRunData(date: date, runners: "\(runners) / 25", canJoin: canJoin)
-                        runData.append(joinRunData)
-                    }
-                }
-                
-                runsTableView.reloadData()
-            })
+//        let db = Firestore.firestore()
+//        db
+//            .collection(CollectionKeys.runs)
+//            .getDocuments(completion: { [weak self] (snapshot, error) in
+//                guard let self,
+//                      let snapshot else {
+//                    assertionFailure("Casting runs has failed")
+//                    return
+//                }
+//                
+//                var runs = [[String: TimeInterval]]()
+//                let documents = snapshot.documents
+//                documents.forEach { document in
+//                    guard let documentRuns = document.get(CollectionKeys.runs) as? [[String: TimeInterval]] else { return }
+//                    runs += documentRuns
+//                }
+//                
+//                let processedRuns = runs.filter { run in
+//                    guard let runTime = run[FieldKeys.startTimeUnix] else {
+//                        assertionFailure("Filtering runs has failed")
+//                        return false
+//                    }
+//                    
+//                    let laterThanNow = Date().timeIntervalSince1970 < runTime
+//                    let earlierThan12Hours = runTime < Date().timeIntervalSince1970 + 60 * 60 * 12
+//                    return laterThanNow && earlierThan12Hours
+//                }.sorted { left, right in
+//                    guard let leftTime = left[FieldKeys.startTimeUnix],
+//                          let rightTime = right[FieldKeys.startTimeUnix] else {
+//                        assertionFailure("Sorting runs has failed")
+//                        return false
+//                    }
+//                    return rightTime > leftTime
+//                }
+//                runData = []
+//                for run in processedRuns {
+//                    if let startTime = run[FieldKeys.startTimeUnix] {
+//                        let date = NSDate(timeIntervalSince1970: startTime) as Date
+//                        let canJoin = Bool.random()
+//                        let runners = canJoin ? Int.random(in: 5...20) : 25
+//                        
+//                        let joinRunData = JoinRunData(date: date, runners: "\(runners) / 25", canJoin: canJoin)
+//                        runData.append(joinRunData)
+//                    }
+//                }
+//                
+//                runsTableView.reloadData()
+//            })
         
         let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
         var isRunningCanJoinArray = [FriendCellData]()
@@ -148,6 +146,7 @@ class RunsViewController: UIViewController {
     
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "30 minute runs"
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -158,7 +157,7 @@ class RunsViewController: UIViewController {
         runsTableView.dataSource = self
         runsTableView.isSkeletonable = true
         runsTableView.backgroundColor = .black
-        runsTableView.showsVerticalScrollIndicator = false
+        runsTableView.showsVerticalScrollIndicator = true
         runsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
         
         view.addSubview(runsTableView)
@@ -177,7 +176,7 @@ class RunsViewController: UIViewController {
         friendsTableView.delegate = self
         friendsTableView.dataSource = self
         friendsTableView.backgroundColor = .black
-        friendsTableView.showsVerticalScrollIndicator = false
+        friendsTableView.showsVerticalScrollIndicator = true
         friendsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
         
         view.addSubview(friendsTableView)
@@ -198,7 +197,7 @@ class RunsViewController: UIViewController {
         }
         
         // for testing
-        segmentStackView.runsButtonPressed()
+//        segmentStackView.runsButtonPressed()
     }
 }
 
@@ -206,15 +205,23 @@ extension RunsViewController: UISegmentStackViewProtocol {
     func segmentLeftButtonPressed() {
         runsTableView.isHidden = false
         friendsTableView.isHidden = true
+        view.sendSubviewToBack(runsTableView)
         friendsTableView.tableHeaderView = nil
         runsTableView.tableHeaderView = segmentStackView
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.sizeToFit()
     }
     
     func segmentRightButtonPressed() {
         runsTableView.isHidden = true
         friendsTableView.isHidden = false
+        view.sendSubviewToBack(friendsTableView)
         runsTableView.tableHeaderView = nil
         friendsTableView.tableHeaderView = segmentStackView
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.sizeToFit()
     }
 }
 
@@ -251,6 +258,19 @@ extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if let navHeight = navigationController?.navigationBar.bounds.height,
+           navHeight <= 44 {
+            self.navigationController?.navigationBar.layer.masksToBounds = false
+            self.navigationController?.navigationBar.layer.shadowColor = UIColor.black.cgColor
+            self.navigationController?.navigationBar.layer.shadowOpacity = 0.8
+            self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 20)
+            self.navigationController?.navigationBar.layer.shadowRadius = 10
+        } else {
+            self.navigationController?.navigationBar.layer.shadowColor = UIColor.clear.cgColor
+        }
     }
 }
 

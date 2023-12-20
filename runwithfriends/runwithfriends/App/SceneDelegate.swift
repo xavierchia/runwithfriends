@@ -7,7 +7,6 @@
 
 import UIKit
 import AuthenticationServices
-import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -18,15 +17,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 
-        if Auth.auth().currentUser?.uid != nil {
-            DispatchQueue.main.async {
-                window.rootViewController = TabViewController()
-            }
-        } else {
+//        if Auth.auth().currentUser?.uid != nil {
+//            DispatchQueue.main.async {
+//                window.rootViewController = TabViewController()
+//            }
+//        } else {
             DispatchQueue.main.async {
                 window.rootViewController = LoginViewController()
             }
-        }
+//        }
         
         self.window = window
         self.window?.makeKeyAndVisible()
