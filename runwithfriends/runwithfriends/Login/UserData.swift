@@ -35,3 +35,8 @@ struct UserData {
         return resultPrefix ?? ""
     }
 }
+
+struct User: Codable {
+    let appleID: String?
+    let username: String?
+}

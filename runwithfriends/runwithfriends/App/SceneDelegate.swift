@@ -7,6 +7,7 @@
 
 import UIKit
 import AuthenticationServices
+import Supabase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,16 +17,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-
-//        if Auth.auth().currentUser?.uid != nil {
-//            DispatchQueue.main.async {
-//                window.rootViewController = TabViewController()
-//            }
-//        } else {
-            DispatchQueue.main.async {
-                window.rootViewController = LoginViewController()
+        
+        let supabase = Supabase.shared
+        Task {
+            do {
+                // sign out for testing
+                try await supabase.client.auth.signOut()
+                
+                let _ = try await supabase.client.auth.session.user
+                print("User signed in, routing to TabViewConroller")
+                DispatchQueue.main.async {
+                    window.rootViewController = TabViewController()
+                }
+            } catch {
+                print("User not signed in, routing to LoginViewController")
+                DispatchQueue.main.async {
+                    window.rootViewController = LoginViewController()
+                }
             }
-//        }
+        }
         
         self.window = window
         self.window?.makeKeyAndVisible()

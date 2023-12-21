@@ -7,9 +7,9 @@
 
 import AuthenticationServices
 import UIKit
+import Supabase
 import CryptoKit
 import CommonCrypto
-import Supabase
 
 class LoginViewController: UIViewController {
     private var currentNonce: String?
@@ -24,6 +24,21 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .black
         addTextStack()
         addSignInButton()
+        
+        Task {
+            let supabase = Supabase.shared.client
+            do {
+                let users: [User] = try await supabase.database
+                  .from("users")
+                  .select()
+                  .execute()
+                  .value
+                print(users)
+            } catch {
+                print("could not get users \(error)")
+            }
+
+        }
     }
     
     // MARK: User interface
@@ -119,78 +134,42 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             return
         }
         
-        let authManager = AuthManager.shared
-        
-        print("getting full name \(credentials.fullName)")
-        
+        let supabase = Supabase.shared
         Task {
-            try await authManager.signInWithApple(idToken: idTokenString, nonce: nonce) { session, error in
-//                print(session)
-//                print(error)
-//                print(session?.user.userMetadata["full_name"])
-                print("getting user \(session?.user)")
+            let signedIn = await supabase.signInWithApple(idToken: idTokenString, nonce: nonce)
+            guard signedIn else {
+                print("Error signing in with Apple. Show Alert?")
+                return
+            }
+            do {
+                spinner.startAnimating()
+                
+                let users: [User] = try await supabase.client.database
+                    .from("users")
+                    .select()
+                    .eq("appleID", value: credentials.user)
+                    .execute()
+                    .value
+                
+                if users.isEmpty {
+                    print("User does not exist in the database, save to the database")
+                    try await supabase.client.database
+                      .from("users")
+                      .insert(User(appleID: credentials.user ,username: credentials.fullName?.givenName ?? "Pea"))
+                      .neq("appleID", value: credentials.user)
+                      .execute()
+                    print("User saved to database")
+                }
+                
+                print("User signed in, routing to TabViewController")
+                spinner.stopAnimating()
+                let tabVC = TabViewController()
+                tabVC.modalPresentationStyle = .overFullScreen
+                present(tabVC, animated: true)
+            } catch {
+                print("Error getting user from database or saving user to database")
             }
         }
-
-
-        
-//        let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
-//                                                       rawNonce: nonce,
-//                                                       fullName: credentials.fullName)
-//        
-//        // sign in to firebase
-//        Auth.auth().signIn(with: credential) { [weak self] (authResult, error) in
-//            guard let self,
-//            let authResult else {
-//                print("We have an authentication error during sign in")
-//                return
-//            }
-//            
-//            print("user is signed in to firebase with apple")
-//            let db = Firestore.firestore()
-//            let username = credentials.fullName?.givenName ?? UserData.defaultUsername
-//            let googleUserID = authResult.user.uid
-//            
-//            spinner.center = view.center
-//            self.view.addSubview(spinner)
-//            spinner.startAnimating()
-//            
-//            // check if user is already in the database
-//            db.collection(CollectionKeys.users)
-//                .document(googleUserID)
-//                .getDocument { (document, error) in
-//                    if let document = document, document.exists {
-//                        print("user exists in DB")
-//                        route()
-//                    } else {
-//                        // save new user
-//                        print("User does not exist, creating new user")
-//                        saveUserCredentialsInDB(with: googleUserID, and: username)
-//                    }
-//                }
-//        }
-        
-//        func saveUserCredentialsInDB(with googleUserID: String, and username: String) {
-//            let db = Firestore.firestore()
-//            db.collection(CollectionKeys.users).document(googleUserID).setData([
-//                UserKeys.username: username,
-//            ]) { err in
-//                if let err {
-//                    print("Error writing document: \(err)")
-//                } else {
-//                    print("We have saved a new user to the DB!")
-//                    route()
-//                }
-//            }
-//        }
-        
-//        func route(){
-//            spinner.stopAnimating()
-//            print("Presenting TabViewController")
-//            let tabVC = TabViewController()
-//            tabVC.modalPresentationStyle = .overFullScreen
-//            present(tabVC, animated: true)
-//        }
     }
     
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
