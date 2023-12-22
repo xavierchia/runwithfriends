@@ -32,6 +32,7 @@
 		954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BB92AF723E800018E01 /* UISegmentStackView.swift */; };
 		954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */; };
 		954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */; };
+		9557F76C2B350794002CAE30 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76B2B350794002CAE30 /* AlertController.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
 		95698B722B058625009B78F3 /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95698B712B058625009B78F3 /* RunningViewController.swift */; };
 		957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A4EA12B1015D200C746A4 /* TableHeaderView.swift */; };
@@ -69,6 +70,7 @@
 		954F4BB92AF723E800018E01 /* UISegmentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentStackView.swift; sourceTree = "<group>"; };
 		954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRunTableViewCell.swift; sourceTree = "<group>"; };
 		954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UIRunTableViewCell.xib; sourceTree = "<group>"; };
+		9557F76B2B350794002CAE30 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		95698B712B058625009B78F3 /* RunningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
 		957A4EA12B1015D200C746A4 /* TableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeaderView.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				95877BC22B042F7500A81839 /* Cell.swift */,
 				95AC658A2B0227860084FF15 /* UIView.swift */,
 				95BC85302B0ECA9E00DD81BB /* NavigationController.swift */,
+				9557F76B2B350794002CAE30 /* AlertController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				95698B722B058625009B78F3 /* RunningViewController.swift in Sources */,
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
+				9557F76C2B350794002CAE30 /* AlertController.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
 				95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */,

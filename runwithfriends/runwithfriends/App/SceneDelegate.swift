@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let supabase = Supabase.shared
         Task {
             do {
-                // sign out for testing
+//                sign out for testing
                 try await supabase.client.auth.signOut()
                 
                 let _ = try await supabase.client.auth.session.user

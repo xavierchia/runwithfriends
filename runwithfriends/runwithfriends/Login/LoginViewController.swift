@@ -24,21 +24,6 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .black
         addTextStack()
         addSignInButton()
-        
-        Task {
-            let supabase = Supabase.shared.client
-            do {
-                let users: [User] = try await supabase.database
-                  .from("users")
-                  .select()
-                  .execute()
-                  .value
-                print(users)
-            } catch {
-                print("could not get users \(error)")
-            }
-
-        }
     }
     
     // MARK: User interface
@@ -119,7 +104,9 @@ class LoginViewController: UIViewController {
 extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print("error")
+        print("Error signing into Apple")
+        let alert = UIAlertController.Oops()
+        present(alert, animated: true)
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
@@ -136,18 +123,22 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
         
         let supabase = Supabase.shared
         Task {
-            let signedIn = await supabase.signInWithApple(idToken: idTokenString, nonce: nonce)
-            guard signedIn else {
-                print("Error signing in with Apple. Show Alert?")
+            spinner.center = view.center
+            self.view.addSubview(spinner)
+            spinner.startAnimating()
+            
+            guard (await supabase.signInWithApple(idToken: idTokenString, nonce: nonce)) != nil else {
+                print("Error signing into Supabase.")
+                spinner.stopAnimating()
+                let alert = UIAlertController.Oops()
+                present(alert, animated: true)
                 return
             }
             do {
-                spinner.startAnimating()
-                
                 let users: [User] = try await supabase.client.database
                     .from("users")
                     .select()
-                    .eq("appleID", value: credentials.user)
+                    .eq("apple_id", value: credentials.user)
                     .execute()
                     .value
                 
@@ -155,19 +146,22 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                     print("User does not exist in the database, save to the database")
                     try await supabase.client.database
                       .from("users")
-                      .insert(User(appleID: credentials.user ,username: credentials.fullName?.givenName ?? "Pea"))
-                      .neq("appleID", value: credentials.user)
+                      .insert(
+                        User(apple_id: credentials.user,
+                             username: credentials.fullName?.givenName ?? "Pea"))
                       .execute()
                     print("User saved to database")
                 }
-                
-                print("User signed in, routing to TabViewController")
                 spinner.stopAnimating()
+                print("User signed in, routing to TabViewController")
                 let tabVC = TabViewController()
                 tabVC.modalPresentationStyle = .overFullScreen
                 present(tabVC, animated: true)
             } catch {
-                print("Error getting user from database or saving user to database")
+                spinner.stopAnimating()
+                print("Error getting user from database or saving user to database \(error)")
+                let alert = UIAlertController.Oops()
+                present(alert, animated: true)
             }
         }
     }

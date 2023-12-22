@@ -37,6 +37,6 @@ struct UserData {
 }
 
 struct User: Codable {
-    let appleID: String?
-    let username: String?
+    let apple_id: String
+    let username: String
 }
