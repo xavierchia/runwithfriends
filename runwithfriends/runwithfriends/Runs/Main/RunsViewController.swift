@@ -43,6 +43,7 @@ class RunsViewController: UIViewController {
         setupRunsTableView()
         setupFriendsTableView()
         chooseTable()
+        print(Locale.current.region)
     }
     
     override func viewWillAppear(_ animated: Bool) {

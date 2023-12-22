@@ -12,12 +12,6 @@ struct UserData {
     
     private init() {}
     
-    public func setUsername(_ username: String) {
-        UserDefaults.standard.setValue(username, forKey: AppKeys.username)
-        // set on firebase as well
-        return
-    }
-    
     public func getUsername(withPrefix: Bool = false) -> String {
         var username = UserDefaults.standard.string(forKey: AppKeys.username) ?? UserData.defaultUsername
         // add prefix
