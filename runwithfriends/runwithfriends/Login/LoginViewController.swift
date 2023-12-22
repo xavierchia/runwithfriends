@@ -135,23 +135,16 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 return
             }
             do {
-                let users: [User] = try await supabase.client.database
-                    .from("users")
-                    .select()
-                    .eq("apple_id", value: credentials.user)
-                    .execute()
-                    .value
-                
-                if users.isEmpty {
+                if try await UserData.shared.getUser(with: credentials.user) == nil {
                     print("User does not exist in the database, save to the database")
-                    try await supabase.client.database
-                      .from("users")
-                      .insert(
-                        User(apple_id: credentials.user,
-                             username: credentials.fullName?.givenName ?? "Pea"))
-                      .execute()
-                    print("User saved to database")
+                    let user = User(
+                        apple_id: credentials.user,
+                        username: credentials.fullName?.givenName ?? UserData.defaultUsername,
+                        emoji: UserMappings.getEmoji(from: Locale.current.region?.identifier)
+                    )
+                    try await UserData.shared.saveUser(user)
                 }
+                
                 spinner.stopAnimating()
                 print("User signed in, routing to TabViewController")
                 let tabVC = TabViewController()
