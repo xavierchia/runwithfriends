@@ -26,9 +26,9 @@ class UserData {
         return username
     }
     
-    public func getUser(refresh: Bool = false) async -> User? {
-        if refresh == false,
-           let user {
+    /// Get the user from memory if cached, if not retrieve again from server
+    public func getUser() async -> User? {
+        if let user {
             return user
         }
         
@@ -37,10 +37,12 @@ class UserData {
             let users: [User] = try await supabase.client.database
                 .from("users")
                 .select()
-                .eq("apple_id", value: user.id)
+                .eq("user_id", value: user.id)
                 .execute()
                 .value
-            return users.first
+            let retrievedUser = users.first
+            self.user = retrievedUser
+            return retrievedUser
         } catch {
             return nil
         }
@@ -53,16 +55,28 @@ class UserData {
             .eq("apple_id", value: id)
             .execute()
             .value
-        return users.first
+        let retrievedUser = users.first
+        self.user = retrievedUser
+        return retrievedUser
     }
     
-    public func saveUser(_ user: User) async throws {
-        self.user = user
+    public func saveUser(_ initialUser: InitialUser) async throws {
         try await supabase.client.database
           .from("users")
-          .insert(user)
+          .insert(initialUser)
           .execute()
-        print("User saved to database")
+
+        let user = try await supabase.client.auth.session.user
+        let users: [User] = try await supabase.client.database
+            .from("users")
+            .select()
+            .eq("user_id", value: user.id)
+            .execute()
+            .value
+        let retrievedUser = users.first
+        self.user = retrievedUser
+                
+        // we should now save this user to coredata?
     }
     
     // create prefix logic

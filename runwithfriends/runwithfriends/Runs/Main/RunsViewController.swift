@@ -14,6 +14,12 @@ struct JoinRunData {
     var canJoin: Bool
 }
 
+struct Run: Codable {
+    let id: UUID
+    let startDate: Int
+    let endDate: Int
+}
+
 struct FriendCellData {
     let name: String
     var runsTogether: Int? = nil
@@ -51,54 +57,29 @@ class RunsViewController: UIViewController {
     }
     
     private func tempCreateRunData() {
-//        let db = Firestore.firestore()
-//        db
-//            .collection(CollectionKeys.runs)
-//            .getDocuments(completion: { [weak self] (snapshot, error) in
-//                guard let self,
-//                      let snapshot else {
-//                    assertionFailure("Casting runs has failed")
-//                    return
-//                }
-//                
-//                var runs = [[String: TimeInterval]]()
-//                let documents = snapshot.documents
-//                documents.forEach { document in
-//                    guard let documentRuns = document.get(CollectionKeys.runs) as? [[String: TimeInterval]] else { return }
-//                    runs += documentRuns
-//                }
-//                
-//                let processedRuns = runs.filter { run in
-//                    guard let runTime = run[FieldKeys.startTimeUnix] else {
-//                        assertionFailure("Filtering runs has failed")
-//                        return false
-//                    }
-//                    
-//                    let laterThanNow = Date().timeIntervalSince1970 < runTime
-//                    let earlierThan12Hours = runTime < Date().timeIntervalSince1970 + 60 * 60 * 12
-//                    return laterThanNow && earlierThan12Hours
-//                }.sorted { left, right in
-//                    guard let leftTime = left[FieldKeys.startTimeUnix],
-//                          let rightTime = right[FieldKeys.startTimeUnix] else {
-//                        assertionFailure("Sorting runs has failed")
-//                        return false
-//                    }
-//                    return rightTime > leftTime
-//                }
-//                runData = []
-//                for run in processedRuns {
-//                    if let startTime = run[FieldKeys.startTimeUnix] {
-//                        let date = NSDate(timeIntervalSince1970: startTime) as Date
-//                        let canJoin = Bool.random()
-//                        let runners = canJoin ? Int.random(in: 5...20) : 25
-//                        
-//                        let joinRunData = JoinRunData(date: date, runners: "\(runners) / 25", canJoin: canJoin)
-//                        runData.append(joinRunData)
-//                    }
-//                }
-//                
-//                runsTableView.reloadData()
-//            })
+        let supabase = Supabase.shared
+        Task {
+            do {
+                let runs: [Run] = try await supabase.client.database
+                  .rpc("get_runs_next_12_hours")
+                  .select()
+                  .execute()
+                  .value
+                runData = []
+                runs.forEach { run in
+                    let timeInterval = TimeInterval(run.startDate)
+                    let date = NSDate(timeIntervalSince1970: timeInterval) as Date
+                    let canJoin = Bool.random()
+                    let runners = canJoin ? Int.random(in: 5...20) : 25
+                    let joinRunData = JoinRunData(date: date, runners: "\(runners) / 25 runners", canJoin: canJoin)
+                    runData.append(joinRunData)
+                }
+                runsTableView.reloadData()
+            } catch {
+                print(error)
+            }
+
+        }
         
         let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
         var isRunningCanJoinArray = [FriendCellData]()
@@ -110,11 +91,11 @@ class RunsViewController: UIViewController {
             let friendCellData: FriendCellData
             if isRunning {
                 guard let randomRun = runData.randomElement() else { return }
-                let joinRunData = JoinRunData(date: randomRun.date, runners: randomRun.runners, canJoin: randomRun.canJoin)
-                friendCellData = FriendCellData(name: friend, joinRunData: joinRunData)
+                let joinRunData = JoinRunData(date: randomRun.date, runners: "dummy", canJoin: randomRun.canJoin)
+                friendCellData = FriendCellData(name: "dummy", joinRunData: joinRunData)
                 randomRun.canJoin ? isRunningCanJoinArray.append(friendCellData) : isRunningCantJoinArray.append(friendCellData)
             } else {
-                friendCellData = FriendCellData(name: friend, runsTogether: Int.random(in: 5...10))
+                friendCellData = FriendCellData(name: "dummy", runsTogether: Int.random(in: 5...10))
                 isNotRunningArray.append(friendCellData)
             }
         }
@@ -196,8 +177,9 @@ class RunsViewController: UIViewController {
             segmentStackView.friendsButtonPressed()
         }
         
-        // for testing
-//        segmentStackView.runsButtonPressed()
+//         for testing
+        segmentStackView.runsButtonPressed()
+        
     }
 }
 

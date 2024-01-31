@@ -30,13 +30,24 @@ class ProfileViewController: UIViewController {
             CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
         ]
     ]
-    private let navImageView = UIImageView(image: "🇸🇬".image(pointSize: 20))
+    private var navImageView = UIImageView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupNavigationController()
         setupSettingsTableView()
+        print("view loading")
+        Task {
+            guard let user = await UserData.shared.getUser() else {
+                print("no user here")
+                return
+            }
+            let emoji = user.emoji
+                print("setting image \(emoji)")
+                self.navImageView = UIImageView(image: emoji.image(pointSize: 20))
+                self.navigationController?.navigationBar.setImageView(self.navImageView)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +61,6 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.setImageView(navImageView)
     }
     
     private func setupSettingsTableView() {

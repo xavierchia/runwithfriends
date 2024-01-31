@@ -127,6 +127,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             self.view.addSubview(spinner)
             spinner.startAnimating()
             
+            // sign into supabase
             guard (await supabase.signInWithApple(idToken: idTokenString, nonce: nonce)) != nil else {
                 print("Error signing into Supabase.")
                 spinner.stopAnimating()
@@ -137,12 +138,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             do {
                 if try await UserData.shared.getUser(with: credentials.user) == nil {
                     print("User does not exist in the database, save to the database")
-                    let user = User(
+                    let initialUser = InitialUser(
                         apple_id: credentials.user,
                         username: credentials.fullName?.givenName ?? UserData.defaultUsername,
                         emoji: UserMappings.getEmoji(from: Locale.current.region?.identifier)
                     )
-                    try await UserData.shared.saveUser(user)
+                    try await UserData.shared.saveUser(initialUser)
                 }
                 
                 spinner.stopAnimating()

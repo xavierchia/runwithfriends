@@ -35,6 +35,7 @@ class UIRunTableViewCell: UITableViewCell {
             title.linesCornerRadius = 3
             subtitle.linesCornerRadius = 3
             self.showAnimatedGradientSkeleton()
+            self.layoutSkeletonIfNeeded()
             return
         }
         self.stopSkeletonAnimation()
@@ -71,6 +72,15 @@ class UIRunTableViewCell: UITableViewCell {
     }
     
     func configure(with cellData: FriendCellData) {
+        guard cellData.name != "dummy" else {
+            title.linesCornerRadius = 3
+            subtitle.linesCornerRadius = 3
+            self.showAnimatedGradientSkeleton()
+            self.layoutSkeletonIfNeeded()
+            return
+        }
+        self.stopSkeletonAnimation()
+        self.hideSkeleton()
         
         self.selectionStyle = .none // Stops line separator from disappearing when tapped
         title.text = cellData.name
