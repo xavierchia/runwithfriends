@@ -37,7 +37,7 @@ class UserData {
             let users: [User] = try await supabase.client.database
                 .from("users")
                 .select()
-                .eq("user_id", value: user.id)
+                .eq("userID", value: user.id)
                 .execute()
                 .value
             let retrievedUser = users.first
@@ -52,7 +52,7 @@ class UserData {
         let users: [User] = try await supabase.client.database
             .from("users")
             .select()
-            .eq("apple_id", value: id)
+            .eq("appleID", value: id)
             .execute()
             .value
         let retrievedUser = users.first
@@ -70,7 +70,7 @@ class UserData {
         let users: [User] = try await supabase.client.database
             .from("users")
             .select()
-            .eq("user_id", value: user.id)
+            .eq("userID", value: user.id)
             .execute()
             .value
         let retrievedUser = users.first

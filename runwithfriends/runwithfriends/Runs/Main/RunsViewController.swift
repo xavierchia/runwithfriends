@@ -15,7 +15,7 @@ struct JoinRunData {
 }
 
 struct Run: Codable {
-    let id: UUID
+    let runID: UUID
     let startDate: Int
     let endDate: Int
 }

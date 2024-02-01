@@ -8,14 +8,17 @@
 import Foundation
 
 struct InitialUser: Codable {
-    let apple_id: String
+    let appleID: String
     let username: String
     let emoji: String
 }
 
 struct User: Codable {
-    let apple_id: String
+    let userID: UUID
+    let appleID: String
     let username: String
     let emoji: String
-    let search_id: Int
+    let searchID: Int
+    let longitude: Double?
+    let latitude: Double?
 }
