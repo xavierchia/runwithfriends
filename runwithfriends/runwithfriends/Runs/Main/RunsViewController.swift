@@ -15,9 +15,19 @@ struct JoinRunData {
 }
 
 struct Run: Codable {
-    let runID: UUID
-    let startDate: Int
-    let endDate: Int
+    let run_id: UUID
+    let start_date: Int
+    let end_date: Int
+    var runners: [Runner]?
+}
+
+struct Runner: Codable {
+    let user_id: UUID
+    let username: String
+    let emoji: String
+    let longitude: Double?
+    let latitude: Double?
+    let distance: Int
 }
 
 struct FriendCellData {
@@ -61,17 +71,24 @@ class RunsViewController: UIViewController {
         Task {
             do {
                 let runs: [Run] = try await supabase.client.database
-                  .rpc("get_runs_next_12_hours")
+                  .rpc("get_runs_next_2_hours")
                   .select()
                   .execute()
                   .value
+                
                 runData = []
                 runs.forEach { run in
-                    let timeInterval = TimeInterval(run.startDate)
+                    let timeInterval = TimeInterval(run.start_date)
                     let date = NSDate(timeIntervalSince1970: timeInterval) as Date
-                    let canJoin = Bool.random()
-                    let runners = canJoin ? Int.random(in: 5...20) : 25
-                    let joinRunData = JoinRunData(date: date, runners: "\(runners) / 25 runners", canJoin: canJoin)
+                    
+                    var runnersCount = 0
+                    if let runners = run.runners {
+                        runnersCount = runners.count
+                    }
+                    
+                    let canJoin = runnersCount < 25
+
+                    let joinRunData = JoinRunData(date: date, runners: "\(runnersCount) / 25 runners", canJoin: canJoin)
                     runData.append(joinRunData)
                 }
                 runsTableView.reloadData()
