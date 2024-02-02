@@ -18,7 +18,7 @@ struct Run: Codable {
     let run_id: UUID
     let start_date: Int
     let end_date: Int
-    var runners: [Runner]?
+    let runners: [Runner]
 }
 
 struct Runner: Codable {
@@ -80,14 +80,8 @@ class RunsViewController: UIViewController {
                 runs.forEach { run in
                     let timeInterval = TimeInterval(run.start_date)
                     let date = NSDate(timeIntervalSince1970: timeInterval) as Date
-                    
-                    var runnersCount = 0
-                    if let runners = run.runners {
-                        runnersCount = runners.count
-                    }
-                    
+                    let runnersCount = run.runners.count
                     let canJoin = runnersCount < 25
-
                     let joinRunData = JoinRunData(date: date, runners: "\(runnersCount) / 25 runners", canJoin: canJoin)
                     runData.append(joinRunData)
                 }
