@@ -27,9 +27,9 @@ class WaitingRoomViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(with cellData: JoinRunData) {
+    init(with cellData: Run) {
         self.bottomRow = BottomRow(cellData: cellData)
-        self.runSession = RunSession(runStartDate: cellData.date)
+        self.runSession = RunSession(run: cellData)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -94,7 +94,7 @@ class WaitingRoomViewController: UIViewController {
     
     // MARK: Setup location manager
     private func setupMapView() {
-        mapView.mapType = .satelliteFlyover
+        mapView.mapType = .hybridFlyover
         mapView.overrideUserInterfaceStyle = .dark
         view.insertSubview(mapView, belowSubview: bottomRow)
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -123,26 +123,14 @@ class WaitingRoomViewController: UIViewController {
         newPin.coordinate = obscuredCoordinate
         newPin.title = UserData.shared.getUsername()
         mapView.addAnnotation(newPin)
-                
-        let chinaPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇨🇳"))
-        chinaPin.coordinate = CLLocationCoordinate2D(latitude: 39.9, longitude: 116.3)
-        chinaPin.title = "Xiao Ming"
-        mapView.addAnnotation(chinaPin)
         
-        let vietPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇻🇳"))
-        vietPin.coordinate = CLLocationCoordinate2D(latitude: 10.8, longitude: 106.6)
-        vietPin.title = "Phuong"
-        mapView.addAnnotation(vietPin)
-        
-        let thaiPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇹🇭"))
-        thaiPin.coordinate = CLLocationCoordinate2D(latitude: 13.75, longitude: 100.5)
-        thaiPin.title = "Pang"
-        mapView.addAnnotation(thaiPin)
-        
-        let philPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇵🇭"))
-        philPin.coordinate = CLLocationCoordinate2D(latitude: 14.59, longitude: 120.98)
-        philPin.title = "Kurt"
-        mapView.addAnnotation(philPin)
+        runSession.run.runners.forEach { runner in
+            let runnerPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: runner.emoji))
+            runnerPin.coordinate = CLLocationCoordinate2D(latitude: runner.latitude ?? defaultLocation.latitude,
+                                                          longitude: runner.longitude ?? defaultLocation.longitude)
+            runnerPin.title = runner.username
+            mapView.addAnnotation(runnerPin)
+        }
     }
     
     private func setupWaitingRoomTitle() {

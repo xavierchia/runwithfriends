@@ -21,12 +21,12 @@ class RunSession {
         
     @Published
     var runStage: RunStage = .waitingRunStart
-    var runStartDate: Date
+    var run: Run
     
     var timer = Timer()
     
-    init(runStartDate: Date) {        
-        self.runStartDate = runStartDate
+    init(run: Run) {
+        self.run = run
         fireTimer()
         setupTimer()
     }
@@ -40,7 +40,7 @@ class RunSession {
     
     private func fireTimer() {
         let currentDate = Date()
-        let intervalToStart = runStartDate.timeIntervalSince(currentDate).rounded()
+        let intervalToStart = run.start_date.getDate().timeIntervalSince(currentDate).rounded()
         switch intervalToStart {
         case 3600...:
             runStage = .waitingRunStart

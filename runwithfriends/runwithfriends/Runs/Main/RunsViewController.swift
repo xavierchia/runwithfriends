@@ -8,12 +8,6 @@
 import UIKit
 import SkeletonView
 
-struct JoinRunData {
-    var date: Date
-    var runners: String
-    var canJoin: Bool
-}
-
 struct Run: Codable {
     let run_id: UUID
     let start_date: Int
@@ -33,7 +27,7 @@ struct Runner: Codable {
 struct FriendCellData {
     let name: String
     var runsTogether: Int? = nil
-    var joinRunData: JoinRunData? = nil
+    var joinRunData: Run? = nil
 }
 
 class RunsViewController: UIViewController {
@@ -43,11 +37,14 @@ class RunsViewController: UIViewController {
     
     private let calendar = Calendar.current
     
-    private var runData = [JoinRunData(date: Date(), runners: "dummy", canJoin: true),
-                           JoinRunData(date: Date(), runners: "dummy", canJoin: true),
-                           JoinRunData(date: Date(), runners: "dummy", canJoin: true),
-                           JoinRunData(date: Date(), runners: "dummy", canJoin: true),
-                           JoinRunData(date: Date(), runners: "dummy", canJoin: true)]
+    private var runData = [Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
+                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
+                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
+                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
+                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
+                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
+                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: [])]
+    
     private var friendsData = [FriendCellData]()
     
     override func viewDidLoad() {
@@ -71,20 +68,11 @@ class RunsViewController: UIViewController {
         Task {
             do {
                 let runs: [Run] = try await supabase.client.database
-                  .rpc("get_runs_next_2_hours")
+                  .rpc("get_runs_next_12_hours")
                   .select()
                   .execute()
                   .value
-                
-                runData = []
-                runs.forEach { run in
-                    let timeInterval = TimeInterval(run.start_date)
-                    let date = NSDate(timeIntervalSince1970: timeInterval) as Date
-                    let runnersCount = run.runners.count
-                    let canJoin = runnersCount < 25
-                    let joinRunData = JoinRunData(date: date, runners: "\(runnersCount) / 25 runners", canJoin: canJoin)
-                    runData.append(joinRunData)
-                }
+                runData = runs
                 runsTableView.reloadData()
             } catch {
                 print(error)
@@ -92,46 +80,46 @@ class RunsViewController: UIViewController {
 
         }
         
-        let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
-        var isRunningCanJoinArray = [FriendCellData]()
-        var isRunningCantJoinArray = [FriendCellData]()
-        var isNotRunningArray = [FriendCellData]()
+//        let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
+//        var isRunningCanJoinArray = [FriendCellData]()
+//        var isRunningCantJoinArray = [FriendCellData]()
+//        var isNotRunningArray = [FriendCellData]()
         
-        friends.forEach { friend in
-            let isRunning = Bool.random()
-            let friendCellData: FriendCellData
-            if isRunning {
-                guard let randomRun = runData.randomElement() else { return }
-                let joinRunData = JoinRunData(date: randomRun.date, runners: "dummy", canJoin: randomRun.canJoin)
-                friendCellData = FriendCellData(name: "dummy", joinRunData: joinRunData)
-                randomRun.canJoin ? isRunningCanJoinArray.append(friendCellData) : isRunningCantJoinArray.append(friendCellData)
-            } else {
-                friendCellData = FriendCellData(name: "dummy", runsTogether: Int.random(in: 5...10))
-                isNotRunningArray.append(friendCellData)
-            }
-        }
+//        friends.forEach { friend in
+//            let isRunning = Bool.random()
+//            let friendCellData: FriendCellData
+//            if isRunning {
+//                guard let randomRun = runData.randomElement() else { return }
+//                let joinRunData = JoinRunData(date: randomRun.date, runners: "dummy", canJoin: randomRun.canJoin)
+//                friendCellData = FriendCellData(name: "dummy", joinRunData: joinRunData)
+//                randomRun.canJoin ? isRunningCanJoinArray.append(friendCellData) : isRunningCantJoinArray.append(friendCellData)
+//            } else {
+//                friendCellData = FriendCellData(name: "dummy", runsTogether: Int.random(in: 5...10))
+//                isNotRunningArray.append(friendCellData)
+//            }
+//        }
         
-        isRunningCanJoinArray.sort { firstFriend, secondFriend in
-            guard let firstDate = firstFriend.joinRunData?.date,
-                  let secondDate = secondFriend.joinRunData?.date else { return true }
-            return firstDate < secondDate
-        }
+//        isRunningCanJoinArray.sort { firstFriend, secondFriend in
+//            guard let firstDate = firstFriend.joinRunData?.date,
+//                  let secondDate = secondFriend.joinRunData?.date else { return true }
+//            return firstDate < secondDate
+//        }
         
-        isRunningCantJoinArray.sort { firstFriend, secondFriend in
-            guard let firstDate = firstFriend.joinRunData?.date,
-                  let secondDate = secondFriend.joinRunData?.date else { return true }
-            return firstDate < secondDate
-        }
+//        isRunningCantJoinArray.sort { firstFriend, secondFriend in
+//            guard let firstDate = firstFriend.joinRunData?.date,
+//                  let secondDate = secondFriend.joinRunData?.date else { return true }
+//            return firstDate < secondDate
+//        }
         
-        isNotRunningArray.sort { firstFriend, secondFriend in
-            guard let firstRuns = firstFriend.runsTogether,
-                  let secondRuns = secondFriend.runsTogether else { return true }
-            return firstRuns < secondRuns
-        }
+//        isNotRunningArray.sort { firstFriend, secondFriend in
+//            guard let firstRuns = firstFriend.runsTogether,
+//                  let secondRuns = secondFriend.runsTogether else { return true }
+//            return firstRuns < secondRuns
+//        }
         
-        friendsData.append(contentsOf: isRunningCanJoinArray)
-        friendsData.append(contentsOf: isRunningCantJoinArray)
-        friendsData.append(contentsOf: isNotRunningArray)
+//        friendsData.append(contentsOf: isRunningCanJoinArray)
+//        friendsData.append(contentsOf: isRunningCantJoinArray)
+//        friendsData.append(contentsOf: isNotRunningArray)
     }
     
     // MARK: SetupUI

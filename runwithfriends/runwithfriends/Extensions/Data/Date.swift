@@ -12,6 +12,13 @@ struct DisplayTime {
     let amOrPm: String
 }
 
+extension Int {
+    func getDate() -> Date {
+        let timeInterval = TimeInterval(self)
+        return NSDate(timeIntervalSince1970: timeInterval) as Date
+    }
+}
+
 extension Date {
     func getDisplayTime() -> DisplayTime? {
         let dateFormatter = DateFormatter()

@@ -19,11 +19,11 @@ class BottomRow: UIView, CustomViewProtocol {
     @IBOutlet weak var subtitle: UILabel!
     let identifier = "BottomRow"
     weak var delegate: BottomRowProtocol?
-    var runData: JoinRunData?
+    var runData: Run?
     var runStage: RunSession.RunStage? {
         didSet {
             guard let runData else { return }
-            let startingTime = runData.date
+            let startingTime = runData.start_date.getDate()
             switch runStage {
             case .waitingRunStart:
                 guard let displayTime = startingTime.getDisplayTime() else { return }
@@ -47,7 +47,7 @@ class BottomRow: UIView, CustomViewProtocol {
         }
     }
     
-    convenience init(cellData: JoinRunData) {
+    convenience init(cellData: Run) {
         self.init(frame: .zero)
         self.runData = cellData
     }
