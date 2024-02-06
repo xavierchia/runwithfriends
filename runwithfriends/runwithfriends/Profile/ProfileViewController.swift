@@ -17,18 +17,20 @@ class ProfileViewController: UIViewController {
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private let tableCellTitles = [
         [
-            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
-            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
+              CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!"),
+
+//            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
+//            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
         ],
-        [
-            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
-            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
-        ],
-        [
-            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
-            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
-            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
-        ]
+//        [
+//            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
+//            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
+//        ],
+//        [
+//            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
+//            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
+//            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
+//        ]
     ]
     private var navImageView = UIImageView()
 
@@ -37,22 +39,22 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .black
         setupNavigationController()
         setupSettingsTableView()
-        print("view loading")
-        Task {
-            guard let user = await UserData.shared.getUser() else {
-                print("no user here")
-                return
-            }
-            let emoji = user.emoji
-                print("setting image \(emoji)")
-                self.navImageView = UIImageView(image: emoji.image(pointSize: 20))
-                self.navigationController?.navigationBar.setImageView(self.navImageView)
-        }
+        self.navigationItem.title = "Loading..."
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = UserData.shared.getUsername(withPrefix: true)
+        if let user = UserData.shared.user {
+            setupProfile(with: user)
+        } else {
+            Task {
+                guard let user = await UserData.shared.getUser() else {
+                    print("no user here")
+                    return
+                }
+                setupProfile(with: user)
+            }
+        }
     }
     
     // MARK: SetupUI
@@ -74,6 +76,24 @@ class ProfileViewController: UIViewController {
             settingsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             settingsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    private func setupProfile(with user: User) {
+        let emoji = user.emoji
+        self.navImageView = UIImageView(image: emoji.image(pointSize: 20))
+        self.navigationController?.navigationBar.setImageView(self.navImageView)
+        if let prefix = getPrefix(for: user.username) {
+            self.navigationItem.title = "\(prefix) \(user.username)"
+        } else {
+            self.navigationItem.title = user.username
+        }
+    }
+    
+    // create prefix logic
+    private func getPrefix(for username: String) -> String? {
+        guard let character = username.first,
+              let resultPrefix = Prefixes[character]?.shuffled().first else { return nil }
+        return resultPrefix
     }
 }
 

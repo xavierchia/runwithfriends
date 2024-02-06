@@ -143,6 +143,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                         username: credentials.fullName?.givenName ?? UserData.defaultUsername,
                         emoji: UserMappings.getEmoji(from: Locale.current.region?.identifier)
                     )
+                    
+                    // refactor: we can use supabase trigger to save the user after authenticated for the first time
                     try await UserData.shared.saveUser(initialUser)
                 }
                 

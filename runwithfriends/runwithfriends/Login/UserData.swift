@@ -15,17 +15,6 @@ class UserData {
     
     private init() {}
     
-    public func getUsername(withPrefix: Bool = false) -> String {
-        var username = "Xavier"
-        // add prefix
-        if withPrefix,
-        let usernameFirstChar = username.first {
-            let prefix = getPrefix(for: usernameFirstChar)
-            username = "\(prefix) \(username)"
-        }
-        return username
-    }
-    
     /// Get the user from memory if cached, if not retrieve again from server
     public func getUser() async -> User? {
         if let user {
@@ -37,7 +26,7 @@ class UserData {
             let users: [User] = try await supabase.client.database
                 .from("users")
                 .select()
-                .eq("userID", value: user.id)
+                .eq("user_id", value: user.id)
                 .execute()
                 .value
             let retrievedUser = users.first
@@ -77,11 +66,5 @@ class UserData {
         self.user = retrievedUser
                 
         // we should now save this user to coredata?
-    }
-    
-    // create prefix logic
-    private func getPrefix(for character: Character) -> String {
-        let resultPrefix = Prefixes[character]?.shuffled().first
-        return resultPrefix ?? ""
     }
 }

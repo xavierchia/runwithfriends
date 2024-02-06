@@ -121,7 +121,7 @@ class WaitingRoomViewController: UIViewController {
         
         let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇸🇬"))
         newPin.coordinate = obscuredCoordinate
-        newPin.title = UserData.shared.getUsername()
+        newPin.title = UserData.shared.user?.username ?? UserData.defaultUsername
         mapView.addAnnotation(newPin)
         
         runSession.run.runners.forEach { runner in
