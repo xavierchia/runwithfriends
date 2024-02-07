@@ -88,7 +88,6 @@ class RunsViewController: UIViewController {
             } catch {
                 print(error)
             }
-
         }
         
 //        let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
