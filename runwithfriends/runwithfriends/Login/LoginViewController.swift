@@ -136,7 +136,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 return
             }
             do {
-                if try await UserData.shared.getUser(with: credentials.user) == nil {
+                guard let user = try await UserData.shared.getUser(with: credentials.user) else {
                     print("User does not exist in the database, save to the database")
                     let initialUser = InitialUser(
                         apple_id: credentials.user,
@@ -145,19 +145,26 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                     )
                     
                     // refactor: we can use supabase trigger to save the user after authenticated for the first time
-                    try await UserData.shared.saveUser(initialUser)
+                    let savedUser = try await UserData.saveUser(initialUser)
+                    routeToTabVC(with: savedUser)
+                    return
                 }
-                
+
+                print("User exists in the database")
+                routeToTabVC(with: user)
+            } catch {
+                print("Error getting user from database or saving user to database \(error)")
                 spinner.stopAnimating()
+                let alert = UIAlertController.Oops()
+                present(alert, animated: true)
+            }
+            
+            @MainActor func routeToTabVC(with user: User) {
                 print("User signed in, routing to TabViewController")
+                spinner.stopAnimating()
                 let tabVC = TabViewController()
                 tabVC.modalPresentationStyle = .overFullScreen
                 present(tabVC, animated: true)
-            } catch {
-                spinner.stopAnimating()
-                print("Error getting user from database or saving user to database \(error)")
-                let alert = UIAlertController.Oops()
-                present(alert, animated: true)
             }
         }
     }

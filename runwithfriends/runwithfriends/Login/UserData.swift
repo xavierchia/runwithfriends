@@ -29,6 +29,17 @@ class UserData {
         return retrievedUser
     }
     
+    static func saveUser(_ initialUser: InitialUser) async throws -> User {
+        let supabase = Supabase.shared
+        let user: User = try await supabase.client.database
+          .from("users")
+          .insert(initialUser, returning: .representation)
+          .single()
+          .execute()
+          .value
+        return user
+    }
+    
     /// Get the user from memory if cached, if not retrieve again from server
     public func getUser() async -> User? {
         if let user {
@@ -62,16 +73,5 @@ class UserData {
         let retrievedUser = users.first
         self.user = retrievedUser
         return retrievedUser
-    }
-    
-    public func saveUser(_ initialUser: InitialUser) async throws {
-        let user: User = try await supabase.client.database
-          .from("users")
-          .insert(initialUser, returning: .representation)
-          .single()
-          .execute()
-          .value
-        print("xxavier user saved \(user)")
-        self.user = user
     }
 }
