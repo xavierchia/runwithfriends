@@ -50,21 +50,13 @@ class UserData {
     }
     
     public func saveUser(_ initialUser: InitialUser) async throws {
-        try await supabase.client.database
+        let user: User = try await supabase.client.database
           .from("users")
-          .insert(initialUser)
+          .insert(initialUser, returning: .representation)
+          .single()
           .execute()
-
-        let user = try await supabase.client.auth.session.user
-        let users: [User] = try await supabase.client.database
-            .from("users")
-            .select()
-            .eq("user_id", value: user.id)
-            .execute()
-            .value
-        let retrievedUser = users.first
-        self.user = retrievedUser
-                
-        // we should now save this user to coredata?
+          .value
+        print("xxavier user saved \(user)")
+        self.user = user
     }
 }
