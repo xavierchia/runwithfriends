@@ -36,18 +36,10 @@ class RunsViewController: UIViewController {
     private let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
     
     private let calendar = Calendar.current
-    
-    private var runData = [Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
-                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
-                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
-                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
-                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
-                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []),
-                           Run(run_id: UUID(), start_date: 0, end_date: 0, runners: [])]
-    
-    private var friendsData = [FriendCellData]()
-    
+
     private let userData: UserData
+    private var runData = [Run](repeating: Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []), count: 7)
+    private var friendsData = [FriendCellData]()
     
     init(with userData: UserData) {
         self.userData = userData
