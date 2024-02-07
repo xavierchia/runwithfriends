@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Task {
             do {
 //                sign out for testing
-                try await supabase.client.auth.signOut()
+//                try await supabase.client.auth.signOut()
                 
                 let _ = try await supabase.client.auth.session.user
                 print("User signed in, routing to TabViewConroller")

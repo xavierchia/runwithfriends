@@ -23,13 +23,14 @@ class UserData {
         
         do {
             let user = try await supabase.client.auth.session.user
-            let users: [User] = try await supabase.client.database
+            let retrievedUser: User = try await supabase.client.database
                 .from("users")
                 .select()
                 .eq("user_id", value: user.id)
+                .single()
                 .execute()
                 .value
-            let retrievedUser = users.first
+            
             self.user = retrievedUser
             return retrievedUser
         } catch {
