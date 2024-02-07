@@ -130,13 +130,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             // sign into supabase
             guard (await supabase.signInWithApple(idToken: idTokenString, nonce: nonce)) != nil else {
                 print("Error signing into Supabase.")
-                spinner.stopAnimating()
-                let alert = UIAlertController.Oops()
-                present(alert, animated: true)
+                showOops()
                 return
             }
+            
             do {
-                guard let user = try await UserData.shared.getUser(with: credentials.user) else {
+                guard let user = try await UserData.getUser(with: credentials.user) else {
                     print("User does not exist in the database, save to the database")
                     let initialUser = InitialUser(
                         apple_id: credentials.user,
@@ -144,7 +143,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                         emoji: UserMappings.getEmoji(from: Locale.current.region?.identifier)
                     )
                     
-                    // refactor: we can use supabase trigger to save the user after authenticated for the first time
                     let savedUser = try await UserData.saveUser(initialUser)
                     routeToTabVC(with: savedUser)
                     return
@@ -154,9 +152,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 routeToTabVC(with: user)
             } catch {
                 print("Error getting user from database or saving user to database \(error)")
-                spinner.stopAnimating()
-                let alert = UIAlertController.Oops()
-                present(alert, animated: true)
+                showOops()
             }
             
             @MainActor func routeToTabVC(with user: User) {
@@ -165,6 +161,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 let tabVC = TabViewController()
                 tabVC.modalPresentationStyle = .overFullScreen
                 present(tabVC, animated: true)
+            }
+            
+            @MainActor func showOops() {
+                spinner.stopAnimating()
+                let alert = UIAlertController.Oops()
+                present(alert, animated: true)
             }
         }
     }

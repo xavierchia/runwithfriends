@@ -40,6 +40,18 @@ class UserData {
         return user
     }
     
+    static func getUser(with id: String) async throws -> User? {
+        let supabase = Supabase.shared
+        let users: [User] = try await supabase.client.database
+            .from("users")
+            .select()
+            .eq("apple_id", value: id)
+            .execute()
+            .value
+        let retrievedUser = users.first
+        return retrievedUser
+    }
+    
     /// Get the user from memory if cached, if not retrieve again from server
     public func getUser() async -> User? {
         if let user {
@@ -61,17 +73,5 @@ class UserData {
         } catch {
             return nil
         }
-    }
-    
-    public func getUser(with id: String) async throws -> User? {
-        let users: [User] = try await supabase.client.database
-            .from("users")
-            .select()
-            .eq("apple_id", value: id)
-            .execute()
-            .value
-        let retrievedUser = users.first
-        self.user = retrievedUser
-        return retrievedUser
     }
 }
