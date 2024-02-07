@@ -18,8 +18,9 @@ class WaitingRoomViewController: UIViewController {
     // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
     private let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
     
-    // Run
+    // init data
     private let runSession: RunSession
+    private let userData: UserData
     
     // UI
     private let mapView = MKMapView()
@@ -27,9 +28,10 @@ class WaitingRoomViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(with cellData: Run) {
+    init(with cellData: Run, and userData: UserData) {
         self.bottomRow = BottomRow(cellData: cellData)
         self.runSession = RunSession(run: cellData)
+        self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -121,7 +123,7 @@ class WaitingRoomViewController: UIViewController {
         
         let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇸🇬"))
         newPin.coordinate = obscuredCoordinate
-        newPin.title = UserData.shared.user?.username ?? UserData.defaultUsername
+        newPin.title = userData.user.username
         mapView.addAnnotation(newPin)
         
         runSession.run.runners.forEach { runner in

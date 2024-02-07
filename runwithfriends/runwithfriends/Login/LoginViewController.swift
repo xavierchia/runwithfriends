@@ -158,7 +158,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             @MainActor func routeToTabVC(with user: User) {
                 print("User signed in, routing to TabViewController")
                 spinner.stopAnimating()
-                let tabVC = TabViewController()
+                let userData = UserData(user: user)
+                let tabVC = TabViewController(with: userData)
                 tabVC.modalPresentationStyle = .overFullScreen
                 present(tabVC, animated: true)
             }

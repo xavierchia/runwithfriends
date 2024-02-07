@@ -25,9 +25,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 try await supabase.client.auth.signOut()
                 
                 let user = try await UserData.getUserOnAppInit()
+                let userData = UserData(user: user)
                 print("User signed in, routing to TabViewConroller")
                 DispatchQueue.main.async {
-                    window.rootViewController = TabViewController()
+                    window.rootViewController = TabViewController(with: userData)
                 }
             } catch {
                 print("User not signed in, routing to LoginViewController")

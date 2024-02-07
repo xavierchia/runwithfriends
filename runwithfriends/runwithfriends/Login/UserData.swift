@@ -8,13 +8,14 @@ import Foundation
 import Supabase
 
 class UserData {
-    static let shared = UserData()
     static let defaultUsername = "Pea"
     let supabase = Supabase.shared
-    var user: User?
+    var user: User
     
-    private init() {}
-    
+    init(user: User) {
+        self.user = user
+    }
+        
     static func getUserOnAppInit() async throws -> User {
         let supabase = Supabase.shared
         let user = try await supabase.client.auth.session.user
@@ -50,28 +51,5 @@ class UserData {
             .value
         let retrievedUser = users.first
         return retrievedUser
-    }
-    
-    /// Get the user from memory if cached, if not retrieve again from server
-    public func getUser() async -> User? {
-        if let user {
-            return user
-        }
-        
-        do {
-            let user = try await supabase.client.auth.session.user
-            let retrievedUser: User = try await supabase.client.database
-                .from("users")
-                .select()
-                .eq("user_id", value: user.id)
-                .single()
-                .execute()
-                .value
-            
-            self.user = retrievedUser
-            return retrievedUser
-        } catch {
-            return nil
-        }
     }
 }

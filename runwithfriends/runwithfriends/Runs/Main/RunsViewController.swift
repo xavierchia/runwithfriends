@@ -47,6 +47,17 @@ class RunsViewController: UIViewController {
     
     private var friendsData = [FriendCellData]()
     
+    private let userData: UserData
+    
+    init(with userData: UserData) {
+        self.userData = userData
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tempCreateRunData()
@@ -258,12 +269,12 @@ extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
 extension RunsViewController: UIRunTableViewCellProtocol {
     func cellButtonPressed(with indexPath: IndexPath, from tableView: UITableView) {
         if tableView == runsTableView {
-            let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row])
+            let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row], and: userData)
             show(waitingRoomVC, sender: self)
         } else {
             let friendData = friendsData[indexPath.row]
             guard let runData = friendData.joinRunData else { return }
-            let waitingRoomVC = WaitingRoomViewController(with: runData)
+            let waitingRoomVC = WaitingRoomViewController(with: runData, and: userData)
             show(waitingRoomVC, sender: self)
         }
     }

@@ -33,6 +33,16 @@ class ProfileViewController: UIViewController {
 //        ]
     ]
     private var navImageView = UIImageView()
+    private let userData: UserData
+    
+    init(with userData: UserData) {
+        self.userData = userData
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,17 +54,7 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let user = UserData.shared.user {
-            setupProfile(with: user)
-        } else {
-            Task {
-                guard let user = await UserData.shared.getUser() else {
-                    print("no user here")
-                    return
-                }
-                setupProfile(with: user)
-            }
-        }
+        setupProfile(with: userData.user)
     }
     
     // MARK: SetupUI
