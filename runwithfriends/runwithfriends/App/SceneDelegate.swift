@@ -24,6 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                sign out for testing
 //                try await supabase.client.auth.signOut()
                 
+                let user = try await UserData.getUserOnAppInit()
+                
                 let _ = try await supabase.client.auth.session.user
                 print("User signed in, routing to TabViewConroller")
                 DispatchQueue.main.async {
