@@ -18,6 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
+        // Continue showing the launch screen until we check the user's sign in status
+        DispatchQueue.main.async {
+            let launchScreen = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()
+            window.rootViewController = launchScreen
+        }
+        
+        
         let supabase = Supabase.shared
         Task {
             do {
