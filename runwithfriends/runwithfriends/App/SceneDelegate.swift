@@ -17,19 +17,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+        self.window = window
         
-        // Continue showing the launch screen until we check the user's sign in status
-        DispatchQueue.main.async {
-            let launchScreen = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()
-            window.rootViewController = launchScreen
-        }
+//        DispatchQueue.main.async {
+        let launchScreen = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()
+        window.rootViewController = launchScreen
+        window.makeKeyAndVisible()
         
-        
-        let supabase = Supabase.shared
         Task {
             do {
 //                sign out for testing
-//                try await supabase.client.auth.signOut()
+//                try await Supabase.shared.client.auth.signOut()
                 
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)
@@ -43,6 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     window.rootViewController = LoginViewController()
                 }
             }
+            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
         }
         
         self.window = window
