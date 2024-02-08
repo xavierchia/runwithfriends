@@ -36,8 +36,6 @@ class RunsViewController: UIViewController {
     private let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
     private let runTableRefreshControl = UIRefreshControl()
     
-    private let calendar = Calendar.current
-
     private let userData: UserData
     private var runData = [Run](repeating: Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []), count: 7)
     private var friendsData = [FriendCellData]()
@@ -53,7 +51,7 @@ class RunsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadRunsData()
+        reloadRunsData()
         
         setupNavigationController()
         segmentStackView.delegate = self
@@ -67,9 +65,8 @@ class RunsViewController: UIViewController {
     
     @objc func refreshRunTable(_ sender: AnyObject) {
        // Code to refresh table view
-        loadRunsData()
+        reloadRunsData()
         self.runTableRefreshControl.endRefreshing()
-        print("refreshing runs table")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +74,8 @@ class RunsViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    private func loadRunsData() {
+    private func reloadRunsData() {
+        print("reloading runs data")
         let supabase = Supabase.shared
         Task {
             do {
@@ -273,13 +271,29 @@ extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
 extension RunsViewController: UIRunTableViewCellProtocol {
     func cellButtonPressed(with indexPath: IndexPath, from tableView: UITableView) {
         if tableView == runsTableView {
-            let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row], and: userData)
-            show(waitingRoomVC, sender: self)
+            runsCellPressed(with: indexPath)
         } else {
-            let friendData = friendsData[indexPath.row]
-            guard let runData = friendData.joinRunData else { return }
-            let waitingRoomVC = WaitingRoomViewController(with: runData, and: userData)
-            show(waitingRoomVC, sender: self)
+            friendsCellPressed(with: indexPath)
         }
+    }
+    
+    private func runsCellPressed(with indexPath: IndexPath) {
+        let run = runData[indexPath.row]
+        guard run.start_date > Int(Date().timeIntervalSince1970) else {
+            print("Joining a run that has already started")
+            reloadRunsData()
+            let alert = UIAlertController.Oops(title: "This run has started >.<")
+            present(alert, animated: true)
+            return
+        }
+        let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row], and: userData)
+        show(waitingRoomVC, sender: self)
+    }
+    
+    private func friendsCellPressed(with indexPath: IndexPath) {
+        let friendData = friendsData[indexPath.row]
+        guard let runData = friendData.joinRunData else { return }
+        let waitingRoomVC = WaitingRoomViewController(with: runData, and: userData)
+        show(waitingRoomVC, sender: self)
     }
 }
