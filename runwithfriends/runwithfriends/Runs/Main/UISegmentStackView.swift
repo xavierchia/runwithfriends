@@ -25,7 +25,7 @@ extension RunsViewController {
 
             runsButton.titleLabel?.textAlignment = .center
             _ = runsButton.titleLabel?.mediumBold()
-            unlockedButton.setTitleColor(.moss, for: .normal)
+            unlockedButton.setTitleColor(.pumpkin, for: .normal)
             runsButton.setTitle(leftTitle, for: .normal)
             runsButton.addTarget(self, action: #selector(runsButtonPressed), for: .touchUpInside)
             self.addArrangedSubview(runsButton)
@@ -46,7 +46,7 @@ extension RunsViewController {
             delegate?.segmentLeftButtonPressed()
             
             UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
-                self.runsButton.setTitleColor(.moss, for: .normal)
+                self.runsButton.setTitleColor(.pumpkin, for: .normal)
             }
             UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
                 self.unlockedButton.setTitleColor(.gray, for: .normal)
@@ -60,7 +60,7 @@ extension RunsViewController {
                 self.runsButton.setTitleColor(.gray, for: .normal)
             }
             UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
-                self.unlockedButton.setTitleColor(.moss, for: .normal)
+                self.unlockedButton.setTitleColor(.pumpkin, for: .normal)
             }
         }
     }

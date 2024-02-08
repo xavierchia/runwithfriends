@@ -24,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearance.configureWithOpaqueBackground()
         navigationBarAppearance.backgroundColor = UIColor.cream
         navigationBarAppearance.shadowColor = .clear
-        navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.chalkboardBold(size: 34)]
-        navigationBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.chalkboardBold(size: 34)]
+        navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.chalkboard(size: 34)]
+        navigationBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.chalkboard(size: 34)]
         UINavigationBar.appearance().standardAppearance = navigationBarAppearance
         UINavigationBar.appearance().compactAppearance = navigationBarAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance

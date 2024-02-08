@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,11 +18,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="left" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="cdc-LI-8mS">
-                        <rect key="frame" x="16" y="20.000000000000004" width="130.33333333333334" height="56.333333333333343"/>
+                        <rect key="frame" x="16" y="14.666666666666664" width="134" height="67"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00PM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5B2-tE-Ubf">
-                                <rect key="frame" x="0.0" y="0.0" width="130.33333333333334" height="40.666666666666664"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="34"/>
+                                <rect key="frame" x="0.0" y="0.0" width="134" height="48.333333333333336"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Light" family="Chalkboard SE" pointSize="34"/>
                                 <color key="textColor" name="Moss"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
@@ -31,8 +30,8 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 / 25 runners" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AzZ-9z-Cw2">
-                                <rect key="frame" x="0.0" y="40.666666666666664" width="89" height="15.666666666666664"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                <rect key="frame" x="0.0" y="48.333333333333336" width="96.333333333333329" height="18.666666666666664"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="13"/>
                                 <color key="textColor" name="Moss"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
@@ -57,7 +56,7 @@
                             <color key="titleColor" name="Cream"/>
                         </state>
                         <state key="disabled" title="FULL">
-                            <color key="titleColor" systemColor="secondaryLabelColor"/>
+                            <color key="titleColor" name="Cream"/>
                         </state>
                         <state key="selected">
                             <color key="titleColor" name="AccentColor"/>
@@ -107,8 +106,5 @@
         <namedColor name="Moss">
             <color red="0.32156862745098042" green="0.60784313725490191" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
     </resources>
 </document>
