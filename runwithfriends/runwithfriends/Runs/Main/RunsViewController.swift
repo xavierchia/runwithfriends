@@ -34,6 +34,7 @@ class RunsViewController: UIViewController {
     private let runsTableView = UITableView()
     private let friendsTableView = UITableView()
     private let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
+    private let runTableRefreshControl = UIRefreshControl()
     
     private let calendar = Calendar.current
 
@@ -52,13 +53,23 @@ class RunsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tempCreateRunData()
+        loadRunsData()
         
         setupNavigationController()
         segmentStackView.delegate = self
         setupRunsTableView()
         setupFriendsTableView()
         chooseTable()
+        
+        runTableRefreshControl.addTarget(self, action: #selector(self.refreshRunTable(_:)), for: .valueChanged)
+        runsTableView.refreshControl = runTableRefreshControl
+    }
+    
+    @objc func refreshRunTable(_ sender: AnyObject) {
+       // Code to refresh table view
+        loadRunsData()
+        self.runTableRefreshControl.endRefreshing()
+        print("refreshing runs table")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +77,7 @@ class RunsViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    private func tempCreateRunData() {
+    private func loadRunsData() {
         let supabase = Supabase.shared
         Task {
             do {
@@ -81,7 +92,9 @@ class RunsViewController: UIViewController {
                 print(error)
             }
         }
-        
+    }
+    
+    private func reloadFriendsData() {
 //        let friends = ["Timmy 🇺🇸", "Fiiv 🇹🇭", "Michelle 🇺🇸", "Matteo 🇮🇹", "Amy 🇹🇼", "Phuong 🇻🇳", "Tan 🇻🇳", "Teng Chwan 🇸🇬", "Ally 🇸🇬"]
 //        var isRunningCanJoinArray = [FriendCellData]()
 //        var isRunningCantJoinArray = [FriendCellData]()
