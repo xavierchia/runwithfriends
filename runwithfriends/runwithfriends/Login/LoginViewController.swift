@@ -15,13 +15,13 @@ class LoginViewController: UIViewController {
     private var currentNonce: String?
     
     private let textStackView = UIStackView()
-    private let signInButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
+    private let signInButton = ASAuthorizationAppleIDButton(type: .signIn, style: .whiteOutline)
     private var topConstraint: NSLayoutConstraint?
     private let spinner = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor.cream
         addTextStack()
         addSignInButton()
     }
@@ -33,27 +33,27 @@ class LoginViewController: UIViewController {
         textStackView.distribution = .equalSpacing
         textStackView.alignment = .leading
         
-        let firstText = UILabel().largeLightScaled().white()
+        let firstText = UILabel().largeLightScaled().accent()
         firstText.text = "The"
         textStackView.addArrangedSubview(firstText)
         
-        let secondText = UILabel().largeLightScaled().accent()
+        let secondText = UILabel().largeLightScaled().moss()
         secondText.text = "Solemate"
         textStackView.addArrangedSubview(secondText)
         
-        let thirdText = UILabel().largeLightScaled().white()
+        let thirdText = UILabel().largeLightScaled().accent()
         thirdText.text = "you have"
         textStackView.addArrangedSubview(thirdText)
         
-        let fourthText = UILabel().largeLightScaled().white()
+        let fourthText = UILabel().largeLightScaled().accent()
         fourthText.text = "been"
         textStackView.addArrangedSubview(fourthText)
         
-        let fifthText = UILabel().largeLightScaled().white()
+        let fifthText = UILabel().largeLightScaled().accent()
         fifthText.text = "looking"
         textStackView.addArrangedSubview(fifthText)
         
-        let sixthText = UILabel().largeLightScaled().white()
+        let sixthText = UILabel().largeLightScaled().accent()
         sixthText.text = "for"
         textStackView.addArrangedSubview(sixthText)
                 

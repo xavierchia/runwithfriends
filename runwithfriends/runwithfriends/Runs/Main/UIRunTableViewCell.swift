@@ -34,7 +34,7 @@ class UIRunTableViewCell: UITableViewCell {
         guard cellData.start_date != 0 else {
             title.linesCornerRadius = 3
             subtitle.linesCornerRadius = 3
-            self.showAnimatedGradientSkeleton()
+            self.showAnimatedSkeleton(usingColor: .lightGray)
             self.layoutSkeletonIfNeeded()
             return
         }
@@ -43,7 +43,6 @@ class UIRunTableViewCell: UITableViewCell {
         
         let canJoin = cellData.runners.count < 25
         
-        let textColor: UIColor = canJoin ? .white : .secondaryLabel
         self.selectionStyle = .none // Stops line separator from disappearing when tapped
 
         guard let displayTime = cellData.start_date.getDate().getDisplayTime() else { return }
@@ -53,18 +52,18 @@ class UIRunTableViewCell: UITableViewCell {
         // Configure the time label
         let attributedString = NSMutableAttributedString()
         let timeString = NSAttributedString(string: String(rawTimeString),
-                                            attributes: [.font: UIFont.systemFont(ofSize: 34, weight: .light),
-                                                         .foregroundColor: textColor])
+                                            attributes: [.font: UIFont.chalkboardLight(size: 34),
+                                                         .foregroundColor: UIColor.moss])
         let amOrPmString =  NSAttributedString(string: String(rawAmOrPmString),
-                                               attributes: [.font: UIFont.systemFont(ofSize: 17, weight: .light),
-                                                            .foregroundColor: textColor])
+                                               attributes: [.font: UIFont.chalkboardLight(size: 17),
+                                                            .foregroundColor: UIColor.moss])
         attributedString.append(timeString)
         attributedString.append(amOrPmString)
         title.attributedText = attributedString
         
         // Configure the runners label
         subtitle.text = "\(cellData.runners.count) / 25 runners"
-        subtitle.textColor = textColor
+        subtitle.textColor = UIColor.moss
         subtitle.font = UIFont.systemFont(ofSize: 13, weight: .light)
         
         // Configure the right button

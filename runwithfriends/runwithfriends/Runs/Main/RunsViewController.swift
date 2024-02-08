@@ -33,7 +33,7 @@ struct FriendCellData {
 class RunsViewController: UIViewController {
     private let runsTableView = UITableView()
     private let friendsTableView = UITableView()
-    private let segmentStackView = UISegmentStackView(leftTitle: "🏃 Upcoming", rightTitle: "🕺 Friends")
+    private let segmentStackView = UISegmentStackView(leftTitle: "Runs", rightTitle: "Friends")
     private let runTableRefreshControl = UIRefreshControl()
     
     private let userData: UserData
@@ -140,7 +140,7 @@ class RunsViewController: UIViewController {
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationItem.title = "30 minute runs"
+        self.navigationItem.title = "25 minute runs"
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
@@ -149,7 +149,7 @@ class RunsViewController: UIViewController {
         runsTableView.delegate = self
         runsTableView.dataSource = self
         runsTableView.isSkeletonable = true
-        runsTableView.backgroundColor = .black
+        runsTableView.backgroundColor = .cream
         runsTableView.showsVerticalScrollIndicator = true
         runsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
         
@@ -168,7 +168,7 @@ class RunsViewController: UIViewController {
     private func setupFriendsTableView() {
         friendsTableView.delegate = self
         friendsTableView.dataSource = self
-        friendsTableView.backgroundColor = .black
+        friendsTableView.backgroundColor = .cream
         friendsTableView.showsVerticalScrollIndicator = true
         friendsTableView.register(UINib(nibName: UIRunTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: UIRunTableViewCell.identifier)
         
@@ -258,7 +258,7 @@ extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
         if let navHeight = navigationController?.navigationBar.bounds.height,
            navHeight <= 44 {
             self.navigationController?.navigationBar.layer.masksToBounds = false
-            self.navigationController?.navigationBar.layer.shadowColor = UIColor.black.cgColor
+            self.navigationController?.navigationBar.layer.shadowColor = UIColor.cream.cgColor
             self.navigationController?.navigationBar.layer.shadowOpacity = 0.8
             self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 20)
             self.navigationController?.navigationBar.layer.shadowRadius = 10

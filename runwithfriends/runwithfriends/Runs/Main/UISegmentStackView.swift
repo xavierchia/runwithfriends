@@ -25,7 +25,7 @@ extension RunsViewController {
 
             runsButton.titleLabel?.textAlignment = .center
             _ = runsButton.titleLabel?.mediumBold()
-            unlockedButton.setTitleColor(.white, for: .normal)
+            unlockedButton.setTitleColor(.moss, for: .normal)
             runsButton.setTitle(leftTitle, for: .normal)
             runsButton.addTarget(self, action: #selector(runsButtonPressed), for: .touchUpInside)
             self.addArrangedSubview(runsButton)
@@ -33,7 +33,7 @@ extension RunsViewController {
             unlockedButton.titleLabel?.textAlignment = .center
             _ = unlockedButton.titleLabel?.mediumBold()
             unlockedButton.setTitle(rightTitle, for: .normal)
-            unlockedButton.setTitleColor(.secondaryLabel, for: .normal)
+            unlockedButton.setTitleColor(.gray, for: .normal)
             unlockedButton.addTarget(self, action: #selector(friendsButtonPressed), for: .touchUpInside)
             self.addArrangedSubview(unlockedButton)
         }
@@ -46,10 +46,10 @@ extension RunsViewController {
             delegate?.segmentLeftButtonPressed()
             
             UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
-                self.runsButton.setTitleColor(.white, for: .normal)
+                self.runsButton.setTitleColor(.moss, for: .normal)
             }
             UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
-                self.unlockedButton.setTitleColor(.secondaryLabel, for: .normal)
+                self.unlockedButton.setTitleColor(.gray, for: .normal)
             }
         }
         
@@ -57,10 +57,10 @@ extension RunsViewController {
             delegate?.segmentRightButtonPressed()
             
             UIView.transition(with: runsButton, duration: 0.2, options: .transitionCrossDissolve) {
-                self.runsButton.setTitleColor(.secondaryLabel, for: .normal)
+                self.runsButton.setTitleColor(.gray, for: .normal)
             }
             UIView.transition(with: unlockedButton, duration: 0.2, options: .transitionCrossDissolve) {
-                self.unlockedButton.setTitleColor(.white, for: .normal)
+                self.unlockedButton.setTitleColor(.moss, for: .normal)
             }
         }
     }

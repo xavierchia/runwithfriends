@@ -31,15 +31,15 @@ class UIPaddingLabel: UILabel {
 extension UILabel {
     func largeLightScaled() -> UILabel {
         let scaleFactor: Float = Float(UIScreen.main.bounds.height) / 852.0
-        let fontSize = CGFloat(70 * scaleFactor)
-        let customFont = UIFont.systemFont(ofSize: fontSize, weight: .light)
+        let fontSize = CGFloat(60 * scaleFactor)
+        let customFont = UIFont.chalkboardBold(size: fontSize)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self
     }
     
     func mediumBold() -> UILabel {
-        let customFont = UIFont.systemFont(ofSize: 24, weight: .bold)
+        let customFont = UIFont.chalkboardBold(size: 24)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self
@@ -50,8 +50,8 @@ extension UILabel {
         return self
     }
     
-    func white() -> UILabel {
-        self.textColor = .white
+    func moss() -> UILabel {
+        self.textColor = UIColor.moss
         return self
     }
     
