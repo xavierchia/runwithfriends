@@ -287,13 +287,14 @@ extension RunsViewController: UIRunTableViewCellProtocol {
             return
         }
         let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row], and: userData)
-        show(waitingRoomVC, sender: self)
+        waitingRoomVC.modalPresentationStyle = .overFullScreen
+        self.present(waitingRoomVC, animated: true)
     }
     
     private func friendsCellPressed(with indexPath: IndexPath) {
         let friendData = friendsData[indexPath.row]
         guard let runData = friendData.joinRunData else { return }
         let waitingRoomVC = WaitingRoomViewController(with: runData, and: userData)
-        show(waitingRoomVC, sender: self)
+        self.present(waitingRoomVC, animated: true)
     }
 }

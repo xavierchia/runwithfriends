@@ -97,7 +97,6 @@ class WaitingRoomViewController: UIViewController {
     // MARK: Setup location manager
     private func setupMapView() {
         mapView.mapType = .hybridFlyover
-        mapView.overrideUserInterfaceStyle = .dark
         view.insertSubview(mapView, belowSubview: bottomRow)
         mapView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -105,7 +104,7 @@ class WaitingRoomViewController: UIViewController {
             mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mapView.topAnchor.constraint(equalTo: view.topAnchor),
-            mapView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
                 
         mapView.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
@@ -136,9 +135,13 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupWaitingRoomTitle() {
+        guard let displayTime = runSession.run.start_date.getDate().getDisplayTime() else {
+            return
+        }
+
         let waitingRoomTitle = UILabel()
-        waitingRoomTitle.text = "Waiting Room"
-        waitingRoomTitle.font = UIFont.systemFont(ofSize: 26, weight: .bold)
+        waitingRoomTitle.text = "\(displayTime.time)\(displayTime.amOrPm.lowercased()) Run"
+        waitingRoomTitle.font = UIFont.chalkboardBold(size: 26)
         waitingRoomTitle.textColor = .white
         waitingRoomTitle.textAlignment = .center
         waitingRoomTitle.backgroundColor = .clear
@@ -146,7 +149,7 @@ class WaitingRoomViewController: UIViewController {
         waitingRoomTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             waitingRoomTitle.widthAnchor.constraint(equalToConstant: 190),
-            waitingRoomTitle.heightAnchor.constraint(equalToConstant: 28),
+            waitingRoomTitle.heightAnchor.constraint(equalToConstant: 35),
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
@@ -186,7 +189,7 @@ class WaitingRoomViewController: UIViewController {
     }
     
     @objc private func pop() {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
     }
 }
 

@@ -119,9 +119,4 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.font = UIFont.chalkboard(size: cell.textLabel?.font.pointSize ?? 15)
             return cell
     }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let height = navigationController?.navigationBar.frame.height else { return }
-        navigationController?.navigationBar.moveAndResizeImage(for: height, and: navImageView)
-    }
 }
