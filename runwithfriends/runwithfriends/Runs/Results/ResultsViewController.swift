@@ -20,7 +20,7 @@ struct Result {
 
 class ResultsViewController: UIViewController {
     
-    private let resultsTableView = UITableView()
+    private let resultsTableView = UITableView(frame: .zero, style: .grouped)
     
     private var results = [
         [
@@ -49,14 +49,14 @@ class ResultsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        view.backgroundColor = .cream
         setupNavigationController()
         setupTableView()
     }
     
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.title = "🎊 Great Job!"
+        self.navigationItem.title = "Run complete"
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
@@ -78,6 +78,7 @@ class ResultsViewController: UIViewController {
         resultsTableView.delegate = self
         resultsTableView.dataSource = self
         resultsTableView.showsVerticalScrollIndicator = false
+        resultsTableView.backgroundColor = .cream
         view.addSubview(resultsTableView)
         resultsTableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -113,10 +114,10 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UIPaddingLabel()
-        label.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50)
-        label.textColor = .white
-        label.backgroundColor = .black
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 30)
+        label.textColor = .moss
+        label.backgroundColor = .cream
+        label.font = UIFont.chalkboard(size: 24)
         label.textAlignment = .left
         label.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         switch results[section].first?.relationship {
@@ -130,23 +131,23 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
             label.text = ""
         }
         
-        let separator = UIView()
-        separator.backgroundColor = .white
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        label.addSubview(separator)
-        
-        NSLayoutConstraint.activate([
-            separator.bottomAnchor.constraint(equalTo: label.bottomAnchor),
-            separator.leftAnchor.constraint(equalTo: label.leftAnchor, constant: 16),
-            separator.rightAnchor.constraint(equalTo: label.rightAnchor, constant: -16),
-            separator.heightAnchor.constraint(equalToConstant: 1)
-        ])
+//        let separator = UIView()
+//        separator.backgroundColor = .lightGray
+//        separator.translatesAutoresizingMaskIntoConstraints = false
+//        label.addSubview(separator)
+//        
+//        NSLayoutConstraint.activate([
+//            separator.bottomAnchor.constraint(equalTo: label.bottomAnchor),
+//            separator.leftAnchor.constraint(equalTo: label.leftAnchor, constant: 16),
+//            separator.rightAnchor.constraint(equalTo: label.rightAnchor, constant: -16),
+//            separator.heightAnchor.constraint(equalToConstant: 1)
+//        ])
         
         return label
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        50
+        30
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -13,6 +13,8 @@ extension ResultsViewController {
             super.init(frame: frame)
             
             let firstLabel = UILabel()
+            firstLabel.textColor = .moss
+            firstLabel.font = UIFont.chalkboardLight(size: 17)
             firstLabel.text = "🏃 First Run"
             firstLabel.textAlignment = .left
             firstLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +26,8 @@ extension ResultsViewController {
             ])
             
             let secondLabel = UILabel()
+            secondLabel.textColor = .moss
+            secondLabel.font = UIFont.chalkboardLight(size: 17)
             secondLabel.text = "🏅 Personal Record"
             secondLabel.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(secondLabel)
@@ -32,6 +36,8 @@ extension ResultsViewController {
                 secondLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
                 secondLabel.leftAnchor.constraint(equalTo: firstLabel.rightAnchor, constant: 8)
             ])
+            
+            self.backgroundColor = .cream
         }
         
         required init(coder: NSCoder) {

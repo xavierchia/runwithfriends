@@ -140,15 +140,16 @@ class WaitingRoomViewController: UIViewController {
 
         let waitingRoomTitle = UILabel()
         waitingRoomTitle.text = "\(displayTime.time)\(displayTime.amOrPm.lowercased()) Run"
-        waitingRoomTitle.font = UIFont.chalkboardBold(size: 26)
+//        waitingRoomTitle.font = UIFont.chalkboardBold(size: 26)
+        waitingRoomTitle.font = UIFont.chalkboardBold(size: 34)
         waitingRoomTitle.textColor = .cream
         waitingRoomTitle.textAlignment = .center
         waitingRoomTitle.backgroundColor = .clear
         view.addSubview(waitingRoomTitle)
         waitingRoomTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            waitingRoomTitle.widthAnchor.constraint(equalToConstant: 190),
-            waitingRoomTitle.heightAnchor.constraint(equalToConstant: 35),
+            waitingRoomTitle.widthAnchor.constraint(equalToConstant: 250),
+            waitingRoomTitle.heightAnchor.constraint(equalToConstant: 40),
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])

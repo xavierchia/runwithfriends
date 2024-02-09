@@ -20,7 +20,7 @@ class ResultsTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        contentView.backgroundColor = .black
+        contentView.backgroundColor = .cream
         self.selectionStyle = .none
         
         setupName()
@@ -31,11 +31,16 @@ class ResultsTableViewCell: UITableViewCell {
     
     func configure(with result: Result) {
         nameLabel.text = result.name
+        nameLabel.textColor = .moss
+        nameLabel.font = UIFont.chalkboardLight(size: 17)
         distanceLabel.text = result.distance
+        distanceLabel.textColor = .moss
+        distanceLabel.font = UIFont.chalkboardLight(size: 17)
         
-        let config = UIImage.SymbolConfiguration(paletteColors: [.accent, .systemOrange])
+        let config = UIImage.SymbolConfiguration(paletteColors: [.accent, .pumpkin])
         let handsFilled = UIImage(systemName: "hands.clap.fill", withConfiguration: config)
         let clapImage = result.clapped ? handsFilled : UIImage(systemName: "hands.clap")
+        clap.tintColor = .accent
         clap.setImage(clapImage, for: .normal)
     }
     
