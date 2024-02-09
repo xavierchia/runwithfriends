@@ -20,9 +20,13 @@ extension Int {
 }
 
 extension Date {
-    func getDisplayTime() -> DisplayTime? {
+    func getDisplayTime(padZero: Bool = true) -> DisplayTime? {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm a"
+        if padZero {
+            dateFormatter.dateFormat = "hh:mm a"
+        } else {
+            dateFormatter.dateFormat = "h:mm a"
+        }
         let dateInString = dateFormatter.string(from: self)
         let dateArray = dateInString.split(separator: " ")
         guard let rawTimeString = dateArray.first,

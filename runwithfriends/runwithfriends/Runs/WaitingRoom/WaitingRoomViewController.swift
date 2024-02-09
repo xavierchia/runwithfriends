@@ -134,7 +134,7 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupWaitingRoomTitle() {
-        guard let displayTime = runSession.run.start_date.getDate().getDisplayTime() else {
+        guard let displayTime = runSession.run.start_date.getDate().getDisplayTime(padZero: false) else {
             return
         }
 
