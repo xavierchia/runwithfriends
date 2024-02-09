@@ -105,10 +105,10 @@ class RunningViewController: UIViewController {
     
     private func setupCountdownView() {
         countdownLabel.text = "5"
-        countdownLabel.textColor = .black
-        countdownLabel.font = UIFont.systemFont(ofSize: 200).boldItalic
+        countdownLabel.textColor = .cream
+        countdownLabel.font = UIFont.chalkboardBold(size: 200)
         countdownLabel.textAlignment = .center
-        countdownLabel.backgroundColor = .systemOrange
+        countdownLabel.backgroundColor = .accent
         
         view.addSubview(countdownLabel)
         countdownLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -127,6 +127,7 @@ class RunningViewController: UIViewController {
         paceMetricLabel.text = "Pace"
         
         let paceStack = UIStackView().verticalStack()
+        paceStack.spacing = 5
         paceStack.addArrangedSubview(paceValueLabel)
         paceStack.addArrangedSubview(paceMetricLabel)
         
@@ -146,6 +147,7 @@ class RunningViewController: UIViewController {
         timeMetricLabel.text = "Time"
 
         let timeStack = UIStackView().verticalStack()
+        timeStack.spacing = 5
         timeStack.addArrangedSubview(timeValueLabel)
         timeStack.addArrangedSubview(timeMetricLabel)
         
@@ -161,16 +163,17 @@ class RunningViewController: UIViewController {
     
     private func setupDistanceStack() {
         distanceValueLabel.text = "0"
-        distanceValueLabel.textColor = .black
-        distanceValueLabel.font = UIFont.systemFont(ofSize: 120).boldItalic
+        distanceValueLabel.textColor = .cream
+        distanceValueLabel.font = UIFont.chalkboardBold(size: 120)
         distanceValueLabel.textAlignment = .center
         
         distanceMetricLabel.text = "Meters"
-        distanceMetricLabel.textColor = .black
-        distanceMetricLabel.font = UIFont.systemFont(ofSize: 17.51, weight: .bold)
+        distanceMetricLabel.textColor = .cream
+        distanceMetricLabel.font = UIFont.chalkboardBold(size: 17.51)
         distanceMetricLabel.textAlignment = .center
         
         let distanceStack = UIStackView().verticalStack()
+        distanceStack.spacing = 10
         distanceStack.addArrangedSubview(distanceValueLabel)
         distanceStack.addArrangedSubview(distanceMetricLabel)
         
@@ -178,7 +181,7 @@ class RunningViewController: UIViewController {
         distanceStack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             distanceStack.widthAnchor.constraint(equalTo: view.widthAnchor),
-            distanceStack.heightAnchor.constraint(equalToConstant: 130),
+            distanceStack.heightAnchor.constraint(equalToConstant: 150),
             distanceStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             distanceStack.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
@@ -189,7 +192,7 @@ class RunningViewController: UIViewController {
     
     private func setupEndButton() {
         let endButton = UIButton()
-        var config = UIImage.SymbolConfiguration(paletteColors: [.white, .black])
+        var config = UIImage.SymbolConfiguration(paletteColors: [.accent, .cream])
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
         config = config.applying(largeConfig)
         let largeStopCircle = UIImage(systemName: "stop.circle.fill", withConfiguration: config)
@@ -246,15 +249,15 @@ extension RunningViewController: CLLocationManagerDelegate {
 // MARK: Helper extensions
 private extension UILabel {
     func topBarTitle() -> UILabel {
-        self.textColor = .black
+        self.textColor = .cream
         self.textAlignment = .center
-        self.font = UIFont.systemFont(ofSize: 45.84, weight: .bold)
+        self.font = UIFont.chalkboardBold(size: 45.84)
         return self
     }
     
     func topBarSubtitle() -> UILabel {
-        self.textColor = .black
-        self.font = UIFont.systemFont(ofSize: 17.51, weight: .bold)
+        self.textColor = .cream
+        self.font = UIFont.chalkboardBold(size: 17.51)
         self.textAlignment = .center
         return self
     }
