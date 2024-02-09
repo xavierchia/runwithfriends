@@ -75,7 +75,6 @@ class WaitingRoomViewController: UIViewController {
     
     // MARK: Setup UI
     private func setupUI() {
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
         setupBottomRow()
         setupMapView()
         setupWaitingRoomTitle()

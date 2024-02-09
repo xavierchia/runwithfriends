@@ -98,10 +98,7 @@ class ResultsViewController: UIViewController {
     }
         
     @objc private func popToRoot() {
-        if let waitingVC = self.presentingViewController?.presentingViewController as? TabViewController {
-            waitingVC.dismiss(animated: true)
-            waitingVC.setupTabs()
-        }
+        self.view.window?.rootViewController?.dismiss(animated: false, completion: nil)
     }
 }
 

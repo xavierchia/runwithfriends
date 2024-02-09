@@ -160,8 +160,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 spinner.stopAnimating()
                 let userData = UserData(user: user)
                 let tabVC = TabViewController(with: userData)
-                tabVC.modalPresentationStyle = .overFullScreen
-                present(tabVC, animated: true)
+                self.view.window!.rootViewController = tabVC
             }
             
             @MainActor func showOops() {

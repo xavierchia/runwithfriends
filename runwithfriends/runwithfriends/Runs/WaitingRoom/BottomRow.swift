@@ -30,20 +30,23 @@ class BottomRow: UIView, CustomViewProtocol {
                 // Configure the time label
                 let attributedString = NSMutableAttributedString()
                 let timeString = NSAttributedString(string: "Run will auto-start at \(displayTime.time)",
-                                                    attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .light)])
+                                                    attributes: [.font: UIFont.chalkboardLight(size: 18)])
                 attributedString.append(timeString)
                 
                 // Add AM/PM if showing display time
                 let amOrPmString =  NSAttributedString(string: displayTime.amOrPm,
-                                                       attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)])
+                                                       attributes: [.font: UIFont.chalkboardLight(size: 12)])
                 attributedString.append(amOrPmString)
                 
                 self.title.attributedText = attributedString
             case .oneHourToRunStart(let countdownTime):
+                self.title.font = UIFont.chalkboardLight(size: 18)
                 self.title.text = "Run will auto-start in \(countdownTime)"
             default:
                 return
             }
+            
+            subtitle.font = UIFont.chalkboardLight(size: 13)
         }
     }
     
