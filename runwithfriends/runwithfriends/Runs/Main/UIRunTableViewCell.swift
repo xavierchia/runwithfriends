@@ -42,6 +42,7 @@ class UIRunTableViewCell: UITableViewCell {
         self.hideSkeleton()
         
         let canJoin = cellData.runners.count < 25
+        let textColor: UIColor = canJoin ? .accent : .gray
         
         self.selectionStyle = .none // Stops line separator from disappearing when tapped
 
@@ -68,11 +69,12 @@ class UIRunTableViewCell: UITableViewCell {
         
         // Configure the right button
         rightButton.isEnabled = canJoin
-        rightButton.titleLabel?.font = UIFont.chalkboard(size: 17)
+        rightButton.titleLabel?.font = UIFont.chalkboardBold(size: 17)
         rightButton.setTitle("JOIN", for: .normal)
         rightButton.setTitle("FULL", for: .disabled)
-        
-        rightButton.backgroundColor = canJoin ? .accent : .gray
+        rightButton.backgroundColor = .clear
+        rightButton.layer.borderColor = textColor.cgColor
+        rightButton.layer.borderWidth = 3
     }
     
     func configure(with cellData: FriendCellData) {

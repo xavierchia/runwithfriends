@@ -17,6 +17,7 @@ class BottomRow: UIView, CustomViewProtocol {
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
+    @IBOutlet weak var rightButton: UIButton!
     let identifier = "BottomRow"
     weak var delegate: BottomRowProtocol?
     var runData: Run?
@@ -26,7 +27,7 @@ class BottomRow: UIView, CustomViewProtocol {
             let startingTime = runData.start_date.getDate()
             switch runStage {
             case .waitingRunStart:
-                guard let displayTime = startingTime.getDisplayTime() else { return }
+                guard let displayTime = startingTime.getDisplayTime(padZero: false) else { return }
                 // Configure the time label
                 let attributedString = NSMutableAttributedString()
                 let timeString = NSAttributedString(string: "Run will auto-start at \(displayTime.time)",
@@ -45,14 +46,18 @@ class BottomRow: UIView, CustomViewProtocol {
             default:
                 return
             }
-            
+            title.textColor = .cream
+            subtitle.textColor = .cream
             subtitle.font = UIFont.chalkboardLight(size: 13)
+            subtitle.text = "\(runData.runners.count) / 25 runners"
         }
     }
     
     convenience init(cellData: Run) {
         self.init(frame: .zero)
         self.runData = cellData
+        rightButton.layer.borderColor = UIColor.cream.cgColor
+        rightButton.layer.borderWidth = 3
     }
     
     override init(frame: CGRect) {
