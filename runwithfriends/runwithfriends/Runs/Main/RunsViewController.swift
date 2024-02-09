@@ -37,7 +37,8 @@ class RunsViewController: UIViewController {
     private let runTableRefreshControl = UIRefreshControl()
     
     private let userData: UserData
-    private var runData = [Run](repeating: Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []), count: 7)
+    private let mockRunData = [Run](repeating: Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []), count: 7)
+    private var runData = [Run]()
     private var friendsData = [FriendCellData]()
     
     init(with userData: UserData) {
@@ -75,6 +76,9 @@ class RunsViewController: UIViewController {
     
     private func reloadRunsData() {
         print("reloading runs data")
+        runData = mockRunData
+        runsTableView.reloadData()
+        
         let supabase = Supabase.shared
         Task {
             do {
