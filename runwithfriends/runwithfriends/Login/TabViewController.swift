@@ -31,8 +31,8 @@ class TabViewController: UITabBarController {
         runsNav.tabBarItem.title = "Runs"
         runsNav.tabBarItem.image = UIImage(systemName: "figure.run.circle")
         runsNav.tabBarItem.selectedImage = UIImage(systemName: "figure.run.circle.fill")
-        runsNav.tabBarItem.standardAppearance?.selectionIndicatorTintColor = UIColor.pumpkin
-        runsNav.tabBarItem.scrollEdgeAppearance?.selectionIndicatorTintColor = UIColor.pumpkin
+        runsNav.tabBarItem.standardAppearance?.selectionIndicatorTintColor = .pumpkin
+        runsNav.tabBarItem.scrollEdgeAppearance?.selectionIndicatorTintColor = .pumpkin
         
         let profileVC = ProfileViewController(with: userData)
         let profileNav = UINavigationController(rootViewController: profileVC)

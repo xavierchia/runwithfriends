@@ -51,7 +51,7 @@ extension UILabel {
     }
     
     func moss() -> UILabel {
-        self.textColor = UIColor.moss
+        self.textColor = .moss
         return self
     }
     

@@ -17,20 +17,20 @@ class ProfileViewController: UIViewController {
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private let tableCellTitles = [
         [
-              CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!"),
+//              CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!"),
 
-//            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
-//            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
+            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
+            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
         ],
-//        [
-//            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
-//            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
-//        ],
-//        [
-//            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
-//            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
-//            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
-//        ]
+        [
+            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
+            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
+        ],
+        [
+            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
+            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
+            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
+        ]
     ]
     private var navImageView = UIImageView()
     private let userData: UserData
@@ -46,7 +46,7 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        view.backgroundColor = .cream
         setupNavigationController()
         setupSettingsTableView()
         self.navigationItem.title = "Loading..."
@@ -68,6 +68,8 @@ class ProfileViewController: UIViewController {
     private func setupSettingsTableView() {
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
+        settingsTableView.backgroundColor = .cream
+        settingsTableView.tableHeaderView = UIView()
         view.addSubview(settingsTableView)
         settingsTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -112,6 +114,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.text = data.title
             cell.imageView?.image = data.emoji
             cell.accessoryType = .disclosureIndicator
+            cell.backgroundColor = .shadow
+            cell.textLabel?.textColor = .moss
+            cell.textLabel?.font = UIFont.chalkboard(size: cell.textLabel?.font.pointSize ?? 15)
             return cell
     }
     

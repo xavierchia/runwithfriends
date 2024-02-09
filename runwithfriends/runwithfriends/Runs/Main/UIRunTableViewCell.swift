@@ -63,7 +63,7 @@ class UIRunTableViewCell: UITableViewCell {
         
         // Configure the runners label
         subtitle.text = "\(cellData.runners.count) / 25 runners"
-        subtitle.textColor = UIColor.moss
+        subtitle.textColor = .moss
         subtitle.font = UIFont.chalkboard(size: 13)
         
         // Configure the right button
@@ -72,7 +72,7 @@ class UIRunTableViewCell: UITableViewCell {
         rightButton.setTitle("JOIN", for: .normal)
         rightButton.setTitle("FULL", for: .disabled)
         
-        rightButton.backgroundColor = canJoin ? UIColor.accent : UIColor.gray
+        rightButton.backgroundColor = canJoin ? .accent : .gray
     }
     
     func configure(with cellData: FriendCellData) {
