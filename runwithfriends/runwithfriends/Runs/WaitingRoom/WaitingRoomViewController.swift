@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import Combine
+import AVFoundation
 
 class WaitingRoomViewController: UIViewController {
     
@@ -27,6 +28,7 @@ class WaitingRoomViewController: UIViewController {
     private let bottomRow: BottomRow
     
     private var cancellables = Set<AnyCancellable>()
+    private var countdownStarted = false
     
     init(with cellData: Run, and userData: UserData) {
         self.bottomRow = BottomRow(cellData: cellData)
@@ -60,12 +62,22 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupRunSession() {
-        runSession.$runStage.sink { [weak self] runStage in
+        runSession.$runStage
+            .receive(on: RunLoop.main)
+            .sink { [weak self] runStage in
             guard let self else { return }
             switch runStage {
             case .waitingRunStart, .oneHourToRunStart:
                 bottomRow.runStage = runStage
             case .fiveSecondsToRunStart:
+                if countdownStarted == false {
+                    countdownStarted = true
+                    let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start")
+                    utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+                    utterance.rate = 0.1
+                    Speaker.shared.speak(utterance)
+                }
+
                 presentRunningVC()
             default:
                 break

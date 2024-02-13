@@ -48,7 +48,7 @@ class BottomRow: UIView, CustomViewProtocol {
             }
             title.textColor = .cream
             subtitle.textColor = .cream
-            subtitle.font = UIFont.chalkboardLight(size: 13)
+            subtitle.font = UIFont.chalkboardLight(size: 18)
             subtitle.text = "\(runData.runners.count) / 25 runners"
         }
     }

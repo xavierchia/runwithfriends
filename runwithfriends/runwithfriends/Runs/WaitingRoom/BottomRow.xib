@@ -21,8 +21,8 @@
             <rect key="frame" x="0.0" y="0.0" width="440" height="98"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XB3-hM-sao">
-                    <rect key="frame" x="11.999999999999986" y="26.333333333333332" width="237.66666666666663" height="45.333333333333343"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="XB3-hM-sao">
+                    <rect key="frame" x="10.999999999999986" y="29.333333333333332" width="237.66666666666663" height="39.333333333333343"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Run will auto-start at 12:00PM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Prv-MJ-Uao">
                             <rect key="frame" x="0.0" y="0.0" width="237.66666666666666" height="21.666666666666668"/>
@@ -32,7 +32,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12/25 runners" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sz7-kl-OeF">
-                            <rect key="frame" x="0.0" y="29.666666666666668" width="83.333333333333329" height="15.666666666666668"/>
+                            <rect key="frame" x="0.0" y="23.666666666666668" width="83.333333333333329" height="15.666666666666668"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -68,7 +68,7 @@
             <constraints>
                 <constraint firstItem="XB3-hM-sao" firstAttribute="centerY" secondItem="J9Y-WJ-VI1" secondAttribute="centerY" id="CPi-Om-8Fy"/>
                 <constraint firstAttribute="trailing" secondItem="TjL-y8-fry" secondAttribute="trailing" constant="16" id="Qua-Md-F1M"/>
-                <constraint firstItem="XB3-hM-sao" firstAttribute="leading" secondItem="J9Y-WJ-VI1" secondAttribute="leading" constant="12" id="Wsx-Yw-g6A"/>
+                <constraint firstItem="XB3-hM-sao" firstAttribute="leading" secondItem="J9Y-WJ-VI1" secondAttribute="leading" constant="11" id="Wsx-Yw-g6A"/>
                 <constraint firstItem="TjL-y8-fry" firstAttribute="centerY" secondItem="J9Y-WJ-VI1" secondAttribute="centerY" id="iyE-vj-nXN"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
