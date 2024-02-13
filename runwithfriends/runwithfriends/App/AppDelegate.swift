@@ -8,6 +8,7 @@
 import UIKit
 import CoreData
 import CloudKit
+import AVFoundation
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         setupGlobalUI()
+        setupAudio()
         return true
     }
     
@@ -38,6 +40,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarAppearance.backgroundColor = .cream
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().standardAppearance = tabBarAppearance
+    }
+    
+    private func setupAudio() {
+        do {
+           try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: AVAudioSession.CategoryOptions.mixWithOthers)
+           try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print(error)
+        }
     }
 
     // MARK: UISceneSession Lifecycle

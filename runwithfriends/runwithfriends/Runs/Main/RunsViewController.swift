@@ -285,7 +285,7 @@ extension RunsViewController: UIRunTableViewCellProtocol {
         guard run.start_date > Int(Date().timeIntervalSince1970) else {
             print("Joining a run that has already started")
             reloadRunsData()
-            let alert = UIAlertController.Oops(title: "This run has started >.<")
+            let alert = UIAlertController.Oops(title: "Run Started >.<")
             present(alert, animated: true)
             return
         }

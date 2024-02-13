@@ -10,4 +10,6 @@ import AVFoundation
 
 class Speaker {
     static let shared = AVSpeechSynthesizer()
+    
+    private init() {}
 }
