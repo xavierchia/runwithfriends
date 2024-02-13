@@ -73,7 +73,6 @@ class WaitingRoomViewController: UIViewController {
                 if countdownStarted == false {
                     countdownStarted = true
                     let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start")
-                    utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
                     utterance.rate = 0.1
                     Speaker.shared.speak(utterance)
                 }

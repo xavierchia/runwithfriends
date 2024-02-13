@@ -8,6 +8,7 @@
 import UIKit
 import CoreLocation
 import Combine
+import AVFoundation
 
 class RunningViewController: UIViewController {
     
@@ -23,10 +24,11 @@ class RunningViewController: UIViewController {
     private let runSession: RunSession
     private var cancellables = Set<AnyCancellable>()
     
-    private let paceValueLabel = UILabel().topBarTitle()
+    private let distanceValueLabel = UILabel().topBarTitle()
+    private let distanceMetricLabel = UILabel().topBarSubtitle()
     private let timeValueLabel = UILabel().topBarTitle()
-    private let distanceValueLabel = UILabel()
-    private let distanceMetricLabel = UILabel()
+    
+    private let likeNameLabel = UILabel().topBarSubtitle()
     
     init(with runSession: RunSession) {
         self.runSession = runSession
@@ -66,9 +68,8 @@ class RunningViewController: UIViewController {
                 timeValueLabel.text = countupTime
                 
 //                for testing we move faster
-//                totalDistance += 0.5
-//                updateDistanceLabel()
-//                updatePaceLabel()
+                totalDistance += 50
+                updateDistanceLabel()
 
             default:
                 return
@@ -96,9 +97,9 @@ class RunningViewController: UIViewController {
     
     // MARK: Setup UI
     private func setupUI() {
-        setupPaceStack()
-        setupTimeStack()
         setupDistanceStack()
+        setupTimeStack()
+        setupLikeStack()
         setupEndButton()
         setupCountdownView()
     }
@@ -120,25 +121,26 @@ class RunningViewController: UIViewController {
         ])
     }
     
-    private func setupPaceStack() {
-        paceValueLabel.text = "0'00\""
-        paceValueLabel.adjustsFontSizeToFitWidth = true
-        let paceMetricLabel = UILabel().topBarSubtitle()
-        paceMetricLabel.text = "Pace"
+    private func setupDistanceStack() {
+        distanceValueLabel.text = "0"
+        distanceMetricLabel.text = "Meters"
         
-        let paceStack = UIStackView().verticalStack()
-        paceStack.spacing = 5
-        paceStack.addArrangedSubview(paceValueLabel)
-        paceStack.addArrangedSubview(paceMetricLabel)
+        let distanceStack = UIStackView().verticalStack()
+        distanceStack.spacing = 5
+        distanceStack.addArrangedSubview(distanceValueLabel)
+        distanceStack.addArrangedSubview(distanceMetricLabel)
         
-        view.addSubview(paceStack)
-        paceStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(distanceStack)
+        distanceStack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            paceStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            paceStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            paceStack.widthAnchor.constraint(equalToConstant: 150),
-            paceStack.heightAnchor.constraint(equalToConstant: 70)
+            distanceStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            distanceStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            distanceStack.widthAnchor.constraint(equalToConstant: 150),
+            distanceStack.heightAnchor.constraint(equalToConstant: 70)
         ])
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(resultsButtonPressed))
+        distanceStack.addGestureRecognizer(tap)
     }
     
     private func setupTimeStack() {
@@ -161,41 +163,43 @@ class RunningViewController: UIViewController {
         ])
     }
     
-    private func setupDistanceStack() {
-        distanceValueLabel.text = "0"
-        distanceValueLabel.textColor = .cream
-        distanceValueLabel.font = UIFont.chalkboardBold(size: 120)
-        distanceValueLabel.textAlignment = .center
-        
-        distanceMetricLabel.text = "Meters"
-        distanceMetricLabel.textColor = .cream
-        distanceMetricLabel.font = UIFont.chalkboardBold(size: 17.51)
-        distanceMetricLabel.textAlignment = .center
-        
-        let distanceStack = UIStackView().verticalStack()
-        distanceStack.spacing = 10
-        distanceStack.addArrangedSubview(distanceValueLabel)
-        distanceStack.addArrangedSubview(distanceMetricLabel)
-        
-        view.addSubview(distanceStack)
-        distanceStack.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            distanceStack.widthAnchor.constraint(equalTo: view.widthAnchor),
-            distanceStack.heightAnchor.constraint(equalToConstant: 150),
-            distanceStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            distanceStack.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(resultsButtonPressed))
-        distanceStack.addGestureRecognizer(tap)
-    }
     
-    private func setupEndButton() {
-        let endButton = UIButton()
-        var config = UIImage.SymbolConfiguration(paletteColors: [.accent, .cream])
+    private func setupLikeStack() {
+        let likeButton = UIButton()
+        var config = UIImage.SymbolConfiguration(paletteColors: [.pumpkin, .cream])
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
         config = config.applying(largeConfig)
-        let largeStopCircle = UIImage(systemName: "stop.circle.fill", withConfiguration: config)
+        let heartCircleFill = UIImage(systemName: "heart.circle.fill", withConfiguration: config)
+        likeButton.setImage(heartCircleFill, for: .normal)
+        
+        view.addSubview(likeButton)
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            likeButton.widthAnchor.constraint(equalToConstant: 150),
+            likeButton.heightAnchor.constraint(equalToConstant: 150),
+            likeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            likeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+        
+        likeNameLabel.text = "Xavier"
+        
+        view.addSubview(likeNameLabel)
+        likeNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            likeNameLabel.widthAnchor.constraint(equalToConstant: 150),
+            likeNameLabel.heightAnchor.constraint(equalToConstant: 20),
+            likeNameLabel.topAnchor.constraint(equalTo: likeButton.bottomAnchor, constant: 5),
+            likeNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    // change this to a text rounded button just like the invite button
+    private func setupEndButton() {
+        let endButton = UIButton()
+        var config = UIImage.SymbolConfiguration(paletteColors: [.cream, .cream])
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .regular, scale: .large)
+        config = config.applying(largeConfig)
+        let largeStopCircle = UIImage(systemName: "stop.circle", withConfiguration: config)
         endButton.setImage(largeStopCircle, for: .normal)
         
         view.addSubview(endButton)
@@ -221,7 +225,6 @@ extension RunningViewController: CLLocationManagerDelegate {
             totalDistance += currentLocation.distance(from: lastLocation)
             print("location updated \(totalDistance)")
             updateDistanceLabel()
-            updatePaceLabel()
         }
         
         self.lastLocation = currentLocation
@@ -234,15 +237,6 @@ extension RunningViewController: CLLocationManagerDelegate {
         } else {
             distanceValueLabel.text = String(format: "%.0f", totalDistance)
         }
-    }
-    
-    private func updatePaceLabel() {
-        guard totalDistance > 0 else { return }
-        let pace = totalTime / (totalDistance / 1000)
-        var paceString = pace.getMinuteSecondsString()
-        paceString = paceString.replacingOccurrences(of: ":", with: "'")
-        paceString += "\""
-        paceValueLabel.text = paceString
     }
 }
 
