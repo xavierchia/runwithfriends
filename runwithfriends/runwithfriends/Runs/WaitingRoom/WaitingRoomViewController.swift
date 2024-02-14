@@ -65,7 +65,6 @@ class WaitingRoomViewController: UIViewController {
     
     private func setupRunSession() {
         runSession.$runStage
-            .receive(on: RunLoop.main)
             .sink { [weak self] runStage in
             guard let self else { return }
             switch runStage {
@@ -74,7 +73,7 @@ class WaitingRoomViewController: UIViewController {
             case .fiveSecondsToRunStart:
                 if countdownStarted == false {
                     countdownStarted = true
-                    let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start")
+                    let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start... Zoomy Zoomy Zoom")
                     utterance.rate = 0.1
                     Speaker.shared.speak(utterance)
                 }
@@ -126,20 +125,7 @@ class WaitingRoomViewController: UIViewController {
         let obscuredCoordinate = coordinate.obscured()
         setPins(with: obscuredCoordinate)
         
-        print("location updated")
-        
-        // update user's coordinates
-        Task {
-            do {
-                try await supabase.from("users")
-                    .update(["longitude": obscuredCoordinate.longitude, "latitude": obscuredCoordinate.latitude])
-                    .eq("user_id", value: userData.user.user_id)
-                    .execute()
-            } catch {
-                print("failed to updated user location")
-            }
-
-        }
+        userData.updateUserCoordinate(obscuredCoordinate: obscuredCoordinate)
         
         // add runner to run_session table
 //        let supabase = Supabase.shared.client.database

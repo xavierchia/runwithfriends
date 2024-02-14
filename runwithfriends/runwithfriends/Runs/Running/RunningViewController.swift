@@ -28,7 +28,7 @@ class RunningViewController: UIViewController {
     private let distanceMetricLabel = UILabel().topBarSubtitle()
     private let timeValueLabel = UILabel().topBarTitle()
     
-    private let likeNameLabel = UILabel().topBarSubtitle()
+    private let likeNameLabel = UILabel().midSubtitle()
     
     init(with runSession: RunSession) {
         self.runSession = runSession
@@ -62,15 +62,12 @@ class RunningViewController: UIViewController {
             case .runStart(let seconds):
                 countdownLabel.removeFromSuperview()
                 totalTime = seconds
-                
-                // update time
-                let countupTime = seconds.getMinuteSecondsString(withZeroPadding: true)
-                timeValueLabel.text = countupTime
-                
+                                
 //                for testing we move faster
-//                totalDistance += 50
-//                updateDistanceLabel()
-
+                totalDistance += 0.5
+                
+                updateLabels()
+                updateAudio()
             default:
                 return
             }
@@ -187,7 +184,7 @@ class RunningViewController: UIViewController {
         likeNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             likeNameLabel.widthAnchor.constraint(equalToConstant: 150),
-            likeNameLabel.heightAnchor.constraint(equalToConstant: 20),
+            likeNameLabel.heightAnchor.constraint(equalToConstant: 30),
             likeNameLabel.topAnchor.constraint(equalTo: likeButton.bottomAnchor, constant: 5),
             likeNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
@@ -224,18 +221,28 @@ extension RunningViewController: CLLocationManagerDelegate {
         if let lastLocation {
             totalDistance += currentLocation.distance(from: lastLocation)
             print("location updated \(totalDistance)")
-            updateDistanceLabel()
+            updateLabels()
         }
         
         self.lastLocation = currentLocation
     }
     
-    private func updateDistanceLabel() {
-        if totalDistance > 1000 {
-            distanceValueLabel.text = String(format: "%.2f", totalDistance / 1000)
-            distanceMetricLabel.text = "Kilometers"
-        } else {
-            distanceValueLabel.text = String(format: "%.0f", totalDistance)
+    private func updateLabels() {
+        // distance
+        distanceValueLabel.text = totalDistance.value
+        distanceMetricLabel.text = totalDistance.metric
+        
+        // time
+        timeValueLabel.text = totalTime.positionalTime
+    }
+    
+    private func updateAudio() {
+        if Int(totalTime) % 60 == 0 {
+            guard !Speaker.shared.isSpeaking else { return }
+            let minutes = Int(totalTime) / 60
+            let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(totalDistance.value) \(totalDistance.metric)")
+            utterance.rate = 0.1
+            Speaker.shared.speak(utterance)
         }
     }
 }
@@ -252,6 +259,13 @@ private extension UILabel {
     func topBarSubtitle() -> UILabel {
         self.textColor = .cream
         self.font = UIFont.chalkboardBold(size: 17.51)
+        self.textAlignment = .center
+        return self
+    }
+    
+    func midSubtitle() -> UILabel {
+        self.textColor = .cream
+        self.font = UIFont.chalkboardBold(size: 28.33)
         self.textAlignment = .center
         return self
     }

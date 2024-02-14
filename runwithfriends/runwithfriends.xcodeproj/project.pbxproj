@@ -10,6 +10,7 @@
 		25074FA52B7B0DB70061551D /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25074FA42B7B0DB70061551D /* Speaker.swift */; };
 		258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 258508702B2BCEB8005FD81F /* SkeletonView */; };
 		25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A4309A2B74CB79000CE771 /* UIFont.swift */; };
+		25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A5B0DB2B7C9741004DB775 /* Distance.swift */; };
 		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
 		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
 		9519A6C52B19593A000B952F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519A6C42B19593A000B952F /* Date.swift */; };
@@ -56,6 +57,7 @@
 /* Begin PBXFileReference section */
 		25074FA42B7B0DB70061551D /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		25A4309A2B74CB79000CE771 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		25A5B0DB2B7C9741004DB775 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
 		950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewController.swift; sourceTree = "<group>"; };
 		950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
 		9519A6C42B19593A000B952F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				95F6970E2AFF6CD800B10EB2 /* String.swift */,
 				9519A6C42B19593A000B952F /* Date.swift */,
 				25A4309A2B74CB79000CE771 /* UIFont.swift */,
+				25A5B0DB2B7C9741004DB775 /* Distance.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
 				9557F76E2B356FF0002CAE30 /* Locales.swift in Sources */,
+				25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */,
 				25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */,
 				9557F76C2B350794002CAE30 /* AlertController.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,

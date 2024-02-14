@@ -45,13 +45,14 @@ class RunSession {
         case 3600...:
             runStage = .waitingRunStart
         case 6...3600:
-            let countdownTime = intervalToStart.getMinuteSecondsString()
+            let countdownTime = intervalToStart.positionalTime
             runStage = .oneHourToRunStart(countdownTime)
         case 0...5:
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
-        case -1800...0:
+        // Each run is 25 minutes
+        case -1500...0:
             runStage = .runStart(-intervalToStart)
-        case ...(-1800):
+        case ...(-1500):
             runStage = .runEnd
         default:
             break

@@ -33,31 +33,24 @@ extension Date {
               let rawAmOrPmString = dateArray.last else { return nil }
         return DisplayTime(time: String(rawTimeString), amOrPm: String(rawAmOrPmString))
     }
-    
-    static func startOfWeekUTCString(weekOffset: Int) -> String? {
-        let currentDate = Date()
-        var calendar = Calendar(identifier: .iso8601)
-        calendar.timeZone = .gmt
-        
-        // Calculate the start of the week based on the given offset
-        if let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: currentDate)) {
-            let startOfWeekUTC = startOfWeek.addingTimeInterval(TimeInterval(weekOffset) * 7 * 24 * 60 * 60)
-            let startOfWeekUTCUnix = startOfWeekUTC.timeIntervalSince1970
-            return String(format: "%.0f", startOfWeekUTCUnix)
-        }
-        
-        return nil
-    }
+}
+
+extension Formatter {
+    static let positional: DateComponentsFormatter = {
+        let positional = DateComponentsFormatter()
+        positional.unitsStyle = .positional
+        positional.zeroFormattingBehavior = .pad
+        return positional
+    }()
 }
 
 extension TimeInterval {
-    func getMinuteSecondsString(withZeroPadding: Bool = false) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second]
-
-        if withZeroPadding {
-            formatter.zeroFormattingBehavior = .pad
-        }
-        return formatter.string(from: self)!
+    var positionalTime: String {
+        Formatter.positional.allowedUnits = self >= 3600 ?
+                                            [.hour, .minute, .second] :
+                                            [.minute, .second]
+        let string = Formatter.positional.string(from: self)!
+        return string.hasPrefix("0") && string.count > 4 ?
+            .init(string.dropFirst()) : string
     }
 }
