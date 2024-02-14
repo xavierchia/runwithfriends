@@ -53,9 +53,9 @@ class BottomRow: UIView, CustomViewProtocol {
         }
     }
     
-    convenience init(cellData: Run) {
+    convenience init(with run: Run) {
         self.init(frame: .zero)
-        self.runData = cellData
+        self.runData = run
         rightButton.layer.borderColor = UIColor.cream.cgColor
         rightButton.layer.borderWidth = 3
     }

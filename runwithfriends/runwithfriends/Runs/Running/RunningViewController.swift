@@ -68,8 +68,8 @@ class RunningViewController: UIViewController {
                 timeValueLabel.text = countupTime
                 
 //                for testing we move faster
-                totalDistance += 50
-                updateDistanceLabel()
+//                totalDistance += 50
+//                updateDistanceLabel()
 
             default:
                 return

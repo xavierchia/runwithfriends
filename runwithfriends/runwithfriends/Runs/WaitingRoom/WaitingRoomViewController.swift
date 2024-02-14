@@ -12,6 +12,8 @@ import Combine
 import AVFoundation
 
 class WaitingRoomViewController: UIViewController {
+    // database
+    private let supabase = Supabase.shared.client.database
     
     // Location
     private let locationManager = CLLocationManager()
@@ -30,9 +32,9 @@ class WaitingRoomViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     private var countdownStarted = false
     
-    init(with cellData: Run, and userData: UserData) {
-        self.bottomRow = BottomRow(cellData: cellData)
-        self.runSession = RunSession(run: cellData)
+    init(with run: Run, and userData: UserData) {
+        self.bottomRow = BottomRow(with: run)
+        self.runSession = RunSession(with: run)
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
@@ -120,10 +122,34 @@ class WaitingRoomViewController: UIViewController {
         mapView.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
     }
     
-    private func setMapRegion(with coordinate: CLLocationCoordinate2D) {
+    private func locationUpdated(with coordinate: CLLocationCoordinate2D) {
+        let obscuredCoordinate = coordinate.obscured()
+        setPins(with: obscuredCoordinate)
+        
+        print("location updated")
+        
+        // update user's coordinates
+        Task {
+            do {
+                try await supabase.from("users")
+                    .update(["longitude": Double(obscuredCoordinate.longitude), "latitude": Double(obscuredCoordinate.latitude)])
+                    .eq("user_id", value: userData.user.user_id)
+                    .execute()
+                print("updating location \(userData.user.user_id)")
+            } catch {
+                print("failed to updated user location")
+            }
+
+        }
+        
+        // add runner to run_session table
+//        let supabase = Supabase.shared.client.database
+//        supabase.
+    }
+    
+    private func setPins(with obscuredCoordinate: CLLocationCoordinate2D) {
         pinsSet = true
         
-        let obscuredCoordinate = coordinate.obscured()
         // Handle location update
         // Bigger span zooms out more
         let span = MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40)
@@ -211,13 +237,13 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
             manager.authorizationStatus == .authorizedAlways {
             if let location = manager.location {
                 print("Location authorized, setting user location")
-                setMapRegion(with: location.coordinate)
+                locationUpdated(with: location.coordinate)
             }
         } else if manager.authorizationStatus == .notDetermined {
             print("Location not authorized yet, just wait.")
         } else {
             print("Did not authorize, setting default location")
-            setMapRegion(with: defaultLocation)
+            locationUpdated(with: defaultLocation)
         }
     }
     
@@ -225,7 +251,7 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
         if pinsSet == false,
            let location = manager.location {
             print("Getting location passed")
-            setMapRegion(with: location.coordinate)
+            locationUpdated(with: location.coordinate)
             locationManager.stopUpdatingLocation()
         }
     }
@@ -233,7 +259,7 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if pinsSet == false {
             print("Getting location failed")
-            setMapRegion(with: defaultLocation)
+            locationUpdated(with: defaultLocation)
         }
     }
 }

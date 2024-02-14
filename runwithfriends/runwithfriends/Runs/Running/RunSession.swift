@@ -25,7 +25,7 @@ class RunSession {
     
     var timer = Timer()
     
-    init(run: Run) {
+    init(with run: Run) {
         self.run = run
         fireTimer()
         setupTimer()
