@@ -132,10 +132,9 @@ class WaitingRoomViewController: UIViewController {
         Task {
             do {
                 try await supabase.from("users")
-                    .update(["longitude": Double(obscuredCoordinate.longitude), "latitude": Double(obscuredCoordinate.latitude)])
+                    .update(["longitude": obscuredCoordinate.longitude, "latitude": obscuredCoordinate.latitude])
                     .eq("user_id", value: userData.user.user_id)
                     .execute()
-                print("updating location \(userData.user.user_id)")
             } catch {
                 print("failed to updated user location")
             }
