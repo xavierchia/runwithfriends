@@ -30,6 +30,10 @@ class RunningViewController: UIViewController {
     
     private let likeNameLabel = UILabel().midSubtitle()
     
+    private var isEndRunTipShowing = false
+    private var touchCountTimer: Timer?
+    private let endButton = UIButton(type: .custom)
+    
     init(with runManager: RunManager) {
         self.runManager = runManager
         super.init(nibName: nil, bundle: nil)
@@ -62,8 +66,8 @@ class RunningViewController: UIViewController {
             case .runStart(let seconds):
                 countdownLabel.removeFromSuperview()
                 totalTime = seconds
-                                
-//                for testing we move faster
+                
+                //                for testing we move faster
                 totalDistance += 0.5
                 
                 updateLabels()
@@ -71,14 +75,10 @@ class RunningViewController: UIViewController {
             default:
                 // for testing:
                 countdownLabel.removeFromSuperview()
+                
                 return
             }
         }.store(in: &cancellables)
-    }
-
-    @objc private func endButtonPressed() {
-//        self.dismiss(animated: true)
-        showToast(message: "Long press to cancel run")
     }
     
     @objc private func resultsButtonPressed() {
@@ -195,12 +195,12 @@ class RunningViewController: UIViewController {
     
     // change this to a text rounded button just like the invite button
     private func setupEndButton() {
-        let endButton = UIButton()
         var config = UIImage.SymbolConfiguration(paletteColors: [.cream, .cream])
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .regular, scale: .large)
         config = config.applying(largeConfig)
         let largeStopCircle = UIImage(systemName: "stop.circle", withConfiguration: config)
         endButton.setImage(largeStopCircle, for: .normal)
+        endButton.setImage(largeStopCircle, for: .highlighted)
         
         view.addSubview(endButton)
         endButton.translatesAutoresizingMaskIntoConstraints = false
@@ -213,6 +213,42 @@ class RunningViewController: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(endButtonPressed))
         endButton.addGestureRecognizer(tap)
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(endButtonLongPressed))
+        longPress.minimumPressDuration = 0.1
+        endButton.addGestureRecognizer(longPress)
+    }
+    
+    @objc private func endButtonPressed() {
+        print("tapping")
+        guard isEndRunTipShowing == false else { return }
+        isEndRunTipShowing = true
+        showToast(message: "Long press to cancel run") { [weak self] in
+            self?.isEndRunTipShowing = false
+        }
+    }
+            
+    @objc private func endButtonLongPressed(sender: UILongPressGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            print("began long press to cancel run")
+            UIView.animate(withDuration: 1,
+                           animations: {
+                self.endButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            }
+                           , completion: { _ in
+                UIView.animate(withDuration: 0.6) {
+                self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                }
+            })
+            
+            touchCountTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+                print("cancelling run")
+                self?.touchCountTimer?.invalidate()
+            }
+        default:
+            touchCountTimer?.invalidate()
+        }
     }
 }
 

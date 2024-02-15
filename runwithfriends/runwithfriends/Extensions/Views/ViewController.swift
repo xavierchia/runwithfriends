@@ -9,9 +9,9 @@ import UIKit
 
 extension UIViewController {
     
-    func showToast(message : String) {
+    func showToast(message : String, completionHandler: @escaping () -> Void) {
         let width = view.frame.width - 40
-        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - width/2, y: self.view.frame.size.height - 285, width: width, height: 70))
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - width/2, y: self.view.frame.size.height - 265, width: width, height: 70))
         toastLabel.backgroundColor = UIColor.cream
         toastLabel.textColor = UIColor.accent
         toastLabel.font = UIFont.chalkboard(size: 24)
@@ -19,17 +19,19 @@ extension UIViewController {
         toastLabel.textAlignment = .center;
         toastLabel.lineBreakMode = .byWordWrapping
         toastLabel.text = message
-        toastLabel.alpha = 1.0
+        toastLabel.alpha = 0
         toastLabel.layer.cornerRadius = 10;
         toastLabel.clipsToBounds  =  true
         self.view.addSubview(toastLabel)
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
             toastLabel.alpha = 1.0
+            toastLabel.frame = CGRect(x: self.view.frame.size.width/2 - width/2, y: self.view.frame.size.height - 275, width: width, height: 70)
         }, completion: { _ in
-            UIView.animate(withDuration: 3.0, delay: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 1.0, delay: 1, options: .curveEaseOut, animations: {
                 toastLabel.alpha = 0.0
-            }, completion: {_ in
+            }, completion: { _ in
                 toastLabel.removeFromSuperview()
+                completionHandler()
             })
         })
     }
