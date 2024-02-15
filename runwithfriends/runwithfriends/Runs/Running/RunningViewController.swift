@@ -30,7 +30,6 @@ class RunningViewController: UIViewController {
     
     private let likeNameLabel = UILabel().midSubtitle()
     
-    private var isEndRunTipShowing = false
     private var touchCountTimer: Timer?
     private let endButton = UIButton(type: .custom)
     
@@ -221,11 +220,7 @@ class RunningViewController: UIViewController {
     
     @objc private func endButtonPressed() {
         print("tapping")
-        guard isEndRunTipShowing == false else { return }
-        isEndRunTipShowing = true
-        showToast(message: "Long press to cancel run") { [weak self] in
-            self?.isEndRunTipShowing = false
-        }
+        showToast(message: "Long press to cancel run")
     }
             
     @objc private func endButtonLongPressed(sender: UILongPressGestureRecognizer) {

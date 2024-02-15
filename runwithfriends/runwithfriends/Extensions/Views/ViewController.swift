@@ -9,9 +9,14 @@ import UIKit
 
 extension UIViewController {
     
-    func showToast(message : String, completionHandler: @escaping () -> Void) {
+    func showToast(message : String) {
+        guard view.subviews.contains(where: { view in
+            view.accessibilityIdentifier == "toastView"
+        }) == false else { return }
+        
         let width = view.frame.width - 40
         let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - width/2, y: self.view.frame.size.height - 265, width: width, height: 70))
+        toastLabel.accessibilityIdentifier = "toastView"
         toastLabel.backgroundColor = UIColor.cream
         toastLabel.textColor = UIColor.accent
         toastLabel.font = UIFont.chalkboard(size: 24)
@@ -31,7 +36,6 @@ extension UIViewController {
                 toastLabel.alpha = 0.0
             }, completion: { _ in
                 toastLabel.removeFromSuperview()
-                completionHandler()
             })
         })
     }
