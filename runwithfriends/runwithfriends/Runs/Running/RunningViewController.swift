@@ -21,7 +21,7 @@ class RunningViewController: UIViewController {
     private var totalTime: TimeInterval = 0
     private let startingTime = Date()
     
-    private let runSession: RunSession
+    private let runManager: RunManager
     private var cancellables = Set<AnyCancellable>()
     
     private let distanceValueLabel = UILabel().topBarTitle()
@@ -30,8 +30,8 @@ class RunningViewController: UIViewController {
     
     private let likeNameLabel = UILabel().midSubtitle()
     
-    init(with runSession: RunSession) {
-        self.runSession = runSession
+    init(with runManager: RunManager) {
+        self.runManager = runManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,7 +48,7 @@ class RunningViewController: UIViewController {
     }
     
     private func respondToRunStage() {
-        runSession.$runStage.sink { [weak self] runStage in
+        runManager.$runStage.sink { [weak self] runStage in
             guard let self else { return }
             switch runStage {
             case .fiveSecondsToRunStart(let seconds):

@@ -16,7 +16,22 @@ class UserData {
     init(user: User) {
         self.user = user
     }
-        
+    
+    func updateUserCoordinate(obscuredCoordinate: CLLocationCoordinate2D) {
+        Task {
+            do {
+                let supabase = Supabase.shared.client.database
+                try await supabase.from("users")
+                    .update(["longitude": obscuredCoordinate.longitude, "latitude": obscuredCoordinate.latitude])
+                    .eq("user_id", value: user.user_id)
+                    .execute()
+            } catch {
+                print("failed to updated user location \(error)")
+            }
+        }
+    }
+    
+    // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> User {
         let supabase = Supabase.shared
         let user = try await supabase.client.auth.session.user
@@ -31,21 +46,6 @@ class UserData {
         return retrievedUser
     }
     
-    func updateUserCoordinate(obscuredCoordinate: CLLocationCoordinate2D) {
-        Task {
-            do {
-                let supabase = Supabase.shared.client.database
-                try await supabase.from("users")
-                    .update(["longitude": obscuredCoordinate.longitude, "latitude": obscuredCoordinate.latitude])
-                    .eq("user_id", value: user.user_id)
-                    .execute()
-            } catch {
-                print("failed to updated user location")
-            }
-        }
-    }
-    
-    // MARK: User methods before UserData has been created
     static func saveUser(_ initialUser: InitialUser) async throws -> User {
         let supabase = Supabase.shared
         let user: User = try await supabase.client.database

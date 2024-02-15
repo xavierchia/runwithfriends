@@ -78,7 +78,7 @@ class ResultsTableViewCell: UITableViewCell {
     
     private func setupSeparator() {
         let separator = UIView(frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: 1))
-        separator.backgroundColor = .separator
+        separator.backgroundColor = .separate
         separator.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(separator)
         

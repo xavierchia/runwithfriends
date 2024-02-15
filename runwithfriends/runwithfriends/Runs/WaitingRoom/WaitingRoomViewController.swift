@@ -22,7 +22,7 @@ class WaitingRoomViewController: UIViewController {
     private let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
     
     // init data
-    private let runSession: RunSession
+    private let runManager: RunManager
     private let userData: UserData
     
     // UI
@@ -34,7 +34,7 @@ class WaitingRoomViewController: UIViewController {
     
     init(with run: Run, and userData: UserData) {
         self.bottomRow = BottomRow(with: run)
-        self.runSession = RunSession(with: run)
+        self.runManager = RunManager(with: run)
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
@@ -64,7 +64,7 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupRunSession() {
-        runSession.$runStage
+        runManager.$runStage
             .sink { [weak self] runStage in
             guard let self else { return }
             switch runStage {
@@ -83,6 +83,8 @@ class WaitingRoomViewController: UIViewController {
                 break
             }
         }.store(in: &cancellables)
+        
+        runManager.upsertRun(with: userData.user)
     }
     
     // MARK: Setup UI
@@ -146,7 +148,7 @@ class WaitingRoomViewController: UIViewController {
         newPin.title = userData.user.username
         mapView.addAnnotation(newPin)
         
-        runSession.run.runners.forEach { runner in
+        runManager.run.runners.forEach { runner in
             let runnerPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: runner.emoji))
             runnerPin.coordinate = CLLocationCoordinate2D(latitude: runner.latitude ?? defaultLocation.latitude,
                                                           longitude: runner.longitude ?? defaultLocation.longitude)
@@ -156,7 +158,7 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupWaitingRoomTitle() {
-        guard let displayTime = runSession.run.start_date.getDate().getDisplayTime(padZero: false) else {
+        guard let displayTime = runManager.run.start_date.getDate().getDisplayTime(padZero: false) else {
             return
         }
 
@@ -204,13 +206,14 @@ class WaitingRoomViewController: UIViewController {
             return
         }
         print("Presenting running vc")
-        let runningVC = RunningViewController(with: runSession)
+        let runningVC = RunningViewController(with: runManager)
         runningVC.modalPresentationStyle = .overFullScreen
         
         self.present(runningVC, animated: true)
     }
     
     @objc private func pop() {
+        runManager.leaveRun(with: userData.user)
         self.dismiss(animated: true)
     }
 }

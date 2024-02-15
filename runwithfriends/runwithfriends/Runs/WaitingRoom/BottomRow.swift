@@ -21,7 +21,7 @@ class BottomRow: UIView, CustomViewProtocol {
     let identifier = "BottomRow"
     weak var delegate: BottomRowProtocol?
     var runData: Run?
-    var runStage: RunSession.RunStage? {
+    var runStage: RunManager.RunStage? {
         didSet {
             guard let runData else { return }
             let startingTime = runData.start_date.getDate()

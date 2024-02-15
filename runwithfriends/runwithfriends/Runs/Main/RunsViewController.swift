@@ -8,22 +8,6 @@
 import UIKit
 import SkeletonView
 
-struct Run: Codable {
-    let run_id: UUID
-    let start_date: Int
-    let end_date: Int
-    let runners: [Runner]
-}
-
-struct Runner: Codable {
-    let user_id: UUID
-    let username: String
-    let emoji: String
-    let longitude: Double?
-    let latitude: Double?
-    let distance: Int
-}
-
 struct FriendCellData {
     let name: String
     var runsTogether: Int? = nil
