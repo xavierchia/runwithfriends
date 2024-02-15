@@ -69,13 +69,16 @@ class RunningViewController: UIViewController {
                 updateLabels()
                 updateAudio()
             default:
+                // for testing:
+                countdownLabel.removeFromSuperview()
                 return
             }
         }.store(in: &cancellables)
     }
 
     @objc private func endButtonPressed() {
-        self.dismiss(animated: true)
+//        self.dismiss(animated: true)
+        showToast(message: "Long press to cancel run")
     }
     
     @objc private func resultsButtonPressed() {

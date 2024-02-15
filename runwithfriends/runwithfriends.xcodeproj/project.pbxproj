@@ -32,6 +32,7 @@
 		953D20972B7D846000A32185 /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D20962B7D846000A32185 /* Run.swift */; };
 		953D20992B7D847400A32185 /* Runner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D20982B7D847400A32185 /* Runner.swift */; };
 		953D209B2B7D8C5300A32185 /* RunSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D209A2B7D8C5300A32185 /* RunSession.swift */; };
+		953D209D2B7D973500A32185 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D209C2B7D973500A32185 /* ViewController.swift */; };
 		95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95457DFB2AF8C31400E4414C /* ProfileViewController.swift */; };
 		954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BB92AF723E800018E01 /* UISegmentStackView.swift */; };
 		954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */; };
@@ -78,6 +79,7 @@
 		953D20962B7D846000A32185 /* Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		953D20982B7D847400A32185 /* Runner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runner.swift; sourceTree = "<group>"; };
 		953D209A2B7D8C5300A32185 /* RunSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSession.swift; sourceTree = "<group>"; };
+		953D209C2B7D973500A32185 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		95457DFB2AF8C31400E4414C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		954F4BB92AF723E800018E01 /* UISegmentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentStackView.swift; sourceTree = "<group>"; };
 		954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRunTableViewCell.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				95659B8D2AEF1FA4008D7BA8 /* Labels.swift */,
+				953D209C2B7D973500A32185 /* ViewController.swift */,
 				95877BC22B042F7500A81839 /* Cell.swift */,
 				95AC658A2B0227860084FF15 /* UIView.swift */,
 				95BC85302B0ECA9E00DD81BB /* NavigationController.swift */,
@@ -396,6 +399,7 @@
 				953D20972B7D846000A32185 /* Run.swift in Sources */,
 				25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */,
 				25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */,
+				953D209D2B7D973500A32185 /* ViewController.swift in Sources */,
 				9557F76C2B350794002CAE30 /* AlertController.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
