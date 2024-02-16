@@ -34,7 +34,7 @@ class WaitingRoomViewController: UIViewController {
     
     init(with run: Run, and userData: UserData) {
         self.bottomRow = BottomRow(with: run)
-        self.runManager = RunManager(with: run)
+        self.runManager = RunManager(with: run, and: userData.user)
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
@@ -73,7 +73,7 @@ class WaitingRoomViewController: UIViewController {
             case .fiveSecondsToRunStart:
                 if countdownStarted == false {
                     countdownStarted = true
-                    let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start... Zoomy Zoomy Zoom")
+                    let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start...")
                     utterance.rate = 0.1
                     Speaker.shared.speak(utterance)
                 }
@@ -84,7 +84,7 @@ class WaitingRoomViewController: UIViewController {
             }
         }.store(in: &cancellables)
         
-        runManager.upsertRun(with: userData.user)
+        runManager.upsertRun()
     }
     
     // MARK: Setup UI
@@ -213,7 +213,7 @@ class WaitingRoomViewController: UIViewController {
     }
     
     @objc private func pop() {
-        runManager.leaveRun(with: userData.user)
+        runManager.leaveRun()
         self.dismiss(animated: true)
     }
 }

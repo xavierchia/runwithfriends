@@ -73,7 +73,7 @@ class RunningViewController: UIViewController {
                 updateAudio()
             default:
                 // for testing:
-                countdownLabel.removeFromSuperview()
+//                countdownLabel.removeFromSuperview()
                 
                 return
             }
@@ -242,6 +242,7 @@ class RunningViewController: UIViewController {
                 self?.touchCountTimer?.invalidate()
                 self?.view.window?.rootViewController?.dismiss(animated: true)
                 self?.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
+                self?.runManager.leaveRun()
             }
         default:
             touchCountTimer?.invalidate()

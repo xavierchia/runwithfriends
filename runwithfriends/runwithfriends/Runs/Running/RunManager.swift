@@ -11,7 +11,7 @@ import CoreLocation
 
 class RunManager {
     
-    enum RunStage {
+    enum RunStage: Comparable {
         case waitingRunStart
         case oneHourToRunStart(String)
         case fiveSecondsToRunStart(Int)
@@ -22,17 +22,19 @@ class RunManager {
     @Published
     public var runStage: RunStage = .waitingRunStart
     public var run: Run
-    
+
+    private var user: User
     private let supabase = Supabase.shared.client.database
     private var timer = Timer()
     
-    init(with run: Run) {
+    init(with run: Run, and user: User) {
         self.run = run
+        self.user = user
         fireTimer()
         setupTimer()
     }
     
-    public func upsertRun(with user: User, and distance: Int = 0) {
+    public func upsertRun(with distance: Int = 0) {
         Task {
             do {
                 let session = RunSession(run_id: run.run_id, user_id: user.user_id, distance: distance)
@@ -48,7 +50,7 @@ class RunManager {
         }
     }
     
-    public func leaveRun(with user: User) {
+    public func leaveRun() {
         Task {
             do {
                 try await supabase.from("run_session")
@@ -79,7 +81,7 @@ class RunManager {
         case 6...3600:
             let countdownTime = intervalToStart.positionalTime
             runStage = .oneHourToRunStart(countdownTime)
-        case 0...5:
+        case 0...6:
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
         // Each run is 25 minutes
         case -1500...0:
