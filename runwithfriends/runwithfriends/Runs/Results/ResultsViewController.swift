@@ -99,7 +99,7 @@ class ResultsViewController: UIViewController {
     }
         
     @objc private func popToRoot() {
-        self.view.window?.rootViewController?.dismiss(animated: false, completion: nil)
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -130,18 +130,6 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             label.text = ""
         }
-        
-//        let separator = UIView()
-//        separator.backgroundColor = .lightGray
-//        separator.translatesAutoresizingMaskIntoConstraints = false
-//        label.addSubview(separator)
-//        
-//        NSLayoutConstraint.activate([
-//            separator.bottomAnchor.constraint(equalTo: label.bottomAnchor),
-//            separator.leftAnchor.constraint(equalTo: label.leftAnchor, constant: 16),
-//            separator.rightAnchor.constraint(equalTo: label.rightAnchor, constant: -16),
-//            separator.heightAnchor.constraint(equalToConstant: 1)
-//        ])
         
         return label
     }

@@ -146,7 +146,7 @@ class RunningViewController: UIViewController {
         timeValueLabel.text = "00:00"
         let timeMetricLabel = UILabel().topBarSubtitle()
         timeMetricLabel.text = "Time"
-
+        
         let timeStack = UIStackView().verticalStack()
         timeStack.spacing = 5
         timeStack.addArrangedSubview(timeValueLabel)
@@ -222,24 +222,26 @@ class RunningViewController: UIViewController {
         print("tapping")
         showToast(message: "Long press to cancel run")
     }
-            
+    
     @objc private func endButtonLongPressed(sender: UILongPressGestureRecognizer) {
         switch sender.state {
         case .began:
             print("began long press to cancel run")
-            UIView.animate(withDuration: 1,
-                           animations: {
+
+            UIView.animate(withDuration: 1) {
                 self.endButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-            }
-                           , completion: { _ in
+            } completion: { _ in
                 UIView.animate(withDuration: 0.6) {
-                self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }
-            })
-            
+            }
+
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
                 print("cancelling run")
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 self?.touchCountTimer?.invalidate()
+                self?.view.window?.rootViewController?.dismiss(animated: true)
+                self?.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
             }
         default:
             touchCountTimer?.invalidate()
