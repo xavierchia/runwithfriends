@@ -116,7 +116,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.accessoryType = .disclosureIndicator
             cell.backgroundColor = .shadow
             cell.textLabel?.textColor = .moss
-            cell.textLabel?.font = UIFont.chalkboard(size: cell.textLabel?.font.pointSize ?? 15)
+            cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
             return cell
     }
 }

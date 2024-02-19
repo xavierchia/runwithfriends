@@ -106,7 +106,7 @@ class RunningViewController: UIViewController {
     private func setupCountdownView() {
         countdownLabel.text = "5"
         countdownLabel.textColor = .cream
-        countdownLabel.font = UIFont.chalkboardBold(size: 200)
+        countdownLabel.font = UIFont.KefirBold(size: 200)
         countdownLabel.textAlignment = .center
         countdownLabel.backgroundColor = .accent
         
@@ -289,20 +289,20 @@ private extension UILabel {
     func topBarTitle() -> UILabel {
         self.textColor = .cream
         self.textAlignment = .center
-        self.font = UIFont.chalkboardBold(size: 45.84)
+        self.font = UIFont.KefirBold(size: 45.84)
         return self
     }
     
     func topBarSubtitle() -> UILabel {
         self.textColor = .cream
-        self.font = UIFont.chalkboardBold(size: 17.51)
+        self.font = UIFont.KefirBold(size: 17.51)
         self.textAlignment = .center
         return self
     }
     
     func midSubtitle() -> UILabel {
         self.textColor = .cream
-        self.font = UIFont.chalkboardBold(size: 28.33)
+        self.font = UIFont.KefirBold(size: 28.33)
         self.textAlignment = .center
         return self
     }

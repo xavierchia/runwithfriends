@@ -165,7 +165,7 @@ class WaitingRoomViewController: UIViewController {
         let waitingRoomTitle = UILabel()
         waitingRoomTitle.text = "\(displayTime.time)\(displayTime.amOrPm.lowercased()) Run"
 //        waitingRoomTitle.font = UIFont.chalkboardBold(size: 26)
-        waitingRoomTitle.font = UIFont.chalkboardBold(size: 34)
+        waitingRoomTitle.font = UIFont.KefirBold(size: 34)
         waitingRoomTitle.textColor = .cream
         waitingRoomTitle.textAlignment = .center
         waitingRoomTitle.backgroundColor = .clear

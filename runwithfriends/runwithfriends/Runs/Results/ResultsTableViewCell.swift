@@ -32,10 +32,10 @@ class ResultsTableViewCell: UITableViewCell {
     func configure(with result: Result) {
         nameLabel.text = result.name
         nameLabel.textColor = .moss
-        nameLabel.font = UIFont.chalkboardLight(size: 17)
+        nameLabel.font = UIFont.Kefir(size: 17)
         distanceLabel.text = result.distance
         distanceLabel.textColor = .moss
-        distanceLabel.font = UIFont.chalkboardLight(size: 17)
+        distanceLabel.font = UIFont.Kefir(size: 17)
         
         let config = UIImage.SymbolConfiguration(paletteColors: [.accent, .pumpkin])
         let handsFilled = UIImage(systemName: "hands.clap.fill", withConfiguration: config)

@@ -14,7 +14,7 @@ extension ResultsViewController {
             
             let firstLabel = UILabel()
             firstLabel.textColor = .moss
-            firstLabel.font = UIFont.chalkboardLight(size: 17)
+            firstLabel.font = UIFont.Kefir(size: 17)
             firstLabel.text = "🏃 First Run"
             firstLabel.textAlignment = .left
             firstLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +27,7 @@ extension ResultsViewController {
             
             let secondLabel = UILabel()
             secondLabel.textColor = .moss
-            secondLabel.font = UIFont.chalkboardLight(size: 17)
+            secondLabel.font = UIFont.Kefir(size: 17)
             secondLabel.text = "🏅 Personal Record"
             secondLabel.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(secondLabel)

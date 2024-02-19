@@ -53,10 +53,10 @@ class UIRunTableViewCell: UITableViewCell {
         // Configure the time label
         let attributedString = NSMutableAttributedString()
         let timeString = NSAttributedString(string: String(rawTimeString),
-                                            attributes: [.font: UIFont.chalkboardLight(size: 34),
+                                            attributes: [.font: UIFont.Kefir(size: 34),
                                                          .foregroundColor: UIColor.moss])
         let amOrPmString =  NSAttributedString(string: String(rawAmOrPmString),
-                                               attributes: [.font: UIFont.chalkboardLight(size: 17),
+                                               attributes: [.font: UIFont.Kefir(size: 17),
                                                             .foregroundColor: UIColor.moss])
         attributedString.append(timeString)
         attributedString.append(amOrPmString)
@@ -65,11 +65,11 @@ class UIRunTableViewCell: UITableViewCell {
         // Configure the runners label
         subtitle.text = "\(cellData.runners.count) / 25 runners"
         subtitle.textColor = .moss
-        subtitle.font = UIFont.chalkboard(size: 13)
+        subtitle.font = UIFont.Kefir(size: 13)
         
         // Configure the right button
         rightButton.isEnabled = canJoin
-        rightButton.titleLabel?.font = UIFont.chalkboardBold(size: 17)
+        rightButton.titleLabel?.font = UIFont.KefirBold(size: 17)
         rightButton.setTitle("JOIN", for: .normal)
         rightButton.setTitle("FULL", for: .disabled)
         rightButton.backgroundColor = .clear

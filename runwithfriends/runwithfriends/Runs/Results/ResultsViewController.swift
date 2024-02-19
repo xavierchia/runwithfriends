@@ -117,7 +117,7 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
         label.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 30)
         label.textColor = .moss
         label.backgroundColor = .cream
-        label.font = UIFont.chalkboard(size: 24)
+        label.font = UIFont.Kefir(size: 24)
         label.textAlignment = .left
         label.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         switch results[section].first?.relationship {

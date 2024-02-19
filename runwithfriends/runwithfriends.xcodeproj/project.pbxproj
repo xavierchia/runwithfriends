@@ -11,6 +11,13 @@
 		258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 258508702B2BCEB8005FD81F /* SkeletonView */; };
 		25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A4309A2B74CB79000CE771 /* UIFont.swift */; };
 		25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A5B0DB2B7C9741004DB775 /* Distance.swift */; };
+		25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */; };
+		25FC3CA82B82D61200D90ED2 /* Kefir-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */; };
+		25FC3CA92B82D61200D90ED2 /* Kefir-DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */; };
+		25FC3CAA2B82D61200D90ED2 /* Kefir-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA32B82D61200D90ED2 /* Kefir-Medium.otf */; };
+		25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */; };
+		25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */; };
+		25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */; };
 		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
 		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
 		9519A6C52B19593A000B952F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519A6C42B19593A000B952F /* Date.swift */; };
@@ -62,6 +69,13 @@
 		25074FA42B7B0DB70061551D /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		25A4309A2B74CB79000CE771 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		25A5B0DB2B7C9741004DB775 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
+		25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-ExtraBold.otf"; sourceTree = "<group>"; };
+		25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Light.otf"; sourceTree = "<group>"; };
+		25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-DemiBold.otf"; sourceTree = "<group>"; };
+		25FC3CA32B82D61200D90ED2 /* Kefir-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Medium.otf"; sourceTree = "<group>"; };
+		25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Black.otf"; sourceTree = "<group>"; };
+		25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Regular.otf"; sourceTree = "<group>"; };
+		25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Bold.otf"; sourceTree = "<group>"; };
 		950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewController.swift; sourceTree = "<group>"; };
 		950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
 		9519A6C42B19593A000B952F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -129,6 +143,20 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		25FC3C9F2B82D60000D90ED2 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */,
+				25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */,
+				25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */,
+				25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */,
+				25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */,
+				25FC3CA32B82D61200D90ED2 /* Kefir-Medium.otf */,
+				25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		951F42C72B1817E1004E2BEA /* Views */ = {
@@ -276,6 +304,7 @@
 		95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */ = {
 			isa = PBXGroup;
 			children = (
+				25FC3C9F2B82D60000D90ED2 /* Fonts */,
 				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
 				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
 			);
@@ -368,9 +397,16 @@
 			files = (
 				952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */,
 				95F85B4F2B71AAEC005A705A /* README.md in Resources */,
+				25FC3CAA2B82D61200D90ED2 /* Kefir-Medium.otf in Resources */,
 				954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */,
+				25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */,
+				25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */,
+				25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */,
+				25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */,
 				952825C02AE1F74E0032B04B /* Assets.xcassets in Resources */,
+				25FC3CA82B82D61200D90ED2 /* Kefir-Light.otf in Resources */,
 				95AC65872B0224150084FF15 /* BottomRow.xib in Resources */,
+				25FC3CA92B82D61200D90ED2 /* Kefir-DemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,7 +594,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Pumpkin;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Moss;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -593,7 +629,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Pumpkin;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Moss;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_STYLE = Automatic;

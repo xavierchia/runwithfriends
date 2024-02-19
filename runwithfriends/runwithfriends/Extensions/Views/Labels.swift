@@ -32,14 +32,14 @@ extension UILabel {
     func largeLightScaled() -> UILabel {
         let scaleFactor: Float = Float(UIScreen.main.bounds.height) / 852.0
         let fontSize = CGFloat(60 * scaleFactor)
-        let customFont = UIFont.chalkboardBold(size: fontSize)
+        let customFont = UIFont.KefirBold(size: fontSize)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self
     }
     
     func mediumBold() -> UILabel {
-        let customFont = UIFont.chalkboardBold(size: 24)
+        let customFont = UIFont.KefirBold(size: 24)
         self.font = UIFontMetrics(forTextStyle: .extraLargeTitle).scaledFont(for: customFont)
         self.adjustsFontForContentSizeCategory = true
         return self

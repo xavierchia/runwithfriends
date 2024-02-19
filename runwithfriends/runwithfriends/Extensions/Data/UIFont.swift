@@ -8,16 +8,15 @@
 import UIKit
 
 extension UIFont {
-    static func chalkboard(size: CGFloat) -> UIFont {
-        UIFont(name: "ChalkboardSE-Regular", size: size) ?? UIFont.systemFont(ofSize: size, weight: .regular)
+    static func Kefir(size: CGFloat) -> UIFont {
+        UIFont(name: "Kefir-Regular", size: size) ?? UIFont.systemFont(ofSize: size, weight: .regular)
     }
     
-    static func chalkboardBold(size: CGFloat) -> UIFont {
-        UIFont(name: "ChalkboardSE-Bold", size: size) ?? UIFont.systemFont(ofSize: size, weight: .bold)
+    static func KefirBold(size: CGFloat) -> UIFont {
+        UIFont(name: "Kefir-Bold", size: size) ?? UIFont.systemFont(ofSize: size, weight: .bold)
     }
     
-    static func chalkboardLight(size: CGFloat) -> UIFont {
-        UIFont(name: "ChalkboardSE-Light", size: size) ?? UIFont.systemFont(ofSize: size, weight: .light)
+    static func KefirLight(size: CGFloat) -> UIFont {
+        UIFont(name: "Kefir-Light", size: size) ?? UIFont.systemFont(ofSize: size, weight: .bold)
     }
-
 }

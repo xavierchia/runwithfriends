@@ -19,7 +19,7 @@ extension UIViewController {
         toastLabel.accessibilityIdentifier = "toastView"
         toastLabel.backgroundColor = UIColor.cream
         toastLabel.textColor = UIColor.accent
-        toastLabel.font = UIFont.chalkboard(size: 24)
+        toastLabel.font = UIFont.Kefir(size: 24)
         toastLabel.layer.borderColor = UIColor.accent.cgColor
         toastLabel.layer.borderWidth = 5
         toastLabel.numberOfLines = 2
