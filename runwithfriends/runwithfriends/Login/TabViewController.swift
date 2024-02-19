@@ -30,13 +30,13 @@ class TabViewController: UITabBarController {
         let runsNav = UINavigationController(rootViewController: runsVC)
         runsNav.tabBarItem.title = "Runs"
         runsNav.tabBarItem.image = UIImage(systemName: "figure.run.circle")
-        runsNav.tabBarItem.selectedImage = UIImage(systemName: "figure.run.circle.fill")
+        runsNav.tabBarItem.selectedImage = UIImage(systemName: "figure.run.circle")
         
         let profileVC = ProfileViewController(with: userData)
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem.title = "Profile"
         profileNav.tabBarItem.image = UIImage(systemName: "person.crop.circle")
-        profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.crop.circle.fill")
+        profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.crop.circle")
         
         setViewControllers([runsNav, profileNav], animated: false)
         
