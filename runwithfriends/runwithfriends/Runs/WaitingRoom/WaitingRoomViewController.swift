@@ -84,7 +84,9 @@ class WaitingRoomViewController: UIViewController {
             }
         }.store(in: &cancellables)
         
-        runManager.upsertRun()
+        Task {
+            await runManager.upsertRun()
+        }
     }
     
     // MARK: Setup UI
@@ -163,8 +165,7 @@ class WaitingRoomViewController: UIViewController {
         }
 
         let waitingRoomTitle = UILabel()
-        waitingRoomTitle.text = "\(displayTime.time)\(displayTime.amOrPm.lowercased()) Run"
-//        waitingRoomTitle.font = UIFont.chalkboardBold(size: 26)
+        waitingRoomTitle.text = "\(displayTime.time)\(displayTime.amOrPm.lowercased()) run"
         waitingRoomTitle.font = UIFont.KefirBold(size: 34)
         waitingRoomTitle.textColor = .cream
         waitingRoomTitle.textAlignment = .center

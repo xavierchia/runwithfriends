@@ -295,9 +295,15 @@ extension RunningViewController: CLLocationManagerDelegate {
 extension RunningViewController {
     func updateServer() {
         switch totalTime {
-        case 60, 300, 600, 900, 1200, 1490:
+        // for testing
+        case 10, 300, 600, 900, 1200, 1490:
+//        case 60, 300, 600, 900, 1200, 1490:
             print("upserting run with distance \(totalDistance)")
-            runManager.upsertRun(with: Int(totalDistance))
+            Task {
+                await runManager.upsertRun(with: Int(totalDistance))
+                await runManager.syncRun()
+            }
+            
         default:
             break
         }

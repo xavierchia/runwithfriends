@@ -35,19 +35,33 @@ class RunManager {
         setupTimer()
     }
     
-    public func upsertRun(with distance: Int = 0) {
-        Task {
-            do {
-                let session = RunSession(run_id: run.run_id, user_id: user.user_id, distance: distance)
-                try await supabase
-                    .from("run_session")
-                    .upsert(session)
-                    .execute()
-                print("User upserted to run session")
-            } catch {
-                print("Unable to upsert run session \(error)")
+    public func syncRun() async {
+        do {
+            let runs: [Run] = try await supabase
+              .rpc("get_run", params: ["get_run_id": self.run.run_id])
+              .select()
+              .execute()
+              .value
+            print(runs)
+            if let run = runs.first {
+                self.run = run
             }
-
+            print("run updated")
+        } catch {
+            print(error)
+        }
+    }
+    
+    public func upsertRun(with distance: Int = 0) async {
+        do {
+            let session = RunSession(run_id: run.run_id, user_id: user.user_id, distance: distance)
+            try await supabase
+                .from("run_session")
+                .upsert(session)
+                .execute()
+            print("User upserted to run session")
+        } catch {
+            print("Unable to upsert run session \(error)")
         }
     }
     
