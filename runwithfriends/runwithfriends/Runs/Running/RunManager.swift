@@ -42,11 +42,10 @@ class RunManager {
               .select()
               .execute()
               .value
-            print(runs)
             if let run = runs.first {
+                print("run synced")
                 self.run = run
             }
-            print("run updated")
         } catch {
             print(error)
         }
