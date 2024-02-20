@@ -66,16 +66,19 @@ class RunningViewController: UIViewController {
                 countdownLabel.removeFromSuperview()
                 totalTime = seconds
                 
-                //                for testing we move faster
+                // for testing we move faster
                 totalDistance += 0.5
                 
                 updateLabels()
                 updateAudio()
+                updateServer()
+            case .runEnd:
+                resultsButtonPressed()
             default:
                 // for testing:
-//                countdownLabel.removeFromSuperview()
+                countdownLabel.removeFromSuperview()
                 
-                return
+                break
             }
         }.store(in: &cancellables)
     }
@@ -138,6 +141,7 @@ class RunningViewController: UIViewController {
             distanceStack.heightAnchor.constraint(equalToConstant: 70)
         ])
         
+        // for testing
         let tap = UITapGestureRecognizer(target: self, action: #selector(resultsButtonPressed))
         distanceStack.addGestureRecognizer(tap)
     }
@@ -228,8 +232,9 @@ class RunningViewController: UIViewController {
         case .began:
             print("began long press to cancel run")
 
-            UIView.animate(withDuration: 1) {
-                self.endButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
+                self.endButton.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+
             } completion: { _ in
                 UIView.animate(withDuration: 0.6) {
                     self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -245,11 +250,13 @@ class RunningViewController: UIViewController {
                 self?.runManager.leaveRun()
             }
         default:
+            endButtonPressed()
             touchCountTimer?.invalidate()
         }
     }
 }
 
+// MARK: Update location, labels, audio
 extension RunningViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last,
@@ -280,6 +287,19 @@ extension RunningViewController: CLLocationManagerDelegate {
             let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(totalDistance.value) \(totalDistance.metric)")
             utterance.rate = 0.1
             Speaker.shared.speak(utterance)
+        }
+    }
+}
+
+// MARK: Update server
+extension RunningViewController {
+    func updateServer() {
+        switch totalTime {
+        case 60, 300, 600, 900, 1200, 1490:
+            print("upserting run with distance \(totalDistance)")
+            runManager.upsertRun(with: Int(totalDistance))
+        default:
+            break
         }
     }
 }

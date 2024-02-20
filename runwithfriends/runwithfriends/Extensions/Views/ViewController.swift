@@ -14,14 +14,14 @@ extension UIViewController {
             view.accessibilityIdentifier == "toastView"
         }) == false else { return }
         
-        let width = view.frame.width - 40
+        let width = view.frame.width - 30
         let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - width/2, y: self.view.frame.size.height - heightFromBottom, width: width, height: 70))
         toastLabel.accessibilityIdentifier = "toastView"
         toastLabel.backgroundColor = UIColor.cream
         toastLabel.textColor = UIColor.accent
         toastLabel.font = UIFont.Kefir(size: 24)
         toastLabel.layer.borderColor = UIColor.accent.cgColor
-        toastLabel.layer.borderWidth = 5
+        toastLabel.layer.borderWidth = 3
         toastLabel.numberOfLines = 2
         toastLabel.textAlignment = .center;
         toastLabel.lineBreakMode = .byWordWrapping

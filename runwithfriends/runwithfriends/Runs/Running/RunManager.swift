@@ -26,6 +26,7 @@ class RunManager {
     private var user: User
     private let supabase = Supabase.shared.client.database
     private var timer = Timer()
+    private var lastUpdateInterval: TimeInterval = 100_000
     
     init(with run: Run, and user: User) {
         self.run = run
@@ -73,8 +74,11 @@ class RunManager {
     }
     
     private func fireTimer() {
-        let currentDate = Date()
-        let intervalToStart = run.start_date.getDate().timeIntervalSince(currentDate).rounded()
+        let intervalToStart = run.start_date.getDate().timeIntervalSince(Date()).rounded()
+        var runTime = Double(run.end_date - run.start_date)
+        // for testing
+        runTime = 100
+        
         switch intervalToStart {
         case 3600...:
             runStage = .waitingRunStart
@@ -83,11 +87,17 @@ class RunManager {
             runStage = .oneHourToRunStart(countdownTime)
         case 0...6:
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
-        // Each run is 25 minutes
-        case -1500...0:
+        case -runTime...0:
+            // We only publish on whole seconds once the run has started
+            // so we don't overload the server with updates.
+            // Before the run has started, we publish frequently every second to get the labels updated quickly.
+            guard lastUpdateInterval != intervalToStart else { return }
+            lastUpdateInterval = intervalToStart
+            
             runStage = .runStart(-intervalToStart)
-        case ...(-1500):
+        case ...(-runTime):
             runStage = .runEnd
+            timer.invalidate()
         default:
             break
         }
