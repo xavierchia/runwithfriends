@@ -128,12 +128,7 @@ class WaitingRoomViewController: UIViewController {
     private func locationUpdated(with coordinate: CLLocationCoordinate2D) {
         let obscuredCoordinate = coordinate.obscured()
         setPins(with: obscuredCoordinate)
-        
         userData.updateUserCoordinate(obscuredCoordinate: obscuredCoordinate)
-        
-        // add runner to run_session table
-//        let supabase = Supabase.shared.client.database
-//        supabase.
     }
     
     private func setPins(with obscuredCoordinate: CLLocationCoordinate2D) {
@@ -152,8 +147,11 @@ class WaitingRoomViewController: UIViewController {
         
         runManager.run.runners.forEach { runner in
             let runnerPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: runner.emoji))
-            runnerPin.coordinate = CLLocationCoordinate2D(latitude: runner.latitude ?? defaultLocation.latitude,
-                                                          longitude: runner.longitude ?? defaultLocation.longitude)
+            
+            runnerPin.coordinate = CLLocationCoordinate2D(
+                latitude: runner.latitude ?? defaultLocation.latitude,
+                longitude: runner.longitude ?? defaultLocation.longitude
+            )
             runnerPin.title = runner.username
             mapView.addAnnotation(runnerPin)
         }

@@ -57,7 +57,7 @@ class RunningViewController: UIViewController {
             case .fiveSecondsToRunStart(let seconds):
                 switch seconds {
                 case 0:
-                    countdownLabel.font = countdownLabel.font.withSize(100)
+                    countdownLabel.font = countdownLabel.font.withSize(80)
                     countdownLabel.text = "START"
                 default:
                     countdownLabel.text = String(seconds)
@@ -75,19 +75,19 @@ class RunningViewController: UIViewController {
             case .runEnd:
                 resultsButtonPressed()
             default:
-                // for testing:
-                countdownLabel.removeFromSuperview()
-                
                 break
             }
         }.store(in: &cancellables)
     }
     
     @objc private func resultsButtonPressed() {
-        let resultsVC = ResultsViewController()
-        let resultsNav = UINavigationController(rootViewController: resultsVC)
-        resultsNav.modalPresentationStyle = .overFullScreen
-        present(resultsNav, animated: true)
+        Task {
+            await runManager.upsertRun(with: Int(totalDistance))
+            let resultsVC = ResultsViewController(with: runManager)
+            let resultsNav = UINavigationController(rootViewController: resultsVC)
+            resultsNav.modalPresentationStyle = .overFullScreen
+            present(resultsNav, animated: true)
+        }
     }
     
     private func setupLocationManager() {
@@ -121,6 +121,16 @@ class RunningViewController: UIViewController {
             countdownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+        
+        // for testing
+        let tap = UITapGestureRecognizer(target: self, action: #selector(removeCountdownLabel))
+        countdownLabel.isUserInteractionEnabled = true
+        countdownLabel.addGestureRecognizer(tap)
+    }
+    
+    @objc private func removeCountdownLabel() {
+        print("remove me")
+        countdownLabel.removeFromSuperview()
     }
     
     private func setupDistanceStack() {
@@ -296,12 +306,12 @@ extension RunningViewController {
     func updateServer() {
         switch totalTime {
         // for testing
-        case 10, 300, 600, 900, 1200, 1490:
-//        case 60, 300, 600, 900, 1200, 1490:
+        case 10, 300, 600, 900, 1200:
+//        case 60, 300, 600, 900, 1200:
             print("upserting run with distance \(totalDistance)")
             Task {
                 await runManager.upsertRun(with: Int(totalDistance))
-                await runManager.syncRun()
+//                await runManager.syncRun()
             }
             
         default:

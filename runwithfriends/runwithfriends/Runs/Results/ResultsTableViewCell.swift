@@ -29,17 +29,18 @@ class ResultsTableViewCell: UITableViewCell {
         setupSeparator()
     }
     
-    func configure(with result: Result) {
-        nameLabel.text = result.name
+    func configure(with runner: Runner) {
+        nameLabel.text = runner.username
         nameLabel.textColor = .moss
         nameLabel.font = UIFont.Kefir(size: 17)
-        distanceLabel.text = result.distance
+        distanceLabel.text = String(runner.distance)
         distanceLabel.textColor = .moss
         distanceLabel.font = UIFont.Kefir(size: 17)
         
         let config = UIImage.SymbolConfiguration(paletteColors: [.accent, .pumpkin])
         let handsFilled = UIImage(systemName: "hands.clap.fill", withConfiguration: config)
-        let clapImage = result.clapped ? handsFilled : UIImage(systemName: "hands.clap")
+//        let clapImage = result.clapped ? handsFilled : UIImage(systemName: "hands.clap")
+        let clapImage = UIImage(systemName: "hands.clap")
         clap.tintColor = .accent
         clap.setImage(clapImage, for: .normal)
     }

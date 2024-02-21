@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 enum Relationship {
     case you, friends, everyone
@@ -19,39 +20,58 @@ struct Result {
 }
 
 class ResultsViewController: UIViewController {
+    private let runManager: RunManager
+    private var results = [Runner]()
     
+    private var indicator = UIActivityIndicatorView()
     private let resultsTableView = UITableView(frame: .zero, style: .grouped)
     
-    private var results = [
-        [
-            Result(relationship: .you, name: "XavyBoy 🇸🇬", distance: "2.23km", clapped: false)
-        ],
-        [
-            Result(relationship: .friends, name: "Timmy 🇺🇸", distance: "3.31km 🏃", clapped: false),
-            Result(relationship: .friends, name: "Fiiv 🇹🇭", distance: "4.01km 🏅", clapped: true),
-            Result(relationship: .friends, name: "Ally 🇸🇬", distance: "5.02km", clapped: true),
-            Result(relationship: .friends, name: "Damien 🇸🇬", distance: "5.05km", clapped: false)
-
-        ],
-        [
-            Result(relationship: .everyone, name: "Michelle 🇺🇸", distance: "3.51km", clapped: true),
-            Result(relationship: .everyone, name: "George 🇺🇸", distance: "3.52km", clapped: false),
-            Result(relationship: .everyone, name: "Hincapie 🇺🇸", distance: "3.53km", clapped: true),
-            Result(relationship: .everyone, name: "Martha 🇺🇸", distance: "3.54km", clapped: false),
-            Result(relationship: .everyone, name: "Bob 🇺🇸", distance: "3.55km", clapped: true),
-            Result(relationship: .everyone, name: "Harry 🇺🇸", distance: "3.56km", clapped: false),
-            Result(relationship: .everyone, name: "Hermione 🇺🇸", distance: "3.57km", clapped: false),
-            Result(relationship: .everyone, name: "Ron 🇺🇸", distance: "3.58km", clapped: false),
-            Result(relationship: .everyone, name: "Hagrid 🇺🇸", distance: "3.59km", clapped: true),
-            Result(relationship: .everyone, name: "Dumbledore 🇺🇸", distance: "3.60km", clapped: true)
-        ]
-    ]
+    init(with runManager: RunManager) {
+        self.runManager = runManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .cream
+                
         setupNavigationController()
         setupTableView()
+        
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.style = .large
+        indicator.hidesWhenStopped = true
+        indicator.center = CGPoint(x: view.center.x, y: view.center.y + 80)
+        print(resultsTableView.center)
+        indicator.color = .pumpkin
+        self.view.addSubview(indicator)
+        indicator.startAnimating()
+        
+        Task {
+            // Wait 5 seconds for everyone to post their runs
+            let seconds = 5
+            let duration = UInt64(seconds * 1_000_000_000)
+            try await Task.sleep(nanoseconds: duration)
+            
+            await runManager.syncRun()
+            guard let ownRun = runManager.run.runners.first(where: { runner in
+                runner.user_id == runManager.user.user_id
+            }) else { return }
+            results = [ownRun]
+            indicator.stopAnimating()
+            resultsTableView.reloadData()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let utterance = AVSpeechUtterance(string: "Run complete. Getting results.")
+        utterance.rate = 0.3
+        Speaker.shared.speak(utterance)
     }
     
     private func setupNavigationController() {
@@ -105,11 +125,13 @@ class ResultsViewController: UIViewController {
 
 extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        results[section].count
+//        results[section].count
+        return results.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        results.count
+//        return results.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -120,12 +142,12 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
         label.font = UIFont.Kefir(size: 24)
         label.textAlignment = .left
         label.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-        switch results[section].first?.relationship {
-        case .you:
+        switch section {
+        case 0:
             label.text = "You"
-        case.friends:
+        case 1:
             label.text = "Friends"
-        case.everyone:
+        case 2:
             label.text = "Everyone"
         default:
             label.text = ""
@@ -143,7 +165,7 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.delegate = self
-        cell.configure(with: results[indexPath.section][indexPath.row])
+        cell.configure(with: results[indexPath.row])
         return cell
     }
     
@@ -154,8 +176,8 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension ResultsViewController: ResultsTableViewCellProtocol {
     func clapPressed(with indexPath: IndexPath?) {
-        guard let indexPath else { return }
-        results[indexPath.section][indexPath.row].clapped.toggle()
+//        guard let indexPath else { return }
+//        results[indexPath.section][indexPath.row].clapped.toggle()
         resultsTableView.reloadData()
     }
 }

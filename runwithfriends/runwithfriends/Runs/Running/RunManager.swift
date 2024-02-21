@@ -22,8 +22,8 @@ class RunManager {
     @Published
     public var runStage: RunStage = .waitingRunStart
     public var run: Run
+    public let user: User
 
-    private var user: User
     private let supabase = Supabase.shared.client.database
     private var timer = Timer()
     private var lastUpdateInterval: TimeInterval = 100_000
