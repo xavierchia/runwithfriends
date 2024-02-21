@@ -55,7 +55,7 @@ class UIRunTableViewCell: UITableViewCell {
         let timeString = NSAttributedString(string: String(rawTimeString),
                                             attributes: [.font: UIFont.Kefir(size: 34),
                                                          .foregroundColor: UIColor.moss])
-        let amOrPmString =  NSAttributedString(string: String(rawAmOrPmString),
+        let amOrPmString =  NSAttributedString(string: " \(String(rawAmOrPmString).lowercased())",
                                                attributes: [.font: UIFont.Kefir(size: 17),
                                                             .foregroundColor: UIColor.moss])
         attributedString.append(timeString)
