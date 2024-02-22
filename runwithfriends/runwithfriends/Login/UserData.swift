@@ -12,9 +12,26 @@ class UserData {
     static let defaultUsername = "Pea"
     let supabase = Supabase.shared
     var user: User
+    var userSessions = [UserSession]()
     
     init(user: User) {
         self.user = user
+    }
+    
+    func syncUserSessions() async {
+        let supabase = Supabase.shared
+        do {
+            let user = try await supabase.client.auth.session.user
+            let userSessions: [UserSession] = try await supabase.client.database
+                .rpc("get_user_sessions", params: ["p_user_id": user.id])
+                .select()
+                .execute()
+                .value
+            print(userSessions)
+            self.userSessions = userSessions
+        } catch {
+            print("failed to sync user sessions")
+        }
     }
     
     func updateUserCoordinate(obscuredCoordinate: CLLocationCoordinate2D) {

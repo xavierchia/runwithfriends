@@ -18,7 +18,14 @@ struct User: Codable {
     let apple_id: String
     let username: String
     let emoji: String
-    let searchID: Int
+    let search_id: Int
     let longitude: Double?
     let latitude: Double?
+}
+
+struct UserSession: Codable {
+    let run_id: UUID
+    let start_date: Int
+    let end_date: Int
+    let distance: Int
 }

@@ -156,11 +156,14 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             }
             
             @MainActor func routeToTabVC(with user: User) {
-                print("User signed in, routing to TabViewController")
-                spinner.stopAnimating()
-                let userData = UserData(user: user)
-                let tabVC = TabViewController(with: userData)
-                self.view.window!.rootViewController = tabVC
+                Task {
+                    spinner.stopAnimating()
+                    let userData = UserData(user: user)
+                    await userData.syncUserSessions()
+                    let tabVC = TabViewController(with: userData)
+                    print("User signed in, routing to TabViewController")
+                    self.view.window!.rootViewController = tabVC
+                }
             }
             
             @MainActor func showOops() {
