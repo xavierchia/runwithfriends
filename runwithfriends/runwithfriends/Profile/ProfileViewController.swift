@@ -15,17 +15,15 @@ class ProfileViewController: UIViewController {
     }
     
     enum HeaderState {
-        case compact
-        case expanded
+        case current
+        case next
     }
     
     let header = UIStackView()
     let firstButton = UIButton().setHeaderButton()
     let secondButton = UIButton().setHeaderButton()
-    let thirdButton = UIButton().setHeaderButton()
-    let fourthButton = UIButton().setHeaderButton()
     let downArrowButton = UIButton().setDownArrowButton()
-    var headerState: HeaderState = .compact
+    var headerState: HeaderState = .current
     
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private let tableCellTitles = [
@@ -68,7 +66,7 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupProfile(with: userData.user)
-        headerState = .compact
+        headerState = .current
         settingsTableView.reloadData()
     }
     
@@ -101,13 +99,8 @@ class ProfileViewController: UIViewController {
         
         header.addArrangedSubview(firstButton)
         header.addArrangedSubview(secondButton)
-        header.addArrangedSubview(thirdButton)
-        header.addArrangedSubview(fourthButton)
         header.addArrangedSubview(downArrowButton)
         
-//        firstButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
-//        secondButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
-//        thirdButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
         downArrowButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
     
@@ -158,24 +151,22 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         guard distance > 0 else { return nil }
         
         // for testing
-        let report = DistanceReport.getReport(with: 1200)
+        let report = DistanceReport.getReport(with: 2500)
         //        let report = DistanceReport.getReport(with: distance)
         
-        firstButton.setTitle(report.currentDistance, for: .normal)
-        secondButton.setTitle(report.currentAchievement, for: .normal)
-        thirdButton.setTitle(report.nextDistance, for: .normal)
-        fourthButton.setTitle(report.nextAchievement, for: .normal)
-        
-        firstButton.isHidden = headerState == .expanded
-        secondButton.isHidden = headerState == .expanded
-        thirdButton.isHidden = headerState == .compact
-        fourthButton.isHidden = headerState == .compact
+        if headerState == .current {
+            firstButton.setAttributedTitle(report.currentDistance, for: .normal)
+            secondButton.setTitle(report.currentAchievement, for: .normal)
+        } else {
+            firstButton.setAttributedTitle(report.nextDistance, for: .normal)
+            secondButton.setTitle(report.nextAchievement, for: .normal)
+        }
 
         return header
     }
     
     @objc func tapped() {
-        headerState = headerState == .expanded ? .compact : .expanded
+        headerState = headerState == .current ? .next : .current
         self.settingsTableView.reloadData()
     }
 }
