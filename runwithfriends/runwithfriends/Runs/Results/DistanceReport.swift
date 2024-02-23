@@ -57,7 +57,7 @@ struct DistanceReport {
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the High Line Park in New York City!",
                                 nextDistance: nextDistance,
-                                nextAchievement: "The Golden Gate Bridge in San Francisco.")
+                                nextAchievement: "Completing the Golden Gate Bridge in San Francisco.")
             return report
         default:
             return Report(currentDistance: currentDistance,
