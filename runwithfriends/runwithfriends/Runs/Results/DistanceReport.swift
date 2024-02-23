@@ -20,16 +20,22 @@ struct DistanceReport {
         }
         
         switch distance {
-        case ..<2300:
-            let distanceLeft = 2300 - distance
-            let report = Report(currentStatus: "\(currentStatusPrefix)", nextGoal: "\(nextGoalPrefix(with: distanceLeft)) the High Line Park in New York City.")
+        case ..<Landmarks.HighLineNewYork:
+            let distanceLeft = Landmarks.HighLineNewYork - distance
+            let report = Report(currentStatus: "\(currentStatusPrefix) -\n\n That is more than \(Int(distance / Landmarks.EiffelTower)) Eiffel Towers in Paris!", nextGoal: "\(nextGoalPrefix(with: distanceLeft)) the High Line Park in New York City.")
             return report
-        case ..<3000:
-            let distanceLeft = 3000 - distance
+        case ..<Landmarks.GoldenGateBridge:
+            let distanceLeft = Landmarks.GoldenGateBridge - distance
             let report = Report(currentStatus: "\(currentStatusPrefix) -\n\nThat is more than the High Line Park in New York City!", nextGoal: "\(nextGoalPrefix(with: distanceLeft)) the Golden Gate Bridge in San Francisco.")
             return report
         default:
             return Report(currentStatus: currentStatusPrefix, nextGoal: "You've completed the game!")
         }
     }
+}
+
+struct Landmarks {
+    static let EiffelTower = 330
+    static let HighLineNewYork = 2300
+    static let GoldenGateBridge = 2737
 }

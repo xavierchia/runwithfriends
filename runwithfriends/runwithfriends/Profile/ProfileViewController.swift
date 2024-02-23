@@ -129,7 +129,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
+        
         let distance = userData.getTotalDistance()
+        guard distance > 0 else { return nil }
         
         let header = UIButton()
         header.setTitleColor(.moss, for: .normal)
@@ -142,7 +144,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
 
         // for testing
-        let report = DistanceReport.getReport(with: 2600)
+        let report = DistanceReport.getReport(with: 1200)
         //        let report = DistanceReport.getReport(with: distance)
 
         if headerState == .compact {
