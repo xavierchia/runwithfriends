@@ -283,8 +283,8 @@ extension RunningViewController: CLLocationManagerDelegate {
     
     private func updateLabels() {
         // distance
-        distanceValueLabel.text = totalDistance.value
-        distanceMetricLabel.text = totalDistance.metric
+        distanceValueLabel.text = Int(totalDistance).value
+        distanceMetricLabel.text = Int(totalDistance).metric
         
         // time
         timeValueLabel.text = totalTime.positionalTime
@@ -295,7 +295,7 @@ extension RunningViewController: CLLocationManagerDelegate {
         case 60, 300, 600:
             guard !Speaker.shared.isSpeaking else { return }
             let minutes = Int(totalTime) / 60
-            let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(totalDistance.value) \(totalDistance.metric)")
+            let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(Int(totalDistance).value) \(Int(totalDistance).metric)")
             utterance.rate = 0.1
             Speaker.shared.speak(utterance)
         default:

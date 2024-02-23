@@ -7,12 +7,13 @@
 
 import UIKit
 import CoreLocation
-extension CLLocationDistance {
+extension Int {
     var value: String {
         if self > 1000 {
-            return String(format: "%.2f", self / 1000)
+            let kmValue: Double = Double(self) / 1000
+            return String(format: "%.2f", kmValue)
         } else {
-            return String(format: "%.0f", self)
+            return String(self)
         }
     }
     
@@ -21,6 +22,23 @@ extension CLLocationDistance {
             return "Kilometers"
         } else {
             return "Meters"
+        }
+    }
+    
+    var valueShort: String {
+        if self > 1000 {
+            let kmValue: Double = Double(self) / 1000
+            return String(format: "%.1f", kmValue)
+        } else {
+            return String(self)
+        }
+    }
+    
+    var metricShort: String {
+        if self > 1000 {
+            return "km"
+        } else {
+            return "m"
         }
     }
 }
