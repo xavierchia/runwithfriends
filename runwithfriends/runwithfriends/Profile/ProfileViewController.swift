@@ -151,7 +151,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         guard distance > 0 else { return nil }
         
         // for testing
-        let report = DistanceReport.getReport(with: 2500)
+        let report = DistanceReport.getReport(with: 22000)
         //        let report = DistanceReport.getReport(with: distance)
         
         if headerState == .current {

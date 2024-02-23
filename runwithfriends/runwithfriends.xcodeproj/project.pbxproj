@@ -247,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
+				257EC7A42B882FFE000759A8 /* DistanceReport.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -287,7 +288,6 @@
 				9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */,
 				957A4EA12B1015D200C746A4 /* TableHeaderView.swift */,
 				950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */,
-				257EC7A42B882FFE000759A8 /* DistanceReport.swift */,
 				25074FA42B7B0DB70061551D /* Speaker.swift */,
 			);
 			path = Results;
