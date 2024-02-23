@@ -140,10 +140,20 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         header.addTarget(self, action: #selector(tapped), for: .touchUpInside)
         
+        
         if headerState == .compact {
-            header.setTitle("You've run \(distance)m -\nThat is more than 8 eiffel towers!\n...\n", for: .normal)
+            let attributedString = NSMutableAttributedString()
+            let distanceString = NSAttributedString(string: "You've run \(distance)m -\nThat is more than 8 eiffel towers!\n",
+                                                attributes: [.font: UIFont.KefirLight(size: 20),
+                                                             .foregroundColor: UIColor.moss])
+            let ellipsesString =  NSAttributedString(string: "...\n",
+                                                   attributes: [.font: UIFont.Kefir(size: 20),
+                                                                .foregroundColor: UIColor.accent])
+            attributedString.append(distanceString)
+            attributedString.append(ellipsesString)
+            header.setAttributedTitle(attributedString, for: .normal)
         } else {
-            header.setTitle("You've run \(distance)m -\nThat is more than 8 eiffel towers!\n\nYou are 10m away from the height of Mount Everest! This is amazing stuff!\n\n", for: .normal)
+            header.setTitle("You've run \(distance)m -\nThat is more than 8 eiffel towers!\n\nYou are 10m away from the height of Mount Everest!\n\n", for: .normal)
         }
         
         return header
