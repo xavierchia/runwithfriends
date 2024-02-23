@@ -83,3 +83,18 @@ extension UIFont {
     return UIFont(descriptor: descriptor, size: 0)
   } // with(traits:)
 } // extension
+
+extension UIButton {
+    func setFont(_ font: UIFont) {
+        if #available(iOS 15.0, *) {
+            self.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = font
+                return outgoing
+            }
+        }
+        else {
+            self.titleLabel?.font = font
+        }
+    }
+}

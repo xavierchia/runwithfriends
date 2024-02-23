@@ -9,12 +9,13 @@ import Foundation
 
 struct DistanceReport {
     struct Report {
-        let currentStatus: String
-        let nextGoal: String
+        let currentDistance: String
+        let currentAchievement: String
+        let nextAchievement: String
     }
     
     static func getReport(with distance: Int) -> Report {
-        let currentStatusPrefix = "You've run \(distance.valueShort)\(distance.metricShort)"
+        let currentDistance = "You've run \(distance.valueShort)\(distance.metricShort) -"
         func nextGoalPrefix(with distanceLeft: Int) -> String {
             "You are \(distanceLeft.valueShort)\(distanceLeft.metricShort) from completing"
         }
@@ -22,14 +23,18 @@ struct DistanceReport {
         switch distance {
         case ..<Landmarks.HighLineNewYork:
             let distanceLeft = Landmarks.HighLineNewYork - distance
-            let report = Report(currentStatus: "\(currentStatusPrefix) -\n\n That is more than \(Int(distance / Landmarks.EiffelTower)) Eiffel Towers in Paris!", nextGoal: "\(nextGoalPrefix(with: distanceLeft)) the High Line Park in New York City.")
+            let report = Report(currentDistance: currentDistance,
+                                currentAchievement: "That is more than \(Int(distance / Landmarks.EiffelTower)) Eiffel Towers in Paris!\n",
+                                nextAchievement: "\(nextGoalPrefix(with: distanceLeft)) the High Line Park in New York City.\n")
             return report
         case ..<Landmarks.GoldenGateBridge:
             let distanceLeft = Landmarks.GoldenGateBridge - distance
-            let report = Report(currentStatus: "\(currentStatusPrefix) -\n\nThat is more than the High Line Park in New York City!", nextGoal: "\(nextGoalPrefix(with: distanceLeft)) the Golden Gate Bridge in San Francisco.")
+            let report = Report(currentDistance: currentDistance,
+                                currentAchievement: "That is more than the High Line Park in New York City!\n",
+                                nextAchievement: "\(nextGoalPrefix(with: distanceLeft)) the Golden Gate Bridge in San Francisco.\n")
             return report
         default:
-            return Report(currentStatus: currentStatusPrefix, nextGoal: "You've completed the game!")
+            return Report(currentDistance: currentDistance, currentAchievement: "", nextAchievement: "You have completed the game\n")
         }
     }
 }

@@ -19,6 +19,11 @@ class ProfileViewController: UIViewController {
         case expanded
     }
     
+    let header = UIStackView()
+    let firstButton = UIButton().setHeaderButton()
+    let secondButton = UIButton().setHeaderButton()
+    let thirdButton = UIButton().setHeaderButton()
+    let downArrowButton = UIButton().setDownArrowButton()
     var headerState: HeaderState = .compact
     
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -62,6 +67,8 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupProfile(with: userData.user)
+        headerState = .compact
+        settingsTableView.reloadData()
     }
     
     // MARK: SetupUI
@@ -85,6 +92,21 @@ class ProfileViewController: UIViewController {
             settingsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             settingsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
+        header.axis = .vertical
+        header.distribution = .fillProportionally
+        header.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
+        header.isLayoutMarginsRelativeArrangement = true
+        
+        header.addArrangedSubview(firstButton)
+        header.addArrangedSubview(secondButton)
+        header.addArrangedSubview(downArrowButton)
+        header.addArrangedSubview(thirdButton)
+        
+//        firstButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+//        secondButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+//        thirdButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+        downArrowButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
     
     private func setupProfile(with user: User) {
@@ -133,39 +155,46 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         let distance = userData.getTotalDistance()
         guard distance > 0 else { return nil }
         
-        let header = UIButton()
-        header.setTitleColor(.moss, for: .normal)
-        header.titleLabel?.font = UIFont.KefirLight(size: 20)
-        header.titleLabel?.numberOfLines = 0
-        header.contentHorizontalAlignment = .left
-        header.contentVerticalAlignment = .top
-        
-        header.addTarget(self, action: #selector(tapped), for: .touchUpInside)
-        
-
         // for testing
         let report = DistanceReport.getReport(with: 1200)
         //        let report = DistanceReport.getReport(with: distance)
-
-        if headerState == .compact {
-            let attributedString = NSMutableAttributedString()
-            let distanceString = NSAttributedString(string: report.currentStatus,
-                                                attributes: [.font: UIFont.KefirLight(size: 20),
-                                                             .foregroundColor: UIColor.moss])
-            let ellipsesString =  NSAttributedString(string: "\n...\n",
-                                                   attributes: [.font: UIFont.Kefir(size: 20),
-                                                                .foregroundColor: UIColor.accent])
-            attributedString.append(distanceString)
-            attributedString.append(ellipsesString)
-            header.setAttributedTitle(attributedString, for: .normal)
-        } else {
-            header.setTitle("\(report.currentStatus)\n\n\(report.nextGoal)\n\n", for: .normal)
-        }
+        
+        firstButton.setTitle(report.currentDistance, for: .normal)
+        secondButton.setTitle(report.currentAchievement, for: .normal)
+        thirdButton.setTitle(report.nextAchievement, for: .normal)
+        
+        thirdButton.isHidden = headerState == .compact
+        downArrowButton.isHidden = headerState == .expanded
+        
         return header
     }
     
     @objc func tapped() {
         headerState = headerState == .expanded ? .compact : .expanded
         self.settingsTableView.reloadData()
+    }
+}
+
+private extension UIButton {
+    func setHeaderButton() -> UIButton {
+        self.setTitleColor(.moss, for: .normal)
+        self.titleLabel?.font = UIFont.KefirLight(size: 20)
+        self.titleLabel?.numberOfLines = 0
+        self.contentHorizontalAlignment = .left
+        self.contentVerticalAlignment = .top
+        return self
+    }
+    
+    func setDownArrowButton() -> UIButton {
+        self.setTitle("...", for: .normal)
+        self.setTitleColor(.accent, for: .normal)
+
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 10)
+        self.configuration = configuration
+        self.setFont(UIFont.KefirBold(size: 20))
+        self.contentHorizontalAlignment = .right
+        self.tintColor = .accent
+        return self
     }
 }
