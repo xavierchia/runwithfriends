@@ -127,7 +127,7 @@ class RunsViewController: UIViewController {
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationItem.title = "25 minute runs"
+        self.navigationItem.title = "15 minute runs"
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     }

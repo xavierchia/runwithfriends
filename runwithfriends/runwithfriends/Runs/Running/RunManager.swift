@@ -90,7 +90,7 @@ class RunManager {
         let intervalToStart = run.start_date.getDate().timeIntervalSince(Date()).rounded()
         var runTime = Double(run.end_date - run.start_date)
         // for testing
-        runTime = 100
+//        runTime = 100
         
         switch intervalToStart {
         case 3600...:

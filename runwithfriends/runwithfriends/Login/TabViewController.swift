@@ -42,6 +42,6 @@ class TabViewController: UITabBarController {
         
         self.selectedIndex = 0
         // for testing
-        self.selectedIndex = 1
+//        self.selectedIndex = 1
     }
 }

@@ -67,7 +67,7 @@ class RunningViewController: UIViewController {
                 totalTime = seconds
                 
                 // for testing we move faster
-                totalDistance += 0.5
+                //                totalDistance += 0.5
                 
                 updateLabels()
                 updateAudio()
@@ -241,16 +241,16 @@ class RunningViewController: UIViewController {
         switch sender.state {
         case .began:
             print("began long press to cancel run")
-
+            
             UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
                 self.endButton.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-
+                
             } completion: { _ in
                 UIView.animate(withDuration: 0.6) {
                     self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }
             }
-
+            
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
                 print("cancelling run")
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -291,12 +291,15 @@ extension RunningViewController: CLLocationManagerDelegate {
     }
     
     private func updateAudio() {
-        if Int(totalTime) % 60 == 0 {
+        switch Int(totalTime) {
+        case 60, 300, 600:
             guard !Speaker.shared.isSpeaking else { return }
             let minutes = Int(totalTime) / 60
             let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(totalDistance.value) \(totalDistance.metric)")
             utterance.rate = 0.1
             Speaker.shared.speak(utterance)
+        default:
+            break
         }
     }
 }
@@ -305,13 +308,10 @@ extension RunningViewController: CLLocationManagerDelegate {
 extension RunningViewController {
     func updateServer() {
         switch totalTime {
-        // for testing
-        case 10, 300, 600, 900, 1200:
-//        case 60, 300, 600, 900, 1200:
+        case 60, 300, 600:
             print("upserting run with distance \(totalDistance)")
             Task {
                 await runManager.upsertRun(with: Int(totalDistance))
-//                await runManager.syncRun()
             }
             
         default:
