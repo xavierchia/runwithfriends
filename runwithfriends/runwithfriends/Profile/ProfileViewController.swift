@@ -23,6 +23,7 @@ class ProfileViewController: UIViewController {
     let firstButton = UIButton().setHeaderButton()
     let secondButton = UIButton().setHeaderButton()
     let thirdButton = UIButton().setHeaderButton()
+    let fourthButton = UIButton().setHeaderButton()
     let downArrowButton = UIButton().setDownArrowButton()
     var headerState: HeaderState = .compact
     
@@ -100,8 +101,9 @@ class ProfileViewController: UIViewController {
         
         header.addArrangedSubview(firstButton)
         header.addArrangedSubview(secondButton)
-        header.addArrangedSubview(downArrowButton)
         header.addArrangedSubview(thirdButton)
+        header.addArrangedSubview(fourthButton)
+        header.addArrangedSubview(downArrowButton)
         
 //        firstButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
 //        secondButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
@@ -161,11 +163,14 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         firstButton.setTitle(report.currentDistance, for: .normal)
         secondButton.setTitle(report.currentAchievement, for: .normal)
-        thirdButton.setTitle(report.nextAchievement, for: .normal)
+        thirdButton.setTitle(report.nextDistance, for: .normal)
+        fourthButton.setTitle(report.nextAchievement, for: .normal)
         
+        firstButton.isHidden = headerState == .expanded
+        secondButton.isHidden = headerState == .expanded
         thirdButton.isHidden = headerState == .compact
-        downArrowButton.isHidden = headerState == .expanded
-        
+        fourthButton.isHidden = headerState == .compact
+
         return header
     }
     
@@ -177,8 +182,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension UIButton {
     func setHeaderButton() -> UIButton {
-        self.setTitleColor(.moss, for: .normal)
-        self.titleLabel?.font = UIFont.KefirLight(size: 20)
+        self.setTitleColor(.black, for: .normal)
+        self.titleLabel?.font = UIFont.Kefir(size: 20)
         self.titleLabel?.numberOfLines = 0
         self.contentHorizontalAlignment = .left
         self.contentVerticalAlignment = .top
