@@ -14,11 +14,18 @@ class ProfileViewController: UIViewController {
         let title: String
     }
     
+    enum HeaderState {
+        case compact
+        case expanded
+    }
+    
+    var headerState: HeaderState = .compact
+    
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private let tableCellTitles = [
         [
-//              CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!"),
-
+            //              CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!"),
+            
             CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
             CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
         ],
@@ -43,7 +50,7 @@ class ProfileViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .cream
@@ -101,22 +108,49 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-            return tableCellTitles.count
+        return tableCellTitles.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return tableCellTitles[section].count
+        return tableCellTitles[section].count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-            let data = tableCellTitles[indexPath.section][indexPath.row]
-            cell.textLabel?.text = data.title
-            cell.imageView?.image = data.emoji
-            cell.accessoryType = .disclosureIndicator
-            cell.backgroundColor = .shadow
-            cell.textLabel?.textColor = .moss
-            cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
-            return cell
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        let data = tableCellTitles[indexPath.section][indexPath.row]
+        cell.textLabel?.text = data.title
+        cell.imageView?.image = data.emoji
+        cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = .shadow
+        cell.textLabel?.textColor = .moss
+        cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == 0 else { return nil }
+        let distance = userData.getTotalDistance()
+        
+        let header = UIButton()
+        header.setTitleColor(.moss, for: .normal)
+        header.titleLabel?.font = UIFont.KefirLight(size: 20)
+        header.titleLabel?.numberOfLines = 0
+        header.contentHorizontalAlignment = .left
+        header.contentVerticalAlignment = .top
+        
+        header.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+        
+        if headerState == .compact {
+            header.setTitle("You've run \(distance)m -\nThat is more than 8 eiffel towers!\n...\n", for: .normal)
+        } else {
+            header.setTitle("You've run \(distance)m -\nThat is more than 8 eiffel towers!\n\nYou are 10m away from the height of Mount Everest! This is amazing stuff!\n\n", for: .normal)
+        }
+        
+        return header
+    }
+    
+    @objc func tapped() {
+        headerState = headerState == .expanded ? .compact : .expanded
+        self.settingsTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
 }

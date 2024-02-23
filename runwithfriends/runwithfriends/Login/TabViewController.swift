@@ -41,5 +41,7 @@ class TabViewController: UITabBarController {
         setViewControllers([runsNav, profileNav], animated: false)
         
         self.selectedIndex = 0
+        // for testing
+        self.selectedIndex = 1
     }
 }

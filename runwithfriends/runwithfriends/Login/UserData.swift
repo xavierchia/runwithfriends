@@ -18,6 +18,10 @@ class UserData {
         self.user = user
     }
     
+    func getTotalDistance() -> Int {
+        userSessions.reduce(0) { $0 + $1.distance }
+    }
+    
     func syncUserSessions() async {
         let supabase = Supabase.shared
         do {
