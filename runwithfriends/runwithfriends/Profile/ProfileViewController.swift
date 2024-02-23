@@ -161,6 +161,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     @objc func tapped() {
         headerState = headerState == .expanded ? .compact : .expanded
-        self.settingsTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        self.settingsTableView.reloadData()
     }
 }

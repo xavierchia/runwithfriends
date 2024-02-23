@@ -31,7 +31,6 @@ class UserData {
                 .select()
                 .execute()
                 .value
-            print(userSessions)
             self.userSessions = userSessions
         } catch {
             print("failed to sync user sessions")
