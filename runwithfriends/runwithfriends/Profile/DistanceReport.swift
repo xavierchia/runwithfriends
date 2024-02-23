@@ -105,7 +105,7 @@ struct DistanceReport {
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the length of Manhattan in New York!",
                                 nextDistance: nextDistance,
-                                nextAchievement: "Completing the circumference of the CERN Hadron Collider near Geneva Switzerland.")
+                                nextAchievement: "Completing the circumference of the CERN Hadron Collider near Geneva Switzerland.\n")
             return report
         default:
             return Report(currentDistance: currentDistance,

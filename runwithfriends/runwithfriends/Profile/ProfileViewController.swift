@@ -186,7 +186,7 @@ private extension UIButton {
         self.setTitleColor(.accent, for: .normal)
 
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 10)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 10)
         self.configuration = configuration
         self.setFont(UIFont.KefirBold(size: 20))
         self.contentHorizontalAlignment = .right
