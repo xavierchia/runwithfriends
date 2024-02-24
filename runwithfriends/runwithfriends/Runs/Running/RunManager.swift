@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import CoreLocation
+import AVFoundation
 
 class RunManager {
     
@@ -27,6 +28,7 @@ class RunManager {
     private let supabase = Supabase.shared.client.database
     private var timer = Timer()
     private var lastUpdateInterval: TimeInterval = 100_000
+    private var countdownStarted = false
     
     init(with run: Run, and user: User) {
         self.run = run
@@ -90,7 +92,7 @@ class RunManager {
         let intervalToStart = run.start_date.getDate().timeIntervalSince(Date()).rounded()
         var runTime = Double(run.end_date - run.start_date)
         // for testing
-//        runTime = 100
+        runTime = 360
         
         switch intervalToStart {
         case 3600...:
@@ -99,6 +101,12 @@ class RunManager {
             let countdownTime = intervalToStart.positionalTime
             runStage = .oneHourToRunStart(countdownTime)
         case 0...6:
+            if countdownStarted == false {
+                countdownStarted = true
+                let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start...")
+                utterance.rate = 0.1
+                Speaker.shared.speak(utterance)
+            }
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
         case -runTime...0:
             // We only publish on whole seconds once the run has started

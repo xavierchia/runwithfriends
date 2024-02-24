@@ -9,7 +9,6 @@ import UIKit
 import MapKit
 import CoreLocation
 import Combine
-import AVFoundation
 
 class WaitingRoomViewController: UIViewController {
     // database
@@ -30,7 +29,6 @@ class WaitingRoomViewController: UIViewController {
     private let bottomRow: BottomRow
     
     private var cancellables = Set<AnyCancellable>()
-    private var countdownStarted = false
     
     init(with run: Run, and userData: UserData) {
         self.bottomRow = BottomRow(with: run)
@@ -53,13 +51,14 @@ class WaitingRoomViewController: UIViewController {
     private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.allowsBackgroundLocationUpdates = true
         
         if locationManager.authorizationStatus == .notDetermined {
             print("Authorization status not determined, requesting authorization")
             locationManager.requestWhenInUseAuthorization()
         } else {
             print("Authorization permitted, requesting location")
-            locationManager.requestLocation()
+            locationManager.startUpdatingLocation()
         }
     }
     
@@ -71,13 +70,6 @@ class WaitingRoomViewController: UIViewController {
             case .waitingRunStart, .oneHourToRunStart:
                 bottomRow.runStage = runStage
             case .fiveSecondsToRunStart:
-                if countdownStarted == false {
-                    countdownStarted = true
-                    let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start...")
-                    utterance.rate = 0.1
-                    Speaker.shared.speak(utterance)
-                }
-
                 presentRunningVC()
             default:
                 break
@@ -201,6 +193,7 @@ class WaitingRoomViewController: UIViewController {
     }
     
     @objc private func presentRunningVC() {
+        locationManager.stopUpdatingLocation()
         guard !(presentedViewController is RunningViewController) else {
             return
         }
@@ -225,6 +218,7 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
             if let location = manager.location {
                 print("Location authorized, setting user location")
                 locationUpdated(with: location.coordinate)
+                locationManager.startUpdatingLocation()
             }
         } else if manager.authorizationStatus == .notDetermined {
             print("Location not authorized yet, just wait.")
@@ -239,7 +233,6 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
            let location = manager.location {
             print("Getting location passed")
             locationUpdated(with: location.coordinate)
-            locationManager.stopUpdatingLocation()
         }
     }
     
