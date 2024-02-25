@@ -77,6 +77,7 @@ class WaitingRoomViewController: UIViewController {
         }.store(in: &cancellables)
         
         Task {
+            // Upsert when joining a run, distance 0
             await runManager.upsertRun()
         }
     }

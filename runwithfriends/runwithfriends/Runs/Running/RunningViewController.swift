@@ -67,7 +67,7 @@ class RunningViewController: UIViewController {
                 totalTime = seconds
                 
                 // for testing we move faster
-                //                totalDistance += 0.5
+                totalDistance += 0.5
                 
                 updateLabels()
                 updateAudio()
@@ -82,6 +82,7 @@ class RunningViewController: UIViewController {
     
     @objc private func resultsButtonPressed() {
         Task {
+            // Upsert when run is complete
             await runManager.upsertRun(with: Int(totalDistance))
             let resultsVC = ResultsViewController(with: runManager)
             let resultsNav = UINavigationController(rootViewController: resultsVC)
@@ -241,25 +242,30 @@ class RunningViewController: UIViewController {
         switch sender.state {
         case .began:
             print("began long press to cancel run")
-            
+                        
             UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
                 self.endButton.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-                
-            } completion: { _ in
-                UIView.animate(withDuration: 0.6) {
-                    self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
-                }
             }
             
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+                guard let self else { return }
                 print("cancelling run")
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                self?.touchCountTimer?.invalidate()
-                self?.view.window?.rootViewController?.dismiss(animated: true)
-                self?.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
-                self?.runManager.leaveRun()
+                self.touchCountTimer?.invalidate()
+                self.view.window?.rootViewController?.dismiss(animated: true)
+                self.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
+                Task {
+                    if self.totalDistance > 0 {
+                        await self.runManager.upsertRun(with: Int(self.totalDistance))
+                    } else {
+                        self.runManager.leaveRun()
+                    }
+                }
             }
         default:
+            UIView.animate(withDuration: 0.6) {
+                self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }
             endButtonPressed()
             touchCountTimer?.invalidate()
         }
@@ -309,8 +315,8 @@ extension RunningViewController {
     func updateServer() {
         switch totalTime {
         case 60, 300, 600:
-            print("upserting run with distance \(totalDistance)")
             Task {
+                // Upsert during run interval
                 await runManager.upsertRun(with: Int(totalDistance))
             }
             

@@ -64,7 +64,7 @@ class RunManager {
                 .from("run_session")
                 .upsert(session)
                 .execute()
-            print("User upserted to run session")
+            print("User upserted to run session with distance \(distance)")
         } catch {
             print("Unable to upsert run session \(error)")
         }
