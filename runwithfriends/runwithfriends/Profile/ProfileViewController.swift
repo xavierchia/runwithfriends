@@ -148,7 +148,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         guard section == 0 else { return nil }
         
         let distance = userData.getTotalDistance()
-        guard distance > 0 else { return nil }
+        guard distance > Landmarks.EiffelTower else { return nil }
         
         // for testing
 //        let report = DistanceReport.getReport(with: 22000)

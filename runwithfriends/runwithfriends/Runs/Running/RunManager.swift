@@ -37,6 +37,10 @@ class RunManager {
         setupTimer()
     }
     
+    deinit {
+        timer.invalidate()
+    }
+    
     public func syncRun() async {
         do {
             let runs: [Run] = try await supabase
@@ -92,7 +96,7 @@ class RunManager {
         let intervalToStart = run.start_date.getDate().timeIntervalSince(Date()).rounded()
         var runTime = Double(run.end_date - run.start_date)
         // for testing
-        runTime = 360
+        runTime = 10
         
         switch intervalToStart {
         case 3600...:
@@ -118,6 +122,9 @@ class RunManager {
             runStage = .runStart(-intervalToStart)
         case ...(-runTime):
             runStage = .runEnd
+            let utterance = AVSpeechUtterance(string: "Run complete. Getting results.")
+            utterance.rate = 0.3
+            Speaker.shared.speak(utterance)
             timer.invalidate()
         default:
             break

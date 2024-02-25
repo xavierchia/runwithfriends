@@ -67,13 +67,6 @@ class ResultsViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let utterance = AVSpeechUtterance(string: "Run complete. Getting results.")
-        utterance.rate = 0.3
-        Speaker.shared.speak(utterance)
-    }
-    
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.title = "Run complete"
