@@ -32,7 +32,7 @@ class WaitingRoomViewController: UIViewController {
     
     init(with run: Run, and userData: UserData) {
         self.bottomRow = BottomRow(with: run)
-        self.runManager = RunManager(with: run, and: userData.user)
+        self.runManager = RunManager(with: run, and: userData)
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
@@ -206,8 +206,10 @@ class WaitingRoomViewController: UIViewController {
     }
     
     @objc private func pop() {
-        runManager.leaveRun()
-        self.dismiss(animated: true)
+        Task {
+            self.dismiss(animated: true)
+            await runManager.leaveRun()
+        }
     }
 }
 

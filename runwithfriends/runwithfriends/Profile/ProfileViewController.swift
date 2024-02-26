@@ -148,10 +148,11 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         guard section == 0 else { return nil }
         
         let distance = userData.getTotalDistance()
+        print("user's total distance is \(distance)")
         guard distance > Landmarks.EiffelTower else { return nil }
         
         // for testing
-//        let report = DistanceReport.getReport(with: 22000)
+        //        let report = DistanceReport.getReport(with: 22000)
         let report = DistanceReport.getReport(with: distance)
         
         if headerState == .current {
@@ -161,7 +162,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             firstButton.setAttributedTitle(report.nextDistance, for: .normal)
             secondButton.setTitle(report.nextAchievement, for: .normal)
         }
-
+        
         return header
     }
     
@@ -184,7 +185,7 @@ private extension UIButton {
     func setDownArrowButton() -> UIButton {
         self.setTitle("...", for: .normal)
         self.setTitleColor(.accent, for: .normal)
-
+        
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 10)
         self.configuration = configuration

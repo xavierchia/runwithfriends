@@ -19,20 +19,20 @@ class RunManager {
         case runStart(TimeInterval)
         case runEnd
     }
-        
+    
     @Published
     public var runStage: RunStage = .waitingRunStart
     public var run: Run
-    public let user: User
-
+    public let userData: UserData
+    
     private let supabase = Supabase.shared.client.database
     private var timer = Timer()
     private var lastUpdateInterval: TimeInterval = 100_000
     private var countdownStarted = false
     
-    init(with run: Run, and user: User) {
+    init(with run: Run, and userData: UserData) {
         self.run = run
-        self.user = user
+        self.userData = userData
         fireTimer()
         setupTimer()
     }
@@ -44,10 +44,10 @@ class RunManager {
     public func syncRun() async {
         do {
             let runs: [Run] = try await supabase
-              .rpc("get_run", params: ["get_run_id": self.run.run_id])
-              .select()
-              .execute()
-              .value
+                .rpc("get_run", params: ["get_run_id": self.run.run_id])
+                .select()
+                .execute()
+                .value
             if let run = runs.first {
                 print("run synced")
                 self.run = run
@@ -59,7 +59,7 @@ class RunManager {
     
     public func upsertRun(with distance: Int = 0) async {
         do {
-            let session = RunSession(run_id: run.run_id, user_id: user.user_id, distance: distance)
+            let session = RunSession(run_id: run.run_id, user_id: userData.user.user_id, distance: distance)
             try await supabase
                 .from("run_session")
                 .upsert(session)
@@ -70,18 +70,16 @@ class RunManager {
         }
     }
     
-    public func leaveRun() {
-        Task {
-            do {
-                try await supabase.from("run_session")
-                    .delete()
-                    .eq("run_id", value: run.run_id)
-                    .eq("user_id", value: user.user_id)
-                    .execute()
-                print("User removed from run session")
-            } catch {
-                print("Unable to delete run session \(error)")
-            }
+    public func leaveRun() async {
+        do {
+            try await supabase.from("run_session")
+                .delete()
+                .eq("run_id", value: run.run_id)
+                .eq("user_id", value: userData.user.user_id)
+                .execute()
+            print("User removed from run session")
+        } catch {
+            print("Unable to delete run session \(error)")
         }
     }
     

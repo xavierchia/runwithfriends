@@ -46,12 +46,12 @@ class ResultsViewController: UIViewController {
         indicator.style = .large
         indicator.hidesWhenStopped = true
         indicator.center = CGPoint(x: view.center.x, y: view.center.y + 80)
-        print(resultsTableView.center)
         indicator.color = .pumpkin
         self.view.addSubview(indicator)
         indicator.startAnimating()
         
         Task {
+            await runManager.userData.syncUserSessions()
             // Wait 5 seconds for everyone to post their runs
             let seconds = 5
             let duration = UInt64(seconds * 1_000_000_000)
@@ -59,7 +59,7 @@ class ResultsViewController: UIViewController {
             
             await runManager.syncRun()
             guard let ownRun = runManager.run.runners.first(where: { runner in
-                runner.user_id == runManager.user.user_id
+                runner.user_id == runManager.userData.user.user_id
             }) else { return }
             results = [ownRun]
             indicator.stopAnimating()

@@ -249,16 +249,19 @@ class RunningViewController: UIViewController {
             
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
                 guard let self else { return }
+                
                 print("cancelling run")
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 self.touchCountTimer?.invalidate()
                 self.view.window?.rootViewController?.dismiss(animated: true)
                 self.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
+
                 Task {
                     if self.totalDistance > 0 {
                         await self.runManager.upsertRun(with: Int(self.totalDistance))
+                        await self.runManager.userData.syncUserSessions()
                     } else {
-                        self.runManager.leaveRun()
+                        await self.runManager.leaveRun()
                     }
                 }
             }
