@@ -51,8 +51,8 @@ class UIRunTableViewCell: UITableViewCell {
         rightButton.layer.borderWidth = 3
         
         guard cellData.start_date != -1 else {
-            title.text = "start now"
-            subtitle.text = "Solo run"
+            title.text = "run now"
+            subtitle.text = "solo runner"
             rightButton.setTitle("GO", for: .normal)
             return
         }
@@ -81,7 +81,6 @@ class UIRunTableViewCell: UITableViewCell {
         subtitle.font = UIFont.Kefir(size: 13)
         
         // Configure the right button
-        rightButton.isEnabled = canJoin
         rightButton.setTitle("JOIN", for: .normal)
         rightButton.setTitle("FULL", for: .disabled)
     }
