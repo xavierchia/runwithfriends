@@ -15,11 +15,7 @@ class RunningViewController: UIViewController {
     // initial countdown on top of running
     private let countdownLabel = UILabel()
     
-    private let locationManager = CLLocationManager()
-    private var lastLocation: CLLocation?
-    private var totalDistance: CLLocationDistance = 0
     private var totalTime: TimeInterval = 0
-    private let startingTime = Date()
     
     private let runManager: RunManager
     private var cancellables = Set<AnyCancellable>()
@@ -45,7 +41,6 @@ class RunningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accent
-        setupLocationManager()
         setupUI()
         respondToRunStage()
     }
@@ -66,9 +61,6 @@ class RunningViewController: UIViewController {
                 countdownLabel.removeFromSuperview()
                 totalTime = seconds
                 
-                // for testing we move faster
-                totalDistance += 0.5
-                
                 updateLabels()
                 updateAudio()
                 updateServer()
@@ -78,24 +70,19 @@ class RunningViewController: UIViewController {
                 break
             }
         }.store(in: &cancellables)
+        
+        runManager.$totalDistance.sink { [weak self] _ in
+            self?.updateLabels()
+        }.store(in: &cancellables)
     }
     
     @objc private func resultsButtonPressed() {
         Task {
-            // Upsert when run is complete
-            await runManager.upsertRun(with: Int(totalDistance))
             let resultsVC = ResultsViewController(with: runManager)
             let resultsNav = UINavigationController(rootViewController: resultsVC)
             resultsNav.modalPresentationStyle = .overFullScreen
             present(resultsNav, animated: true)
         }
-    }
-    
-    private func setupLocationManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.startUpdatingLocation()
     }
     
     // MARK: Setup UI
@@ -257,8 +244,8 @@ class RunningViewController: UIViewController {
                 self.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
 
                 Task {
-                    if self.totalDistance > 0 {
-                        await self.runManager.upsertRun(with: Int(self.totalDistance))
+                    if self.runManager.totalDistance > 0 {
+                        await self.runManager.upsertRun(with: Int(self.runManager.totalDistance))
                         await self.runManager.userData.syncUserSessions()
                     } else {
                         await self.runManager.leaveRun()
@@ -275,25 +262,13 @@ class RunningViewController: UIViewController {
     }
 }
 
-// MARK: Update location, labels, audio
-extension RunningViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let currentLocation = locations.last,
-              currentLocation.timestamp >= startingTime + 5 else { return }
-        
-        if let lastLocation {
-            totalDistance += currentLocation.distance(from: lastLocation)
-            print("location updated \(totalDistance)")
-            updateLabels()
-        }
-        
-        self.lastLocation = currentLocation
-    }
+// MARK: Update labels and audio
+extension RunningViewController {
     
     private func updateLabels() {
         // distance
-        distanceValueLabel.text = Int(totalDistance).value
-        distanceMetricLabel.text = Int(totalDistance).metric
+        distanceValueLabel.text = Int(self.runManager.totalDistance).value
+        distanceMetricLabel.text = Int(self.runManager.totalDistance).metric
         
         // time
         timeValueLabel.text = totalTime.positionalTime
@@ -304,6 +279,7 @@ extension RunningViewController: CLLocationManagerDelegate {
         case 60, 300, 600:
             guard !Speaker.shared.isSpeaking else { return }
             let minutes = Int(totalTime) / 60
+            let totalDistance = runManager.totalDistance
             let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(Int(totalDistance).value) \(Int(totalDistance).metric)")
             utterance.rate = 0.1
             Speaker.shared.speak(utterance)
@@ -320,7 +296,7 @@ extension RunningViewController {
         case 60, 300, 600:
             Task {
                 // Upsert during run interval
-                await runManager.upsertRun(with: Int(totalDistance))
+                await runManager.upsertRun(with: Int(self.runManager.totalDistance))
             }
             
         default:

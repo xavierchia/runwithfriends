@@ -22,6 +22,9 @@ class RunManager {
     
     @Published
     public var runStage: RunStage = .waitingRunStart
+    
+    @Published
+    public var totalDistance: CLLocationDistance = 0
     public var run: Run
     public let userData: UserData
     
@@ -87,6 +90,9 @@ class RunManager {
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             fireTimer()
+            
+            // for testing we move faster
+//            self.totalDistance += 0.5
         })
     }
     

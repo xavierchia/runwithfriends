@@ -16,9 +16,14 @@ class WaitingRoomViewController: UIViewController {
     
     // Location
     private let locationManager = CLLocationManager()
+    
+    // Waiting room pins
     private var pinsSet = false
     // coordinates for the The Panathenaic Stadium, where the first Olympic games were held
     private let defaultLocation = CLLocationCoordinate2D(latitude: 37.969, longitude: 23.741)
+    
+    // Running room
+    private var lastLocation: CLLocation?
     
     // init data
     private let runManager: RunManager
@@ -49,8 +54,9 @@ class WaitingRoomViewController: UIViewController {
     }
     
     private func setupLocationManager() {
+        
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.allowsBackgroundLocationUpdates = true
         
         if locationManager.authorizationStatus == .notDetermined {
@@ -71,6 +77,8 @@ class WaitingRoomViewController: UIViewController {
                 bottomRow.runStage = runStage
             case .fiveSecondsToRunStart:
                 presentRunningVC()
+            case .runEnd:
+                locationManager.stopUpdatingLocation()
             default:
                 break
             }
@@ -194,7 +202,6 @@ class WaitingRoomViewController: UIViewController {
     }
     
     @objc private func presentRunningVC() {
-        locationManager.stopUpdatingLocation()
         guard !(presentedViewController is RunningViewController) else {
             return
         }
@@ -237,6 +244,16 @@ extension WaitingRoomViewController: CLLocationManagerDelegate {
             print("Getting location passed")
             locationUpdated(with: location.coordinate)
         }
+        
+        guard let currentLocation = locations.last,
+              currentLocation.timestamp >= runManager.run.start_date.getDate() else { return }
+        
+        if let lastLocation {
+            runManager.totalDistance += currentLocation.distance(from: lastLocation)
+            print("location updated \(runManager.totalDistance)")
+        }
+        
+        self.lastLocation = currentLocation
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

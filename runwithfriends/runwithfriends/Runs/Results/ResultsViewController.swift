@@ -51,12 +51,17 @@ class ResultsViewController: UIViewController {
         indicator.startAnimating()
         
         Task {
+            // Upsert when run is complete
+            let totalDistance = self.runManager.totalDistance
+            await runManager.upsertRun(with: Int(totalDistance))
             await runManager.userData.syncUserSessions()
+            
             // Wait 5 seconds for everyone to post their runs
             let seconds = 5
             let duration = UInt64(seconds * 1_000_000_000)
             try await Task.sleep(nanoseconds: duration)
             
+            // Get all the runs and update table
             await runManager.syncRun()
             guard let ownRun = runManager.run.runners.first(where: { runner in
                 runner.user_id == runManager.userData.user.user_id
