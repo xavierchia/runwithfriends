@@ -56,6 +56,12 @@ class RunsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        runData = runData.filter({ run in
+            run.start_date.getDate() >= Date()
+        })
+        
+        runsTableView.reloadData()
     }
     
     private func reloadRunsData() {
