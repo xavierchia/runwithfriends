@@ -236,8 +236,18 @@ extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
         cell.delegate = self
         
         if tableView == runsTableView {
-            cell.configure(with: runData[indexPath.row])
-        } else {
+            
+            switch runData[indexPath.row].start_date {
+            case 0:
+                cell.configureZombie()
+            case -1:
+                cell.configureSoloRun()
+            default:
+                cell.configure(with: runData[indexPath.row])
+            }
+        }
+        
+        else if tableView == friendsTableView {
             cell.configure(with: friendsData[indexPath.row])
         }
         

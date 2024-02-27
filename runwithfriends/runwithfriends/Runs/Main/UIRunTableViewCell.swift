@@ -30,35 +30,25 @@ class UIRunTableViewCell: UITableViewCell {
         self.delegate?.cellButtonPressed(with: indexPath, from: tableView)
     }
     
+    func configureZombie() {
+        title.linesCornerRadius = 3
+        subtitle.linesCornerRadius = 3
+        self.showAnimatedSkeleton(usingColor: .lightGray)
+        self.layoutSkeletonIfNeeded()
+        return
+    }
+    
+    func configureSoloRun() {
+        styleGenericCell()
+        title.text = "run now"
+        subtitle.text = "solo runner"
+        rightButton.setTitle("GO", for: .normal)
+        return
+    }
+    
+    
     func configure(with cellData: Run) {
-        guard cellData.start_date != 0 else {
-            title.linesCornerRadius = 3
-            subtitle.linesCornerRadius = 3
-            self.showAnimatedSkeleton(usingColor: .lightGray)
-            self.layoutSkeletonIfNeeded()
-            return
-        }
-        
-        self.stopSkeletonAnimation()
-        self.hideSkeleton()
-        
-        let canJoin = cellData.runners.count < 25
-        let textColor: UIColor = canJoin ? .accent : .gray
-        
-        rightButton.titleLabel?.font = UIFont.KefirBold(size: 17)
-        rightButton.backgroundColor = .clear
-        rightButton.layer.borderColor = textColor.cgColor
-        rightButton.layer.borderWidth = 3
-        
-        guard cellData.start_date != -1 else {
-            title.text = "run now"
-            subtitle.text = "solo runner"
-            rightButton.setTitle("GO", for: .normal)
-            return
-        }
-        
-        self.selectionStyle = .none // Stops line separator from disappearing when tapped
-
+        styleGenericCell()
         guard let displayTime = cellData.start_date.getDate().getDisplayTime() else { return }
         let rawTimeString = displayTime.time
         let rawAmOrPmString = displayTime.amOrPm
@@ -77,10 +67,12 @@ class UIRunTableViewCell: UITableViewCell {
         
         // Configure the runners label
         subtitle.text = "\(cellData.runners.count) / 25 runners"
-        subtitle.textColor = .moss
-        subtitle.font = UIFont.Kefir(size: 13)
+
         
         // Configure the right button
+        let canJoin = cellData.runners.count < 25
+        let textColor: UIColor = canJoin ? .accent : .gray
+        rightButton.layer.borderColor = textColor.cgColor
         rightButton.setTitle("JOIN", for: .normal)
         rightButton.setTitle("FULL", for: .disabled)
     }
@@ -133,5 +125,20 @@ class UIRunTableViewCell: UITableViewCell {
 //                }
 //            }
 //        }
+    }
+    
+    private func styleGenericCell() {
+        self.stopSkeletonAnimation()
+        self.hideSkeleton()
+    
+        rightButton.titleLabel?.font = UIFont.KefirBold(size: 17)
+        rightButton.backgroundColor = .clear
+        rightButton.layer.borderColor = UIColor.accent.cgColor
+        rightButton.layer.borderWidth = 3
+        
+        subtitle.textColor = .moss
+        subtitle.font = UIFont.Kefir(size: 13)
+        
+        self.selectionStyle = .none // Stops line separator from disappearing when tapped
     }
 }
