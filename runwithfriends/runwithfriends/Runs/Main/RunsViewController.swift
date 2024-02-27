@@ -78,6 +78,7 @@ class RunsViewController: UIViewController {
                   .execute()
                   .value
                 runData = runs
+                runData.insert(Run(run_id: UUID(), start_date: -1, end_date: 0, runners: [Runner]()), at: 0)
                 runsTableView.reloadData()
             } catch {
                 print(error)

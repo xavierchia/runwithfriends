@@ -38,11 +38,24 @@ class UIRunTableViewCell: UITableViewCell {
             self.layoutSkeletonIfNeeded()
             return
         }
+        
         self.stopSkeletonAnimation()
         self.hideSkeleton()
         
         let canJoin = cellData.runners.count < 25
         let textColor: UIColor = canJoin ? .accent : .gray
+        
+        rightButton.titleLabel?.font = UIFont.KefirBold(size: 17)
+        rightButton.backgroundColor = .clear
+        rightButton.layer.borderColor = textColor.cgColor
+        rightButton.layer.borderWidth = 3
+        
+        guard cellData.start_date != -1 else {
+            title.text = "start now"
+            subtitle.text = "Solo run"
+            rightButton.setTitle("GO", for: .normal)
+            return
+        }
         
         self.selectionStyle = .none // Stops line separator from disappearing when tapped
 
@@ -69,12 +82,8 @@ class UIRunTableViewCell: UITableViewCell {
         
         // Configure the right button
         rightButton.isEnabled = canJoin
-        rightButton.titleLabel?.font = UIFont.KefirBold(size: 17)
         rightButton.setTitle("JOIN", for: .normal)
         rightButton.setTitle("FULL", for: .disabled)
-        rightButton.backgroundColor = .clear
-        rightButton.layer.borderColor = textColor.cgColor
-        rightButton.layer.borderWidth = 3
     }
     
     func configure(with cellData: FriendCellData) {
