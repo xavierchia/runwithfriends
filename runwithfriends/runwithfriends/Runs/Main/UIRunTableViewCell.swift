@@ -40,9 +40,9 @@ class UIRunTableViewCell: UITableViewCell {
     
     func configureSoloRun() {
         styleGenericCell()
-        title.text = "run now"
+        title.text = "now"
         subtitle.text = "solo runner"
-        rightButton.setTitle("GO", for: .normal)
+        rightButton.setTitle("RUN", for: .normal)
         return
     }
     

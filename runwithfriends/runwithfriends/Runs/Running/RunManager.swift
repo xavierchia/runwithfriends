@@ -44,7 +44,7 @@ class RunManager {
         timer.invalidate()
     }
     
-    public static func createRun(with run: Run) async {
+    public static func createRun(with run: Run_Raw) async {
         do {
             try await Supabase.shared.client.database
                 .from("runs")

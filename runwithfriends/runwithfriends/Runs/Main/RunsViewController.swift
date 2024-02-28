@@ -301,7 +301,7 @@ extension RunsViewController: UIRunTableViewCellProtocol {
         Task {
             if run.type == .solo {
                 run = Run(run_id: UUID(), start_date: Int((Date() + 10).timeIntervalSince1970), end_date: Int((Date() + 910).timeIntervalSince1970), type: .solo, runners: [])
-                await RunManager.createRun(with: run)
+                await RunManager.createRun(with: run.toRunRaw())
             }
             
             let waitingRoomVC = WaitingRoomViewController(with: run, and: userData)
