@@ -245,7 +245,7 @@ class RunningViewController: UIViewController {
 
                 Task {
                     if self.runManager.totalDistance > 0 {
-                        await self.runManager.upsertRun(with: Int(self.runManager.totalDistance))
+                        await self.runManager.upsertRunSession(with: Int(self.runManager.totalDistance))
                         await self.runManager.userData.syncUserSessions()
                     } else {
                         await self.runManager.leaveRun()
@@ -296,7 +296,7 @@ extension RunningViewController {
         case 60, 300, 600:
             Task {
                 // Upsert during run interval
-                await runManager.upsertRun(with: Int(self.runManager.totalDistance))
+                await runManager.upsertRunSession(with: Int(self.runManager.totalDistance))
             }
             
         default:

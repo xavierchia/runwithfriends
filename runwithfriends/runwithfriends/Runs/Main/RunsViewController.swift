@@ -64,7 +64,7 @@ class RunsViewController: UIViewController {
         if runData.count < 10 {
             reloadRunsData()
         } else {
-            runData.insert(Run(run_id: UUID(), start_date: 0, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
+            runData.insert(Run(run_id: UUID(), start_date: Int.max, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
             runsTableView.reloadData()
         }
     }
@@ -83,7 +83,7 @@ class RunsViewController: UIViewController {
                   .execute()
                   .value
                 runData = runs
-                runData.insert(Run(run_id: UUID(), start_date: 0, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
+                runData.insert(Run(run_id: UUID(), start_date: Int.max, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
                 runsTableView.reloadData()
             } catch {
                 print(error)
@@ -288,7 +288,8 @@ extension RunsViewController: UIRunTableViewCellProtocol {
     }
     
     private func runsCellPressed(with indexPath: IndexPath) {
-        let run = runData[indexPath.row]
+        var run = runData[indexPath.row]
+        
         guard run.start_date > Int(Date().timeIntervalSince1970) else {
             print("Joining a run that has already started")
             reloadRunsData()
@@ -296,9 +297,18 @@ extension RunsViewController: UIRunTableViewCellProtocol {
             present(alert, animated: true)
             return
         }
-        let waitingRoomVC = WaitingRoomViewController(with: runData[indexPath.row], and: userData)
-        waitingRoomVC.modalPresentationStyle = .overFullScreen
-        self.present(waitingRoomVC, animated: true)
+        
+        Task {
+            if run.type == .solo {
+                run = Run(run_id: UUID(), start_date: Int((Date() + 10).timeIntervalSince1970), end_date: Int((Date() + 910).timeIntervalSince1970), type: .solo, runners: [])
+                await RunManager.createRun(with: run)
+            }
+            
+            let waitingRoomVC = WaitingRoomViewController(with: run, and: userData)
+            waitingRoomVC.modalPresentationStyle = .overFullScreen
+            self.present(waitingRoomVC, animated: true)
+        }
+
     }
     
     private func friendsCellPressed(with indexPath: IndexPath) {

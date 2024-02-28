@@ -86,7 +86,7 @@ class WaitingRoomViewController: UIViewController {
         
         Task {
             // Upsert when joining a run, distance 0
-            await runManager.upsertRun()
+            await runManager.upsertRunSession()
         }
     }
     

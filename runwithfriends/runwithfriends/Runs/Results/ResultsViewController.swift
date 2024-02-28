@@ -53,7 +53,7 @@ class ResultsViewController: UIViewController {
         Task {
             // Upsert when run is complete
             let totalDistance = self.runManager.totalDistance
-            await runManager.upsertRun(with: Int(totalDistance))
+            await runManager.upsertRunSession(with: Int(totalDistance))
             await runManager.userData.syncUserSessions()
             
             // Wait 5 seconds for everyone to post their runs

@@ -49,7 +49,7 @@ class BottomRow: UIView, CustomViewProtocol {
             title.textColor = .cream
             subtitle.textColor = .cream
             subtitle.font = UIFont.Kefir(size: 18)
-            subtitle.text = "\(runData.runners.count) / 25 runners"
+            subtitle.text = runData.runners.count > 1 ? "\(runData.runners.count) / 25 runners" : "solo run"
         }
     }
     

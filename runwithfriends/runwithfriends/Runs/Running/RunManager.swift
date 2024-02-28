@@ -44,6 +44,18 @@ class RunManager {
         timer.invalidate()
     }
     
+    public static func createRun(with run: Run) async {
+        do {
+            try await Supabase.shared.client.database
+                .from("runs")
+                .upsert(run)
+                .execute()
+            print("User created run")
+        } catch {
+            print("Unable to create run \(error)")
+        }
+    }
+    
     public func syncRun() async {
         do {
             let runs: [Run] = try await supabase
@@ -60,7 +72,7 @@ class RunManager {
         }
     }
     
-    public func upsertRun(with distance: Int = 0) async {
+    public func upsertRunSession(with distance: Int = 0) async {
         do {
             let session = RunSession(run_id: run.run_id, user_id: userData.user.user_id, distance: distance)
             try await supabase
@@ -100,7 +112,7 @@ class RunManager {
         let intervalToStart = run.start_date.getDate().timeIntervalSince(Date()).rounded()
         var runTime = Double(run.end_date - run.start_date)
         // for testing
-        runTime = 10
+//        runTime = 10
         
         switch intervalToStart {
         case 3600...:
