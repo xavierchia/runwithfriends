@@ -33,7 +33,7 @@ class UserData {
                 .value
             self.userSessions = userSessions
         } catch {
-            print("failed to sync user sessions")
+            print("failed to sync user sessions \(error)")
         }
     }
     

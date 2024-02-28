@@ -21,7 +21,7 @@ class RunsViewController: UIViewController {
     private let runTableRefreshControl = UIRefreshControl()
     
     private let userData: UserData
-    private let mockRunData = [Run](repeating: Run(run_id: UUID(), start_date: 0, end_date: 0, runners: []), count: 7)
+    private let mockRunData = [Run](repeating: Run(run_id: UUID(), start_date: -1, end_date: 0, type: .public, runners: []), count: 7)
     private var runData = [Run]()
     private var friendsData = [FriendCellData]()
     
@@ -64,7 +64,7 @@ class RunsViewController: UIViewController {
         if runData.count < 10 {
             reloadRunsData()
         } else {
-            runData.insert(Run(run_id: UUID(), start_date: -1, end_date: 0, runners: [Runner]()), at: 0)
+            runData.insert(Run(run_id: UUID(), start_date: 0, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
             runsTableView.reloadData()
         }
     }
@@ -83,7 +83,7 @@ class RunsViewController: UIViewController {
                   .execute()
                   .value
                 runData = runs
-                runData.insert(Run(run_id: UUID(), start_date: -1, end_date: 0, runners: [Runner]()), at: 0)
+                runData.insert(Run(run_id: UUID(), start_date: 0, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
                 runsTableView.reloadData()
             } catch {
                 print(error)
@@ -237,15 +237,17 @@ extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
         }
         
         cell.delegate = self
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 16)
         
         if tableView == runsTableView {
-            
-            switch runData[indexPath.row].start_date {
-            case 0:
+            if runData[indexPath.row].start_date == -1 {
                 cell.configureZombie()
-            case -1:
+                return cell
+            }
+            
+            if runData[indexPath.row].type == .solo {
                 cell.configureSoloRun()
-            default:
+            } else {
                 cell.configure(with: runData[indexPath.row])
             }
         }
@@ -254,7 +256,6 @@ extension RunsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
             cell.configure(with: friendsData[indexPath.row])
         }
         
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 16)
         return cell
         
     }
