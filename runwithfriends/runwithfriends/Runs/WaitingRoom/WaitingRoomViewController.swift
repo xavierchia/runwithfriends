@@ -27,7 +27,6 @@ class WaitingRoomViewController: UIViewController {
     
     // init data
     private let runManager: RunManager
-    private let userData: UserData
     
     // UI
     private let mapView = MKMapView()
@@ -35,10 +34,9 @@ class WaitingRoomViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(with run: Run, and userData: UserData) {
-        self.bottomRow = BottomRow(with: run)
-        self.runManager = RunManager(with: run, and: userData)
-        self.userData = userData
+    init(with runManager: RunManager) {
+        self.bottomRow = BottomRow(with: runManager.run)
+        self.runManager = runManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -129,7 +127,7 @@ class WaitingRoomViewController: UIViewController {
     private func locationUpdated(with coordinate: CLLocationCoordinate2D) {
         let obscuredCoordinate = coordinate.obscured()
         setPins(with: obscuredCoordinate)
-        userData.updateUserCoordinate(obscuredCoordinate: obscuredCoordinate)
+        runManager.userData.updateUserCoordinate(obscuredCoordinate: obscuredCoordinate)
     }
     
     private func setPins(with obscuredCoordinate: CLLocationCoordinate2D) {
@@ -143,7 +141,7 @@ class WaitingRoomViewController: UIViewController {
         
         let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇸🇬"))
         newPin.coordinate = obscuredCoordinate
-        newPin.title = userData.user.username
+        newPin.title = runManager.userData.user.username
         mapView.addAnnotation(newPin)
         
         runManager.run.runners.forEach { runner in
@@ -214,7 +212,7 @@ class WaitingRoomViewController: UIViewController {
     
     @objc private func pop() {
         Task {
-            self.dismiss(animated: true)
+            self.view.window?.rootViewController?.dismiss(animated: true)
             await runManager.leaveRun()
         }
     }

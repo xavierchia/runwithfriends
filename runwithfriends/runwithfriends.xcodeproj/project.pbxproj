@@ -56,6 +56,7 @@
 		9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
+		95A4D56B2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */; };
 		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
 		95AC65872B0224150084FF15 /* BottomRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95AC65862B0224150084FF15 /* BottomRow.xib */; };
 		95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65882B0226B30084FF15 /* BottomRow.swift */; };
@@ -111,6 +112,7 @@
 		9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
+		95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvisibleLocationViewController.swift; sourceTree = "<group>"; };
 		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAnnotation.swift; sourceTree = "<group>"; };
 		95AC65862B0224150084FF15 /* BottomRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomRow.xib; sourceTree = "<group>"; };
 		95AC65882B0226B30084FF15 /* BottomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRow.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				95F6970B2AFF66D600B10EB2 /* Main */,
+				95A4D5672B8FFE0900FF7D38 /* InvisibleLocation */,
 				95AC65832B021CD60084FF15 /* WaitingRoom */,
 				95698B702B0585E9009B78F3 /* Running */,
 				9590E91A2B0D721800B2A2A4 /* Results */,
@@ -291,6 +294,14 @@
 				25074FA42B7B0DB70061551D /* Speaker.swift */,
 			);
 			path = Results;
+			sourceTree = "<group>";
+		};
+		95A4D5672B8FFE0900FF7D38 /* InvisibleLocation */ = {
+			isa = PBXGroup;
+			children = (
+				95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */,
+			);
+			path = InvisibleLocation;
 			sourceTree = "<group>";
 		};
 		95AC65832B021CD60084FF15 /* WaitingRoom */ = {
@@ -423,6 +434,7 @@
 				952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */,
 				951D1A712B326F1000171C62 /* Supabase.swift in Sources */,
 				95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */,
+				95A4D56B2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift in Sources */,
 				951F42C62B1812F7004E2BEA /* RunManager.swift in Sources */,
 				9557F7702B35706D002CAE30 /* User.swift in Sources */,
 				950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */,

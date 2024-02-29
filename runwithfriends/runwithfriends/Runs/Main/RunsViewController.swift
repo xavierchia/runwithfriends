@@ -304,17 +304,17 @@ extension RunsViewController: UIRunTableViewCellProtocol {
                 await RunManager.createRun(with: run.toRunRaw())
             }
             
-            let waitingRoomVC = WaitingRoomViewController(with: run, and: userData)
-            waitingRoomVC.modalPresentationStyle = .overFullScreen
-            self.present(waitingRoomVC, animated: true)
+            let invisibleLocationVC = InvisibleLocationViewController(with: run, and: userData)
+            invisibleLocationVC.modalPresentationStyle = .overFullScreen
+            present(invisibleLocationVC, animated: false)
         }
 
     }
     
     private func friendsCellPressed(with indexPath: IndexPath) {
-        let friendData = friendsData[indexPath.row]
-        guard let runData = friendData.joinRunData else { return }
-        let waitingRoomVC = WaitingRoomViewController(with: runData, and: userData)
-        self.present(waitingRoomVC, animated: true)
+//        let friendData = friendsData[indexPath.row]
+//        guard let runData = friendData.joinRunData else { return }
+//        let waitingRoomVC = WaitingRoomViewController(with: runData, and: userData)
+//        self.present(waitingRoomVC, animated: true)
     }
 }
