@@ -64,7 +64,6 @@ class RunsViewController: UIViewController {
         if runData.count < 10 {
             reloadRunsData()
         } else {
-            runData.insert(Run(run_id: UUID(), start_date: Int.max, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
             runsTableView.reloadData()
         }
     }
@@ -300,8 +299,7 @@ extension RunsViewController: UIRunTableViewCellProtocol {
         
         Task {
             if run.type == .solo {
-                run = Run(run_id: UUID(), start_date: Int((Date() + 10).timeIntervalSince1970), end_date: Int((Date() + 910).timeIntervalSince1970), type: .solo, runners: [])
-                await RunManager.createRun(with: run.toRunRaw())
+                run = Run(run_id: UUID(), start_date: Int((Date() + 6).timeIntervalSince1970), end_date: Int((Date() + 906).timeIntervalSince1970), type: .solo, runners: [])
             }
             
             let invisibleLocationVC = InvisibleLocationViewController(with: run, and: userData)

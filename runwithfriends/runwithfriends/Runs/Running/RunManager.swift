@@ -31,7 +31,7 @@ class RunManager {
     private let supabase = Supabase.shared.client.database
     private var timer = Timer()
     private var lastUpdateInterval: TimeInterval = 100_000
-    private var countdownStarted = false
+    private var soloRunCreated = false
     
     init(with run: Run, and userData: UserData) {
         self.run = run
@@ -121,14 +121,16 @@ class RunManager {
             let countdownTime = intervalToStart.positionalTime
             runStage = .oneHourToRunStart(countdownTime)
         case 0...6:
-            if countdownStarted == false {
-                countdownStarted = true
-                let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start...")
-                utterance.rate = 0.1
-                Speaker.shared.speak(utterance)
-            }
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
         case -runTime...0:
+            
+            if run.type == .solo && soloRunCreated == false {
+                soloRunCreated = true
+                Task {
+                    await RunManager.createRun(with: run.toRunRaw())
+                }
+            }
+            
             // We only publish on whole seconds once the run has started
             // so we don't overload the server with updates.
             // Before the run has started, we publish frequently every second to get the labels updated quickly.

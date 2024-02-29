@@ -57,6 +57,7 @@
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
 		95A4D56B2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */; };
+		95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A4D56C2B900D6100FF7D38 /* UIApplication.swift */; };
 		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
 		95AC65872B0224150084FF15 /* BottomRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95AC65862B0224150084FF15 /* BottomRow.xib */; };
 		95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65882B0226B30084FF15 /* BottomRow.swift */; };
@@ -113,6 +114,7 @@
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
 		95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvisibleLocationViewController.swift; sourceTree = "<group>"; };
+		95A4D56C2B900D6100FF7D38 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAnnotation.swift; sourceTree = "<group>"; };
 		95AC65862B0224150084FF15 /* BottomRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomRow.xib; sourceTree = "<group>"; };
 		95AC65882B0226B30084FF15 /* BottomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRow.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			children = (
 				95659B8D2AEF1FA4008D7BA8 /* Labels.swift */,
 				953D209C2B7D973500A32185 /* ViewController.swift */,
+				95A4D56C2B900D6100FF7D38 /* UIApplication.swift */,
 				95877BC22B042F7500A81839 /* Cell.swift */,
 				95AC658A2B0227860084FF15 /* UIView.swift */,
 				95BC85302B0ECA9E00DD81BB /* NavigationController.swift */,
@@ -439,6 +442,7 @@
 				9557F7702B35706D002CAE30 /* User.swift in Sources */,
 				950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */,
 				95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */,
+				95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */,
 				950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */,
 				95966EB42AF329450086DABB /* TabViewController.swift in Sources */,
 				95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */,

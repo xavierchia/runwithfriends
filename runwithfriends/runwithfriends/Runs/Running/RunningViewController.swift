@@ -27,6 +27,7 @@ class RunningViewController: UIViewController {
     private let likeNameLabel = UILabel().midSubtitle()
     
     private var touchCountTimer: Timer?
+    private var countdownStarted = false
     private let endButton = UIButton(type: .custom)
     
     init(with runManager: RunManager) {
@@ -43,6 +44,16 @@ class RunningViewController: UIViewController {
         view.backgroundColor = .accent
         setupUI()
         respondToRunStage()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if countdownStarted == false {
+            countdownStarted = true
+            let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start...")
+            utterance.rate = 0.1
+            Speaker.shared.speak(utterance)
+        }
     }
     
     private func respondToRunStage() {
@@ -66,6 +77,7 @@ class RunningViewController: UIViewController {
                 updateServer()
             case .runEnd:
                 resultsButtonPressed()
+                cancellables.removeAll()
             default:
                 break
             }
