@@ -229,12 +229,8 @@ class RunningViewController: UIViewController {
         switch sender.state {
         case .began:
             print("began long press to cancel run")
-                        
-            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
-                self.endButton.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-            }
             
-            touchCountTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+            touchCountTimer = Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { [weak self] _ in
                 guard let self else { return }
                 
                 print("cancelling run")
@@ -251,6 +247,10 @@ class RunningViewController: UIViewController {
                         await self.runManager.leaveRun()
                     }
                 }
+            }
+                        
+            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
+                self.endButton.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
             }
         default:
             UIView.animate(withDuration: 0.6) {
