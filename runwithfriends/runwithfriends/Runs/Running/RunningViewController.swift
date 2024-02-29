@@ -264,12 +264,14 @@ class RunningViewController: UIViewController {
             UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
                 self.endButton.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
             }
-        default:
+        case .ended, .cancelled, .failed:
             UIView.animate(withDuration: 0.6) {
                 self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             }
             endButtonPressed()
             touchCountTimer?.invalidate()
+        default:
+            break
         }
     }
 }
