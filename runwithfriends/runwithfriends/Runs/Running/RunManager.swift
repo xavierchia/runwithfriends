@@ -41,6 +41,7 @@ class RunManager {
     }
     
     deinit {
+        print("deinit run manager")
         timer.invalidate()
     }
     

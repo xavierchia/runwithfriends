@@ -39,6 +39,10 @@ class WaitingRoomViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("deinit waiting room vc")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupRunSession()

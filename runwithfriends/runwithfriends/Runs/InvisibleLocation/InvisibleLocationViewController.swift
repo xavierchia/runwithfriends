@@ -35,6 +35,10 @@ class InvisibleLocationViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("deinit invisible location vc")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLocationManager()
@@ -83,10 +87,11 @@ extension InvisibleLocationViewController: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
             if let location = manager.location {
-                print("Location authorized, setting user location")
                 if runManager.run.type != .solo {
+                    print("Location authorized, setting user location")
                     presentWaitingVC(with: location.coordinate)
                 }
+                print("started updating location")
                 locationManager.startUpdatingLocation()
             }
         case .notDetermined:
