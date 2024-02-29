@@ -245,12 +245,6 @@ class RunningViewController: UIViewController {
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { [weak self] _ in
                 guard let self else { return }
                 
-                print("cancelling run")
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                self.touchCountTimer?.invalidate()
-                self.view.window?.rootViewController?.dismiss(animated: true)
-                self.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
-
                 Task {
                     if self.runManager.totalDistance > 0 {
                         await self.runManager.upsertRunSession(with: Int(self.runManager.totalDistance))
@@ -259,16 +253,24 @@ class RunningViewController: UIViewController {
                         await self.runManager.leaveRun()
                     }
                 }
+                
+                print("cancelling run")
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                self.touchCountTimer?.invalidate()
+                self.view.window?.rootViewController?.dismiss(animated: true)
+                self.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
             }
                         
             UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
                 self.endButton.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
             }
-        case .ended, .cancelled, .failed:
+        case .ended, .failed:
             UIView.animate(withDuration: 0.6) {
                 self.endButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             }
             endButtonPressed()
+            touchCountTimer?.invalidate()
+        case .cancelled:
             touchCountTimer?.invalidate()
         default:
             break
