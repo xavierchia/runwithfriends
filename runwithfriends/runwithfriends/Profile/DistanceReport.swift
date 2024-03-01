@@ -43,64 +43,64 @@ struct DistanceReport {
         let currentDistance = getColoredString(with: .currentDistance, and: distance)
         
         switch distance {
-        case ..<Landmarks.HighLineNewYork:
-            let distanceLeft = Landmarks.HighLineNewYork - distance
+        case ..<Landmark.HighLineNewYork.info.distance:
+            let distanceLeft = Landmark.HighLineNewYork.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
-                                currentAchievement: "That's more than \(Int(distance / Landmarks.EiffelTower)) Eiffel Towers in Paris!",
+                                currentAchievement: "That's more than \(Int(distance / Landmark.EiffelTower.info.distance)) Eiffel Towers in Paris!",
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing the High Line Park in New York City.")
             return report
-        case ..<Landmarks.GoldenGateBridge:
-            let distanceLeft = Landmarks.GoldenGateBridge - distance
+        case ..<Landmark.GoldenGateBridge.info.distance:
+            let distanceLeft = Landmark.GoldenGateBridge.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the High Line Park in New York City!",
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing the Golden Gate Bridge in San Francisco.")
             return report
-        case ..<Landmarks.MountFuji:
-            let distanceLeft = Landmarks.MountFuji - distance
+        case ..<Landmark.MountFuji.info.distance:
+            let distanceLeft = Landmark.MountFuji.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the Golden Gate Bridge in San Francisco!",
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing Mount Fuji in Japan.")
             return report
-        case ..<Landmarks.HydePark:
-            let distanceLeft = Landmarks.HydePark - distance
+        case ..<Landmark.HydePark.info.distance:
+            let distanceLeft = Landmark.HydePark.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the height of Mount Fuji in Japan!",
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing the Hyde Park big loop in London.")
             return report
-        case ..<Landmarks.CentralPark:
-            let distanceLeft = Landmarks.CentralPark - distance
+        case ..<Landmark.CentralPark.info.distance:
+            let distanceLeft = Landmark.CentralPark.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the Hyde Park big loop in London!",
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing the Central Park big loop in New York!")
             return report
-        case ..<Landmarks.LakeGarda:
-            let distanceLeft = Landmarks.LakeGarda - distance
+        case ..<Landmark.LakeGarda.info.distance:
+            let distanceLeft = Landmark.LakeGarda.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the Central Park big loop in New York!",
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing the width of Lake Garda in Italy.")
             return report
-        case ..<Landmarks.Manhattan:
-            let distanceLeft = Landmarks.Manhattan - distance
+        case ..<Landmark.Manhattan.info.distance:
+            let distanceLeft = Landmark.Manhattan.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the width of Lake Garda in Italy!",
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing the length of Manhattan in New York!")
             return report
-        case ..<Landmarks.CERN:
-            let distanceLeft = Landmarks.CERN - distance
+        case ..<Landmark.CERN.info.distance:
+            let distanceLeft = Landmark.CERN.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than the length of Manhattan in New York!",
@@ -116,16 +116,60 @@ struct DistanceReport {
     }
 }
 
-struct Landmarks {
-    static let EiffelTower = 330
-    static let HighLineNewYork = 2300
-    static let GoldenGateBridge = 2737
-    static let MountFuji = 3776
-    static let HydePark = 7080
-    static let CentralPark = 9817
-    static let LakeGarda = 16700
-    static let Manhattan = 21100
-    static let CERN = 27000
+struct DistanceTable {
+    static func getDistanceTableRows(for distance: Int) -> [Landmark] {
+        var distanceTableRows = [Landmark]()
+        
+        for landmark in Landmark.allCases {
+            if landmark.info.distance <= distance {
+                distanceTableRows.append(landmark)
+            } else {
+                distanceTableRows.append(landmark)
+                break
+            }
+        }
+        
+        distanceTableRows.sort { lhs, rhs in
+            lhs.info.distance > rhs.info.distance
+        }
+        
+        return distanceTableRows
+    }
+}
+
+enum Landmark: CaseIterable {
+    case EiffelTower
+    case HighLineNewYork
+    case GoldenGateBridge
+    case MountFuji
+    case HydePark
+    case CentralPark
+    case LakeGarda
+    case Manhattan
+    case CERN
+    
+    var info: (distance: Int, name: String) {
+        switch self {
+        case .EiffelTower:
+            return (330, "Eiffel Tower")
+        case .HighLineNewYork:
+            return (2300, "High Line Park")
+        case .GoldenGateBridge:
+            return (2737, "Golden Gate Bridge")
+        case .MountFuji:
+            return (3776, "Mount Fuji")
+        case .HydePark:
+            return (7080, "Hyde Park")
+        case .CentralPark:
+            return (9817, "Central Park")
+        case .LakeGarda:
+            return (16700, "Lake Garda")
+        case .Manhattan:
+            return (21100, "Manhattan")
+        case .CERN:
+            return (27000, "CERN")
+        }
+    }
 }
 
 let distanceWords = [
