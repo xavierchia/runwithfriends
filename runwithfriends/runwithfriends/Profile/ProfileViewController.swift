@@ -60,7 +60,6 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .cream
         setupNavigationController()
         setupSettingsTableView()
-        self.navigationItem.title = "Loading..."
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +75,7 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationItem.title = "Loading..."
     }
     
     private func setupSettingsTableView() {
@@ -149,7 +149,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         let distance = userData.getTotalDistance()
         print("user's total distance is \(distance)")
-        guard distance > Landmarks.EiffelTower else { return nil }
+        guard distance > Landmark.EiffelTower.info.distance else { return nil }
         
         // for testing
         //        let report = DistanceReport.getReport(with: 22000)

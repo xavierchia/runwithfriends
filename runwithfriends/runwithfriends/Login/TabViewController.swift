@@ -29,19 +29,22 @@ class TabViewController: UITabBarController {
         let runsVC = RunsViewController(with: userData)
         let runsNav = UINavigationController(rootViewController: runsVC)
         runsNav.tabBarItem.title = "Runs"
-        runsNav.tabBarItem.image = UIImage(systemName: "figure.run.circle")
-        runsNav.tabBarItem.selectedImage = UIImage(systemName: "figure.run.circle")
+        runsNav.tabBarItem.image = UIImage(systemName: "figure.run")
+        
+        let distanceVC = DistanceViewController(with: userData)
+        let distanceNav = UINavigationController(rootViewController: distanceVC)
+        distanceNav.tabBarItem.title = "Milestones"
+        distanceNav.tabBarItem.image = UIImage(systemName: "mountain.2")
         
         let profileVC = ProfileViewController(with: userData)
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem.title = "Profile"
-        profileNav.tabBarItem.image = UIImage(systemName: "person.crop.circle")
-        profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.crop.circle")
+        profileNav.tabBarItem.image = UIImage(systemName: "person")
         
-        setViewControllers([runsNav, profileNav], animated: false)
+        setViewControllers([runsNav, distanceNav, profileNav], animated: false)
         
         self.selectedIndex = 0
         // for testing
-//        self.selectedIndex = 1
+        self.selectedIndex = 1
     }
 }
