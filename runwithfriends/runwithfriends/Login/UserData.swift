@@ -19,7 +19,9 @@ class UserData {
     }
     
     func getTotalDistance() -> Int {
-        userSessions.reduce(0) { $0 + $1.distance }
+//        userSessions.reduce(0) { $0 + $1.distance }
+        // for testing
+        return 3000
     }
     
     func syncUserSessions() async {

@@ -25,9 +25,11 @@ class DistanceViewController: UIViewController {
     
     // Distance table
     private let distanceTableView = UITableView(frame: .zero, style: .insetGrouped)
+    private var distanceTableRows: [Landmark]
     
     init(with userData: UserData) {
         self.userData = userData
+        self.distanceTableRows = DistanceTable.getDistanceTableRows(for: userData.getTotalDistance())
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,6 +47,8 @@ class DistanceViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         headerState = .current
+        distanceTableRows = DistanceTable.getDistanceTableRows(for: userData.getTotalDistance())
+        print(distanceTableRows)
         distanceTableView.reloadData()
     }
     
@@ -89,12 +93,12 @@ class DistanceViewController: UIViewController {
 
 extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        distanceTableRows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-        cell.textLabel?.text = "heylo"
+        cell.textLabel?.text = distanceTableRows[indexPath.row].info.name
         //        cell.imageView?.image = data.emoji
         //        cell.accessoryType = .detailButton
         //        cell.tintColor = .pumpkin
@@ -107,9 +111,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
         
-        var distance = userData.getTotalDistance()
-        // for testing
-        distance = 3000
+        let distance = userData.getTotalDistance()
         print("user's total distance is \(distance)")
         guard distance > Landmark.EiffelTower.info.distance else { return nil }
         
