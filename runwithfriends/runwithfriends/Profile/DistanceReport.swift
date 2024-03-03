@@ -148,26 +148,26 @@ enum Landmark: CaseIterable {
     case Manhattan
     case CERN
     
-    var info: (distance: Int, name: String) {
+    var info: (distance: Int, name: String, emoji: String) {
         switch self {
         case .EiffelTower:
-            return (330, "Eiffel Tower")
+            return (330, "Eiffel Tower", "🥐")
         case .HighLineNewYork:
-            return (2300, "High Line Park")
+            return (2300, "High Line Park", "🛤️")
         case .GoldenGateBridge:
-            return (2737, "Golden Gate Bridge")
+            return (2737, "Golden Gate Bridge", "🌉")
         case .MountFuji:
-            return (3776, "Mount Fuji")
+            return (3776, "Mount Fuji", "🗻")
         case .HydePark:
-            return (7080, "Hyde Park")
+            return (7080, "Hyde Park", "🦢")
         case .CentralPark:
-            return (9817, "Central Park")
+            return (9817, "Central Park", "🥯")
         case .LakeGarda:
-            return (16700, "Lake Garda")
+            return (16700, "Lake Garda", "⛵️")
         case .Manhattan:
-            return (21100, "Manhattan")
+            return (21100, "Manhattan", "🍕")
         case .CERN:
-            return (27000, "CERN")
+            return (27000, "CERN", "🧀")
         }
     }
 }

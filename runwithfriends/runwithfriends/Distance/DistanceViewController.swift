@@ -98,10 +98,10 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-        cell.textLabel?.text = distanceTableRows[indexPath.row].info.name
-        //        cell.imageView?.image = data.emoji
-        //        cell.accessoryType = .detailButton
-        //        cell.tintColor = .pumpkin
+        let cellInfo = distanceTableRows[indexPath.row].info
+        cell.textLabel?.text = cellInfo.name
+        cell.imageView?.image = cellInfo.emoji.image(pointSize: 20)
+        cell.selectionStyle = .none
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .moss
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
