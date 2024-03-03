@@ -11,6 +11,19 @@ class DistanceViewController: UIViewController {
     
     private let userData: UserData
     
+    enum HeaderState {
+        case current
+        case next
+    }
+    
+    // Distance report
+    private let header = UIStackView()
+    private let firstButton = UIButton().setHeaderButton()
+    private let secondButton = UIButton().setHeaderButton()
+    private let downArrowButton = UIButton().setDownArrowButton()
+    private var headerState: HeaderState = .current
+    
+    // Distance table
     private let distanceTableView = UITableView(frame: .zero, style: .insetGrouped)
     
     init(with userData: UserData) {
@@ -27,6 +40,12 @@ class DistanceViewController: UIViewController {
         view.backgroundColor = .cream
         setupNavigationController()
         setupDistanceTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        headerState = .current
+        distanceTableView.reloadData()
     }
     
     private func setupNavigationController() {
@@ -50,16 +69,21 @@ class DistanceViewController: UIViewController {
             distanceTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-//        header.axis = .vertical
-//        header.distribution = .fillProportionally
-//        header.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
-//        header.isLayoutMarginsRelativeArrangement = true
-//        
-//        header.addArrangedSubview(firstButton)
-//        header.addArrangedSubview(secondButton)
-//        header.addArrangedSubview(downArrowButton)
-//        
-//        downArrowButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+        header.axis = .vertical
+        header.distribution = .fillProportionally
+        header.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
+        header.isLayoutMarginsRelativeArrangement = true
+        
+        header.addArrangedSubview(firstButton)
+        header.addArrangedSubview(secondButton)
+        header.addArrangedSubview(downArrowButton)
+        
+        downArrowButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+    }
+    
+    @objc func tapped() {
+        headerState = headerState == .current ? .next : .current
+        self.distanceTableView.reloadData()
     }
 }
 
@@ -71,14 +95,58 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.textLabel?.text = "heylo"
-//        cell.imageView?.image = data.emoji
-//        cell.accessoryType = .detailButton
-//        cell.tintColor = .pumpkin
+        //        cell.imageView?.image = data.emoji
+        //        cell.accessoryType = .detailButton
+        //        cell.tintColor = .pumpkin
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .moss
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
         return cell
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == 0 else { return nil }
+        
+        var distance = userData.getTotalDistance()
+        // for testing
+        distance = 3000
+        print("user's total distance is \(distance)")
+        guard distance > Landmark.EiffelTower.info.distance else { return nil }
+        
+        let report = DistanceReport.getReport(with: distance)
+        
+        if headerState == .current {
+            firstButton.setAttributedTitle(report.currentDistance, for: .normal)
+            secondButton.setTitle(report.currentAchievement, for: .normal)
+        } else {
+            firstButton.setAttributedTitle(report.nextDistance, for: .normal)
+            secondButton.setTitle(report.nextAchievement, for: .normal)
+        }
+        
+        return header
+    }
+}
+
+private extension UIButton {
+    func setHeaderButton() -> UIButton {
+        self.setTitleColor(.black, for: .normal)
+        self.titleLabel?.font = UIFont.Kefir(size: 20)
+        self.titleLabel?.numberOfLines = 0
+        self.contentHorizontalAlignment = .left
+        self.contentVerticalAlignment = .top
+        return self
+    }
     
+    func setDownArrowButton() -> UIButton {
+        self.setTitle("...", for: .normal)
+        self.setTitleColor(.accent, for: .normal)
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 10)
+        self.configuration = configuration
+        self.setFont(UIFont.KefirBold(size: 20))
+        self.contentHorizontalAlignment = .right
+        self.tintColor = .accent
+        return self
+    }
 }

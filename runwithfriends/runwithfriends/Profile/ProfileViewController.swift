@@ -14,17 +14,6 @@ class ProfileViewController: UIViewController {
         let title: String
     }
     
-    enum HeaderState {
-        case current
-        case next
-    }
-    
-    let header = UIStackView()
-    let firstButton = UIButton().setHeaderButton()
-    let secondButton = UIButton().setHeaderButton()
-    let downArrowButton = UIButton().setDownArrowButton()
-    var headerState: HeaderState = .current
-    
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private let tableCellTitles = [
         [
@@ -65,7 +54,6 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupProfile(with: userData.user)
-        headerState = .current
         settingsTableView.reloadData()
     }
     
@@ -91,17 +79,6 @@ class ProfileViewController: UIViewController {
             settingsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             settingsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        header.axis = .vertical
-        header.distribution = .fillProportionally
-        header.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
-        header.isLayoutMarginsRelativeArrangement = true
-        
-        header.addArrangedSubview(firstButton)
-        header.addArrangedSubview(secondButton)
-        header.addArrangedSubview(downArrowButton)
-        
-        downArrowButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
     
     private func setupProfile(with user: User) {
@@ -142,56 +119,5 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.textColor = .moss
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 0 else { return nil }
-        
-        let distance = userData.getTotalDistance()
-        print("user's total distance is \(distance)")
-        guard distance > Landmark.EiffelTower.info.distance else { return nil }
-        
-        // for testing
-        //        let report = DistanceReport.getReport(with: 22000)
-        let report = DistanceReport.getReport(with: distance)
-        
-        if headerState == .current {
-            firstButton.setAttributedTitle(report.currentDistance, for: .normal)
-            secondButton.setTitle(report.currentAchievement, for: .normal)
-        } else {
-            firstButton.setAttributedTitle(report.nextDistance, for: .normal)
-            secondButton.setTitle(report.nextAchievement, for: .normal)
-        }
-        
-        return header
-    }
-    
-    @objc func tapped() {
-        headerState = headerState == .current ? .next : .current
-        self.settingsTableView.reloadData()
-    }
-}
-
-private extension UIButton {
-    func setHeaderButton() -> UIButton {
-        self.setTitleColor(.black, for: .normal)
-        self.titleLabel?.font = UIFont.Kefir(size: 20)
-        self.titleLabel?.numberOfLines = 0
-        self.contentHorizontalAlignment = .left
-        self.contentVerticalAlignment = .top
-        return self
-    }
-    
-    func setDownArrowButton() -> UIButton {
-        self.setTitle("...", for: .normal)
-        self.setTitleColor(.accent, for: .normal)
-        
-        var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 10)
-        self.configuration = configuration
-        self.setFont(UIFont.KefirBold(size: 20))
-        self.contentHorizontalAlignment = .right
-        self.tintColor = .accent
-        return self
     }
 }
