@@ -36,7 +36,7 @@ struct DistanceReport {
             let stringToColor = "\(distance.valueShort) \(distance.metricShort)"
             let range = (mainString as NSString).range(of: stringToColor)
             let distanceString = NSMutableAttributedString.init(string: mainString)
-            distanceString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.almostBlack, range: range)
+            distanceString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.pumpkin, range: range)
             distanceString.addAttribute(NSAttributedString.Key.font, value: UIFont.KefirDemiBold(size: 20), range: range)
             return distanceString
         }
@@ -135,6 +135,20 @@ struct DistanceTable {
         }
         
         return distanceTableRows
+    }
+    
+    static func getCurrentEmoji(for distance: Int) -> String {
+        var currentEmoji = ""
+        
+        for landmark in Landmark.allCases {
+            if landmark.info.distance <= distance {
+                currentEmoji = landmark.info.emoji
+            } else {
+                break
+            }
+        }
+        
+        return currentEmoji
     }
 }
 

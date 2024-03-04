@@ -11,12 +11,11 @@ class DistanceViewController: UIViewController {
     
     private let userData: UserData
     
+    // Distance report
     enum HeaderState {
         case current
         case next
     }
-    
-    // Distance report
     private let header = UIStackView()
     private let firstButton = UIButton().setHeaderButton()
     private let secondButton = UIButton().setHeaderButton()
@@ -136,7 +135,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
 private extension UIButton {
     func setHeaderButton() -> UIButton {
         self.setTitleColor(.almostBlack, for: .normal)
-        self.titleLabel?.font = UIFont.Kefir(size: 20)
+        self.titleLabel?.font = UIFont.KefirLight(size: 20)
         self.titleLabel?.numberOfLines = 0
         self.contentHorizontalAlignment = .left
         self.contentVerticalAlignment = .top

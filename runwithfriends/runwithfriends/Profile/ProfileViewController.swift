@@ -32,7 +32,6 @@ class ProfileViewController: UIViewController {
             CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
         ]
     ]
-    private var navImageView = UIImageView()
     private let userData: UserData
     
     init(with userData: UserData) {
@@ -82,20 +81,17 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupProfile(with user: User) {
-        let emoji = user.emoji
-        self.navImageView = UIImageView(image: emoji.image(pointSize: 20))
-        self.navigationController?.navigationBar.setImageView(self.navImageView)
-        if let prefix = getPrefix(for: user.username) {
-            self.navigationItem.title = "\(prefix) \(user.username)"
+        if let prefix = getPrefix(for: UserData.defaultUsername) {
+            self.navigationItem.title = "\(prefix) \(UserData.defaultUsername)"
         } else {
-            self.navigationItem.title = user.username
+            self.navigationItem.title = UserData.defaultUsername
         }
     }
     
     // create prefix logic
     private func getPrefix(for username: String) -> String? {
-        guard let character = username.first,
-              let resultPrefix = Prefixes[character]?.shuffled().first else { return nil }
+        let character: Character = "P"
+        guard let resultPrefix = Prefixes[character]?.shuffled().first else { return nil }
         return resultPrefix
     }
 }
