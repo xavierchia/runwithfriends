@@ -36,40 +36,29 @@ class RunsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        reloadRunsData()
+        refreshRunTable()
         
         setupNavigationController()
         segmentStackView.delegate = self
         setupRunsTableView()
         setupFriendsTableView()
         chooseTable()
-        
-        runTableRefreshControl.addTarget(self, action: #selector(self.refreshRunTable(_:)), for: .valueChanged)
-        runsTableView.refreshControl = runTableRefreshControl
-    }
-    
-    @objc func refreshRunTable(_ sender: AnyObject) {
-       // Code to refresh table view
-        reloadRunsData()
-        self.runTableRefreshControl.endRefreshing()
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification
+                    , object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        runData = runData.filter({ run in
-            run.start_date.getDate() >= Date()
-        })
-        
-        if runData.count < 10 {
-            reloadRunsData()
-        } else {
-            runsTableView.reloadData()
-        }
+        refreshRunTableIfNeeded()
     }
     
-    private func reloadRunsData() {
-        print("reloading runs data")
+    @objc private func willEnterForeground() {
+        print("entering foreground")
+        refreshRunTableIfNeeded()
+    }
+    
+    @objc func refreshRunTable() {
+       // Code to refresh table view
         runData = mockRunData
         runsTableView.reloadData()
         
@@ -87,6 +76,19 @@ class RunsViewController: UIViewController {
             } catch {
                 print(error)
             }
+        }
+        self.runTableRefreshControl.endRefreshing()
+    }
+    
+    private func refreshRunTableIfNeeded() {
+        runData = runData.filter({ run in
+            run.start_date.getDate() >= Date()
+        })
+        
+        if runData.count < 10 {
+            refreshRunTable()
+        } else {
+            runsTableView.reloadData()
         }
     }
     
@@ -161,6 +163,9 @@ class RunsViewController: UIViewController {
         ])
         
         segmentStackView.frame = CGRect(x: 0, y: 0, width: runsTableView.frame.width, height: 50)
+        
+        runTableRefreshControl.addTarget(self, action: #selector(self.refreshRunTable), for: .valueChanged)
+        runsTableView.refreshControl = runTableRefreshControl
     }
     
     private func setupFriendsTableView() {
@@ -291,7 +296,7 @@ extension RunsViewController: UIRunTableViewCellProtocol {
         
         guard run.start_date > Int(Date().timeIntervalSince1970) else {
             print("Joining a run that has already started")
-            reloadRunsData()
+            refreshRunTable()
             let alert = UIAlertController.Oops(title: "Run Started >.<")
             present(alert, animated: true)
             return
