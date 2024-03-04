@@ -164,7 +164,7 @@ enum Landmark: CaseIterable {
     var info: (distance: Int, name: String, emoji: String) {
         switch self {
         case .CasualPea:
-            return (0, "Casual Pea", "🐳")
+            return (0, "Casual Pea", "🫛")
         case .EiffelTower:
             return (330, "Eiffel Tower", "🗼")
         case .HighLineNewYork:

@@ -119,8 +119,7 @@ class WaitingRoomViewController: UIViewController {
             let span = MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40)
             let region = MKCoordinateRegion(center: obscuredCoordinate, span: span)
             mapView.setRegion(region, animated: true)
-            
-            let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🇸🇬"))
+            let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: runManager.userData.user.emoji))
             newPin.coordinate = obscuredCoordinate
             newPin.title = runManager.userData.user.username
             mapView.addAnnotation(newPin)
