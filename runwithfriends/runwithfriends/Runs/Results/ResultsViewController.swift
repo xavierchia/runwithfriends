@@ -117,6 +117,7 @@ class ResultsViewController: UIViewController {
     }
         
     @objc private func popToRoot() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 }

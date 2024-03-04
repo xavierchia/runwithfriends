@@ -195,6 +195,7 @@ class WaitingRoomViewController: UIViewController {
     }
     
     @objc private func pop() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         Task {
             self.view.window?.rootViewController?.dismiss(animated: true)
             await runManager.leaveRun()

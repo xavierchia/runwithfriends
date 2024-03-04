@@ -85,6 +85,7 @@ class DistanceViewController: UIViewController {
     }
     
     @objc func tapped() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         headerState = headerState == .current ? .next : .current
         self.distanceTableView.reloadData()
     }
