@@ -19,6 +19,7 @@ struct DistanceReport {
     enum ReportType {
         case currentDistance
         case nextDistance
+        case noDistance
     }
         
     static func getReport(with distance: Int) -> Report {
@@ -31,9 +32,11 @@ struct DistanceReport {
                 mainString = "\(distanceWord): \(distance.valueShort) \(distance.metricShort)"
             case .nextDistance:
                 mainString = "Just \(distance.valueShort) \(distance.metricShort) away from:"
+            case .noDistance:
+                mainString = "You've set the intention to run."
             }
             
-            let stringToColor = "\(distance.valueShort) \(distance.metricShort)"
+            let stringToColor = reportType == .noDistance ? "run" : "\(distance.valueShort) \(distance.metricShort)"
             let range = (mainString as NSString).range(of: stringToColor)
             let distanceString = NSMutableAttributedString.init(string: mainString)
             distanceString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.pumpkin, range: range)
@@ -44,6 +47,14 @@ struct DistanceReport {
         let currentDistance = getColoredString(with: .currentDistance, and: distance)
         
         switch distance {
+        case ..<Landmark.EiffelTower.info.distance:
+            let distanceLeft = Landmark.EiffelTower.info.distance - distance
+            let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
+            let report = Report(currentDistance: getColoredString(with: .noDistance, and: 0),
+                                currentAchievement: "Now put on your shoes and go do it!",
+                                nextDistance: nextDistance,
+                                nextAchievement: "Completing the Eiffel Tower in Paris.")
+            return report
         case ..<Landmark.HighLineNewYork.info.distance:
             let distanceLeft = Landmark.HighLineNewYork.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
@@ -153,6 +164,7 @@ struct DistanceTable {
 }
 
 enum Landmark: CaseIterable {
+    case CasualPea
     case EiffelTower
     case HighLineNewYork
     case GoldenGateBridge
@@ -165,8 +177,10 @@ enum Landmark: CaseIterable {
     
     var info: (distance: Int, name: String, emoji: String) {
         switch self {
+        case .CasualPea:
+            return (0, "Casual Pea", "🐳")
         case .EiffelTower:
-            return (330, "Eiffel Tower", "🥐")
+            return (330, "Eiffel Tower", "🗼")
         case .HighLineNewYork:
             return (2300, "High Line Park", "🛤️")
         case .GoldenGateBridge:

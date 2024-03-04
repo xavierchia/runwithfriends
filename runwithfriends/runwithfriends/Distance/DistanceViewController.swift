@@ -115,9 +115,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         guard section == 0 else { return nil }
         
         let distance = userData.getTotalDistance()
-        print("user's total distance is \(distance)")
-        guard distance > Landmark.EiffelTower.info.distance else { return nil }
-        
+        print("user's total distance is \(distance)")        
         let report = DistanceReport.getReport(with: distance)
         
         if headerState == .current {
