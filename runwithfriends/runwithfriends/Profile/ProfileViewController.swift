@@ -116,7 +116,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.image = data.emoji
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .shadow
-        cell.textLabel?.textColor = .moss
+        cell.textLabel?.textColor = .almostBlack
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
         return cell
     }

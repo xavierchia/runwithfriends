@@ -36,7 +36,8 @@ struct DistanceReport {
             let stringToColor = "\(distance.valueShort) \(distance.metricShort)"
             let range = (mainString as NSString).range(of: stringToColor)
             let distanceString = NSMutableAttributedString.init(string: mainString)
-            distanceString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.pumpkin, range: range)
+            distanceString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.almostBlack, range: range)
+            distanceString.addAttribute(NSAttributedString.Key.font, value: UIFont.KefirDemiBold(size: 20), range: range)
             return distanceString
         }
                 

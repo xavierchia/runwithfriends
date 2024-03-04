@@ -103,8 +103,12 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.image = cellInfo.emoji.image(pointSize: 20)
         cell.selectionStyle = .none
         cell.backgroundColor = .shadow
-        cell.textLabel?.textColor = .moss
+        cell.textLabel?.textColor = .almostBlack
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
+        
+        if indexPath.row == 1 {
+            cell.accessoryView = UIImageView(image: "🏃".image(pointSize: 20))
+        }
         return cell
     }
     
@@ -131,7 +135,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension UIButton {
     func setHeaderButton() -> UIButton {
-        self.setTitleColor(.black, for: .normal)
+        self.setTitleColor(.almostBlack, for: .normal)
         self.titleLabel?.font = UIFont.Kefir(size: 20)
         self.titleLabel?.numberOfLines = 0
         self.contentHorizontalAlignment = .left

@@ -57,10 +57,10 @@ class UIRunTableViewCell: UITableViewCell {
         let attributedString = NSMutableAttributedString()
         let timeString = NSAttributedString(string: String(rawTimeString),
                                             attributes: [.font: UIFont.Kefir(size: 34),
-                                                         .foregroundColor: UIColor.moss])
+                                                         .foregroundColor: UIColor.almostBlack])
         let amOrPmString =  NSAttributedString(string: " \(String(rawAmOrPmString).lowercased())",
                                                attributes: [.font: UIFont.Kefir(size: 17),
-                                                            .foregroundColor: UIColor.moss])
+                                                            .foregroundColor: UIColor.almostBlack])
         attributedString.append(timeString)
         attributedString.append(amOrPmString)
         title.attributedText = attributedString
@@ -136,7 +136,9 @@ class UIRunTableViewCell: UITableViewCell {
         rightButton.layer.borderColor = UIColor.accent.cgColor
         rightButton.layer.borderWidth = 3
         
-        subtitle.textColor = .moss
+        title.textColor = .almostBlack
+        
+        subtitle.textColor = .darkerGray
         subtitle.font = UIFont.Kefir(size: 13)
         
         self.selectionStyle = .none // Stops line separator from disappearing when tapped
