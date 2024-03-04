@@ -31,10 +31,10 @@ class ResultsTableViewCell: UITableViewCell {
     
     func configure(with runner: Runner) {
         nameLabel.text = runner.username
-        nameLabel.textColor = .moss
+        nameLabel.textColor = .almostBlack
         nameLabel.font = UIFont.Kefir(size: 17)
         distanceLabel.text = String(runner.distance)
-        distanceLabel.textColor = .moss
+        distanceLabel.textColor = .almostBlack
         distanceLabel.font = UIFont.Kefir(size: 17)
         
         let config = UIImage.SymbolConfiguration(paletteColors: [.accent, .pumpkin])

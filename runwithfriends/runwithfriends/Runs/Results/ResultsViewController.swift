@@ -56,16 +56,18 @@ class ResultsViewController: UIViewController {
             await runManager.upsertRunSession(with: Int(totalDistance))
             await runManager.userData.syncUserSessions()
             
-            // Wait 5 seconds for everyone to post their runs
-            let seconds = 5
-            let duration = UInt64(seconds * 1_000_000_000)
-            try await Task.sleep(nanoseconds: duration)
-            
-            // Get all the runs and update table
-            await runManager.syncRun()
-            guard let ownRun = runManager.run.runners.first(where: { runner in
-                runner.user_id == runManager.userData.user.user_id
-            }) else { return }
+            if runManager.run.type != .solo {
+                // Wait 5 seconds for everyone to post their runs
+                let seconds = 5
+                let duration = UInt64(seconds * 1_000_000_000)
+                try await Task.sleep(nanoseconds: duration)
+                
+                // Get all the runs and update table
+                await runManager.syncRun()
+            }
+
+            let user = runManager.userData.user
+            let ownRun = Runner(user_id: user.user_id, username: user.username, emoji: user.emoji, longitude: 0, latitude: 0, distance: runManager.userData.getTotalDistance())
             results = [ownRun]
             indicator.stopAnimating()
             resultsTableView.reloadData()
@@ -136,7 +138,7 @@ extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UIPaddingLabel()
         label.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 30)
-        label.textColor = .moss
+        label.textColor = .almostBlack
         label.backgroundColor = .cream
         label.font = UIFont.Kefir(size: 24)
         label.textAlignment = .left
