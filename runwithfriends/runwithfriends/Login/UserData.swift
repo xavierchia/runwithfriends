@@ -53,6 +53,21 @@ class UserData {
         }
     }
     
+    func getCurrentEmoji() -> String {
+        let distance = getTotalDistance()
+        var currentEmoji = ""
+        
+        for landmark in Landmark.allCases {
+            if landmark.info.distance <= distance {
+                currentEmoji = landmark.info.emoji
+            } else {
+                break
+            }
+        }
+        
+        return currentEmoji
+    }
+    
     // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> User {
         let supabase = Supabase.shared

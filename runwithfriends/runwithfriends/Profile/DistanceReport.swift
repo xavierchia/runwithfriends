@@ -147,20 +147,6 @@ struct DistanceTable {
         
         return distanceTableRows
     }
-    
-    static func getCurrentEmoji(for distance: Int) -> String {
-        var currentEmoji = ""
-        
-        for landmark in Landmark.allCases {
-            if landmark.info.distance <= distance {
-                currentEmoji = landmark.info.emoji
-            } else {
-                break
-            }
-        }
-        
-        return currentEmoji
-    }
 }
 
 enum Landmark: CaseIterable {
