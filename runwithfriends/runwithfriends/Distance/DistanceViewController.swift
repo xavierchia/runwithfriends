@@ -96,7 +96,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        let cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
         let cellInfo = distanceTableRows[indexPath.row].info
         cell.textLabel?.text = cellInfo.name
         cell.imageView?.image = cellInfo.emoji.image(pointSize: 20)
@@ -104,10 +104,9 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .almostBlack
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
-        
-        if indexPath.row == 1 {
-            cell.accessoryView = UIImageView(image: "🏃".image(pointSize: 20))
-        }
+        cell.detailTextLabel?.text = cellInfo.distance == 0 ? "-" : "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
+        cell.detailTextLabel?.textColor = indexPath.row == 1 ? .pumpkin : .almostBlack
+        cell.detailTextLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
         return cell
     }
     
