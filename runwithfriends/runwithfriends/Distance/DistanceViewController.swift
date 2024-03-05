@@ -16,11 +16,6 @@ class DistanceViewController: UIViewController {
         case current
         case next
     }
-    private let header = UIStackView()
-    private let firstButton = UIButton().setHeaderButton()
-    private let secondButton = UIButton().setHeaderButton()
-    private let downArrowButton = UIButton().setDownArrowButton()
-    private var headerState: HeaderState = .current
     
     // Distance table
     private let distanceTableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -45,9 +40,7 @@ class DistanceViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        headerState = .current
         distanceTableRows = DistanceTable.getDistanceTableRows(for: userData.getTotalDistance())
-        print(distanceTableRows)
         distanceTableView.reloadData()
     }
     
@@ -71,23 +64,6 @@ class DistanceViewController: UIViewController {
             distanceTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             distanceTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        header.axis = .vertical
-        header.distribution = .fillProportionally
-        header.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
-        header.isLayoutMarginsRelativeArrangement = true
-        
-        header.addArrangedSubview(firstButton)
-        header.addArrangedSubview(secondButton)
-        header.addArrangedSubview(downArrowButton)
-        
-        downArrowButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
-    }
-    
-    @objc func tapped() {
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        headerState = headerState == .current ? .next : .current
-        self.distanceTableView.reloadData()
     }
 }
 
@@ -105,51 +81,67 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .almostBlack
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
-        cell.detailTextLabel?.text = cellInfo.distance == 0 ? "-" : "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
-        cell.detailTextLabel?.textColor = indexPath.row == 1 ? .pumpkin : .almostBlack
         cell.detailTextLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
+        
+        if indexPath.row == 0 {
+            cell.detailTextLabel?.textColor = .pumpkin
+            cell.detailTextLabel?.text = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
+        } else {
+            cell.detailTextLabel?.textColor = .almostBlack
+            cell.detailTextLabel?.attributedText = cellInfo.distance == 0 ? NSAttributedString(string: "-") : "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)".strikeThrough()
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
         
-        let distance = userData.getTotalDistance()
-        print("user's total distance is \(distance)")        
-        let report = DistanceReport.getReport(with: distance)
+        let header = UIView()
+        let tableWidth = view.frame.width - 32
         
-        if headerState == .current {
-            firstButton.setAttributedTitle(report.currentDistance, for: .normal)
-            secondButton.setTitle(report.currentAchievement, for: .normal)
-        } else {
-            firstButton.setAttributedTitle(report.nextDistance, for: .normal)
-            secondButton.setTitle(report.nextAchievement, for: .normal)
-        }
+        let distanceLabel = UILabel().setHeaderButton()
+        distanceLabel.frame = CGRect(x: 0, y: 0, width: tableWidth, height: 30)
+        header.addSubview(distanceLabel)
+        
+        let distanceLeftLabel = UILabel().setHeaderButton()
+        distanceLeftLabel.frame = CGRect(x: 0, y: 30, width: tableWidth, height: 30)
+        distanceLeftLabel.text = "Distance Left: 500m"
+        header.addSubview(distanceLeftLabel)
+        
+        let emojiView = UIView(frame: CGRect(x: 0, y: 65, width: tableWidth, height: 30))
+        let startImage = UIImageView(image: "🌉".image(pointSize: 30))
+        startImage.frame.origin = CGPoint(x: 0, y: 0)
+        emojiView.addSubview(startImage)
+        let endImage = UIImageView(image: "🗻".image(pointSize: 30))
+        endImage.frame.origin = CGPoint(x: tableWidth - endImage.frame.width, y: 0)
+        emojiView.addSubview(endImage)
+        let progressImage = UIImageView(image: "🏃".image(pointSize: 20).withHorizontallyFlippedOrientation())
+        let progressImageWidth = progressImage.frame.width
+        progressImage.frame.origin = CGPoint(x: 3.3/3.8 * tableWidth - progressImageWidth / 2, y: 10)
+        emojiView.addSubview(progressImage)
+        header.addSubview(emojiView)
+        
+        let progress = UIProgressView(frame: CGRect(x: 0, y: 105, width: tableWidth, height: 30))
+        progress.setProgress(3.3/3.8, animated: true)
+        header.addSubview(progress)
+        
+        let distance = userData.getTotalDistance()
+        let report = DistanceReport.getReport(with: distance)
+        distanceLabel.attributedText = report.currentDistance
         
         return header
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 115
+    }
 }
 
-private extension UIButton {
-    func setHeaderButton() -> UIButton {
-        self.setTitleColor(.almostBlack, for: .normal)
-        self.titleLabel?.font = UIFont.KefirLight(size: 20)
-        self.titleLabel?.numberOfLines = 0
-        self.contentHorizontalAlignment = .left
-        self.contentVerticalAlignment = .top
-        return self
-    }
-    
-    func setDownArrowButton() -> UIButton {
-        self.setTitle("...", for: .normal)
-        self.setTitleColor(.accent, for: .normal)
-        
-        var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 10)
-        self.configuration = configuration
-        self.setFont(UIFont.KefirBold(size: 20))
-        self.contentHorizontalAlignment = .right
-        self.tintColor = .accent
+private extension UILabel {
+    func setHeaderButton() -> UILabel {
+        self.textColor = .almostBlack
+        self.font = UIFont.KefirLight(size: 20)
+        self.textAlignment = .left
         return self
     }
 }

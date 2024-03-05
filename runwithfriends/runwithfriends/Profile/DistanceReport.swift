@@ -26,10 +26,9 @@ struct DistanceReport {
             
         func getColoredString(with reportType: ReportType, and distance: Int) -> NSAttributedString {
             let mainString: String
-            let distanceWord = distanceWords.shuffled().first ?? "Distance"
             switch reportType {
             case .currentDistance:
-                mainString = "\(distanceWord): \(distance.valueShort) \(distance.metricShort)"
+                mainString = "Total Distance: \(distance.valueShort) \(distance.metricShort)"
             case .nextDistance:
                 mainString = "Just \(distance.valueShort) \(distance.metricShort) away from:"
             case .noDistance:
@@ -186,28 +185,3 @@ enum Landmark: CaseIterable {
         }
     }
 }
-
-let distanceWords = [
-    "Distance",
-    "Explored",
-    "Journeyed",
-    "Roamed",
-    "Trekked",
-    "Ventured",
-    "Wandered",
-    "Traversed",
-    "Meandered",
-    "Hiked",
-    "Sauntered",
-    "Trod",
-    "Sojourned",
-    "Voyaged",
-    "Strolled",
-    "Ambled",
-    "Treaded",
-    "Plodded",
-    "Cruised",
-    "Zipped",
-    "Strided",
-    "Scuttled"
-]
