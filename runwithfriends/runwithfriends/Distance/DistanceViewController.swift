@@ -82,13 +82,14 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.textColor = .almostBlack
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
         cell.detailTextLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
-        
+        cell.detailTextLabel?.textColor = .almostBlack
+
         if indexPath.row == 0 {
-            cell.detailTextLabel?.textColor = .pumpkin
             cell.detailTextLabel?.text = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
         } else {
-            cell.detailTextLabel?.textColor = .almostBlack
-            cell.detailTextLabel?.attributedText = cellInfo.distance == 0 ? NSAttributedString(string: "-") : "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)".strikeThrough()
+            cell.detailTextLabel?.attributedText = cellInfo.distance == 0 
+            ? NSAttributedString(string: "-")
+            : "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)".strikeThrough()
         }
         return cell
     }
@@ -117,12 +118,12 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         emojiView.addSubview(endImage)
         let progressImage = UIImageView(image: "🏃".image(pointSize: 20).withHorizontallyFlippedOrientation())
         let progressImageWidth = progressImage.frame.width
-        progressImage.frame.origin = CGPoint(x: 3.3/3.8 * tableWidth - progressImageWidth / 2, y: 10)
+        progressImage.frame.origin = CGPoint(x: 0.6/1.1 * tableWidth - progressImageWidth / 2, y: 10)
         emojiView.addSubview(progressImage)
         header.addSubview(emojiView)
         
         let progress = UIProgressView(frame: CGRect(x: 0, y: 105, width: tableWidth, height: 30))
-        progress.setProgress(3.3/3.8, animated: true)
+        progress.setProgress(0.6/1.1, animated: true)
         header.addSubview(progress)
         
         let distance = userData.getTotalDistance()
