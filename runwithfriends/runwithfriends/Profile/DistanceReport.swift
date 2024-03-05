@@ -54,8 +54,8 @@ struct DistanceReport {
                                 nextDistance: nextDistance,
                                 nextAchievement: "Completing the Eiffel Tower in Paris.")
             return report
-        case ..<Landmark.HighLineNewYork.info.distance:
-            let distanceLeft = Landmark.HighLineNewYork.info.distance - distance
+        case ..<Landmark.BrooklynBridge.info.distance:
+            let distanceLeft = Landmark.BrooklynBridge.info.distance - distance
             let nextDistance = getColoredString(with: .nextDistance, and: distanceLeft)
             let report = Report(currentDistance: currentDistance,
                                 currentAchievement: "That's more than \(Int(distance / Landmark.EiffelTower.info.distance)) Eiffel Towers in Paris!",
@@ -151,7 +151,7 @@ struct DistanceTable {
 enum Landmark: CaseIterable {
     case CasualPea
     case EiffelTower
-    case HighLineNewYork
+    case BrooklynBridge
     case GoldenGateBridge
     case MountFuji
     case HydePark
@@ -166,8 +166,8 @@ enum Landmark: CaseIterable {
             return (0, "Casual Pea", "🫛")
         case .EiffelTower:
             return (330, "Eiffel Tower", "🗼")
-        case .HighLineNewYork:
-            return (2300, "High Line Park", "🛤️")
+        case .BrooklynBridge:
+            return (1834, "Brooklyn Bridge", "🛤️")
         case .GoldenGateBridge:
             return (2737, "Golden Gate Bridge", "🌉")
         case .MountFuji:
