@@ -34,8 +34,23 @@ extension String {
     }    
 }
 
-extension Int {
-    func leadingZero() -> String {
-        String(format: "%02d", self)
+extension String {
+    func attributedStringWithColorAndBold(_ colorizeWords: [String], color: UIColor, boldWords: [String] = [], size: CGFloat = 20) -> NSAttributedString {
+        // Create a mutable attributed string based on the original string.
+        let attributedString = NSMutableAttributedString(string: self)
+
+        // Apply color and bold attributes to the specified words.
+        colorizeWords.forEach { word in
+            let range = (self as NSString).range(of: word)
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
+        }
+        
+        // Make the specified words bold.
+        boldWords.forEach { word in
+            let range = (self as NSString).range(of: word)
+            attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.KefirMedium(size: size), range: range)
+        }
+
+        return attributedString
     }
 }

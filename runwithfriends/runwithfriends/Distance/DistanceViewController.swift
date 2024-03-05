@@ -100,20 +100,11 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         let header = UIView()
         let tableWidth = view.frame.width - 32
         
-        let distanceLabel = UILabel().setHeaderButton()
-        distanceLabel.frame = CGRect(x: 0, y: 0, width: tableWidth, height: 30)
-        header.addSubview(distanceLabel)
+        guard let nextLandmark = distanceTableRows.first else { return nil }
         
-        let distanceLeftLabel = UILabel().setHeaderButton()
-        distanceLeftLabel.frame = CGRect(x: 0, y: 30, width: tableWidth, height: 30)
-        distanceLeftLabel.text = "Distance Left: 500m"
-        header.addSubview(distanceLeftLabel)
-        
-        let emojiView = UIView(frame: CGRect(x: 0, y: 70, width: tableWidth, height: 30))
-        let startImage = UIImageView(image: "🌉".image(pointSize: 30))
-        startImage.frame.origin = CGPoint(x: 0, y: 0)
-        emojiView.addSubview(startImage)
-        let endImage = UIImageView(image: "🗻".image(pointSize: 30))
+        // Progress bar with emojis
+        let emojiView = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: 30))
+        let endImage = UIImageView(image: nextLandmark.info.emoji.image(pointSize: 30))
         endImage.frame.origin = CGPoint(x: tableWidth - endImage.frame.width, y: 0)
         emojiView.addSubview(endImage)
         let progressImage = UIImageView(image: "🏃".image(pointSize: 20).withHorizontallyFlippedOrientation())
@@ -122,13 +113,32 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         emojiView.addSubview(progressImage)
         header.addSubview(emojiView)
         
-        let progress = UIProgressView(frame: CGRect(x: 0, y: 110, width: tableWidth, height: 30))
+        let progress = UIProgressView(frame: CGRect(x: 0, y: 40, width: tableWidth, height: 30))
         progress.setProgress(0.6/1.1, animated: true)
+        progress.progressTintColor = .almostBlack
+        progress.trackTintColor = .pumpkin
         header.addSubview(progress)
         
+        // Labels
         let distance = userData.getTotalDistance()
-        let report = DistanceReport.getReport(with: distance)
-        distanceLabel.attributedText = report.currentDistance
+        let boldedWords = "\(distance.valueShort)\(distance.metricShort)"
+        let totalDistanceString = "Total Distance: \(boldedWords)"
+        let totalDistanceAttributedString = totalDistanceString.attributedStringWithColorAndBold([boldedWords], color: .almostBlack, boldWords: [boldedWords])
+        
+        let distanceLeft = nextLandmark.info.distance - distance
+        let coloredWords = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
+        let distanceLeftString = "\(nextLandmark.info.name): \(coloredWords)"
+        let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([coloredWords], color: .pumpkin, boldWords: [coloredWords])
+
+        let distanceLabel = UILabel().setHeaderButton()
+        distanceLabel.frame = CGRect(x: 0, y: 60, width: tableWidth, height: 30)
+        distanceLabel.attributedText = totalDistanceAttributedString
+        header.addSubview(distanceLabel)
+        
+        let distanceLeftLabel = UILabel().setHeaderButton()
+        distanceLeftLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 30)
+        distanceLeftLabel.attributedText = distanceLeftAttributedString
+        header.addSubview(distanceLeftLabel)
         
         return header
     }

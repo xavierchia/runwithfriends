@@ -16,6 +16,10 @@ extension UIFont {
         UIFont(name: "Kefir-DemiBold", size: size) ?? UIFont.systemFont(ofSize: size, weight: .semibold)
     }
     
+    static func KefirMedium(size: CGFloat) -> UIFont {
+        UIFont(name: "Kefir-Medium", size: size) ?? UIFont.systemFont(ofSize: size, weight: .semibold)
+    }
+    
     static func Kefir(size: CGFloat) -> UIFont {
         UIFont(name: "Kefir-Regular", size: size) ?? UIFont.systemFont(ofSize: size, weight: .regular)
     }

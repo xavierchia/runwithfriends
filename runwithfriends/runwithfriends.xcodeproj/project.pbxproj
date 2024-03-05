@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		25074FA52B7B0DB70061551D /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25074FA42B7B0DB70061551D /* Speaker.swift */; };
-		257EC7A52B882FFE000759A8 /* DistanceReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257EC7A42B882FFE000759A8 /* DistanceReport.swift */; };
+		257EC7A52B882FFE000759A8 /* DistanceTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257EC7A42B882FFE000759A8 /* DistanceTable.swift */; };
 		258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 258508702B2BCEB8005FD81F /* SkeletonView */; };
 		25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A4309A2B74CB79000CE771 /* UIFont.swift */; };
 		25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A5B0DB2B7C9741004DB775 /* Distance.swift */; };
+		25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D47D592B97DEEE003BAF64 /* Collections.swift */; };
+		25D47D5C2B97DF90003BAF64 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D47D5B2B97DF90003BAF64 /* Int.swift */; };
 		25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */; };
 		25FC3CA82B82D61200D90ED2 /* Kefir-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */; };
 		25FC3CA92B82D61200D90ED2 /* Kefir-DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */; };
@@ -71,9 +73,11 @@
 
 /* Begin PBXFileReference section */
 		25074FA42B7B0DB70061551D /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
-		257EC7A42B882FFE000759A8 /* DistanceReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceReport.swift; sourceTree = "<group>"; };
+		257EC7A42B882FFE000759A8 /* DistanceTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceTable.swift; sourceTree = "<group>"; };
 		25A4309A2B74CB79000CE771 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		25A5B0DB2B7C9741004DB775 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
+		25D47D592B97DEEE003BAF64 /* Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
+		25D47D5B2B97DF90003BAF64 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-ExtraBold.otf"; sourceTree = "<group>"; };
 		25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Light.otf"; sourceTree = "<group>"; };
 		25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-DemiBold.otf"; sourceTree = "<group>"; };
@@ -185,6 +189,8 @@
 			isa = PBXGroup;
 			children = (
 				95F6970E2AFF6CD800B10EB2 /* String.swift */,
+				25D47D5B2B97DF90003BAF64 /* Int.swift */,
+				25D47D592B97DEEE003BAF64 /* Collections.swift */,
 				9519A6C42B19593A000B952F /* Date.swift */,
 				25A4309A2B74CB79000CE771 /* UIFont.swift */,
 				25A5B0DB2B7C9741004DB775 /* Distance.swift */,
@@ -255,7 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
-				257EC7A42B882FFE000759A8 /* DistanceReport.swift */,
+				257EC7A42B882FFE000759A8 /* DistanceTable.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -461,6 +467,7 @@
 				9557F7722B3570AC002CAE30 /* UserMappings.swift in Sources */,
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
+				25D47D5C2B97DF90003BAF64 /* Int.swift in Sources */,
 				9557F76E2B356FF0002CAE30 /* Locales.swift in Sources */,
 				953D20972B7D846000A32185 /* Run.swift in Sources */,
 				25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */,
@@ -478,9 +485,10 @@
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
 				953D20992B7D847400A32185 /* Runner.swift in Sources */,
 				953D209B2B7D8C5300A32185 /* RunSession.swift in Sources */,
+				25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */,
 				957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */,
 				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
-				257EC7A52B882FFE000759A8 /* DistanceReport.swift in Sources */,
+				257EC7A52B882FFE000759A8 /* DistanceTable.swift in Sources */,
 				9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
