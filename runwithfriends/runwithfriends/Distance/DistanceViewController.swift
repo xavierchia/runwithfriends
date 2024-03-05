@@ -109,7 +109,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         distanceLeftLabel.text = "Distance Left: 500m"
         header.addSubview(distanceLeftLabel)
         
-        let emojiView = UIView(frame: CGRect(x: 0, y: 65, width: tableWidth, height: 30))
+        let emojiView = UIView(frame: CGRect(x: 0, y: 70, width: tableWidth, height: 30))
         let startImage = UIImageView(image: "🌉".image(pointSize: 30))
         startImage.frame.origin = CGPoint(x: 0, y: 0)
         emojiView.addSubview(startImage)
@@ -122,7 +122,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         emojiView.addSubview(progressImage)
         header.addSubview(emojiView)
         
-        let progress = UIProgressView(frame: CGRect(x: 0, y: 105, width: tableWidth, height: 30))
+        let progress = UIProgressView(frame: CGRect(x: 0, y: 110, width: tableWidth, height: 30))
         progress.setProgress(0.6/1.1, animated: true)
         header.addSubview(progress)
         
@@ -134,7 +134,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 115
+        return 135
     }
 }
 
