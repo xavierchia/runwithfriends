@@ -24,6 +24,26 @@ class UserData {
 //        return 0
     }
     
+    func syncUser() async {
+        do {
+            let supabase = Supabase.shared
+            let users: [User] = try await supabase.client.database
+                .from("users")
+                .select()
+                .eq("user_id", value: user.user_id)
+                .execute()
+                .value
+            guard let retrievedUser = users.first else {
+                print("could not retrieve user to sync")
+                return
+            }
+            self.user = retrievedUser
+            print("user synced")
+        } catch {
+            print("error syncing user \(error)")
+        }
+    }
+    
     func syncUserSessions() async {
         let supabase = Supabase.shared
         do {

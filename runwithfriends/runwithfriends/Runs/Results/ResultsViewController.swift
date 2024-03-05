@@ -55,6 +55,7 @@ class ResultsViewController: UIViewController {
             let totalDistance = self.runManager.totalDistance
             await runManager.upsertRunSession(with: Int(totalDistance))
             await runManager.userData.syncUserSessions()
+            await runManager.userData.syncUser()
             
             if runManager.run.type != .solo {
                 // Wait 5 seconds for everyone to post their runs

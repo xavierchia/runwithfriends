@@ -253,6 +253,7 @@ class RunningViewController: UIViewController {
                     if self.runManager.totalDistance > 0 {
                         await self.runManager.upsertRunSession(with: Int(self.runManager.totalDistance))
                         await self.runManager.userData.syncUserSessions()
+                        await self.runManager.userData.syncUser()
                     } else {
                         await self.runManager.leaveRun()
                     }
