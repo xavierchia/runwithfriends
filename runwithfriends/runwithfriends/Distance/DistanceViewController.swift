@@ -100,47 +100,61 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         let header = UIView()
         let tableWidth = view.frame.width - 32
         
-        guard let nextLandmark = distanceTableRows.first else { return nil }
+        guard let nextLandmark = distanceTableRows.first,
+              let currentLandmark = distanceTableRows[safe: 1] else { return nil }
         
-        // Progress bar with emojis
-        let emojiView = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: 30))
-        let endImage = UIImageView(image: nextLandmark.info.emoji.image(pointSize: 30))
-        endImage.frame.origin = CGPoint(x: tableWidth - endImage.frame.width, y: 0)
-        emojiView.addSubview(endImage)
-        let progressImage = UIImageView(image: "🏃".image(pointSize: 20).withHorizontallyFlippedOrientation())
-        let progressImageWidth = progressImage.frame.width
-        progressImage.frame.origin = CGPoint(x: 0.6/1.1 * tableWidth - progressImageWidth / 2, y: 10)
-        emojiView.addSubview(progressImage)
-        header.addSubview(emojiView)
-        
-        let progress = UIProgressView(frame: CGRect(x: 0, y: 40, width: tableWidth, height: 30))
-        progress.setProgress(0.6/1.1, animated: true)
-        progress.progressTintColor = .almostBlack
-        progress.trackTintColor = .pumpkin
-        header.addSubview(progress)
-        
-        // Labels
         let distance = userData.getTotalDistance()
-        let boldedWords = "\(distance.valueShort)\(distance.metricShort)"
-        let totalDistanceString = "Total Distance: \(boldedWords)"
-        let totalDistanceAttributedString = totalDistanceString.attributedStringWithColorAndBold([boldedWords], color: .almostBlack, boldWords: [boldedWords])
         
-        let distanceLeft = nextLandmark.info.distance - distance
-        let coloredWords = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
-        let distanceLeftString = "\(nextLandmark.info.name): \(coloredWords)"
-        let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([coloredWords], color: .pumpkin, boldWords: [coloredWords])
+        addProgressView()
+        addDistanceLabels()
 
-        let distanceLabel = UILabel().setHeaderButton()
-        distanceLabel.frame = CGRect(x: 0, y: 60, width: tableWidth, height: 30)
-        distanceLabel.attributedText = totalDistanceAttributedString
-        header.addSubview(distanceLabel)
-        
-        let distanceLeftLabel = UILabel().setHeaderButton()
-        distanceLeftLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 30)
-        distanceLeftLabel.attributedText = distanceLeftAttributedString
-        header.addSubview(distanceLeftLabel)
         
         return header
+        
+        // Progress bar with emojis
+        func addProgressView() {
+            let landmarkDifference = nextLandmark.info.distance - currentLandmark.info.distance
+            let differenceCovered = distance - currentLandmark.info.distance
+            let progressPercentage = Float(differenceCovered) / Float(landmarkDifference)
+            
+            let emojiView = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: 30))
+            let endImage = UIImageView(image: nextLandmark.info.emoji.image(pointSize: 30))
+            endImage.frame.origin = CGPoint(x: tableWidth - endImage.frame.width, y: 0)
+            emojiView.addSubview(endImage)
+            let progressImage = UIImageView(image: "🏃".image(pointSize: 20).withHorizontallyFlippedOrientation())
+            let progressImageWidth = progressImage.frame.width
+            let progressXBounded = min(tableWidth - progressImageWidth, max(0, CGFloat(progressPercentage) * tableWidth - progressImageWidth / 2))
+            progressImage.frame.origin = CGPoint(x: progressXBounded, y: 10)
+            emojiView.addSubview(progressImage)
+            header.addSubview(emojiView)
+                    
+            let progress = UIProgressView(frame: CGRect(x: 0, y: 40, width: tableWidth, height: 30))
+            progress.setProgress(progressPercentage, animated: true)
+            progress.progressTintColor = .almostBlack
+            progress.trackTintColor = .pumpkin
+            header.addSubview(progress)
+        }
+        
+        func addDistanceLabels() {
+            let boldedWords = "\(distance.valueShort)\(distance.metricShort)"
+            let totalDistanceString = distance == 0 ? "You've set the intention to run." :"Distance Covered: \(boldedWords)"
+            let totalDistanceAttributedString = totalDistanceString.attributedStringWithColorAndBold([boldedWords], color: .almostBlack, boldWords: [boldedWords])
+            
+            let distanceLeft = nextLandmark.info.distance - distance
+            let coloredWords = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
+            let distanceLeftString = distance == 0 ? "Now put on your shoes and go do it!" :"To \(nextLandmark.info.name): \(coloredWords)"
+            let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([coloredWords], color: .pumpkin, boldWords: [coloredWords])
+
+            let distanceLabel = UILabel().setHeaderButton()
+            distanceLabel.frame = CGRect(x: 0, y: 60, width: tableWidth, height: 30)
+            distanceLabel.attributedText = totalDistanceAttributedString
+            header.addSubview(distanceLabel)
+            
+            let distanceLeftLabel = UILabel().setHeaderButton()
+            distanceLeftLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 30)
+            distanceLeftLabel.attributedText = distanceLeftAttributedString
+            header.addSubview(distanceLeftLabel)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
