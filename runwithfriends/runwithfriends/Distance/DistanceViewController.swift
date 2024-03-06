@@ -131,7 +131,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             let progress = UIProgressView(frame: CGRect(x: 0, y: 40, width: tableWidth, height: 30))
             progress.setProgress(progressPercentage, animated: true)
             progress.progressTintColor = .almostBlack
-            progress.trackTintColor = .pumpkin
+            progress.trackTintColor = distance == 0 ? .darkerGray :.pumpkin
             header.addSubview(progress)
         }
         
