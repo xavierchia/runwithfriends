@@ -139,8 +139,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                     print("User does not exist in the database, save to the database")
                     let initialUser = InitialUser(
                         apple_id: credentials.user,
-                        username: credentials.fullName?.givenName ?? UserData.defaultUsername,
-                        emoji: UserMappings.getEmoji(from: Locale.current.region?.identifier)
+                        username: credentials.fullName?.givenName ?? UserData.defaultUsername
                     )
                     
                     let savedUser = try await UserData.saveUser(initialUser)

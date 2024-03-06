@@ -10,7 +10,6 @@ import Foundation
 struct InitialUser: Codable {
     let apple_id: String
     let username: String
-    let emoji: String
 }
 
 struct User: Codable {

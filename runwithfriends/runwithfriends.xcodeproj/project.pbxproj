@@ -49,9 +49,7 @@
 		954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */; };
 		955151242B91583A001AD26B /* DistanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955151232B91583A001AD26B /* DistanceViewController.swift */; };
 		9557F76C2B350794002CAE30 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76B2B350794002CAE30 /* AlertController.swift */; };
-		9557F76E2B356FF0002CAE30 /* Locales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76D2B356FF0002CAE30 /* Locales.swift */; };
 		9557F7702B35706D002CAE30 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76F2B35706D002CAE30 /* User.swift */; };
-		9557F7722B3570AC002CAE30 /* UserMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F7712B3570AC002CAE30 /* UserMappings.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
 		95698B722B058625009B78F3 /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95698B712B058625009B78F3 /* RunningViewController.swift */; };
 		957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A4EA12B1015D200C746A4 /* TableHeaderView.swift */; };
@@ -109,9 +107,7 @@
 		954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UIRunTableViewCell.xib; sourceTree = "<group>"; };
 		955151232B91583A001AD26B /* DistanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceViewController.swift; sourceTree = "<group>"; };
 		9557F76B2B350794002CAE30 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
-		9557F76D2B356FF0002CAE30 /* Locales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locales.swift; sourceTree = "<group>"; };
 		9557F76F2B35706D002CAE30 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		9557F7712B3570AC002CAE30 /* UserMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMappings.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		95698B712B058625009B78F3 /* RunningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
 		957A4EA12B1015D200C746A4 /* TableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeaderView.swift; sourceTree = "<group>"; };
@@ -249,9 +245,7 @@
 				95966EB32AF329450086DABB /* TabViewController.swift */,
 				9557F76F2B35706D002CAE30 /* User.swift */,
 				9536C16E2AF9ADA100263871 /* UserData.swift */,
-				9557F7712B3570AC002CAE30 /* UserMappings.swift */,
 				95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */,
-				9557F76D2B356FF0002CAE30 /* Locales.swift */,
 				951D1A702B326F1000171C62 /* Supabase.swift */,
 			);
 			path = Login;
@@ -464,11 +458,9 @@
 				95966EB42AF329450086DABB /* TabViewController.swift in Sources */,
 				95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */,
 				95698B722B058625009B78F3 /* RunningViewController.swift in Sources */,
-				9557F7722B3570AC002CAE30 /* UserMappings.swift in Sources */,
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
 				25D47D5C2B97DF90003BAF64 /* Int.swift in Sources */,
-				9557F76E2B356FF0002CAE30 /* Locales.swift in Sources */,
 				953D20972B7D846000A32185 /* Run.swift in Sources */,
 				25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */,
 				25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */,
