@@ -86,6 +86,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
 
         if indexPath.row == 0 {
             cell.detailTextLabel?.text = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
+            cell.detailTextLabel?.textColor = userData.getTotalDistance() == 0 ? .pumpkin : .almostBlack
         } else {
             cell.detailTextLabel?.attributedText = cellInfo.distance == 0 
             ? NSAttributedString(string: "-")
