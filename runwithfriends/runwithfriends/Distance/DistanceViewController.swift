@@ -10,6 +10,9 @@ import UIKit
 class DistanceViewController: UIViewController {
     
     private let userData: UserData
+    private var distance: Int {
+        userData.getTotalDistance()
+    }
     
     // Distance report
     enum HeaderState {
@@ -19,12 +22,12 @@ class DistanceViewController: UIViewController {
     
     // Distance table
     private let distanceTableView = UITableView(frame: .zero, style: .insetGrouped)
-    private var distanceTableRows: [Landmark]
+    private var distanceTableRows = [Landmark]()
     
     init(with userData: UserData) {
         self.userData = userData
-        self.distanceTableRows = DistanceTable.getDistanceTableRows(for: userData.getTotalDistance())
         super.init(nibName: nil, bundle: nil)
+        self.distanceTableRows = DistanceTable.getDistanceTableRows(for: distance)
     }
     
     required init?(coder: NSCoder) {
@@ -40,7 +43,7 @@ class DistanceViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        distanceTableRows = DistanceTable.getDistanceTableRows(for: userData.getTotalDistance())
+        distanceTableRows = DistanceTable.getDistanceTableRows(for: distance)
         distanceTableView.reloadData()
     }
     
@@ -48,7 +51,7 @@ class DistanceViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationItem.title = "Milestones"
+        self.navigationItem.title = distance == 0 ? "Milestones" : "Total: \(distance.valueShort)\(distance.metricShort)"
     }
     
     private func setupDistanceTableView() {
@@ -69,24 +72,35 @@ class DistanceViewController: UIViewController {
 
 extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        distanceTableRows.count
+        distanceTableRows.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
-        let cellInfo = distanceTableRows[indexPath.row].info
-        cell.textLabel?.text = cellInfo.name
-        cell.imageView?.image = cellInfo.emoji.image(pointSize: 20)
+        let fontSize = cell.textLabel?.font.pointSize ?? 17
         cell.selectionStyle = .none
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .almostBlack
-        cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
-        cell.detailTextLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
+        cell.textLabel?.font = UIFont.Kefir(size: fontSize)
+        cell.detailTextLabel?.font = UIFont.Kefir(size: fontSize)
         cell.detailTextLabel?.textColor = .almostBlack
-
+        
         if indexPath.row == 0 {
-            cell.detailTextLabel?.text = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
-            cell.detailTextLabel?.textColor = userData.getTotalDistance() == 0 ? .pumpkin : .almostBlack
+            cell.textLabel?.text = "Run to see more"
+            cell.textLabel?.textColor = .gray
+            cell.imageView?.image = "🗺️".image(pointSize: 20).withHorizontallyFlippedOrientation()
+            return cell
+        }
+        
+        let cellInfo = distanceTableRows[indexPath.row - 1].info
+        cell.textLabel?.text = cellInfo.name
+        cell.imageView?.image = cellInfo.emoji.image(pointSize: 20)
+
+        if indexPath.row == 1 {
+            let color: UIColor = distance == 0 ? .pumpkin : .almostBlack
+            let textString = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
+            cell.detailTextLabel?.attributedText = textString.attributedStringWithColorAndBold([textString], color: color, boldWords: [], size: fontSize)
+            cell.textLabel?.attributedText = cellInfo.name.attributedStringWithColorAndBold([], color: .almostBlack, boldWords: [], size: fontSize)
         } else {
             cell.detailTextLabel?.attributedText = cellInfo.distance == 0 
             ? NSAttributedString(string: "-")
@@ -103,9 +117,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let nextLandmark = distanceTableRows.first,
               let currentLandmark = distanceTableRows[safe: 1] else { return nil }
-        
-        let distance = userData.getTotalDistance()
-        
+                
         addProgressView()
         addDistanceLabels()
 
@@ -137,29 +149,30 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         func addDistanceLabels() {
-            let boldedWords = "\(distance.valueShort)\(distance.metricShort)"
-            let totalDistanceString = distance == 0 ? "You've set the intention to run." :"Distance Covered: \(boldedWords)"
-            let totalDistanceAttributedString = totalDistanceString.attributedStringWithColorAndBold([boldedWords], color: .almostBlack, boldWords: [boldedWords])
+            let firstLabel = UILabel().setHeaderButton()
+            firstLabel.frame = CGRect(x: 0, y: 60, width: tableWidth, height: 30)
+            header.addSubview(firstLabel)
             
-            let distanceLeft = nextLandmark.info.distance - distance
-            let coloredWords = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
-            let distanceLeftString = distance == 0 ? "Now put on your shoes and go do it!" :"To \(nextLandmark.info.name): \(coloredWords)"
-            let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([coloredWords], color: .pumpkin, boldWords: [coloredWords])
-
-            let distanceLabel = UILabel().setHeaderButton()
-            distanceLabel.frame = CGRect(x: 0, y: 60, width: tableWidth, height: 30)
-            distanceLabel.attributedText = totalDistanceAttributedString
-            header.addSubview(distanceLabel)
+            let secondLabel = UILabel().setHeaderButton()
+            secondLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 30)
+            header.addSubview(secondLabel)
             
-            let distanceLeftLabel = UILabel().setHeaderButton()
-            distanceLeftLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 30)
-            distanceLeftLabel.attributedText = distanceLeftAttributedString
-            header.addSubview(distanceLeftLabel)
+            if distance == 0 {
+                firstLabel.text = "Start running"
+                secondLabel.text = "to cross your first milestone."
+                return
+            } else {
+                let distanceLeft = nextLandmark.info.distance - distance
+                let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
+                let distanceLeftString = distance == 0 ? "Now put on your shoes and go do it!" :"\(nextLandmark.info.name) in \(distanceLeftvalue)"
+                let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([distanceLeftvalue], color: .pumpkin, boldWords: [distanceLeftString])
+                firstLabel.attributedText = distanceLeftAttributedString
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 135
+        return distance == 0 ? 135 : 105
     }
 }
 
