@@ -126,10 +126,12 @@ class RunningViewController: UIViewController {
             countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
+        #if DEBUG
         // for testing
         let tap = UITapGestureRecognizer(target: self, action: #selector(removeCountdownLabel))
         countdownLabel.isUserInteractionEnabled = true
         countdownLabel.addGestureRecognizer(tap)
+        #endif
     }
     
     @objc private func removeCountdownLabel() {
@@ -156,8 +158,10 @@ class RunningViewController: UIViewController {
         ])
         
         // for testing
+        #if DEBUG
         let tap = UITapGestureRecognizer(target: self, action: #selector(resultsButtonPressed))
         distanceStack.addGestureRecognizer(tap)
+        #endif
     }
     
     private func setupTimeStack() {

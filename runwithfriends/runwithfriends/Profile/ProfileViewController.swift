@@ -17,21 +17,25 @@ class ProfileViewController: UIViewController {
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private let tableCellTitles = [
         [
-            //              CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!"),
-            
-            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
-            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
-        ],
-        [
-            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
-            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
-        ],
-        [
-            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
-            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
-            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
+          CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!")
         ]
     ]
+    
+//    private let tableCellTitles = [
+//        [
+//            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
+//            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
+//        ],
+//        [
+//            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
+//            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
+//        ],
+//        [
+//            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
+//            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
+//            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
+//        ]
+//    ]
     private let userData: UserData
     
     init(with userData: UserData) {

@@ -58,25 +58,28 @@ class RunsViewController: UIViewController {
     }
     
     @objc func refreshRunTable() {
-       // Code to refresh table view
-        runData = mockRunData
+        runData = [Run(run_id: UUID(), start_date: Int.max, end_date: 0, type: .solo, runners: [Runner]())]
         runsTableView.reloadData()
         
-        let supabase = Supabase.shared
-        Task {
-            do {
-                let runs: [Run] = try await supabase.client.database
-                  .rpc("get_runs_next_12_hours")
-                  .select()
-                  .execute()
-                  .value
-                runData = runs
-                runData.insert(Run(run_id: UUID(), start_date: Int.max, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
-                runsTableView.reloadData()
-            } catch {
-                print(error)
-            }
-        }
+       // Code to refresh table view
+//        runData = mockRunData
+//        runsTableView.reloadData()
+//        
+//        let supabase = Supabase.shared
+//        Task {
+//            do {
+//                let runs: [Run] = try await supabase.client.database
+//                  .rpc("get_runs_next_12_hours")
+//                  .select()
+//                  .execute()
+//                  .value
+//                runData = runs
+//                runData.insert(Run(run_id: UUID(), start_date: Int.max, end_date: 0, type: .solo, runners: [Runner]()), at: 0)
+//                runsTableView.reloadData()
+//            } catch {
+//                print(error)
+//            }
+//        }
         self.runTableRefreshControl.endRefreshing()
     }
     
