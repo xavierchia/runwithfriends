@@ -68,7 +68,7 @@ class ResultsViewController: UIViewController {
             }
 
             let user = runManager.userData.user
-            let ownRun = Runner(user_id: user.user_id, username: user.username, emoji: user.emoji, longitude: 0, latitude: 0, distance: runManager.userData.getTotalDistance())
+            let ownRun = Runner(user_id: user.user_id, username: user.username, emoji: user.emoji, longitude: 0, latitude: 0, distance: Int(runManager.totalDistance))
             results = [ownRun]
             indicator.stopAnimating()
             resultsTableView.reloadData()
