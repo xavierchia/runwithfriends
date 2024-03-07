@@ -22,7 +22,7 @@ class DistanceViewController: UIViewController {
     
     // Distance table
     private let distanceTableView = UITableView(frame: .zero, style: .insetGrouped)
-    private var distanceTableRows = [Landmark]()
+    private var distanceTableRows = [Milestone]()
     
     init(with userData: UserData) {
         self.userData = userData
@@ -115,12 +115,15 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         let header = UIView()
         let tableWidth = view.frame.width - 32
         
-        guard let nextLandmark = distanceTableRows.first,
-              let currentLandmark = distanceTableRows[safe: 1] else { return nil }
+        let noPeaTableRows = distanceTableRows.filter { milestone in
+            !milestone.info.name.lowercased().contains("pea")
+        }
+        
+        guard let nextLandmark = noPeaTableRows.first else { return nil }
+        let currentLandmark = noPeaTableRows[safe: 1] ?? Pea.CasualPea
                 
         addProgressView()
         addDistanceLabels()
-
         
         return header
         

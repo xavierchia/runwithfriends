@@ -81,18 +81,8 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupProfile(with user: User) {
-        if let prefix = getPrefix(for: UserData.defaultUsername) {
-            self.navigationItem.title = "\(prefix) \(UserData.defaultUsername)"
-        } else {
-            self.navigationItem.title = UserData.defaultUsername
-        }
-    }
-    
-    // create prefix logic
-    private func getPrefix(for username: String) -> String? {
-        let character: Character = "P"
-        guard let resultPrefix = Prefixes[character]?.shuffled().first else { return nil }
-        return resultPrefix
+        let currentPea = DistanceTable.getPea(for: userData.getTotalDistance())
+        self.navigationItem.title = currentPea.info.name
     }
 }
 
