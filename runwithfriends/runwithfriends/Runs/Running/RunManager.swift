@@ -141,7 +141,8 @@ class RunManager {
             runStage = .runStart(-intervalToStart)
         case ...(-runTime):
             runStage = .runEnd
-            let utterance = AVSpeechUtterance(string: "Run complete. Getting results.")
+            let runCompleteString = run.type == .solo ? "Run complete." : "Run complete. Getting results."
+            let utterance = AVSpeechUtterance(string: runCompleteString)
             utterance.rate = 0.3
             Speaker.shared.speak(utterance)
             timer.invalidate()

@@ -302,7 +302,7 @@ extension RunningViewController {
             let minutes = Int(totalTime) / 60
             let totalDistance = runManager.totalDistance
             let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(Int(totalDistance).value) \(Int(totalDistance).metric)")
-            utterance.rate = 0.1
+            utterance.rate = 0.3
             Speaker.shared.speak(utterance)
         default:
             break
