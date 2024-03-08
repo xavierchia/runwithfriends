@@ -43,7 +43,7 @@ class DistanceViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = distance == 0 ? "Milestones" : "Total: \(distance.valueShort)\(distance.metricShort)"
+        self.navigationItem.title = distance == 0 ? "Milestones" : "Ran: \(distance.valueShort)\(distance.metricShort)"
         distanceTableRows = DistanceTable.getDistanceTableRows(for: distance)
         distanceTableView.reloadData()
     }
