@@ -8,7 +8,41 @@
 import Foundation
 import UIKit
 
-struct DistanceTable {
+struct Progression {
+    
+    struct ProgressData {
+        let progress: Float
+        let distanceLeft: Int
+        let nextLandmark: Milestone
+    }
+    
+    static func getProgressData(for distance: Int) -> ProgressData? {
+        var distanceTableRows = [Milestone]()
+        
+        for landmark in Landmark.allCases {
+            if landmark.info.distance <= distance {
+                distanceTableRows.append(landmark)
+            } else {
+                distanceTableRows.append(landmark)
+                break
+            }
+        }
+        
+        distanceTableRows.sort { lhs, rhs in
+            lhs.info.distance > rhs.info.distance
+        }
+        
+        guard let nextLandmark = distanceTableRows.first else { return nil }
+        let currentLandmark = distanceTableRows[safe: 1] ?? Pea.CasualPea
+        
+        let landmarkDifference = nextLandmark.info.distance - currentLandmark.info.distance
+        let differenceCovered = distance - currentLandmark.info.distance
+        let distanceLeft = nextLandmark.info.distance - distance
+        let progressPercentage = Float(differenceCovered) / Float(landmarkDifference)
+        
+        return ProgressData(progress: progressPercentage, distanceLeft: distanceLeft, nextLandmark: nextLandmark)
+    }
+    
     static func getDistanceTableRows(for distance: Int) -> [Milestone] {
         var distanceTableRows = [Milestone]()
         

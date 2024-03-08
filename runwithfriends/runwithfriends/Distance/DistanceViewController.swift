@@ -27,13 +27,13 @@ class DistanceViewController: UIViewController {
     init(with userData: UserData) {
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
-        self.distanceTableRows = DistanceTable.getDistanceTableRows(for: distance)
+        self.distanceTableRows = Progression.getDistanceTableRows(for: distance)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .cream
@@ -44,7 +44,7 @@ class DistanceViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = distance == 0 ? "Milestones" : "Ran: \(distance.valueShort)\(distance.metricShort)"
-        distanceTableRows = DistanceTable.getDistanceTableRows(for: distance)
+        distanceTableRows = Progression.getDistanceTableRows(for: distance)
         distanceTableView.reloadData()
     }
     
@@ -102,7 +102,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             cell.detailTextLabel?.attributedText = textString.attributedStringWithColorAndBold([textString], color: color, boldWords: [], size: fontSize)
             cell.textLabel?.attributedText = cellInfo.name.attributedStringWithColorAndBold([], color: .almostBlack, boldWords: [], size: fontSize)
         } else {
-            cell.detailTextLabel?.attributedText = cellInfo.distance == 0 
+            cell.detailTextLabel?.attributedText = cellInfo.distance == 0
             ? NSAttributedString(string: "-")
             : "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)".strikeThrough()
         }
@@ -110,18 +110,16 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 0 else { return nil }
+        guard section == 0,
+              let progressData = Progression.getProgressData(for: distance) else { return nil }
         
         let header = UIView()
         let tableWidth = view.frame.width - 32
         
-        let noPeaTableRows = distanceTableRows.filter { milestone in
-            !milestone.info.name.lowercased().contains("pea")
-        }
+        let nextLandmark = progressData.nextLandmark
+        let progressPercentage = progressData.progress
+        let distanceLeft = progressData.distanceLeft
         
-        guard let nextLandmark = noPeaTableRows.first else { return nil }
-        let currentLandmark = noPeaTableRows[safe: 1] ?? Pea.CasualPea
-                
         addProgressView()
         addDistanceLabels()
         
@@ -129,10 +127,6 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         
         // Progress bar with emojis
         func addProgressView() {
-            let landmarkDifference = nextLandmark.info.distance - currentLandmark.info.distance
-            let differenceCovered = distance - currentLandmark.info.distance
-            let progressPercentage = Float(differenceCovered) / Float(landmarkDifference)
-            
             let emojiView = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: 30))
             let endImage = UIImageView(image: nextLandmark.info.emoji.image(pointSize: 30))
             endImage.frame.origin = CGPoint(x: tableWidth - endImage.frame.width, y: 0)
@@ -143,7 +137,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             progressImage.frame.origin = CGPoint(x: progressXBounded, y: 10)
             emojiView.addSubview(progressImage)
             header.addSubview(emojiView)
-                    
+            
             let progress = UIProgressView(frame: CGRect(x: 0, y: 40, width: tableWidth, height: 30))
             progress.setProgress(progressPercentage, animated: true)
             progress.progressTintColor = .almostBlack
@@ -165,7 +159,6 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
                 secondLabel.text = "to cross your first milestone."
                 return
             } else {
-                let distanceLeft = nextLandmark.info.distance - distance
                 let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
                 let distanceLeftString = distance == 0 ? "Now put on your shoes and go do it!" :"\(nextLandmark.info.name) in \(distanceLeftvalue)"
                 let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([distanceLeftvalue], color: .pumpkin, boldWords: [distanceLeftString])

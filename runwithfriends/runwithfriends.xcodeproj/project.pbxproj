@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		25074FA52B7B0DB70061551D /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25074FA42B7B0DB70061551D /* Speaker.swift */; };
-		257EC7A52B882FFE000759A8 /* DistanceTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257EC7A42B882FFE000759A8 /* DistanceTable.swift */; };
+		257EC7A52B882FFE000759A8 /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257EC7A42B882FFE000759A8 /* Progression.swift */; };
 		258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 258508702B2BCEB8005FD81F /* SkeletonView */; };
 		25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A4309A2B74CB79000CE771 /* UIFont.swift */; };
 		25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A5B0DB2B7C9741004DB775 /* Distance.swift */; };
@@ -72,7 +72,7 @@
 
 /* Begin PBXFileReference section */
 		25074FA42B7B0DB70061551D /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
-		257EC7A42B882FFE000759A8 /* DistanceTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceTable.swift; sourceTree = "<group>"; };
+		257EC7A42B882FFE000759A8 /* Progression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		25A4309A2B74CB79000CE771 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		25A5B0DB2B7C9741004DB775 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
 		25D47D592B97DEEE003BAF64 /* Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
@@ -258,7 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
-				257EC7A42B882FFE000759A8 /* DistanceTable.swift */,
+				257EC7A42B882FFE000759A8 /* Progression.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -484,7 +484,7 @@
 				25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */,
 				957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */,
 				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
-				257EC7A52B882FFE000759A8 /* DistanceTable.swift in Sources */,
+				257EC7A52B882FFE000759A8 /* Progression.swift in Sources */,
 				9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
