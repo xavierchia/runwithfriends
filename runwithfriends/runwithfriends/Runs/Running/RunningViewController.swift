@@ -23,9 +23,7 @@ class RunningViewController: UIViewController {
     private let distanceValueLabel = UILabel().topBarTitle()
     private let distanceMetricLabel = UILabel().topBarSubtitle()
     private let timeValueLabel = UILabel().topBarTitle()
-    
-    private let likeNameLabel = UILabel().midSubtitle()
-    
+        
     private var touchCountTimer: Timer?
     private var countdownStarted = false
     private let endButton = UIButton(type: .custom)
@@ -105,7 +103,7 @@ class RunningViewController: UIViewController {
     private func setupUI() {
         setupDistanceStack()
         setupTimeStack()
-        setupLikeStack()
+        setupProgressView()
         setupEndButton()
         setupCountdownView()
     }
@@ -185,33 +183,17 @@ class RunningViewController: UIViewController {
     }
     
     
-    private func setupLikeStack() {
-        let likeButton = UIButton()
-        var config = UIImage.SymbolConfiguration(paletteColors: [.pumpkin, .cream])
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-        config = config.applying(largeConfig)
-        let heartCircleFill = UIImage(systemName: "heart.circle.fill", withConfiguration: config)
-        likeButton.setImage(heartCircleFill, for: .normal)
+    private func setupProgressView() {
+        let circularProgressView = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 150, height: 150), lineWidth: 25, rounded: true)
+        circularProgressView.progressColor = .brightPumpkin
+        circularProgressView.trackColor = .darkPumpkin
+        circularProgressView.progress = 0.5
+        circularProgressView.center = view.center
+        view.addSubview(circularProgressView)
         
-        view.addSubview(likeButton)
-        likeButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            likeButton.widthAnchor.constraint(equalToConstant: 150),
-            likeButton.heightAnchor.constraint(equalToConstant: 150),
-            likeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            likeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        
-        likeNameLabel.text = "Xavier"
-        
-        view.addSubview(likeNameLabel)
-        likeNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            likeNameLabel.widthAnchor.constraint(equalToConstant: 150),
-            likeNameLabel.heightAnchor.constraint(equalToConstant: 30),
-            likeNameLabel.topAnchor.constraint(equalTo: likeButton.bottomAnchor, constant: 5),
-            likeNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+        let emojiView = UIImageView(image: "🗼".image(pointSize: 80))
+        emojiView.center = view.center
+        view.addSubview(emojiView)
     }
     
     // change this to a text rounded button just like the invite button
