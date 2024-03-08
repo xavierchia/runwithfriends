@@ -306,11 +306,7 @@ extension RunsViewController: UIRunTableViewCellProtocol {
         }
         
         Task {
-            if run.type == .solo {
-                run = Run(run_id: UUID(), start_date: Int((Date() + 6).timeIntervalSince1970), end_date: Int((Date() + 906).timeIntervalSince1970), type: .solo, runners: [])
-            }
-            
-            let invisibleLocationVC = InvisibleLocationViewController(with: run, and: userData)
+            let invisibleLocationVC = InvisibleLocationViewController(with: userData)
             invisibleLocationVC.modalPresentationStyle = .overFullScreen
             present(invisibleLocationVC, animated: false)
         }

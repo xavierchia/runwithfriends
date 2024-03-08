@@ -18,7 +18,23 @@ import Combine
 
 class InvisibleLocationViewController: UIViewController {
     
-    private let runManager: RunManager
+    private var runManager: RunManager? {
+        didSet {
+            runManager?.$runStage
+                .sink { [weak self] runStage in
+                guard let self else { return }
+                switch runStage {
+                case .runEnd:
+                    print("stopped updating location")
+                    locationManager.stopUpdatingLocation()
+                    cancellables.removeAll()
+                default:
+                    break
+                }
+            }.store(in: &cancellables)
+        }
+    }
+    private let userData: UserData
     
     // Location
     private let locationManager = CLLocationManager()
@@ -26,8 +42,8 @@ class InvisibleLocationViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
 
-    init(with run: Run, and userData: UserData) {
-        self.runManager = RunManager(with: run, and: userData)
+    init(with userData: UserData) {
+        self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,11 +63,6 @@ class InvisibleLocationViewController: UIViewController {
     // Immediately show the next VC depending on the run
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if runManager.run.type == .solo {
-            let runningVC = RunningViewController(with: runManager)
-            runningVC.modalPresentationStyle = .overFullScreen
-            present(runningVC, animated: true)
-        }
     }
     
     private func setupLocationManager() {
@@ -60,24 +71,11 @@ class InvisibleLocationViewController: UIViewController {
         locationManager.allowsBackgroundLocationUpdates = true
     }
     
-    private func setupRunSession() {
-        runManager.$runStage
-            .sink { [weak self] runStage in
-            guard let self else { return }
-            switch runStage {
-            case .runEnd:
-                locationManager.stopUpdatingLocation()
-                cancellables.removeAll()
-            default:
-                break
-            }
-        }.store(in: &cancellables)
-    }
-    
+    // TODO for public runs
     private func presentWaitingVC(with location: CLLocationCoordinate2D) {
-        let waitingVC = WaitingRoomViewController(with: runManager, and: location)
-        waitingVC.modalPresentationStyle = .overFullScreen
-        present(waitingVC, animated: true)
+//        let waitingVC = WaitingRoomViewController(with: runManager, and: location)
+//        waitingVC.modalPresentationStyle = .overFullScreen
+//        present(waitingVC, animated: true)
     }
 }
 
@@ -87,10 +85,14 @@ extension InvisibleLocationViewController: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
             if let location = manager.location {
-                if runManager.run.type != .solo {
-                    print("Location authorized, setting user location")
-                    presentWaitingVC(with: location.coordinate)
-                }
+                // TODO: Deal with flow for public runs
+                print("Location authorized, setting user location")
+                let soloRun = Run(run_id: UUID(), start_date: Int((Date() + 6).timeIntervalSince1970), end_date: Int((Date() + 906).timeIntervalSince1970), type: .solo, runners: [])
+                self.runManager = RunManager(with: soloRun, and: userData)
+                guard let runManager else { return }
+                let runningVC = RunningViewController(with: runManager)
+                runningVC.modalPresentationStyle = .overFullScreen
+                present(runningVC, animated: true)
                 print("started updating location")
                 locationManager.startUpdatingLocation()
             }
@@ -101,7 +103,7 @@ extension InvisibleLocationViewController: CLLocationManagerDelegate {
             print("Location permission denied or restricted")
             self.dismiss(animated: false) {
                 guard let rootVC = UIApplication.shared.firstKeyWindow?.rootViewController else { return }
-                let alert = UIAlertController.Oops(title: "Oops.", subtitle: "Enable location in iPhone settings to run.\n\niPhone Settings > RunFriends > Location > While Using the App.")
+                let alert = UIAlertController.Oops(title: "Oops.", subtitle: "Enable location in iPhone settings\n\niPhone Settings > RunFriends > Location > While Using the App.")
                 rootVC.present(alert, animated: true)
             }
         default:
@@ -111,7 +113,8 @@ extension InvisibleLocationViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let currentLocation = locations.last,
+        guard let runManager,
+              let currentLocation = locations.last,
               currentLocation.timestamp >= runManager.run.start_date.getDate() else { return }
         
         if let lastLocation {
