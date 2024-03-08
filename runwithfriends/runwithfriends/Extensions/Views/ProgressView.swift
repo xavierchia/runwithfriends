@@ -10,7 +10,7 @@ class CircularProgressView: UIView {
     fileprivate var filled: Bool
     fileprivate let lineWidth: CGFloat?
     
-    var timeToFill = 3.43
+    var timeToFill = 1.0
     var progressColor = UIColor.white {
         didSet{
             progressLayer.strokeColor = progressColor.cgColor
@@ -76,8 +76,13 @@ class CircularProgressView: UIView {
     }
     
     func setProgress(duration: TimeInterval = 3, to newProgress: Float) -> Void{
+        var animationDuration = duration
+        if progressLayer.strokeEnd > CGFloat(newProgress) {
+            animationDuration = 0
+        }
+        
         let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = duration
+        animation.duration = animationDuration
         
         animation.fromValue = progressLayer.strokeEnd
         animation.toValue = newProgress
