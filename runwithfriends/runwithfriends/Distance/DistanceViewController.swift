@@ -43,6 +43,7 @@ class DistanceViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.title = distance == 0 ? "Milestones" : "Total: \(distance.valueShort)\(distance.metricShort)"
         distanceTableRows = DistanceTable.getDistanceTableRows(for: distance)
         distanceTableView.reloadData()
     }
@@ -51,7 +52,6 @@ class DistanceViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationItem.title = distance == 0 ? "Milestones" : "Total: \(distance.valueShort)\(distance.metricShort)"
     }
     
     private func setupDistanceTableView() {

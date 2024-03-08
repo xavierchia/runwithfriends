@@ -50,11 +50,13 @@ class ResultsViewController: UIViewController {
         self.view.addSubview(indicator)
         indicator.startAnimating()
         
+        let completedUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.totalDistance))
+        runManager.userData.userSessions.append(completedUserSession)
+        
         Task {
             // Upsert when run is complete
             let totalDistance = self.runManager.totalDistance
             await runManager.upsertRunSession(with: Int(totalDistance))
-            await runManager.userData.syncUserSessions()
             await runManager.userData.syncUser()
             
             if runManager.run.type != .solo {

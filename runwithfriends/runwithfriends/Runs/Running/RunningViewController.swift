@@ -252,11 +252,12 @@ class RunningViewController: UIViewController {
             
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { [weak self] _ in
                 guard let self else { return }
+                let cancelledUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.totalDistance))
+                runManager.userData.userSessions.append(cancelledUserSession)
                 
                 Task {
                     if self.runManager.totalDistance > 0 {
                         await self.runManager.upsertRunSession(with: Int(self.runManager.totalDistance))
-                        await self.runManager.userData.syncUserSessions()
                         await self.runManager.userData.syncUser()
                     } else {
                         await self.runManager.leaveRun()
