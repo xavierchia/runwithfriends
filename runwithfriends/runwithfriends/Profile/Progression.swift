@@ -16,7 +16,7 @@ struct Progression {
         let nextLandmark: Milestone
     }
     
-    static func getProgressData(for distance: Int) -> ProgressData? {
+    static func getProgressData(for distance: Int) -> ProgressData {
         var distanceTableRows = [Milestone]()
         
         for landmark in Landmark.allCases {
@@ -32,7 +32,7 @@ struct Progression {
             lhs.info.distance > rhs.info.distance
         }
         
-        guard let nextLandmark = distanceTableRows.first else { return nil }
+        let nextLandmark = distanceTableRows.first!
         let currentLandmark = distanceTableRows[safe: 1] ?? Pea.CasualPea
         
         let landmarkDifference = nextLandmark.info.distance - currentLandmark.info.distance

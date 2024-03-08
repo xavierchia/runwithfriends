@@ -24,7 +24,7 @@ class RunManager {
     public var runStage: RunStage = .waitingRunStart
     
     @Published
-    public var totalDistance: CLLocationDistance = 0
+    public var sessionDistance: CLLocationDistance = 0
     public var run: Run
     public let userData: UserData
     
@@ -43,6 +43,11 @@ class RunManager {
     deinit {
         print("deinit run manager")
         timer.invalidate()
+    }
+    
+    public func getTotalDistance() -> Int {
+        let previousDistances = userData.getTotalDistance()
+        return previousDistances + Int(sessionDistance)
     }
     
     public static func createRun(with run: Run_Raw) async {
@@ -105,7 +110,7 @@ class RunManager {
             fireTimer()
             
             // for testing we move faster
-//            self.totalDistance += 0.5
+//            self.sessionDistance += 20
         })
     }
     

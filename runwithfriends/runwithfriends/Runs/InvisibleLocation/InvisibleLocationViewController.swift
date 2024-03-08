@@ -118,8 +118,8 @@ extension InvisibleLocationViewController: CLLocationManagerDelegate {
               currentLocation.timestamp >= runManager.run.start_date.getDate() else { return }
         
         if let lastLocation {
-            runManager.totalDistance += currentLocation.distance(from: lastLocation)
-            print("location updated \(runManager.totalDistance)")
+            runManager.sessionDistance += currentLocation.distance(from: lastLocation)
+            print("location updated \(runManager.sessionDistance)")
         }
         
         self.lastLocation = currentLocation

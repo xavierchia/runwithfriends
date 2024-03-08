@@ -23,7 +23,9 @@ class RunningViewController: UIViewController {
     private let distanceValueLabel = UILabel().topBarTitle()
     private let distanceMetricLabel = UILabel().topBarSubtitle()
     private let timeValueLabel = UILabel().topBarTitle()
-        
+    private let circularProgressView = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 150, height: 150), lineWidth: 25, rounded: true)
+    private var emojiView = UIImageView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+
     private var touchCountTimer: Timer?
     private var countdownStarted = false
     private let endButton = UIButton(type: .custom)
@@ -83,10 +85,6 @@ class RunningViewController: UIViewController {
             default:
                 break
             }
-        }.store(in: &cancellables)
-        
-        runManager.$totalDistance.sink { [weak self] _ in
-            self?.updateLabels()
         }.store(in: &cancellables)
     }
     
@@ -184,14 +182,14 @@ class RunningViewController: UIViewController {
     
     
     private func setupProgressView() {
-        let circularProgressView = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 150, height: 150), lineWidth: 25, rounded: true)
+        let progressData = Progression.getProgressData(for: runManager.userData.getTotalDistance())
         circularProgressView.progressColor = .brightPumpkin
         circularProgressView.trackColor = .darkPumpkin
-        circularProgressView.progress = 0.5
+        circularProgressView.progress = progressData.progress
         circularProgressView.center = view.center
         view.addSubview(circularProgressView)
         
-        let emojiView = UIImageView(image: "🗼".image(pointSize: 80))
+        emojiView.image = progressData.nextLandmark.info.emoji.image(pointSize: 80)
         emojiView.center = view.center
         view.addSubview(emojiView)
     }
@@ -234,12 +232,12 @@ class RunningViewController: UIViewController {
             
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { [weak self] _ in
                 guard let self else { return }
-                let cancelledUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.totalDistance))
+                let cancelledUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.sessionDistance))
                 runManager.userData.userSessions.append(cancelledUserSession)
                 
                 Task {
-                    if self.runManager.totalDistance > 0 {
-                        await self.runManager.upsertRunSession(with: Int(self.runManager.totalDistance))
+                    if self.runManager.sessionDistance > 0 {
+                        await self.runManager.upsertRunSession(with: Int(self.runManager.sessionDistance))
                         await self.runManager.userData.syncUser()
                     } else {
                         await self.runManager.leaveRun()
@@ -275,11 +273,16 @@ extension RunningViewController {
     
     private func updateLabels() {
         // distance
-        distanceValueLabel.text = Int(self.runManager.totalDistance).value
-        distanceMetricLabel.text = Int(self.runManager.totalDistance).metric
+        distanceValueLabel.text = Int(self.runManager.sessionDistance).value
+        distanceMetricLabel.text = Int(self.runManager.sessionDistance).metric
         
         // time
         timeValueLabel.text = totalTime.positionalTime
+        
+        // progress bar
+        let progressData = Progression.getProgressData(for: runManager.getTotalDistance())
+        circularProgressView.progress = progressData.progress
+        emojiView.image = progressData.nextLandmark.info.emoji.image(pointSize: 80)
     }
     
     private func updateAudio() {
@@ -287,7 +290,7 @@ extension RunningViewController {
         case 60, 300, 600:
             guard !Speaker.shared.isSpeaking else { return }
             let minutes = Int(totalTime) / 60
-            let totalDistance = runManager.totalDistance
+            let totalDistance = runManager.sessionDistance
             let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(Int(totalDistance).value) \(Int(totalDistance).metric)")
             utterance.rate = 0.3
             Speaker.shared.speak(utterance)
@@ -304,7 +307,7 @@ extension RunningViewController {
         case 60, 300, 600:
             Task {
                 // Upsert during run interval
-                await runManager.upsertRunSession(with: Int(self.runManager.totalDistance))
+                await runManager.upsertRunSession(with: Int(self.runManager.sessionDistance))
             }
             
         default:

@@ -110,8 +110,8 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 0,
-              let progressData = Progression.getProgressData(for: distance) else { return nil }
+        guard section == 0 else { return nil }
+        let progressData = Progression.getProgressData(for: distance)
         
         let header = UIView()
         let tableWidth = view.frame.width - 32

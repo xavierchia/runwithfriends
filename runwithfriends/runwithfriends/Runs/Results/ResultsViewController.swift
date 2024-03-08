@@ -50,12 +50,12 @@ class ResultsViewController: UIViewController {
         self.view.addSubview(indicator)
         indicator.startAnimating()
         
-        let completedUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.totalDistance))
+        let completedUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.sessionDistance))
         runManager.userData.userSessions.append(completedUserSession)
         
         Task {
             // Upsert when run is complete
-            let totalDistance = self.runManager.totalDistance
+            let totalDistance = self.runManager.sessionDistance
             await runManager.upsertRunSession(with: Int(totalDistance))
             await runManager.userData.syncUser()
             
@@ -70,7 +70,7 @@ class ResultsViewController: UIViewController {
             }
 
             let user = runManager.userData.user
-            let ownRun = Runner(user_id: user.user_id, username: user.username, emoji: user.emoji, longitude: 0, latitude: 0, distance: Int(runManager.totalDistance))
+            let ownRun = Runner(user_id: user.user_id, username: user.username, emoji: user.emoji, longitude: 0, latitude: 0, distance: Int(runManager.sessionDistance))
             results = [ownRun]
             indicator.stopAnimating()
             resultsTableView.reloadData()
