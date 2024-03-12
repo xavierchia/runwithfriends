@@ -151,24 +151,24 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             header.addSubview(firstLabel)
             
             let secondLabel = UILabel().setHeaderButton()
-            secondLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 30)
+            secondLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 60)
             header.addSubview(secondLabel)
             
             if distance == 0 {
-                firstLabel.text = "Start running"
-                secondLabel.text = "to cross your first milestone."
+                firstLabel.text = "Each time you run it adds up."
+                secondLabel.text = "Start running to cross your first milestone."
                 return
             } else {
                 let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
-                let distanceLeftString = distance == 0 ? "Now put on your shoes and go do it!" :"Finish \(nextLandmark.info.name) in \(distanceLeftvalue)"
+                let distanceLeftString = "Finish \(nextLandmark.info.name) in \(distanceLeftvalue)"
                 let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([distanceLeftvalue], color: .pumpkin, boldWords: [distanceLeftString])
                 firstLabel.attributedText = distanceLeftAttributedString
             }
         }
     }
-    
+        
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return distance == 0 ? 135 : 105
+        return distance == 0 ? 165 : 105
     }
 }
 
@@ -177,6 +177,8 @@ private extension UILabel {
         self.textColor = .almostBlack
         self.font = UIFont.KefirLight(size: 20)
         self.textAlignment = .left
+        self.lineBreakMode = .byWordWrapping
+        self.numberOfLines = 0
         return self
     }
 }
