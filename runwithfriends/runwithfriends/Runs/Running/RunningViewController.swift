@@ -25,6 +25,7 @@ class RunningViewController: UIViewController {
     private let timeValueLabel = UILabel().topBarTitle()
     private let circularProgressView = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 150, height: 150), lineWidth: 25, rounded: true)
     private var emojiView = UIImageView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+    private let landmarkLabel = UILabel().topBarTitle()
 
     private var touchCountTimer: Timer?
     private var countdownStarted = false
@@ -192,6 +193,17 @@ class RunningViewController: UIViewController {
         emojiView.image = progressData.nextLandmark.info.emoji.image(pointSize: 80)
         emojiView.center = view.center
         view.addSubview(emojiView)
+        
+        landmarkLabel.text = progressData.nextLandmark.info.name
+        landmarkLabel.adjustsFontSizeToFitWidth = true
+        view.addSubview(landmarkLabel)
+        landmarkLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            landmarkLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
+            landmarkLabel.heightAnchor.constraint(equalToConstant: 100),
+            landmarkLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            landmarkLabel.topAnchor.constraint(equalTo: circularProgressView.bottomAnchor, constant: 5)
+        ])
     }
     
     // change this to a text rounded button just like the invite button
