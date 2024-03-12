@@ -260,7 +260,7 @@ class RunningViewController: UIViewController {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 self.touchCountTimer?.invalidate()
                 self.view.window?.rootViewController?.dismiss(animated: true)
-                self.view.window?.rootViewController?.showToast(message: "Run cancelled", heightFromBottom: 170)
+                self.view.window?.rootViewController?.showToast(message: "Run Stopped", heightFromBottom: 170)
             }
                         
             UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut) {
