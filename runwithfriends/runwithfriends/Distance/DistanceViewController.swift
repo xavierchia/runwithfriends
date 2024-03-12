@@ -160,7 +160,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
                 return
             } else {
                 let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
-                let distanceLeftString = distance == 0 ? "Now put on your shoes and go do it!" :"\(nextLandmark.info.name) in \(distanceLeftvalue)"
+                let distanceLeftString = distance == 0 ? "Now put on your shoes and go do it!" :"Finish \(nextLandmark.info.name) in \(distanceLeftvalue)"
                 let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([distanceLeftvalue], color: .pumpkin, boldWords: [distanceLeftString])
                 firstLabel.attributedText = distanceLeftAttributedString
             }
