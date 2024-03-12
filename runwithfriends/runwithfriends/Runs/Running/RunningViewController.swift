@@ -19,11 +19,12 @@ class RunningViewController: UIViewController {
     
     private let runManager: RunManager
     private var cancellables = Set<AnyCancellable>()
+    private var lastProgress: Float = 0
     
     private let distanceValueLabel = UILabel().topBarTitle()
     private let distanceMetricLabel = UILabel().topBarSubtitle()
     private let timeValueLabel = UILabel().topBarTitle()
-    private let circularProgressView = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 150, height: 150), lineWidth: 25, rounded: true)
+    private let circularProgressView = UICircularProgressView(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
     private var emojiView = UIImageView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
     private let landmarkLabel = UILabel().topBarTitle()
 
@@ -184,10 +185,14 @@ class RunningViewController: UIViewController {
     
     private func setupProgressView() {
         let progressData = Progression.getProgressData(for: runManager.userData.getTotalDistance())
-        circularProgressView.progressColor = .brightPumpkin
-        circularProgressView.trackColor = .darkPumpkin
-        circularProgressView.progress = progressData.progress
+
         circularProgressView.center = view.center
+        circularProgressView.backgroundCircleColor = .darkPumpkin
+        circularProgressView.fillColor = .cream
+        circularProgressView.updateInitialProgress(progress: progressData.progress)
+        circularProgressView.updateProgress(progress: progressData.progress)
+        lastProgress = progressData.progress
+        circularProgressView.lineWidth = 25
         view.addSubview(circularProgressView)
         
         emojiView.image = progressData.nextLandmark.info.emoji.image(pointSize: 80)
@@ -293,8 +298,13 @@ extension RunningViewController {
         
         // progress bar
         let progressData = Progression.getProgressData(for: runManager.getTotalDistance())
-        circularProgressView.progress = progressData.progress
+        circularProgressView.updateProgress(progress: progressData.progress)
         emojiView.image = progressData.nextLandmark.info.emoji.image(pointSize: 80)
+        
+        if lastProgress > progressData.progress {
+            circularProgressView.updateInitialProgress(progress: 0)
+        }
+        lastProgress = progressData.progress
     }
     
     private func updateAudio() {
