@@ -30,6 +30,7 @@ class RunManager {
     
     private let supabase = Supabase.shared.client.database
     private var timer = Timer()
+    private var isAudioCountdownStarted = false
     private var lastUpdateInterval: TimeInterval = 100_000
     private var soloRunCreated = false
     
@@ -128,6 +129,14 @@ class RunManager {
             runStage = .oneHourToRunStart(countdownTime)
         case 0...6:
             runStage = .fiveSecondsToRunStart(Int(intervalToStart))
+            
+            if isAudioCountdownStarted == false {
+                isAudioCountdownStarted = true
+                let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start...")
+                utterance.rate = 0.1
+                Speaker.shared.speak(utterance)
+            }
+
         case -runTime...0:
             
             if run.type == .solo && soloRunCreated == false {
@@ -142,8 +151,20 @@ class RunManager {
             // Before the run has started, we publish frequently every second to get the labels updated quickly.
             guard lastUpdateInterval != intervalToStart else { return }
             lastUpdateInterval = intervalToStart
-            
-            runStage = .runStart(-intervalToStart)
+            let secondsPassed = -intervalToStart
+            runStage = .runStart(secondsPassed)
+            switch secondsPassed {
+            case 60, 300, 600:
+                guard !Speaker.shared.isSpeaking else { return }
+                let minutes = Int(secondsPassed) / 60
+                let totalDistance = sessionDistance
+                let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(Int(totalDistance).value) \(Int(totalDistance).metric)")
+                utterance.rate = 0.3
+                Speaker.shared.speak(utterance)
+            default:
+                break
+            }
+
         case ...(-runTime):
             runStage = .runEnd
             let runCompleteString = run.type == .solo ? "Run complete." : "Run complete. Getting results."

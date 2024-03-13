@@ -29,7 +29,6 @@ class RunningViewController: UIViewController {
     private let landmarkLabel = UILabel().topBarTitle()
 
     private var touchCountTimer: Timer?
-    private var countdownStarted = false
     private let endButton = UIButton(type: .custom)
     
     init(with runManager: RunManager) {
@@ -52,16 +51,6 @@ class RunningViewController: UIViewController {
         respondToRunStage()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if countdownStarted == false {
-            countdownStarted = true
-            let utterance = AVSpeechUtterance(string: "Five... Four... Three... Two... One... Start...")
-            utterance.rate = 0.1
-            Speaker.shared.speak(utterance)
-        }
-    }
-    
     private func respondToRunStage() {
         runManager.$runStage.sink { [weak self] runStage in
             guard let self else { return }
@@ -79,7 +68,6 @@ class RunningViewController: UIViewController {
                 totalTime = seconds
                 
                 updateLabels()
-                updateAudio()
                 updateServer()
             case .runEnd:
                 resultsButtonPressed()
@@ -305,20 +293,6 @@ extension RunningViewController {
             circularProgressView.updateInitialProgress(progress: 0)
         }
         lastProgress = progressData.progress
-    }
-    
-    private func updateAudio() {
-        switch Int(totalTime) {
-        case 60, 300, 600:
-            guard !Speaker.shared.isSpeaking else { return }
-            let minutes = Int(totalTime) / 60
-            let totalDistance = runManager.sessionDistance
-            let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(Int(totalDistance).value) \(Int(totalDistance).metric)")
-            utterance.rate = 0.3
-            Speaker.shared.speak(utterance)
-        default:
-            break
-        }
     }
 }
 
