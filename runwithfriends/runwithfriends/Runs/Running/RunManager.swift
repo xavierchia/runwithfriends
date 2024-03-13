@@ -32,7 +32,10 @@ class RunManager {
     private var timer = Timer()
     private var isAudioCountdownStarted = false
     private var lastUpdateInterval: TimeInterval = 100_000
+    private var lastProgress: Float = 0
     private var soloRunCreated = false
+    
+    private let doNotUpsert = true
     
     init(with run: Run, and userData: UserData) {
         self.run = run
@@ -146,6 +149,10 @@ class RunManager {
                 }
             }
             
+            let progressData = Progression.getProgressData(for: getTotalDistance())
+            let currentLandmarkShortDescription = progressData.currentLandmark.info.shortDescription
+            let nextLandmarkShortDescription = progressData.nextLandmark.info.shortDescription
+            
             // We only publish on whole seconds once the run has started
             // so we don't overload the server with updates.
             // Before the run has started, we publish frequently every second to get the labels updated quickly.
@@ -154,8 +161,11 @@ class RunManager {
             let secondsPassed = -intervalToStart
             runStage = .runStart(secondsPassed)
             switch secondsPassed {
+            case 10:
+                let utterance = AVSpeechUtterance(string: "Your next milestone is \(nextLandmarkShortDescription)")
+                utterance.rate = 0.3
+                Speaker.shared.speak(utterance)
             case 60, 300, 600:
-                guard !Speaker.shared.isSpeaking else { return }
                 let minutes = Int(secondsPassed) / 60
                 let totalDistance = sessionDistance
                 let utterance = AVSpeechUtterance(string: "Time \(minutes) minutes, distance \(Int(totalDistance).value) \(Int(totalDistance).metric)")
@@ -164,6 +174,13 @@ class RunManager {
             default:
                 break
             }
+            
+            if progressData.progress < lastProgress {
+                let utterance = AVSpeechUtterance(string: "You have finished \(currentLandmarkShortDescription), your next milestone is \(nextLandmarkShortDescription)")
+                utterance.rate = 0.3
+                Speaker.shared.speak(utterance)
+            }
+            lastProgress = progressData.progress
 
         case ...(-runTime):
             runStage = .runEnd

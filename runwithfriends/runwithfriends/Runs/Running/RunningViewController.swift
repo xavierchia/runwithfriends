@@ -288,6 +288,7 @@ extension RunningViewController {
         let progressData = Progression.getProgressData(for: runManager.getTotalDistance())
         circularProgressView.updateProgress(progress: progressData.progress)
         emojiView.image = progressData.nextLandmark.info.emoji.image(pointSize: 80)
+        landmarkLabel.text = progressData.nextLandmark.info.name
         
         if lastProgress > progressData.progress {
             circularProgressView.updateInitialProgress(progress: 0)

@@ -13,24 +13,12 @@ struct Progression {
     struct ProgressData {
         let progress: Float
         let distanceLeft: Int
+        let currentLandmark: Milestone
         let nextLandmark: Milestone
     }
     
     static func getProgressData(for distance: Int) -> ProgressData {
-        var distanceTableRows = [Milestone]()
-        
-        for landmark in Landmark.allCases {
-            if landmark.info.distance <= distance {
-                distanceTableRows.append(landmark)
-            } else {
-                distanceTableRows.append(landmark)
-                break
-            }
-        }
-        
-        distanceTableRows.sort { lhs, rhs in
-            lhs.info.distance > rhs.info.distance
-        }
+        let distanceTableRows = getLandmarkTable(for: distance)
         
         let nextLandmark = distanceTableRows.first!
         let currentLandmark = distanceTableRows[safe: 1] ?? Pea.CasualPea
@@ -40,9 +28,29 @@ struct Progression {
         let distanceLeft = nextLandmark.info.distance - distance
         let progressPercentage = Float(differenceCovered) / Float(landmarkDifference)
         
-        return ProgressData(progress: progressPercentage, distanceLeft: distanceLeft, nextLandmark: nextLandmark)
+        return ProgressData(progress: progressPercentage, distanceLeft: distanceLeft, currentLandmark: currentLandmark, nextLandmark: nextLandmark)
     }
     
+    static private func getLandmarkTable(for distance: Int) -> [Milestone] {
+        var landmarkTable = [Milestone]()
+        
+        for landmark in Landmark.allCases {
+            if landmark.info.distance <= distance {
+                landmarkTable.append(landmark)
+            } else {
+                landmarkTable.append(landmark)
+                break
+            }
+        }
+        
+        landmarkTable.sort { lhs, rhs in
+            lhs.info.distance > rhs.info.distance
+        }
+        
+        return landmarkTable
+    }
+    
+    // Includes Peas and Milestones
     static func getDistanceTableRows(for distance: Int) -> [Milestone] {
         var distanceTableRows = [Milestone]()
         
@@ -81,19 +89,19 @@ struct Progression {
 }
 
 protocol Milestone {
-    var info: (distance: Int, name: String, emoji: String) { get }
+    var info: (distance: Int, name: String, emoji: String, shortDescription: String) { get }
 }
 
 enum Pea: CaseIterable, Milestone {
     case CasualPea
     case ProgressivePea
     
-    var info: (distance: Int, name: String, emoji: String) {
+    var info: (distance: Int, name: String, emoji: String, shortDescription: String) {
         switch self {
         case .CasualPea:
-            return (0, "Casual Pea", "🫛")
+            return (0, "Casual Pea", "🫛", "")
         case .ProgressivePea:
-            return (5000, "Progressive Pea", "🫛")
+            return (5000, "Progressive Pea", "🫛", "")
         }
     }
 }
@@ -109,26 +117,26 @@ enum Landmark: CaseIterable, Milestone {
     case Manhattan
     case CERN
     
-    var info: (distance: Int, name: String, emoji: String) {
+    var info: (distance: Int, name: String, emoji: String, shortDescription: String) {
         switch self {
         case .EiffelTower:
-            return (330, "Eiffel Tower", "🗼")
+            return (330, "Eiffel Tower", "🗼", "the Eiffel Tower in Paris")
         case .BrooklynBridge:
-            return (1834, "Brooklyn Bridge", "🛤️")
+            return (1834, "Brooklyn Bridge", "🛤️", "the Brooklyn Bridge in New York City")
         case .GoldenGateBridge:
-            return (2737, "Golden Gate Bridge", "🌉")
+            return (2737, "Golden Gate Bridge", "🌉", "the Golden Gate Bridge in San Francisco")
         case .MountFuji:
-            return (3776, "Mount Fuji", "🗻")
+            return (3776, "Mount Fuji", "🗻", "Mount Fuji in Japan")
         case .HydePark:
-            return (7080, "Hyde Park", "🦢")
+            return (7080, "Hyde Park", "🦢", "around Hyde Park in London")
         case .CentralPark:
-            return (9817, "Central Park", "🥯")
+            return (9817, "Central Park", "🥯", "Central Park in New York City")
         case .LakeGarda:
-            return (16700, "Lake Garda", "⛵️")
+            return (16700, "Lake Garda", "⛵️", "Lake Garda in Italy")
         case .Manhattan:
-            return (21100, "Manhattan", "🍕")
+            return (21100, "Manhattan", "🍕", "Manhattan in New York City")
         case .CERN:
-            return (27000, "CERN", "🧀")
+            return (27000, "CERN", "🧀", "CERN in Switzerland")
         }
     }
 }
