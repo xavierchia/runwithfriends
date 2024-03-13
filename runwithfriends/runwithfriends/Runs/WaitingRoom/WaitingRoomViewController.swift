@@ -207,12 +207,3 @@ extension WaitingRoomViewController: BottomRowProtocol {
         print("invite friends")
     }
 }
-
-// MARK: Helpers
-extension CLLocationCoordinate2D {
-    func obscured() -> CLLocationCoordinate2D {
-        let latitude = self.latitude + Double.random(in: -0.05...0.05)
-        let longitude = self.longitude + Double.random(in: -0.05...0.05)
-        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-    }
-}

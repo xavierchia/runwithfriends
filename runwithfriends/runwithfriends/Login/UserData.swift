@@ -67,6 +67,7 @@ class UserData {
                     .update(["longitude": obscuredCoordinate.longitude, "latitude": obscuredCoordinate.latitude])
                     .eq("user_id", value: user.user_id)
                     .execute()
+                print("updated user coordinate")
             } catch {
                 print("failed to updated user location \(error)")
             }

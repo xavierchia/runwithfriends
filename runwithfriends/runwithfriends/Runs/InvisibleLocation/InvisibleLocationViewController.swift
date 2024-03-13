@@ -39,6 +39,7 @@ class InvisibleLocationViewController: UIViewController {
     // Location
     private let locationManager = CLLocationManager()
     private var lastLocation: CLLocation?
+    private var updatedUserLocation = false
     
     private var cancellables = Set<AnyCancellable>()
 
@@ -123,6 +124,11 @@ extension InvisibleLocationViewController: CLLocationManagerDelegate {
         }
         
         self.lastLocation = currentLocation
+        
+        if updatedUserLocation == false {
+            let obscuredCoordinate = currentLocation.coordinate.obscured()
+            runManager.userData.updateUserCoordinate(obscuredCoordinate: obscuredCoordinate)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

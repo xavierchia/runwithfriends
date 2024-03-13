@@ -33,14 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         
         UINavigationBar.appearance().tintColor = .accent
-        
-        // MARK: Tab bar appearance
-        let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = .cream
-        UITabBar.appearance().tintColor = .darkerGray
-        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-        UITabBar.appearance().standardAppearance = tabBarAppearance
     }
     
     private func setupAudio() {
