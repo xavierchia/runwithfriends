@@ -78,7 +78,7 @@ class CommunityViewController: UIViewController {
                 mapView.setRegion(region, animated: true)
                 let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: focusRunner.emoji))
                 newPin.coordinate = focusRunnerCoordinate
-                newPin.title = "\(focusRunner.username)- \(focusRunner.distance.valueShort)"
+                newPin.title = "\(focusRunner.username) \(focusRunner.distance.valueKM)"
                 mapView.addAnnotation(newPin)
                 
                 for otherRunner in runners {
@@ -88,7 +88,7 @@ class CommunityViewController: UIViewController {
                         latitude: otherRunner.latitude,
                         longitude: otherRunner.longitude
                     )
-                    runnerPin.title = "\(otherRunner.username)- \(otherRunner.distance.valueShort)"
+                    runnerPin.title = "\(otherRunner.username) \(otherRunner.distance.valueKM)"
                     mapView.addAnnotation(runnerPin)
                 }
 

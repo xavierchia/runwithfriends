@@ -37,6 +37,7 @@ class TabViewController: UITabBarController {
         let communityVC = CommunityViewController(userData: userData)
         communityVC.tabBarItem.title = "Community"
         communityVC.tabBarItem.image = UIImage(systemName: "globe.europe.africa")
+        communityVC.tabBarItem.selectedImage = UIImage(systemName: "globe.europe.africa.fill")
         
         let runsVC = RunsViewController(with: userData)
         let runsNav = UINavigationController(rootViewController: runsVC)
@@ -47,6 +48,7 @@ class TabViewController: UITabBarController {
         let distanceNav = UINavigationController(rootViewController: distanceVC)
         distanceNav.tabBarItem.title = "Milestones"
         distanceNav.tabBarItem.image = UIImage(systemName: "mountain.2")
+        distanceNav.tabBarItem.selectedImage = UIImage(systemName: "mountain.2.fill")
         
         let profileVC = ProfileViewController(with: userData)
         let profileNav = UINavigationController(rootViewController: profileVC)
