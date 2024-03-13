@@ -301,6 +301,7 @@ extension RunningViewController {
     func updateServer() {
         switch totalTime {
         case 60, 300, 600:
+            guard runManager.sessionDistance > 0 else { return }
             Task {
                 // Upsert during run interval
                 await runManager.upsertRunSession(with: Int(self.runManager.sessionDistance))

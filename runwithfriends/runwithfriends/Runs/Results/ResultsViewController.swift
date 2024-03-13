@@ -37,8 +37,11 @@ class ResultsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .cream
+        
+        let completedUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.sessionDistance))
+        runManager.userData.userSessions.append(completedUserSession)
                 
+        view.backgroundColor = .cream
         setupNavigationController()
         setupTableView()
         
@@ -50,14 +53,12 @@ class ResultsViewController: UIViewController {
         self.view.addSubview(indicator)
         indicator.startAnimating()
         
-        let completedUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.sessionDistance))
-        runManager.userData.userSessions.append(completedUserSession)
-        
         Task {
             // Upsert when run is complete
             let totalDistance = self.runManager.sessionDistance
-            await runManager.upsertRunSession(with: Int(totalDistance))
-            await runManager.userData.syncUser()
+            if totalDistance > 0 {
+                await runManager.upsertRunSession(with: Int(totalDistance))
+            }
             
             if runManager.run.type != .solo {
                 // Wait 5 seconds for everyone to post their runs
@@ -79,7 +80,8 @@ class ResultsViewController: UIViewController {
     
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.title = "Run complete"
+        let numberOfRuns = runManager.userData.userSessions.count
+        self.navigationItem.title = numberOfRuns == 1 ? "Run Complete" : "\(numberOfRuns) runs complete"
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
