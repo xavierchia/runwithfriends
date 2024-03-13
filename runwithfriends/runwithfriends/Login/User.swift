@@ -18,8 +18,8 @@ struct User: Codable {
     let username: String
     let emoji: String
     let search_id: Int
-    let longitude: Double?
-    let latitude: Double?
+    let longitude: Double
+    let latitude: Double
 }
 
 struct UserSession: Codable {

@@ -20,6 +20,22 @@ extension Int {
 }
 
 extension Date {
+    static func startOfWeekEpochTime() -> TimeInterval {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        let now = Date()
+
+        // Get the start of the week for the current date
+        if let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)) {
+            // Convert the start of the week to epoch time
+            let startOfWeekEpochTime = startOfWeek.timeIntervalSince1970
+            return startOfWeekEpochTime
+        }
+
+        // Return 0 if something goes wrong
+        return 0
+    }
+    
     func getDisplayTime(padZero: Bool = true) -> DisplayTime? {
         let dateFormatter = DateFormatter()
         if padZero {

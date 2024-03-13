@@ -11,7 +11,7 @@ struct Runner: Codable {
     let user_id: UUID
     let username: String
     let emoji: String
-    let longitude: Double?
-    let latitude: Double?
+    let longitude: Double
+    let latitude: Double
     let distance: Int
 }

@@ -34,7 +34,7 @@ class TabViewController: UITabBarController {
     private func setupTabs() {
         UITabBar.appearance().unselectedItemTintColor = .gray
 
-        let communityVC = CommunityViewController()
+        let communityVC = CommunityViewController(userData: userData)
         communityVC.tabBarItem.title = "Community"
         communityVC.tabBarItem.image = UIImage(systemName: "globe.europe.africa")
         

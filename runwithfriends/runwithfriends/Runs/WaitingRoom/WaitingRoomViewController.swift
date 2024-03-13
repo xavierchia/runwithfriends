@@ -126,12 +126,10 @@ class WaitingRoomViewController: UIViewController {
             
             for runner in runManager.run.runners {
                 let runnerPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: runner.emoji))
-                guard let runnerLatitude = runner.latitude,
-                      let runnerLongitude = runner.longitude else { continue }
                 
                 runnerPin.coordinate = CLLocationCoordinate2D(
-                    latitude: runnerLatitude,
-                    longitude: runnerLongitude
+                    latitude: runner.latitude,
+                    longitude: runner.longitude
                 )
                 runnerPin.title = runner.username
                 mapView.addAnnotation(runnerPin)

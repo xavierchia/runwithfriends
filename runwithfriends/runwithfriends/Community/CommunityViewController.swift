@@ -12,23 +12,16 @@ import CoreLocation
 class CommunityViewController: UIViewController {
     // database
     private let supabase = Supabase.shared.client.database
+    private let userData: UserData
     
     // Waiting room pins
     private var pinsSet = false
-    
-    // init data
-//    private let runManager: RunManager
-//    private let userLocation: CLLocationCoordinate2D
-    
+
     // UI
     private let mapView = MKMapView()
-//    private let bottomRow: BottomRow
         
-    init() {
-//        self.bottomRow = BottomRow(with: runManager.run)
-//        self.runManager = runManager
-//        self.userLocation = location
-        
+    init(userData: UserData) {
+        self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,34 +29,16 @@ class CommunityViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        print("deinit waiting room vc")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
-//        locationUpdated(with: self.userLocation)
+        updateLocation()
     }
     
     // MARK: Setup UI
     private func setupUI() {
-        setupBottomRow()
         setupMapView()
         setupWaitingRoomTitle()
-    }
-    
-    private func setupBottomRow() {
-//        bottomRow.delegate = self
-//        view.addSubview(bottomRow)
-//        
-//        NSLayoutConstraint.activate([
-//            bottomRow.heightAnchor.constraint(equalToConstant: 80),
-//            bottomRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            bottomRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            bottomRow.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-//        ])
     }
     
     // MARK: Setup location manager
@@ -83,37 +58,43 @@ class CommunityViewController: UIViewController {
         mapView.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
     }
     
-    private func locationUpdated(with coordinate: CLLocationCoordinate2D) {
-//        let obscuredCoordinate = coordinate.obscured()
-//        setPins(with: obscuredCoordinate)
-//        runManager.userData.updateUserCoordinate(obscuredCoordinate: obscuredCoordinate)
-//        
-//        func setPins(with obscuredCoordinate: CLLocationCoordinate2D) {
-//            pinsSet = true
-//            
-//            // Handle location update
-//            // Bigger span zooms out more
-//            let span = MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40)
-//            let region = MKCoordinateRegion(center: obscuredCoordinate, span: span)
-//            mapView.setRegion(region, animated: true)
-//            let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: runManager.userData.user.emoji))
-//            newPin.coordinate = obscuredCoordinate
-//            newPin.title = runManager.userData.user.username
-//            mapView.addAnnotation(newPin)
-//            
-//            for runner in runManager.run.runners {
-//                let runnerPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: runner.emoji))
-//                guard let runnerLatitude = runner.latitude,
-//                      let runnerLongitude = runner.longitude else { continue }
-//                
-//                runnerPin.coordinate = CLLocationCoordinate2D(
-//                    latitude: runnerLatitude,
-//                    longitude: runnerLongitude
-//                )
-//                runnerPin.title = runner.username
-//                mapView.addAnnotation(runnerPin)
-//            }
-//        }
+    private func updateLocation() {
+        let startOfWeek = Date.startOfWeekEpochTime()
+        Task {
+            do {
+                let runners: [Runner] = try await supabase
+                    .rpc("get_runners_after_date", params: ["input_time": Int(startOfWeek)])
+                    .select()
+                    .execute()
+                    .value
+                guard let firstRunner = runners.first else { return }
+                let focusRunner = runners.first { runner in
+                    runner.user_id == userData.user.user_id
+                } ?? firstRunner
+                let focusRunnerCoordinate = CLLocationCoordinate2D(latitude: focusRunner.latitude, longitude: focusRunner.longitude)
+                let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                let region = MKCoordinateRegion(center: focusRunnerCoordinate, span: span)
+                mapView.setRegion(region, animated: true)
+                let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: focusRunner.emoji))
+                newPin.coordinate = focusRunnerCoordinate
+                newPin.title = "\(focusRunner.username)- \(focusRunner.distance.valueShort)"
+                mapView.addAnnotation(newPin)
+                
+                for otherRunner in runners {
+                    guard otherRunner.user_id != focusRunner.user_id else { continue }
+                    let runnerPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: otherRunner.emoji))
+                    runnerPin.coordinate = CLLocationCoordinate2D(
+                        latitude: otherRunner.latitude,
+                        longitude: otherRunner.longitude
+                    )
+                    runnerPin.title = "\(otherRunner.username)- \(otherRunner.distance.valueShort)"
+                    mapView.addAnnotation(runnerPin)
+                }
+
+            } catch {
+                print("cannot get runners for community tab \(error)")
+            }
+        }
     }
     
     private func setupWaitingRoomTitle() {
@@ -131,11 +112,5 @@ class CommunityViewController: UIViewController {
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
-    }
-}
-
-extension CommunityViewController: BottomRowProtocol {
-    func inviteButtonPressed() {
-        print("invite friends")
     }
 }
