@@ -237,13 +237,14 @@ class RunningViewController: UIViewController {
             
             touchCountTimer = Timer.scheduledTimer(withTimeInterval: 0.9, repeats: false) { [weak self] _ in
                 guard let self else { return }
-                let cancelledUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.sessionDistance))
-                runManager.userData.userSessions.append(cancelledUserSession)
+                let utterance = AVSpeechUtterance(string: "Run Stopped")
+                utterance.rate = 0.3
+                Speaker.shared.speak(utterance)
                 
+                runManager.updateLocalSession()
                 Task {
                     if self.runManager.sessionDistance > 0 {
                         await self.runManager.upsertRunSession(with: Int(self.runManager.sessionDistance))
-                        await self.runManager.userData.syncUser()
                     } else {
                         await self.runManager.leaveRun()
                     }

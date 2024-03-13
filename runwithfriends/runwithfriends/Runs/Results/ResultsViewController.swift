@@ -37,9 +37,7 @@ class ResultsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let completedUserSession = UserSession(run_id: runManager.run.run_id, start_date: runManager.run.start_date, end_date: runManager.run.end_date, distance: Int(runManager.sessionDistance))
-        runManager.userData.userSessions.append(completedUserSession)
+        runManager.updateLocalSession()
                 
         view.backgroundColor = .cream
         setupNavigationController()

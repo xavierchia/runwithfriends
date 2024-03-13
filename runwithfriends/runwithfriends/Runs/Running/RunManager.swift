@@ -68,6 +68,11 @@ class RunManager {
         #endif
     }
     
+    public func updateLocalSession() {
+        let cancelledUserSession = UserSession(run_id: run.run_id, start_date: run.start_date, end_date: run.end_date, distance: Int(sessionDistance))
+        userData.userSessions.append(cancelledUserSession)
+    }
+    
     public func syncRun() async {
         do {
             let runs: [Run] = try await supabase
