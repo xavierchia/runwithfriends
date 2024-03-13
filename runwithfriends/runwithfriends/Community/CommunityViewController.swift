@@ -43,8 +43,9 @@ class CommunityViewController: UIViewController {
     
     // MARK: Setup location manager
     private func setupMapView() {
-        mapView.mapType = .hybridFlyover
+        mapView.mapType = .satellite
         view.addSubview(mapView)
+        mapView.delegate = self
 //        view.insertSubview(mapView, belowSubview: bottomRow)
         mapView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -112,5 +113,15 @@ class CommunityViewController: UIViewController {
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+    }
+}
+
+extension CommunityViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        if mapView.region.span.longitudeDelta > 1 && mapView.region.span.latitudeDelta > 1 {
+            mapView.mapType = .hybridFlyover
+        } else {
+            mapView.mapType = .satelliteFlyover
+        }
     }
 }
