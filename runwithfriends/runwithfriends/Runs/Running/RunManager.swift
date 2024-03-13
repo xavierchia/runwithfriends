@@ -34,9 +34,7 @@ class RunManager {
     private var lastUpdateInterval: TimeInterval = 100_000
     private var lastProgress: Float = 0
     private var soloRunCreated = false
-    
-    private let doNotUpsert = true
-    
+        
     init(with run: Run, and userData: UserData) {
         self.run = run
         self.userData = userData
@@ -55,6 +53,9 @@ class RunManager {
     }
     
     public static func createRun(with run: Run_Raw) async {
+        #if DEBUG
+        return
+        #else
         do {
             try await Supabase.shared.client.database
                 .from("runs")
@@ -64,6 +65,7 @@ class RunManager {
         } catch {
             print("Unable to create run \(error)")
         }
+        #endif
     }
     
     public func syncRun() async {
@@ -83,6 +85,9 @@ class RunManager {
     }
     
     public func upsertRunSession(with distance: Int = 0) async {
+        #if DEBUG
+        return
+        #else
         do {
             let session = RunSession(run_id: run.run_id, user_id: userData.user.user_id, distance: distance)
             try await supabase
@@ -93,6 +98,7 @@ class RunManager {
         } catch {
             print("Unable to upsert run session \(error)")
         }
+        #endif
     }
     
     public func leaveRun() async {
