@@ -144,8 +144,25 @@ class RunsViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "15 minute runs"
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
+//        var config = UIImage.SymbolConfiguration(weight: .bold)
+//        let largeConfig = UIImage.SymbolConfiguration(scale: .large)
+//        config = config.applying(largeConfig)
+//        let settingsButton = UIImage(systemName: "gearshape", withConfiguration: config)
+//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: settingsButton, style: .plain, target: self, action: #selector(settingsTapped))
+//        
+//        self.navigationController?.navigationBar.shadowImage = UIImage()
+//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+
+    }
+    
+    @objc private func settingsTapped() {
+        let settingsVC = SettingsTableViewController()
+        if let sheet = settingsVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.prefersGrabberVisible = true
+        }
+        present(settingsVC, animated: true)
     }
     
     private func setupRunsTableView() {
@@ -295,7 +312,7 @@ extension RunsViewController: UIRunTableViewCellProtocol {
     }
     
     private func runsCellPressed(with indexPath: IndexPath) {
-        var run = runData[indexPath.row]
+        let run = runData[indexPath.row]
         
         guard run.start_date > Int(Date().timeIntervalSince1970) else {
             print("Joining a run that has already started")

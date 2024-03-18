@@ -19,6 +19,9 @@ class CommunityViewController: UIViewController {
 
     // UI
     private let mapView = MKMapView()
+    private let countryOne = UILabel()
+    private let countryTwo = UILabel()
+
         
     init(userData: UserData) {
         self.userData = userData
@@ -39,6 +42,7 @@ class CommunityViewController: UIViewController {
     private func setupUI() {
         setupMapView()
         setupWaitingRoomTitle()
+        setupCountryTitle()
     }
     
     // MARK: Setup location manager
@@ -73,6 +77,7 @@ class CommunityViewController: UIViewController {
                     runner.user_id == userData.user.user_id
                 } ?? firstRunner
                 let focusRunnerCoordinate = CLLocationCoordinate2D(latitude: focusRunner.latitude, longitude: focusRunner.longitude)
+                
                 let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
                 let region = MKCoordinateRegion(center: focusRunnerCoordinate, span: span)
                 mapView.setRegion(region, animated: true)
@@ -91,6 +96,25 @@ class CommunityViewController: UIViewController {
                     runnerPin.title = "\(otherRunner.username) \(otherRunner.distance.valueKM)"
                     mapView.addAnnotation(runnerPin)
                 }
+                
+                var countryDict = [String: Int]()
+                for eachRunner in runners {
+                    let location = CLLocationCoordinate2D(latitude: eachRunner.latitude, longitude: eachRunner.longitude)
+                    guard let placemark = await location.placemark(),
+                          let country = placemark.country else { return }
+                    countryDict[country, default: 0] += eachRunner.distance
+                }
+                
+                let countriesArray = countryDict.sorted{ $0.value > $1.value }
+                if let firstCountry = countriesArray.first {
+                    countryOne.text = "\(firstCountry.key): \(firstCountry.value.valueKM)"
+                }
+                
+                if let secondCountry = countriesArray[safe: 1] {
+                    countryTwo.text = "\(secondCountry.key): \(secondCountry.value.valueKM)"
+                }
+                print(countriesArray)
+                
 
             } catch {
                 print("cannot get runners for community tab \(error)")
@@ -114,6 +138,34 @@ class CommunityViewController: UIViewController {
             waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
+    
+    private func setupCountryTitle() {
+        countryOne.font = UIFont.Kefir(size: 18)
+        countryOne.textColor = .cream
+        countryOne.textAlignment = .left
+        countryOne.backgroundColor = .clear
+        view.addSubview(countryOne)
+        countryOne.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            countryOne.widthAnchor.constraint(equalToConstant: 250),
+            countryOne.heightAnchor.constraint(equalToConstant: 40),
+            countryOne.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            countryOne.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+        ])
+        
+        countryTwo.font = UIFont.Kefir(size: 18)
+        countryTwo.textColor = .cream
+        countryTwo.textAlignment = .left
+        countryTwo.backgroundColor = .clear
+        view.addSubview(countryTwo)
+        countryTwo.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            countryTwo.widthAnchor.constraint(equalToConstant: 250),
+            countryTwo.heightAnchor.constraint(equalToConstant: 40),
+            countryTwo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            countryTwo.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+        ])
+    }
 }
 
 extension CommunityViewController: MKMapViewDelegate {
@@ -122,6 +174,19 @@ extension CommunityViewController: MKMapViewDelegate {
             mapView.mapType = .hybridFlyover
         } else {
             mapView.mapType = .satelliteFlyover
+        }
+    }
+}
+
+private extension CLLocationCoordinate2D {
+    func placemark() async -> CLPlacemark? {
+        do {
+            let clLocation = CLLocation(latitude: self.latitude, longitude: self.longitude)
+            let placemark = try await CLGeocoder().reverseGeocodeLocation(clLocation).first
+            return placemark
+        } catch {
+            print("cannot get placemark")
+            return nil
         }
     }
 }

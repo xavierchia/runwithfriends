@@ -23,6 +23,7 @@
 		25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */; };
 		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
 		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
+		9511CB732BA52E8500148B6D /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511CB722BA52E8500148B6D /* SettingsTableViewController.swift */; };
 		9519A6C52B19593A000B952F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519A6C42B19593A000B952F /* Date.swift */; };
 		951D1A652B32675F00171C62 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A642B32675F00171C62 /* Auth */; };
 		951D1A672B32675F00171C62 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A662B32675F00171C62 /* Functions */; };
@@ -31,6 +32,8 @@
 		951D1A6D2B32675F00171C62 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A6C2B32675F00171C62 /* Storage */; };
 		951D1A6F2B32675F00171C62 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A6E2B32675F00171C62 /* Supabase */; };
 		951D1A712B326F1000171C62 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951D1A702B326F1000171C62 /* Supabase.swift */; };
+		951E3EC12BA540DE0059C675 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E3EC02BA540DE0059C675 /* UserDefaults.swift */; };
+		951E3EC32BA541F80059C675 /* RunSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E3EC22BA541F80059C675 /* RunSettings.swift */; };
 		951F42C62B1812F7004E2BEA /* RunManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F42C52B1812F7004E2BEA /* RunManager.swift */; };
 		952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B32AE1F74D0032B04B /* AppDelegate.swift */; };
 		952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B52AE1F74D0032B04B /* SceneDelegate.swift */; };
@@ -88,8 +91,11 @@
 		25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Bold.otf"; sourceTree = "<group>"; };
 		950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewController.swift; sourceTree = "<group>"; };
 		950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
+		9511CB722BA52E8500148B6D /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		9519A6C42B19593A000B952F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		951D1A702B326F1000171C62 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
+		951E3EC02BA540DE0059C675 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		951E3EC22BA541F80059C675 /* RunSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSettings.swift; sourceTree = "<group>"; };
 		951F42C52B1812F7004E2BEA /* RunManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunManager.swift; sourceTree = "<group>"; };
 		952825B02AE1F74D0032B04B /* runwithfriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runwithfriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		952825B32AE1F74D0032B04B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -242,6 +248,7 @@
 			children = (
 				952825B32AE1F74D0032B04B /* AppDelegate.swift */,
 				952825B52AE1F74D0032B04B /* SceneDelegate.swift */,
+				951E3EC02BA540DE0059C675 /* UserDefaults.swift */,
 				952825C12AE1F74E0032B04B /* LaunchScreen.storyboard */,
 			);
 			path = App;
@@ -264,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
-				257EC7A42B882FFE000759A8 /* Progression.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -285,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				955151232B91583A001AD26B /* DistanceViewController.swift */,
+				257EC7A42B882FFE000759A8 /* Progression.swift */,
 			);
 			path = Distance;
 			sourceTree = "<group>";
@@ -360,6 +367,8 @@
 			isa = PBXGroup;
 			children = (
 				95966EB52AF32B6C0086DABB /* RunsViewController.swift */,
+				9511CB722BA52E8500148B6D /* SettingsTableViewController.swift */,
+				951E3EC22BA541F80059C675 /* RunSettings.swift */,
 				954F4BB92AF723E800018E01 /* UISegmentStackView.swift */,
 				954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */,
 				954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */,
@@ -476,6 +485,7 @@
 				952CEECF2B9AFC760034BBF6 /* ProgressView.swift in Sources */,
 				95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */,
 				95698B722B058625009B78F3 /* RunningViewController.swift in Sources */,
+				951E3EC12BA540DE0059C675 /* UserDefaults.swift in Sources */,
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
 				25D47D5C2B97DF90003BAF64 /* Int.swift in Sources */,
@@ -488,7 +498,9 @@
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				955151242B91583A001AD26B /* DistanceViewController.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
+				9511CB732BA52E8500148B6D /* SettingsTableViewController.swift in Sources */,
 				25074FA52B7B0DB70061551D /* Speaker.swift in Sources */,
+				951E3EC32BA541F80059C675 /* RunSettings.swift in Sources */,
 				95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */,
 				95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
@@ -651,7 +663,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -688,7 +700,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
