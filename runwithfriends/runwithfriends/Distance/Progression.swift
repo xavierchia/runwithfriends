@@ -147,11 +147,11 @@ enum Landmark: CaseIterable, Milestone {
         case .NYCMarathon:
             return (42000, "New York City Marathon", "🗽", "the New York City Marathon")
         case .Badwater:
-            return (50000, "Badwater Capefear", "🗽", "Badwater Capefear in North Carolina")
+            return (50000, "Badwater Capefear", "🧨", "Badwater Capefear in North Carolina")
         case .CinqueTerre:
-            return (65000, "Cinque Terre", "🗽", "the Cinque Terra coast in Italy")
+            return (65000, "Cinque Terre", "🏖️", "the Cinque Terra coast in Italy")
         case .JavelinaJundred:
-            return (100000, "Javelina Jundred", "🗽", "Javelina Jundred in Arizona")
+            return (100000, "Javelina Jundred", "💯", "Javelina Jundred in Arizona")
         }
     }
 }
