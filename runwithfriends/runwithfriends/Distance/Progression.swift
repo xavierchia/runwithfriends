@@ -116,6 +116,11 @@ enum Landmark: CaseIterable, Milestone {
     case LakeGarda
     case Manhattan
     case CERN
+    case EnglishChannel
+    case NYCMarathon
+    case Badwater
+    case CinqueTerre
+    case JavelinaJundred
     
     var info: (distance: Int, name: String, emoji: String, shortDescription: String) {
         switch self {
@@ -137,6 +142,16 @@ enum Landmark: CaseIterable, Milestone {
             return (21100, "Manhattan", "🍕", "Manhattan in New York City")
         case .CERN:
             return (27000, "CERN", "🧀", "CERN in Switzerland")
+        case .EnglishChannel:
+            return (34000, "English Channel", "🫖", "the English Channel")
+        case .NYCMarathon:
+            return (42000, "New York City Marathon", "🗽", "the New York City Marathon")
+        case .Badwater:
+            return (50000, "Badwater Capefear", "🗽", "Badwater Capefear in North Carolina")
+        case .CinqueTerre:
+            return (65000, "Cinque Terre", "🗽", "the Cinque Terra coast in Italy")
+        case .JavelinaJundred:
+            return (100000, "Javelina Jundred", "🗽", "Javelina Jundred in Arizona")
         }
     }
 }
