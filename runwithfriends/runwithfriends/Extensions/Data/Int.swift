@@ -12,3 +12,11 @@ extension Int {
         String(format: "%02d", self)
     }
 }
+
+extension Int {
+    func withCommas() -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value:self))!
+    }
+}

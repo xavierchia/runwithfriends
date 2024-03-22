@@ -20,6 +20,25 @@ extension Int {
 }
 
 extension Date {
+    static func startOfWeek() -> Date {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        return calendar.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: Date()).date!
+    }
+    
+    static func startOfDay() -> Date {
+        var calendar = Calendar.current
+        return calendar.startOfDay(for: Date())
+    }
+    
+    static func YearAndWeek() -> String {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        let weekOfYear = calendar.component(.weekOfYear, from: Date())
+        let year = calendar.component(.yearForWeekOfYear, from: Date())
+        return "\(year)\(weekOfYear)"
+    }
+    
     static func startOfWeekEpochTime() -> TimeInterval {
         var calendar = Calendar.current
         calendar.firstWeekday = 2

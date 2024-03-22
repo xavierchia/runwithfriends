@@ -46,6 +46,7 @@
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
+		95969AB92BAD36F200E3858C /* BorderPathRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95969AB82BAD36F200E3858C /* BorderPathRenderer.swift */; };
 		95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A4D56C2B900D6100FF7D38 /* UIApplication.swift */; };
 		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
 		95AC658B2B0227860084FF15 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC658A2B0227860084FF15 /* UIView.swift */; };
@@ -94,6 +95,7 @@
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		95969AB82BAD36F200E3858C /* BorderPathRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderPathRenderer.swift; sourceTree = "<group>"; };
 		95A4D56C2B900D6100FF7D38 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EmojiAnnotation.swift; path = ../Runs/WaitingRoom/EmojiAnnotation.swift; sourceTree = "<group>"; };
 		95AC658A2B0227860084FF15 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				95DBAC502BA18186002037F1 /* CommunityViewController.swift */,
+				95969AB82BAD36F200E3858C /* BorderPathRenderer.swift */,
 				953D20982B7D847400A32185 /* Runner.swift */,
 				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
 				95B8E3382BAC6450003AB055 /* ParseGPX.swift */,
@@ -391,6 +394,7 @@
 				953D209D2B7D973500A32185 /* ViewController.swift in Sources */,
 				95DBAC512BA18186002037F1 /* CommunityViewController.swift in Sources */,
 				9557F76C2B350794002CAE30 /* AlertController.swift in Sources */,
+				95969AB92BAD36F200E3858C /* BorderPathRenderer.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				955151242B91583A001AD26B /* DistanceViewController.swift in Sources */,
 				95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */,
