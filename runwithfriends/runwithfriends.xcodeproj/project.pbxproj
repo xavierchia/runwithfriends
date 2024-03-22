@@ -556,7 +556,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RunFriends;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Run With Friends uses location to record your run";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Using your health data";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Share your health data";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "update health";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -593,7 +595,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RunFriends;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Run With Friends uses location to record your run";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Using your health data";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Share your health data";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "update health";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
