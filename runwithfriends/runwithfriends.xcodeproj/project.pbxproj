@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25074FA52B7B0DB70061551D /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25074FA42B7B0DB70061551D /* Speaker.swift */; };
 		257EC7A52B882FFE000759A8 /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257EC7A42B882FFE000759A8 /* Progression.swift */; };
 		258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 258508702B2BCEB8005FD81F /* SkeletonView */; };
 		25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A4309A2B74CB79000CE771 /* UIFont.swift */; };
@@ -21,9 +20,6 @@
 		25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */; };
 		25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */; };
 		25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */; };
-		950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */; };
-		950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */; };
-		9511CB732BA52E8500148B6D /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511CB722BA52E8500148B6D /* SettingsTableViewController.swift */; };
 		9519A6C52B19593A000B952F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519A6C42B19593A000B952F /* Date.swift */; };
 		951D1A652B32675F00171C62 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A642B32675F00171C62 /* Auth */; };
 		951D1A672B32675F00171C62 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A662B32675F00171C62 /* Functions */; };
@@ -33,8 +29,6 @@
 		951D1A6F2B32675F00171C62 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A6E2B32675F00171C62 /* Supabase */; };
 		951D1A712B326F1000171C62 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951D1A702B326F1000171C62 /* Supabase.swift */; };
 		951E3EC12BA540DE0059C675 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E3EC02BA540DE0059C675 /* UserDefaults.swift */; };
-		951E3EC32BA541F80059C675 /* RunSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E3EC22BA541F80059C675 /* RunSettings.swift */; };
-		951F42C62B1812F7004E2BEA /* RunManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951F42C52B1812F7004E2BEA /* RunManager.swift */; };
 		952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B32AE1F74D0032B04B /* AppDelegate.swift */; };
 		952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B52AE1F74D0032B04B /* SceneDelegate.swift */; };
 		952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952825B72AE1F74D0032B04B /* LoginViewController.swift */; };
@@ -43,30 +37,20 @@
 		952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952825C12AE1F74E0032B04B /* LaunchScreen.storyboard */; };
 		952CEECF2B9AFC760034BBF6 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952CEECE2B9AFC760034BBF6 /* ProgressView.swift */; };
 		9536C16F2AF9ADA100263871 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9536C16E2AF9ADA100263871 /* UserData.swift */; };
-		953D20972B7D846000A32185 /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D20962B7D846000A32185 /* Run.swift */; };
 		953D20992B7D847400A32185 /* Runner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D20982B7D847400A32185 /* Runner.swift */; };
-		953D209B2B7D8C5300A32185 /* RunSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D209A2B7D8C5300A32185 /* RunSession.swift */; };
 		953D209D2B7D973500A32185 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D209C2B7D973500A32185 /* ViewController.swift */; };
 		95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95457DFB2AF8C31400E4414C /* ProfileViewController.swift */; };
-		954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BB92AF723E800018E01 /* UISegmentStackView.swift */; };
-		954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */; };
-		954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */; };
 		955151242B91583A001AD26B /* DistanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955151232B91583A001AD26B /* DistanceViewController.swift */; };
 		9557F76C2B350794002CAE30 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76B2B350794002CAE30 /* AlertController.swift */; };
 		9557F7702B35706D002CAE30 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76F2B35706D002CAE30 /* User.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
-		95698B722B058625009B78F3 /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95698B712B058625009B78F3 /* RunningViewController.swift */; };
-		957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A4EA12B1015D200C746A4 /* TableHeaderView.swift */; };
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
-		9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
-		95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB52AF32B6C0086DABB /* RunsViewController.swift */; };
-		95A4D56B2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */; };
 		95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A4D56C2B900D6100FF7D38 /* UIApplication.swift */; };
 		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
-		95AC65872B0224150084FF15 /* BottomRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95AC65862B0224150084FF15 /* BottomRow.xib */; };
-		95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65882B0226B30084FF15 /* BottomRow.swift */; };
 		95AC658B2B0227860084FF15 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC658A2B0227860084FF15 /* UIView.swift */; };
+		95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B8E3382BAC6450003AB055 /* ParseGPX.swift */; };
+		95B8E33B2BAC6465003AB055 /* NYCMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 95B8E33A2BAC6465003AB055 /* NYCMarathon.gpx */; };
 		95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BC85302B0ECA9E00DD81BB /* NavigationController.swift */; };
 		95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */; };
 		95DBAC512BA18186002037F1 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBAC502BA18186002037F1 /* CommunityViewController.swift */; };
@@ -76,7 +60,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		25074FA42B7B0DB70061551D /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		257EC7A42B882FFE000759A8 /* Progression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		25A4309A2B74CB79000CE771 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		25A5B0DB2B7C9741004DB775 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
@@ -89,14 +72,9 @@
 		25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Black.otf"; sourceTree = "<group>"; };
 		25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Regular.otf"; sourceTree = "<group>"; };
 		25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Bold.otf"; sourceTree = "<group>"; };
-		950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewController.swift; sourceTree = "<group>"; };
-		950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
-		9511CB722BA52E8500148B6D /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		9519A6C42B19593A000B952F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		951D1A702B326F1000171C62 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		951E3EC02BA540DE0059C675 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
-		951E3EC22BA541F80059C675 /* RunSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSettings.swift; sourceTree = "<group>"; };
-		951F42C52B1812F7004E2BEA /* RunManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunManager.swift; sourceTree = "<group>"; };
 		952825B02AE1F74D0032B04B /* runwithfriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runwithfriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		952825B32AE1F74D0032B04B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		952825B52AE1F74D0032B04B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,30 +85,20 @@
 		952825C42AE1F74E0032B04B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		952CEECE2B9AFC760034BBF6 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		9536C16E2AF9ADA100263871 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
-		953D20962B7D846000A32185 /* Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		953D20982B7D847400A32185 /* Runner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runner.swift; sourceTree = "<group>"; };
-		953D209A2B7D8C5300A32185 /* RunSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSession.swift; sourceTree = "<group>"; };
 		953D209C2B7D973500A32185 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		95457DFB2AF8C31400E4414C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		954F4BB92AF723E800018E01 /* UISegmentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentStackView.swift; sourceTree = "<group>"; };
-		954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRunTableViewCell.swift; sourceTree = "<group>"; };
-		954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UIRunTableViewCell.xib; sourceTree = "<group>"; };
 		955151232B91583A001AD26B /* DistanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceViewController.swift; sourceTree = "<group>"; };
 		9557F76B2B350794002CAE30 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		9557F76F2B35706D002CAE30 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
-		95698B712B058625009B78F3 /* RunningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
-		957A4EA12B1015D200C746A4 /* TableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeaderView.swift; sourceTree = "<group>"; };
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
-		9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
-		95966EB52AF32B6C0086DABB /* RunsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunsViewController.swift; sourceTree = "<group>"; };
-		95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvisibleLocationViewController.swift; sourceTree = "<group>"; };
 		95A4D56C2B900D6100FF7D38 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
-		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAnnotation.swift; sourceTree = "<group>"; };
-		95AC65862B0224150084FF15 /* BottomRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomRow.xib; sourceTree = "<group>"; };
-		95AC65882B0226B30084FF15 /* BottomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRow.swift; sourceTree = "<group>"; };
+		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EmojiAnnotation.swift; path = ../Runs/WaitingRoom/EmojiAnnotation.swift; sourceTree = "<group>"; };
 		95AC658A2B0227860084FF15 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		95B8E3382BAC6450003AB055 /* ParseGPX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseGPX.swift; sourceTree = "<group>"; };
+		95B8E33A2BAC6465003AB055 /* NYCMarathon.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = NYCMarathon.gpx; path = ../../../../../NYCMarathon.gpx; sourceTree = "<group>"; };
 		95BC85302B0ECA9E00DD81BB /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prefixes.swift; sourceTree = "<group>"; };
 		95DBAC502BA18186002037F1 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
@@ -232,7 +200,6 @@
 				9536C1702AF9AED800263871 /* App */,
 				9536C1712AF9AEE700263871 /* Login */,
 				95DBAC4F2BA18175002037F1 /* Community */,
-				954F4BB82AF723CB00018E01 /* Runs */,
 				955151222B915811001AD26B /* Distance */,
 				95457DFA2AF8C2F300E4414C /* Profile */,
 				95659B8C2AEF1F9B008D7BA8 /* Extensions */,
@@ -275,18 +242,6 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		954F4BB82AF723CB00018E01 /* Runs */ = {
-			isa = PBXGroup;
-			children = (
-				95F6970B2AFF66D600B10EB2 /* Main */,
-				95A4D5672B8FFE0900FF7D38 /* InvisibleLocation */,
-				95AC65832B021CD60084FF15 /* WaitingRoom */,
-				95698B702B0585E9009B78F3 /* Running */,
-				9590E91A2B0D721800B2A2A4 /* Results */,
-			);
-			path = Runs;
-			sourceTree = "<group>";
-		};
 		955151222B915811001AD26B /* Distance */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,52 +260,13 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		95698B702B0585E9009B78F3 /* Running */ = {
-			isa = PBXGroup;
-			children = (
-				95698B712B058625009B78F3 /* RunningViewController.swift */,
-				951F42C52B1812F7004E2BEA /* RunManager.swift */,
-				953D209A2B7D8C5300A32185 /* RunSession.swift */,
-			);
-			path = Running;
-			sourceTree = "<group>";
-		};
-		9590E91A2B0D721800B2A2A4 /* Results */ = {
-			isa = PBXGroup;
-			children = (
-				9590E91B2B0D723B00B2A2A4 /* ResultsViewController.swift */,
-				957A4EA12B1015D200C746A4 /* TableHeaderView.swift */,
-				950D1B9D2B1403B9009A2C5B /* ResultsTableViewCell.swift */,
-				25074FA42B7B0DB70061551D /* Speaker.swift */,
-			);
-			path = Results;
-			sourceTree = "<group>";
-		};
-		95A4D5672B8FFE0900FF7D38 /* InvisibleLocation */ = {
-			isa = PBXGroup;
-			children = (
-				95A4D56A2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift */,
-			);
-			path = InvisibleLocation;
-			sourceTree = "<group>";
-		};
-		95AC65832B021CD60084FF15 /* WaitingRoom */ = {
-			isa = PBXGroup;
-			children = (
-				950BBB7D2AFDC4E4009C53F8 /* WaitingRoomViewController.swift */,
-				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
-				95AC65882B0226B30084FF15 /* BottomRow.swift */,
-				95AC65862B0224150084FF15 /* BottomRow.xib */,
-			);
-			path = WaitingRoom;
-			sourceTree = "<group>";
-		};
 		95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */ = {
 			isa = PBXGroup;
 			children = (
 				25FC3C9F2B82D60000D90ED2 /* Fonts */,
 				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
 				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
+				95B8E33A2BAC6465003AB055 /* NYCMarathon.gpx */,
 			);
 			path = AssetsCoreData;
 			sourceTree = "<group>";
@@ -359,23 +275,11 @@
 			isa = PBXGroup;
 			children = (
 				95DBAC502BA18186002037F1 /* CommunityViewController.swift */,
+				953D20982B7D847400A32185 /* Runner.swift */,
+				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
+				95B8E3382BAC6450003AB055 /* ParseGPX.swift */,
 			);
 			path = Community;
-			sourceTree = "<group>";
-		};
-		95F6970B2AFF66D600B10EB2 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				95966EB52AF32B6C0086DABB /* RunsViewController.swift */,
-				9511CB722BA52E8500148B6D /* SettingsTableViewController.swift */,
-				951E3EC22BA541F80059C675 /* RunSettings.swift */,
-				954F4BB92AF723E800018E01 /* UISegmentStackView.swift */,
-				954F4BC12AF765D600018E01 /* UIRunTableViewCell.swift */,
-				954F4BC22AF765D600018E01 /* UIRunTableViewCell.xib */,
-				953D20962B7D846000A32185 /* Run.swift */,
-				953D20982B7D847400A32185 /* Runner.swift */,
-			);
-			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,14 +356,13 @@
 				952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */,
 				95F85B4F2B71AAEC005A705A /* README.md in Resources */,
 				25FC3CAA2B82D61200D90ED2 /* Kefir-Medium.otf in Resources */,
-				954F4BC42AF765D600018E01 /* UIRunTableViewCell.xib in Resources */,
 				25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */,
+				95B8E33B2BAC6465003AB055 /* NYCMarathon.gpx in Resources */,
 				25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */,
 				25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */,
 				25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */,
 				952825C02AE1F74E0032B04B /* Assets.xcassets in Resources */,
 				25FC3CA82B82D61200D90ED2 /* Kefir-Light.otf in Resources */,
-				95AC65872B0224150084FF15 /* BottomRow.xib in Resources */,
 				25FC3CA92B82D61200D90ED2 /* Kefir-DemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -474,22 +377,15 @@
 				952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */,
 				951D1A712B326F1000171C62 /* Supabase.swift in Sources */,
 				95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */,
-				95A4D56B2B8FFE3F00FF7D38 /* InvisibleLocationViewController.swift in Sources */,
-				951F42C62B1812F7004E2BEA /* RunManager.swift in Sources */,
 				9557F7702B35706D002CAE30 /* User.swift in Sources */,
-				950D1B9E2B1403B9009A2C5B /* ResultsTableViewCell.swift in Sources */,
 				95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */,
 				95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */,
-				950BBB7E2AFDC4E4009C53F8 /* WaitingRoomViewController.swift in Sources */,
 				95966EB42AF329450086DABB /* TabViewController.swift in Sources */,
 				952CEECF2B9AFC760034BBF6 /* ProgressView.swift in Sources */,
-				95966EB62AF32B6C0086DABB /* RunsViewController.swift in Sources */,
-				95698B722B058625009B78F3 /* RunningViewController.swift in Sources */,
 				951E3EC12BA540DE0059C675 /* UserDefaults.swift in Sources */,
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
 				25D47D5C2B97DF90003BAF64 /* Int.swift in Sources */,
-				953D20972B7D846000A32185 /* Run.swift in Sources */,
 				25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */,
 				25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */,
 				953D209D2B7D973500A32185 /* ViewController.swift in Sources */,
@@ -497,23 +393,15 @@
 				9557F76C2B350794002CAE30 /* AlertController.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				955151242B91583A001AD26B /* DistanceViewController.swift in Sources */,
+				95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
-				9511CB732BA52E8500148B6D /* SettingsTableViewController.swift in Sources */,
-				25074FA52B7B0DB70061551D /* Speaker.swift in Sources */,
-				951E3EC32BA541F80059C675 /* RunSettings.swift in Sources */,
 				95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */,
-				95AC65892B0226B30084FF15 /* BottomRow.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
-				954F4BBA2AF723E800018E01 /* UISegmentStackView.swift in Sources */,
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
 				953D20992B7D847400A32185 /* Runner.swift in Sources */,
-				953D209B2B7D8C5300A32185 /* RunSession.swift in Sources */,
 				95DBAC532BA18231002037F1 /* Location.swift in Sources */,
 				25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */,
-				957A4EA22B1015D200C746A4 /* TableHeaderView.swift in Sources */,
-				954F4BC32AF765D600018E01 /* UIRunTableViewCell.swift in Sources */,
 				257EC7A52B882FFE000759A8 /* Progression.swift in Sources */,
-				9590E91C2B0D723B00B2A2A4 /* ResultsViewController.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
 				9519A6C52B19593A000B952F /* Date.swift in Sources */,

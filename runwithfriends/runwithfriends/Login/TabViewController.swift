@@ -39,11 +39,6 @@ class TabViewController: UITabBarController {
         communityVC.tabBarItem.image = UIImage(systemName: "globe.europe.africa")
         communityVC.tabBarItem.selectedImage = UIImage(systemName: "globe.europe.africa.fill")
         
-        let runsVC = RunsViewController(with: userData)
-        let runsNav = UINavigationController(rootViewController: runsVC)
-        runsNav.tabBarItem.title = "Runs"
-        runsNav.tabBarItem.image = UIImage(systemName: "figure.run")
-        
         let distanceVC = DistanceViewController(with: userData)
         let distanceNav = UINavigationController(rootViewController: distanceVC)
         distanceNav.tabBarItem.title = "Milestones"
@@ -55,7 +50,7 @@ class TabViewController: UITabBarController {
         profileNav.tabBarItem.title = "Profile"
         profileNav.tabBarItem.image = UIImage(systemName: "person")
         
-        setViewControllers([communityVC, runsNav, distanceNav], animated: false)
+        setViewControllers([communityVC, distanceNav], animated: false)
         self.selectedIndex = 0
         // for testing
 //        self.selectedIndex = 1
