@@ -31,7 +31,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)
-                await userData.syncUserSessions()
                 print("User signed in, routing to TabViewConroller")
                 DispatchQueue.main.async {
                     window.rootViewController = TabViewController(with: userData)

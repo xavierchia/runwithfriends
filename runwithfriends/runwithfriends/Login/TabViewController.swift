@@ -50,7 +50,7 @@ class TabViewController: UITabBarController {
         profileNav.tabBarItem.title = "Profile"
         profileNav.tabBarItem.image = UIImage(systemName: "person")
         
-        setViewControllers([communityVC, distanceNav], animated: false)
+        setViewControllers([communityVC], animated: false)
         self.selectedIndex = 0
         // for testing
 //        self.selectedIndex = 1

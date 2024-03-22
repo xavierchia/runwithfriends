@@ -85,8 +85,8 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupProfile(with user: User) {
-        let currentPea = Progression.getPea(for: userData.getTotalDistance())
-        self.navigationItem.title = currentPea.info.name
+//        let currentPea = Progression.getPea(for: userData.getTotalDistance())
+//        self.navigationItem.title = currentPea.info.name
     }
 }
 

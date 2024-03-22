@@ -18,13 +18,12 @@ struct User: Codable {
     let username: String
     let emoji: String
     let search_id: Int
-    let longitude: Double
-    let latitude: Double
 }
 
-struct UserSession: Codable {
-    let run_id: UUID
-    let start_date: Int
-    let end_date: Int
-    let distance: Int
+struct Walk: Codable {
+    let user_id: UUID
+    let year_week: Int
+    let steps: Int
+    let longitude: Double
+    let latitude: Double
 }

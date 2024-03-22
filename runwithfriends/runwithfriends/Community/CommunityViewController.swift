@@ -46,12 +46,13 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         let span = MKCoordinateSpan(latitudeDelta: 0.3298624346496055, longitudeDelta: 0.2226401886051832)
         let region = MKCoordinateRegion(center: centerCoordinate, span: span)
         self.mapView.setRegion(region, animated: true)
+        
+        addAnnotations()
     }
     
     private func setupUI() {
         setupMapView()
         addPath()
-        addAnnotations()
         
         setupWaitingRoomTitle()
         setupUserDistance()
@@ -93,6 +94,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func addAnnotations() {
+        mapView.removeAnnotations(mapView.annotations)
         // put user on map
         let stepsQuantityType: Set = [HKQuantityType.quantityType(forIdentifier: .stepCount)!]
         healthStore.requestAuthorization(toShare: [], read: stepsQuantityType) { result, error in
@@ -105,10 +107,12 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                     steps += nextDistance / 0.7
                     
                     if steps >= userSteps {
-                        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "😈"))
+                        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji))
                         newPin.coordinate = lastCoordinate.coordinate
-                        newPin.title = "xavier"
+                        newPin.title = userData.user.username
                         self.mapView.addAnnotation(newPin)
+                        
+                        self.userData.updateWalk(with: Int(steps), and: lastCoordinate.coordinate)
                         break
                     }
                     
@@ -117,11 +121,30 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             }
         }
         
+        Task {
+            let walkers = await userData.getWalkers()
+            for walker in walkers {
+                guard walker.user_id != userData.user.user_id else {
+                    continue
+                }
+                
+                let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji))
+                newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude, longitude: walker.longitude)
+                newPin.title = walker.username
+                self.mapView.addAnnotation(newPin)
+            }
+        }
+        
+        guard let firstCoordinate = coordinates.first else { return }
+        let startPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "⛩️"))
+        startPin.coordinate = firstCoordinate
+        self.mapView.addAnnotation(startPin)
+        
         // add ending flag
         guard let lastCoordinate = coordinates.last else { return }
-        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"))
-        newPin.coordinate = lastCoordinate
-        self.mapView.addAnnotation(newPin)
+        let endPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"))
+        endPin.coordinate = lastCoordinate
+        self.mapView.addAnnotation(endPin)
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {

@@ -27,16 +27,16 @@ extension Date {
     }
     
     static func startOfDay() -> Date {
-        var calendar = Calendar.current
+        let calendar = Calendar.current
         return calendar.startOfDay(for: Date())
     }
     
-    static func YearAndWeek() -> String {
+    static func YearAndWeek() -> Int {
         var calendar = Calendar.current
         calendar.firstWeekday = 2
         let weekOfYear = calendar.component(.weekOfYear, from: Date())
         let year = calendar.component(.yearForWeekOfYear, from: Date())
-        return "\(year)\(weekOfYear)"
+        return Int("\(year)\(weekOfYear)")!
     }
     
     static func startOfWeekEpochTime() -> TimeInterval {

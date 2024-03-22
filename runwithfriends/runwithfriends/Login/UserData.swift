@@ -8,69 +8,55 @@ import Foundation
 import CoreLocation
 import Supabase
 
+struct Walker: Codable {
+    let user_id: UUID
+    let username: String
+    let emoji: String
+    let steps: Int
+    let latitude: Double
+    let longitude: Double
+}
+
 class UserData {
     static let defaultUsername = "Pea"
     let supabase = Supabase.shared
     var user: User
-    var userSessions = [UserSession]()
     
     init(user: User) {
         self.user = user
     }
     
-    func getTotalDistance() -> Int {
-        userSessions.reduce(0) { $0 + $1.distance }
-        // for testing
-//        return 0
-    }
-    
-    func syncUser() async {
-        do {
-            let supabase = Supabase.shared
-            let users: [User] = try await supabase.client.database
-                .from("users")
-                .select()
-                .eq("user_id", value: user.user_id)
-                .execute()
-                .value
-            guard let retrievedUser = users.first else {
-                print("could not retrieve user to sync")
-                return
-            }
-            self.user = retrievedUser
-            print("user synced")
-        } catch {
-            print("error syncing user \(error)")
-        }
-    }
-    
-    func syncUserSessions() async {
-        let supabase = Supabase.shared
-        do {
-            let user = try await supabase.client.auth.session.user
-            let userSessions: [UserSession] = try await supabase.client.database
-                .rpc("get_user_sessions", params: ["p_user_id": user.id])
-                .select()
-                .execute()
-                .value
-            self.userSessions = userSessions
-        } catch {
-            print("failed to sync user sessions \(error)")
-        }
-    }
-    
-    func updateUserCoordinate(obscuredCoordinate: CLLocationCoordinate2D) {
+    func updateWalk(with steps: Int, and coordinate: CLLocationCoordinate2D) {
         Task {
             do {
+                let year_week = Date.YearAndWeek()
+                let walk = Walk(user_id: user.user_id, year_week: year_week, steps: steps, longitude: coordinate.longitude, latitude: coordinate.latitude)
                 let supabase = Supabase.shared.client.database
-                try await supabase.from("users")
-                    .update(["longitude": obscuredCoordinate.longitude, "latitude": obscuredCoordinate.latitude])
+                try await supabase.from("walks")
+                    .upsert(walk)
                     .eq("user_id", value: user.user_id)
+                    .eq("year_week", value: year_week)
                     .execute()
-                print("updated user coordinate")
+                print("updated user steps")
             } catch {
                 print("failed to updated user location \(error)")
             }
+        }
+    }
+    
+    func getWalkers() async -> [Walker] {
+        do {
+            let year_week = Date.YearAndWeek()
+            let walkers: [Walker] = try await supabase.client.database
+                .rpc("get_user_steps", params: ["year_week_param": year_week])
+                .select()
+                .execute()
+                .value
+            
+            return walkers
+        } catch {
+            print("failed to get walkers \(error)")
+            return []
         }
     }
     

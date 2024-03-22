@@ -11,7 +11,7 @@ class DistanceViewController: UIViewController {
     
     private let userData: UserData
     private var distance: Int {
-        userData.getTotalDistance()
+        return 10
     }
     
     // Distance report
