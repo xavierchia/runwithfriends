@@ -27,6 +27,7 @@ class UserData {
     }
     
     func updateWalk(with steps: Int, and coordinate: CLLocationCoordinate2D) {
+        guard steps > 0 else { return }
         Task {
             do {
                 let year_week = Date.YearAndWeek()
