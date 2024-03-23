@@ -51,7 +51,7 @@ class EmojiAnnotationView: MKMarkerAnnotationView {
 
 class OriginalUIImage: UIImage {
     convenience init(emojiString: String) {
-        let image = emojiString.image(pointSize: 10)
+        let image = emojiString.image(pointSize: 30)
         self.init(cgImage: image.cgImage!)
     }
 
