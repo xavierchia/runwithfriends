@@ -39,8 +39,11 @@ class EmojiAnnotationView: MKMarkerAnnotationView {
             markerTintColor = emojiAnnotation.color
             self.displayPriority = .required
             
-            if emojiAnnotation.identifier == "self" {
-                self.layer.anchorPointZ = 1
+            if emojiAnnotation.identifier == "user" {
+                print("setting anchorpoint")
+                self.layer.anchorPointZ = 0
+            } else {
+                self.layer.anchorPointZ = 10
             }
         }
     }

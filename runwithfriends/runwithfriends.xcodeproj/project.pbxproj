@@ -44,6 +44,7 @@
 		9557F76C2B350794002CAE30 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76B2B350794002CAE30 /* AlertController.swift */; };
 		9557F7702B35706D002CAE30 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76F2B35706D002CAE30 /* User.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
+		95756BC62BAE654A00460AFD /* NYCMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 95756BC52BAE654A00460AFD /* NYCMarathon.gpx */; };
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95969AB92BAD36F200E3858C /* BorderPathRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95969AB82BAD36F200E3858C /* BorderPathRenderer.swift */; };
@@ -51,7 +52,6 @@
 		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
 		95AC658B2B0227860084FF15 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC658A2B0227860084FF15 /* UIView.swift */; };
 		95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B8E3382BAC6450003AB055 /* ParseGPX.swift */; };
-		95B8E33B2BAC6465003AB055 /* NYCMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 95B8E33A2BAC6465003AB055 /* NYCMarathon.gpx */; };
 		95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BC85302B0ECA9E00DD81BB /* NavigationController.swift */; };
 		95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */; };
 		95DBAC512BA18186002037F1 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBAC502BA18186002037F1 /* CommunityViewController.swift */; };
@@ -93,6 +93,7 @@
 		9557F76B2B350794002CAE30 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		9557F76F2B35706D002CAE30 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
+		95756BC52BAE654A00460AFD /* NYCMarathon.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = NYCMarathon.gpx; path = ../../../../gpx/NYCMarathon.gpx; sourceTree = "<group>"; };
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95969AB82BAD36F200E3858C /* BorderPathRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderPathRenderer.swift; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EmojiAnnotation.swift; path = ../Runs/WaitingRoom/EmojiAnnotation.swift; sourceTree = "<group>"; };
 		95AC658A2B0227860084FF15 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		95B8E3382BAC6450003AB055 /* ParseGPX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseGPX.swift; sourceTree = "<group>"; };
-		95B8E33A2BAC6465003AB055 /* NYCMarathon.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = NYCMarathon.gpx; path = ../../../../../NYCMarathon.gpx; sourceTree = "<group>"; };
 		95BC85302B0ECA9E00DD81BB /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prefixes.swift; sourceTree = "<group>"; };
 		95DBAC502BA18186002037F1 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
@@ -268,7 +268,7 @@
 				25FC3C9F2B82D60000D90ED2 /* Fonts */,
 				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
 				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
-				95B8E33A2BAC6465003AB055 /* NYCMarathon.gpx */,
+				95756BC52BAE654A00460AFD /* NYCMarathon.gpx */,
 			);
 			path = AssetsCoreData;
 			sourceTree = "<group>";
@@ -360,7 +360,7 @@
 				95F85B4F2B71AAEC005A705A /* README.md in Resources */,
 				25FC3CAA2B82D61200D90ED2 /* Kefir-Medium.otf in Resources */,
 				25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */,
-				95B8E33B2BAC6465003AB055 /* NYCMarathon.gpx in Resources */,
+				95756BC62BAE654A00460AFD /* NYCMarathon.gpx in Resources */,
 				25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */,
 				25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */,
 				25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */,
