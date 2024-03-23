@@ -36,16 +36,23 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(resetMap), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        resetMap()
+    }
+    
+    @objc private func resetMap() {
+        print("reset map")
         // set map region
         let centerCoordinate = CLLocationCoordinate2D(latitude: 40.71588675681417, longitude: -74.01905943032843)
         let span = MKCoordinateSpan(latitudeDelta: 0.3298624346496055, longitudeDelta: 0.2226401886051832)
         let region = MKCoordinateRegion(center: centerCoordinate, span: span)
-        self.mapView.setRegion(region, animated: true)
+        self.mapView.setRegion(region, animated: false)
         
         addAnnotations()
     }
@@ -107,9 +114,10 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                     steps += nextDistance / 0.7
                     
                     if steps >= userSteps {
-                        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji))
+                        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
                         newPin.coordinate = lastCoordinate.coordinate
                         newPin.title = userData.user.username
+                        newPin.identifier = "user"
                         self.mapView.addAnnotation(newPin)
                         
                         self.userData.updateWalk(with: Int(steps), and: lastCoordinate.coordinate)

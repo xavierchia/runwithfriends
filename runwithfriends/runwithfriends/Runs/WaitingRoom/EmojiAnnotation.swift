@@ -10,10 +10,13 @@ import MapKit
 
 // MARK: Custom classes to support emoji map annotations
 class EmojiAnnotation: MKPointAnnotation {
-    var emojiImage: UIImage!
+    var emojiImage: UIImage
+    var color: UIColor
+    var identifier: String?
     
-    init(emojiImage: UIImage!) {
+    init(emojiImage: UIImage, color: UIColor = .white) {
         self.emojiImage = emojiImage
+        self.color = color
     }
 }
 
@@ -31,14 +34,20 @@ class EmojiAnnotationView: MKMarkerAnnotationView {
     }
 
     private func update(for annotation: MKAnnotation?) {
-        glyphImage = (annotation as? EmojiAnnotation)?.emojiImage
-        markerTintColor = .white
-        self.displayPriority = .required
+        if let emojiAnnotation = annotation as? EmojiAnnotation {
+            glyphImage = emojiAnnotation.emojiImage
+            markerTintColor = emojiAnnotation.color
+            self.displayPriority = .required
+            
+            if emojiAnnotation.identifier == "self" {
+                self.layer.anchorPointZ = 1
+            }
+        }
     }
 }
 
 class OriginalUIImage: UIImage {
-    convenience init?(emojiString: String) {
+    convenience init(emojiString: String) {
         let image = emojiString.image(pointSize: 10)
         self.init(cgImage: image.cgImage!)
     }
