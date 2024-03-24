@@ -108,14 +108,15 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             self.getSteps(from: Date.startOfWeek()) { [self] userSteps in
                 var steps = 0.0
                 var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
-                for coordinate in coordinates {
+                for (index, coordinate) in coordinates.enumerated() {
                     let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                     let nextDistance = currentCoordinate.distance(from: lastCoordinate)
                     steps += nextDistance / 0.7
                     
-                    if steps >= userSteps {
+                    let isLastIndex = index == coordinates.count - 1
+                    if steps >= userSteps || isLastIndex  {
                         let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
-                        newPin.coordinate = lastCoordinate.coordinate
+                        newPin.coordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
                         newPin.title = userData.user.username
                         newPin.identifier = "user"
                         self.mapView.addAnnotation(newPin)
