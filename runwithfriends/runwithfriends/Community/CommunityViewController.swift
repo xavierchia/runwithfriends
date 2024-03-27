@@ -22,7 +22,8 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     
     // UI
     private let mapView = MKMapView()
-    
+    private let weekSteps = UILabel()
+    let daySteps = UILabel()
     
     init(userData: UserData) {
         self.userData = userData
@@ -37,17 +38,17 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         setupUI()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(resetMap), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateView), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        resetMap()
+        updateView()
     }
     
-    @objc private func resetMap() {
-        print("reset map")
+    @objc private func updateView() {
+        print("updating view: region, annotations, labels")
         // set map region
         let centerCoordinate = CLLocationCoordinate2D(latitude: 40.71588675681417, longitude: -74.01905943032843)
         let span = MKCoordinateSpan(latitudeDelta: 0.3298624346496055, longitudeDelta: 0.2226401886051832)
@@ -55,6 +56,8 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         self.mapView.setRegion(region, animated: false)
         
         addAnnotations()
+        
+        updateSteps()
     }
     
     private func setupUI() {
@@ -136,8 +139,12 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                 guard walker.user_id != userData.user.user_id else {
                     continue
                 }
-                
-                let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji))
+                let newPin: EmojiAnnotation
+                if walker.username.lowercased() == "zombie" {
+                    newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji), color: .red)
+                } else {
+                    newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji))
+                }
                 newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude, longitude: walker.longitude)
                 newPin.title = walker.username
                 self.mapView.addAnnotation(newPin)
@@ -185,7 +192,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func setupUserDistance() {
-        let weekSteps = UILabel()
         weekSteps.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         weekSteps.text = "week"
         weekSteps.textAlignment = .left
@@ -200,7 +206,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             weekSteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
         
-        let daySteps = UILabel()
         daySteps.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         daySteps.text = "Today: 300 steps"
         daySteps.textAlignment = .left
@@ -214,15 +219,16 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             daySteps.heightAnchor.constraint(equalToConstant: 40),
             daySteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
         ])
-        
+    }
+    
+    private func updateSteps() {
         getSteps(from: Date.startOfWeek()) { steps in
-            weekSteps.text = "Week: \(Int(steps).withCommas())"
+            self.weekSteps.text = "Week: \(Int(steps).withCommas())"
         }
         
         getSteps(from: Date.startOfDay()) { steps in
-            daySteps.text = "Day: \(Int(steps).withCommas())"
+            self.daySteps.text = "Day: \(Int(steps).withCommas())"
         }
-        
     }
 
 }

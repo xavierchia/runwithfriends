@@ -44,7 +44,7 @@
 		9557F76C2B350794002CAE30 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76B2B350794002CAE30 /* AlertController.swift */; };
 		9557F7702B35706D002CAE30 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76F2B35706D002CAE30 /* User.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
-		95756BC62BAE654A00460AFD /* NYCMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 95756BC52BAE654A00460AFD /* NYCMarathon.gpx */; };
+		95813B622BB4E76400B12525 /* NYCMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 95813B612BB4E76400B12525 /* NYCMarathon.gpx */; };
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
 		95969AB92BAD36F200E3858C /* BorderPathRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95969AB82BAD36F200E3858C /* BorderPathRenderer.swift */; };
@@ -93,7 +93,7 @@
 		9557F76B2B350794002CAE30 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		9557F76F2B35706D002CAE30 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
-		95756BC52BAE654A00460AFD /* NYCMarathon.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = NYCMarathon.gpx; path = ../../../../gpx/NYCMarathon.gpx; sourceTree = "<group>"; };
+		95813B612BB4E76400B12525 /* NYCMarathon.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NYCMarathon.gpx; sourceTree = "<group>"; };
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		95969AB82BAD36F200E3858C /* BorderPathRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderPathRenderer.swift; sourceTree = "<group>"; };
@@ -268,7 +268,7 @@
 				25FC3C9F2B82D60000D90ED2 /* Fonts */,
 				952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */,
 				952825BF2AE1F74E0032B04B /* Assets.xcassets */,
-				95756BC52BAE654A00460AFD /* NYCMarathon.gpx */,
+				95813B612BB4E76400B12525 /* NYCMarathon.gpx */,
 			);
 			path = AssetsCoreData;
 			sourceTree = "<group>";
@@ -360,7 +360,7 @@
 				95F85B4F2B71AAEC005A705A /* README.md in Resources */,
 				25FC3CAA2B82D61200D90ED2 /* Kefir-Medium.otf in Resources */,
 				25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */,
-				95756BC62BAE654A00460AFD /* NYCMarathon.gpx in Resources */,
+				95813B622BB4E76400B12525 /* NYCMarathon.gpx in Resources */,
 				25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */,
 				25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */,
 				25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */,
@@ -555,7 +555,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -594,7 +594,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
