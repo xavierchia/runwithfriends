@@ -134,7 +134,11 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         }
         
         Task {
-            let walkers = await userData.getWalkers()
+            let walkers = await userData.getWalkers().sorted { lhs, rhs in
+                lhs.steps < rhs.steps
+            }
+            var lastLongitude = 0.0
+            var collisions = 1.0
             for walker in walkers {
                 guard walker.user_id != userData.user.user_id else {
                     continue
@@ -145,7 +149,17 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                 } else {
                     newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji))
                 }
-                newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude, longitude: walker.longitude)
+                
+                if walker.longitude == lastLongitude {
+                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude, longitude: walker.longitude + 0.005 * collisions)
+                    collisions += 1
+                } else {
+                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude, longitude: walker.longitude)
+                    collisions = 1
+                }
+                
+                lastLongitude = walker.longitude
+                
                 newPin.title = walker.username
                 self.mapView.addAnnotation(newPin)
             }
