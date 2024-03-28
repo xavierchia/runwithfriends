@@ -123,8 +123,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                         newPin.title = userData.user.username
                         newPin.identifier = "user"
                         self.mapView.addAnnotation(newPin)
-                        
-                        self.userData.updateWalk(with: Int(steps), and: lastCoordinate.coordinate)
+                        self.userData.updateWalk(with: Int(userSteps), and: lastCoordinate.coordinate)
                         break
                     }
                     
@@ -137,24 +136,33 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             let walkers = await userData.getWalkers().sorted { lhs, rhs in
                 lhs.steps < rhs.steps
             }
-            let finalLongitude = coordinates.last!.longitude
+            let finalCoordinate = coordinates.last!
             var lastLongitude = 0.0
             var collisions = 1.0
-            print(finalLongitude)
             for (index, walker) in walkers.enumerated() {
-                guard walker.user_id != userData.user.user_id else {
-                    continue
-                }
-                let newPin: EmojiAnnotation
-                if walker.username.lowercased() == "zombie" {
-                    newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji), color: .red)
-                } else if index == walkers.count - 1 {
-                    newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "👑"))
-                } else {
-                    newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji))
+                
+                // Remove original user emoji that was placed so there's no duplicate
+                if walker.user_id == userData.user.user_id {
+                    if let selfAnnotation = mapView.annotations.first(where: { annotation in
+                        let emojiAnnotation = annotation as? EmojiAnnotation
+                        return emojiAnnotation?.identifier == "user"
+                    }) {
+                        mapView.removeAnnotation(selfAnnotation)
+                    }
                 }
                 
-                if walker.longitude == finalLongitude {
+                let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji))
+                if index == walkers.count - 1 {
+                    newPin.emojiImage = OriginalUIImage(emojiString: "👑")
+                }
+                if walker.username.lowercased() == "zombie" {
+                    newPin.color = .red
+                }
+                if walker.user_id == userData.user.user_id {
+                    newPin.color = .lightAccent
+                }
+                                
+                if walker.longitude == finalCoordinate.longitude && walker.latitude == finalCoordinate.latitude {
                     newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude + 0.005 * collisions, longitude: walker.longitude)
                     collisions += 1
                 } else if walker.longitude == lastLongitude {
@@ -166,7 +174,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                 }
                 
                 lastLongitude = walker.longitude
-                
                 newPin.title = walker.username
                 self.mapView.addAnnotation(newPin)
             }
