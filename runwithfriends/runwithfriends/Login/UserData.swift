@@ -12,9 +12,9 @@ struct Walker: Codable {
     let user_id: UUID
     let username: String
     let emoji: String
-    let steps: Int
-    let latitude: Double
-    let longitude: Double
+    var steps: Int
+    var latitude: Double
+    var longitude: Double
 }
 
 class UserData {
@@ -48,11 +48,15 @@ class UserData {
     func getWalkers() async -> [Walker] {
         do {
             let year_week = Date.YearAndWeek()
-            let walkers: [Walker] = try await supabase.client.database
+            var walkers: [Walker] = try await supabase.client.database
                 .rpc("get_user_steps", params: ["year_week_param": year_week])
                 .select()
                 .execute()
                 .value
+            
+            walkers.removeAll { walker in
+                walker.user_id == user.user_id
+            }
             
             return walkers
         } catch {

@@ -107,6 +107,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         mapView.removeAnnotations(mapView.annotations)
         // put user on map
         let stepsQuantityType: Set = [HKQuantityType.quantityType(forIdentifier: .stepCount)!]
+        var userWalker = Walker(user_id: userData.user.user_id, username: userData.user.username, emoji: userData.user.emoji, steps: 0, latitude: 0, longitude: 0)
         healthStore.requestAuthorization(toShare: [], read: stepsQuantityType) { result, error in
             self.getSteps(from: Date.startOfWeek()) { [self] userSteps in
                 var steps = 0.0
@@ -119,10 +120,16 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                     let isLastIndex = index == coordinates.count - 1
                     if steps >= userSteps || isLastIndex  {
                         let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
-                        newPin.coordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
+                        let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
+                        newPin.coordinate = userCoordinate
                         newPin.title = userData.user.username
                         newPin.identifier = "user"
                         self.mapView.addAnnotation(newPin)
+                        
+                        userWalker.latitude = userCoordinate.latitude
+                        userWalker.longitude = userCoordinate.longitude
+                        userWalker.steps = Int(userSteps)
+                        
                         self.userData.updateWalk(with: Int(userSteps), and: lastCoordinate.coordinate)
                         break
                     }
@@ -133,9 +140,12 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         }
         
         Task {
-            let walkers = await userData.getWalkers().sorted { lhs, rhs in
+            var walkers = await userData.getWalkers()
+            walkers.append(userWalker)
+            walkers.sort { lhs, rhs in
                 lhs.steps < rhs.steps
             }
+            
             let finalCoordinate = coordinates.last!
             var lastLongitude = 0.0
             var collisions = 1.0
