@@ -130,7 +130,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                         userWalker.longitude = userCoordinate.longitude
                         userWalker.steps = Int(userSteps)
                         
-                        self.userData.updateWalk(with: Int(userSteps), and: lastCoordinate.coordinate)
+                        self.userData.updateWalk(with: Int(userSteps), and: userCoordinate)
                         break
                     }
                     
@@ -147,6 +147,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             }
             
             let finalCoordinate = coordinates.last!
+            print(finalCoordinate)
             var lastLongitude = 0.0
             var collisions = 1.0
             for (index, walker) in walkers.enumerated() {
