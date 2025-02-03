@@ -36,6 +36,7 @@ struct Provider: AppIntentTimelineProvider {
 //    }
 }
 
+// do nothing
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
