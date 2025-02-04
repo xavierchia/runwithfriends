@@ -52,9 +52,12 @@ class HealthStore {
         return (lastError, updateCount, lastUpdateTime)
     }
     
-    func resetUpdateCount() {
+    func resetDailyStats() {
         if !Calendar.current.isDate(lastUpdateTime, inSameDayAs: Date()) {
+            print("New day detected, resetting stats")
             updateCount = 0
+            lastKnownSteps = 0
+            lastError = "none"
         }
     }
     
@@ -137,7 +140,7 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         let currentDate = Date()
-        HealthStore.shared.resetUpdateCount()
+        HealthStore.shared.resetDailyStats()
         
         do {
             let steps = try await HealthStore.shared.fetchSteps(for: currentDate)
@@ -152,7 +155,7 @@ struct Provider: AppIntentTimelineProvider {
                 lastUpdateTime: debugInfo.lastUpdate
             )
             
-            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
+            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!
             return Timeline(entries: [entry], policy: .after(nextUpdate))
             
         } catch {
@@ -168,7 +171,7 @@ struct Provider: AppIntentTimelineProvider {
                     updateCount: debugInfo.updateCount,
                     lastUpdateTime: debugInfo.lastUpdate
                 )
-            ], policy: .after(Date().addingTimeInterval(300)))
+            ], policy: .after(Date().addingTimeInterval(60)))
         }
     }
 }
