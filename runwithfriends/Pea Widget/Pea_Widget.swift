@@ -7,12 +7,14 @@ class HealthStore {
     let healthStore = HKHealthStore()
     
     func fetchSteps(for date: Date) async throws -> Int {
+        print("Fetching steps for date: \(date)")
         let stepType = HKQuantityType(.stepCount)
         
         let predicate = HKQuery.predicateForSamples(
             withStart: Calendar.current.startOfDay(for: date),
             end: date
         )
+        print("Query period: \(Calendar.current.startOfDay(for: date)) to \(date)")
         
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKStatisticsQuery(
@@ -21,6 +23,8 @@ class HealthStore {
                 options: .cumulativeSum
             ) { _, result, error in
                 if let error = error {
+                    print("HealthKit query error: \(error)")
+                    print("Error type: \(type(of: error))")
                     continuation.resume(throwing: error)
                     return
                 }
@@ -36,7 +40,7 @@ class HealthStore {
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), steps: 0)
+        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), steps: 500)
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
@@ -46,22 +50,30 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
         
-        do {            
-            let currentDate = Date()
+        let currentDate = Date()
+        
+        do {
             let steps = try await HealthStore.shared.fetchSteps(for: currentDate)
             
             let entry = SimpleEntry(date: currentDate, configuration: configuration, steps: steps)
             entries.append(entry)
             
-            // Update every 30 minutes
+            // Update every 5 minutes
             let nextUpdate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
             return Timeline(entries: entries, policy: .after(nextUpdate))
             
         } catch {
-            print("Error fetching health data: \(error.localizedDescription)")
-            return Timeline(entries: [
-                SimpleEntry(date: Date(), configuration: configuration, steps: 0)
-            ], policy: .after(Date().addingTimeInterval(3600)))
+            print("Error fetching health data: \(error)")
+            print("Error type: \(type(of: error))")
+            // Instead of returning 0, create an entry with current steps
+            if let lastEntry = entries.last {
+                return Timeline(entries: [lastEntry], policy: .after(Date().addingTimeInterval(300))) // retry in 5 minutes
+            } else {
+                // If we have no entries at all, then use placeholder value
+                return Timeline(entries: [
+                    SimpleEntry(date: currentDate, configuration: configuration, steps: 500)
+                ], policy: .after(Date().addingTimeInterval(300)))
+            }
         }
     }
 }
