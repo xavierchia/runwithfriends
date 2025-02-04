@@ -5,10 +5,44 @@ import HealthKit
 class HealthStore {
     static let shared = HealthStore()
     let healthStore = HKHealthStore()
-    private var lastKnownSteps: Int = 0
-    private var lastError: String = "none"
-    private var updateCount: Int = 0
-    private var lastUpdateTime: Date = Date()
+    private let defaults = UserDefaults.standard
+    
+    private var lastKnownSteps: Int {
+        get {
+            return defaults.integer(forKey: "lastKnownSteps")
+        }
+        set {
+            defaults.set(newValue, forKey: "lastKnownSteps")
+            print("Saved lastKnownSteps to UserDefaults: \(newValue)")
+        }
+    }
+    
+    private var lastError: String {
+        get {
+            return defaults.string(forKey: "lastError") ?? "none"
+        }
+        set {
+            defaults.set(newValue, forKey: "lastError")
+        }
+    }
+    
+    private var updateCount: Int {
+        get {
+            return defaults.integer(forKey: "updateCount")
+        }
+        set {
+            defaults.set(newValue, forKey: "updateCount")
+        }
+    }
+    
+    private var lastUpdateTime: Date {
+        get {
+            return defaults.object(forKey: "lastUpdateTime") as? Date ?? Date()
+        }
+        set {
+            defaults.set(newValue, forKey: "lastUpdateTime")
+        }
+    }
     
     func getLastKnownSteps() -> Int {
         return lastKnownSteps
@@ -122,6 +156,7 @@ struct Provider: AppIntentTimelineProvider {
             
         } catch {
             print("Error fetching health data: \(error)")
+            print("Using last known steps: \(HealthStore.shared.getLastKnownSteps())")
             let debugInfo = HealthStore.shared.getDebugInfo()
             return Timeline(entries: [
                 SimpleEntry(
