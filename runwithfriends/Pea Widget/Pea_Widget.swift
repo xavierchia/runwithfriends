@@ -73,6 +73,9 @@ class HealthStore {
                 quantitySamplePredicate: predicate,
                 options: .cumulativeSum
             ) { _, result, error in
+                self.updateCount += 1
+                self.lastUpdateTime = Date()
+                
                 if let error = error {
                     print("HealthKit query error: \(error)")
                     self.lastError = "query"
@@ -89,8 +92,6 @@ class HealthStore {
                 
                 self.lastKnownSteps = Int(steps)
                 self.lastError = "none"
-                self.updateCount += 1
-                self.lastUpdateTime = Date()
                 print("Successfully fetched steps: \(steps)")
                 continuation.resume(returning: Int(steps))
             }
