@@ -5,6 +5,24 @@ import HealthKit
 class HealthStore {
     static let shared = HealthStore()
     let healthStore = HKHealthStore()
+    private var lastKnownSteps: Int = 0
+    private var lastError: String = "none"
+    private var updateCount: Int = 0
+    private var lastUpdateTime: Date = Date()
+    
+    func getLastKnownSteps() -> Int {
+        return lastKnownSteps
+    }
+    
+    func getDebugInfo() -> (error: String, updateCount: Int, lastUpdate: Date) {
+        return (lastError, updateCount, lastUpdateTime)
+    }
+    
+    func resetUpdateCount() {
+        if !Calendar.current.isDate(lastUpdateTime, inSameDayAs: Date()) {
+            updateCount = 0
+        }
+    }
     
     func fetchSteps(for date: Date) async throws -> Int {
         print("Fetching steps for date: \(date)")
@@ -14,7 +32,6 @@ class HealthStore {
             withStart: Calendar.current.startOfDay(for: date),
             end: date
         )
-        print("Query period: \(Calendar.current.startOfDay(for: date)) to \(date)")
         
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKStatisticsQuery(
@@ -24,12 +41,23 @@ class HealthStore {
             ) { _, result, error in
                 if let error = error {
                     print("HealthKit query error: \(error)")
-                    print("Error type: \(type(of: error))")
+                    self.lastError = "query"
                     continuation.resume(throwing: error)
                     return
                 }
                 
-                let steps = result?.sumQuantity()?.doubleValue(for: .count()) ?? 0
+                guard let steps = result?.sumQuantity()?.doubleValue(for: .count()) else {
+                    print("No step data available")
+                    self.lastError = "nodata"
+                    continuation.resume(throwing: NSError(domain: "HealthKit", code: -1, userInfo: [NSLocalizedDescriptionKey: "No step data available"]))
+                    return
+                }
+                
+                self.lastKnownSteps = Int(steps)
+                self.lastError = "none"
+                self.updateCount += 1
+                self.lastUpdateTime = Date()
+                print("Successfully fetched steps: \(steps)")
                 continuation.resume(returning: Int(steps))
             }
             
@@ -38,62 +66,99 @@ class HealthStore {
     }
 }
 
-struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), steps: 500)
-    }
-
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration, steps: 3000)
-    }
-    
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
-        
-        let currentDate = Date()
-        
-        do {
-            let steps = try await HealthStore.shared.fetchSteps(for: currentDate)
-            
-            let entry = SimpleEntry(date: currentDate, configuration: configuration, steps: steps)
-            entries.append(entry)
-            
-            // Update every 5 minutes
-            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
-            return Timeline(entries: entries, policy: .after(nextUpdate))
-            
-        } catch {
-            print("Error fetching health data: \(error)")
-            print("Error type: \(type(of: error))")
-            // Instead of returning 0, create an entry with current steps
-            if let lastEntry = entries.last {
-                return Timeline(entries: [lastEntry], policy: .after(Date().addingTimeInterval(300))) // retry in 5 minutes
-            } else {
-                // If we have no entries at all, then use placeholder value
-                return Timeline(entries: [
-                    SimpleEntry(date: currentDate, configuration: configuration, steps: 500)
-                ], policy: .after(Date().addingTimeInterval(300)))
-            }
-        }
-    }
-}
-
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
     let steps: Int
+    let lastError: String
+    let updateCount: Int
+    let lastUpdateTime: Date
+}
+
+struct Provider: AppIntentTimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry {
+        let debugInfo = HealthStore.shared.getDebugInfo()
+        return SimpleEntry(
+            date: Date(),
+            configuration: ConfigurationAppIntent(),
+            steps: HealthStore.shared.getLastKnownSteps(),
+            lastError: debugInfo.error,
+            updateCount: debugInfo.updateCount,
+            lastUpdateTime: debugInfo.lastUpdate
+        )
+    }
+
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
+        let debugInfo = HealthStore.shared.getDebugInfo()
+        return SimpleEntry(
+            date: Date(),
+            configuration: configuration,
+            steps: HealthStore.shared.getLastKnownSteps(),
+            lastError: debugInfo.error,
+            updateCount: debugInfo.updateCount,
+            lastUpdateTime: debugInfo.lastUpdate
+        )
+    }
+    
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
+        let currentDate = Date()
+        HealthStore.shared.resetUpdateCount()
+        
+        do {
+            let steps = try await HealthStore.shared.fetchSteps(for: currentDate)
+            let debugInfo = HealthStore.shared.getDebugInfo()
+            
+            let entry = SimpleEntry(
+                date: currentDate,
+                configuration: configuration,
+                steps: steps,
+                lastError: debugInfo.error,
+                updateCount: debugInfo.updateCount,
+                lastUpdateTime: debugInfo.lastUpdate
+            )
+            
+            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
+            return Timeline(entries: [entry], policy: .after(nextUpdate))
+            
+        } catch {
+            print("Error fetching health data: \(error)")
+            let debugInfo = HealthStore.shared.getDebugInfo()
+            return Timeline(entries: [
+                SimpleEntry(
+                    date: currentDate,
+                    configuration: configuration,
+                    steps: HealthStore.shared.getLastKnownSteps(),
+                    lastError: debugInfo.error,
+                    updateCount: debugInfo.updateCount,
+                    lastUpdateTime: debugInfo.lastUpdate
+                )
+            ], policy: .after(Date().addingTimeInterval(300)))
+        }
+    }
 }
 
 struct Pea_WidgetEntryView : View {
     var entry: Provider.Entry
+    
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mma"
+        return formatter
+    }()
 
     var body: some View {
-        VStack {
-            Text("Keep Walking")
-                .font(.headline)
+        VStack(alignment: .leading, spacing: 2) {
             Text("\(entry.steps) steps")
-                .font(.subheadline)
+                .font(.headline)
+            Text("Err: \(entry.lastError)")
+                .font(.caption2)
+            Text("Last: \(entry.lastUpdateTime, formatter: dateFormatter)")
+                .font(.caption2)
+            Text("Updates: \(entry.updateCount)")
+                .font(.caption2)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 4)
         .foregroundColor(.black)
     }
 }
@@ -127,6 +192,8 @@ extension ConfigurationAppIntent {
 #Preview(as: .systemSmall) {
     Pea_Widget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley, steps: 3000)
-    SimpleEntry(date: .now, configuration: .starEyes, steps: 5000)
+    SimpleEntry(date: .now, configuration: .smiley,
+                steps: 3000, lastError: "none", updateCount: 5, lastUpdateTime: Date())
+    SimpleEntry(date: .now, configuration: .starEyes,
+                steps: 5000, lastError: "query", updateCount: 6, lastUpdateTime: Date())
 }
