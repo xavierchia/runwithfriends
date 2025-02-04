@@ -54,7 +54,7 @@ struct Provider: AppIntentTimelineProvider {
             entries.append(entry)
             
             // Update every 30 minutes
-            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: currentDate)!
+            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
             return Timeline(entries: entries, policy: .after(nextUpdate))
             
         } catch {
