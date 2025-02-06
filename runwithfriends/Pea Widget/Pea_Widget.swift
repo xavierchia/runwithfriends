@@ -104,6 +104,7 @@ class HealthStore {
     }
 }
 
+// test
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
