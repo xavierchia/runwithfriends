@@ -111,6 +111,7 @@ struct SimpleEntry: TimelineEntry {
     let lastError: String
     let updateCount: Int
     let lastUpdateTime: Date
+    let family: WidgetFamily
 }
 
 struct Provider: AppIntentTimelineProvider {
@@ -122,7 +123,8 @@ struct Provider: AppIntentTimelineProvider {
             steps: HealthStore.shared.getLastKnownSteps(),
             lastError: debugInfo.error,
             updateCount: debugInfo.updateCount,
-            lastUpdateTime: debugInfo.lastUpdate
+            lastUpdateTime: debugInfo.lastUpdate,
+            family: context.family
         )
     }
 
@@ -134,7 +136,8 @@ struct Provider: AppIntentTimelineProvider {
             steps: HealthStore.shared.getLastKnownSteps(),
             lastError: debugInfo.error,
             updateCount: debugInfo.updateCount,
-            lastUpdateTime: debugInfo.lastUpdate
+            lastUpdateTime: debugInfo.lastUpdate,
+            family: context.family
         )
     }
     
@@ -152,7 +155,8 @@ struct Provider: AppIntentTimelineProvider {
                 steps: steps,
                 lastError: debugInfo.error,
                 updateCount: debugInfo.updateCount,
-                lastUpdateTime: debugInfo.lastUpdate
+                lastUpdateTime: debugInfo.lastUpdate,
+                family: context.family
             )
             
             let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!
@@ -169,7 +173,8 @@ struct Provider: AppIntentTimelineProvider {
                     steps: HealthStore.shared.getLastKnownSteps(),
                     lastError: debugInfo.error,
                     updateCount: debugInfo.updateCount,
-                    lastUpdateTime: debugInfo.lastUpdate
+                    lastUpdateTime: debugInfo.lastUpdate,
+                    family: context.family
                 )
             ], policy: .after(Date().addingTimeInterval(60)))
         }
@@ -202,15 +207,39 @@ struct Pea_WidgetEntryView : View {
     }
 }
 
+struct LockScreenWidgetView: View {
+    var entry: Provider.Entry
+    
+    var body: some View {
+        Text("\(entry.steps)")
+        Text("steps")
+
+    }
+}
+
 struct Pea_Widget: Widget {
     let kind: String = "Pea_Widget"
     let creamColor = Color(red: 0.96, green: 0.95, blue: 0.90)
 
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            Pea_WidgetEntryView(entry: entry)
-                .containerBackground(creamColor, for: .widget)
+            if #available(iOSApplicationExtension 16.0, *) {
+                switch entry.family {
+                case .accessoryCircular, .accessoryRectangular, .accessoryInline:
+                    LockScreenWidgetView(entry: entry)
+                        .containerBackground(Color.black, for: .widget)
+                default:
+                    Pea_WidgetEntryView(entry: entry)
+                        .containerBackground(creamColor, for: .widget)
+                }
+            } else {
+                Pea_WidgetEntryView(entry: entry)
+                    .containerBackground(creamColor, for: .widget)
+            }
         }
+        .configurationDisplayName("Steps Widget")
+        .description("Track your daily steps")
+        .supportedFamilies([.systemSmall, .accessoryCircular, .accessoryRectangular, .accessoryInline])
     }
 }
 
@@ -231,8 +260,36 @@ extension ConfigurationAppIntent {
 #Preview(as: .systemSmall) {
     Pea_Widget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley,
-                steps: 3000, lastError: "none", updateCount: 5, lastUpdateTime: Date())
-    SimpleEntry(date: .now, configuration: .starEyes,
-                steps: 5000, lastError: "query", updateCount: 6, lastUpdateTime: Date())
+    SimpleEntry(
+        date: .now,
+        configuration: .smiley,
+        steps: 3000,
+        lastError: "none",
+        updateCount: 5,
+        lastUpdateTime: Date(),
+        family: .systemSmall
+    )
+    SimpleEntry(
+        date: .now,
+        configuration: .starEyes,
+        steps: 5000,
+        lastError: "query",
+        updateCount: 6,
+        lastUpdateTime: Date(),
+        family: .systemSmall
+    )
+}
+
+#Preview(as: .accessoryCircular) {
+    Pea_Widget()
+} timeline: {
+    SimpleEntry(
+        date: .now,
+        configuration: .smiley,
+        steps: 3000,
+        lastError: "none",
+        updateCount: 5,
+        lastUpdateTime: Date(),
+        family: .accessoryCircular
+    )
 }
