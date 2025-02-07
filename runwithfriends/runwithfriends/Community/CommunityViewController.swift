@@ -267,6 +267,9 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         
         getSteps(from: Date.startOfDay()) { steps in
             self.daySteps.text = "Day: \(Int(steps).withCommas())"
+            let groupID = "group.com.wholesomeapps.runwithfriends"
+            let shared = UserDefaults(suiteName: groupID)
+            shared?.set(Int(steps), forKey: "userDaySteps")
         }
     }
 

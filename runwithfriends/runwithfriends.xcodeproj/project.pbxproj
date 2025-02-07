@@ -135,6 +135,7 @@
 		95F6970E2AFF6CD800B10EB2 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		95F85B4E2B71AAEC005A705A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runwithfriends.entitlements; sourceTree = "<group>"; };
+		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		A5E9171F2D5058470060DD48 /* Pea WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Pea WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E917202D5058470060DD48 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		A5E917222D5058470060DD48 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -236,6 +237,7 @@
 		952825A72AE1F74D0032B04B = {
 			isa = PBXGroup;
 			children = (
+				A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */,
 				952825B22AE1F74D0032B04B /* runwithfriends */,
 				A5E917242D5058470060DD48 /* Pea Widget */,
 				952825B12AE1F74D0032B04B /* Products */,
@@ -736,6 +738,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;
@@ -765,6 +768,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;

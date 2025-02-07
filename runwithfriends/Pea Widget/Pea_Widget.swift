@@ -6,14 +6,18 @@ class HealthStore {
     static let shared = HealthStore()
     let healthStore = HKHealthStore()
     private let defaults = UserDefaults.standard
-    
+    private let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
+
     private var lastKnownSteps: Int {
         get {
-            return defaults.integer(forKey: "lastKnownSteps")
+            return sharedDefaults?.integer(forKey: "userDaySteps") ?? 0
         }
         set {
-            defaults.set(newValue, forKey: "lastKnownSteps")
-            print("Saved lastKnownSteps to UserDefaults: \(newValue)")
+            guard lastKnownSteps < newValue else {
+                return
+            }
+            sharedDefaults?.set(newValue, forKey: "userDaySteps")
+            print("Saved userDaySteps to UserDefaults: \(newValue)")
         }
     }
     
@@ -96,7 +100,7 @@ class HealthStore {
                 self.lastKnownSteps = Int(steps)
                 self.lastError = "none"
                 print("Successfully fetched steps: \(steps)")
-                continuation.resume(returning: Int(steps))
+                continuation.resume(returning: Int(self.lastKnownSteps))
             }
             
             healthStore.execute(query)
