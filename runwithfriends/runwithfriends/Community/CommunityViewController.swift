@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import HealthKit
+import WidgetKit
 
 class CommunityViewController: UIViewController, MKMapViewDelegate {
     // database
@@ -270,6 +271,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             let groupID = "group.com.wholesomeapps.runwithfriends"
             let shared = UserDefaults(suiteName: groupID)
             shared?.set(Int(steps), forKey: "userDaySteps")
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
 
