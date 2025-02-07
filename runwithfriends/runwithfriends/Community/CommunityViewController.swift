@@ -270,8 +270,11 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             self.daySteps.text = "Day: \(Int(steps).withCommas())"
             let groupID = "group.com.wholesomeapps.runwithfriends"
             let shared = UserDefaults(suiteName: groupID)
-            shared?.set(Int(steps), forKey: "userDaySteps")
-            WidgetCenter.shared.reloadAllTimelines()
+            let savedSteps = shared?.integer(forKey: "userDaySteps") ?? 0
+            if Int(steps) > savedSteps {
+                shared?.set(Int(steps), forKey: "userDaySteps")
+                WidgetCenter.shared.reloadAllTimelines()
+            }
         }
     }
 
