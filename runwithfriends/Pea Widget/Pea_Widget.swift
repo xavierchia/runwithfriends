@@ -2,26 +2,24 @@ import WidgetKit
 import SwiftUI
 import HealthKit
 
-class HealthStore {
-    static let shared = HealthStore()
-    let healthStore = HKHealthStore()
-    private let defaults = UserDefaults.standard
-    private let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
+extension String: @retroactive Error {}
 
-    private var lastKnownSteps: Int {
+class HealthStore {
+    static let myHealthStore = HKHealthStore()
+    static let defaults = UserDefaults.standard
+    static let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
+
+    static var lastKnownSteps: Int {
         get {
             return sharedDefaults?.integer(forKey: "userDaySteps") ?? 0
         }
         set {
-            guard lastKnownSteps < newValue else {
-                return
-            }
             sharedDefaults?.set(newValue, forKey: "userDaySteps")
             print("Saved userDaySteps to UserDefaults: \(newValue)")
         }
     }
     
-    private var lastError: String {
+    static var lastError: String {
         get {
             return defaults.string(forKey: "lastError") ?? "none"
         }
@@ -30,7 +28,7 @@ class HealthStore {
         }
     }
     
-    private var updateCount: Int {
+    static var updateCount: Int {
         get {
             return defaults.integer(forKey: "updateCount")
         }
@@ -39,7 +37,7 @@ class HealthStore {
         }
     }
     
-    private var lastUpdateTime: Date {
+    static var lastUpdateTime: Date {
         get {
             return defaults.object(forKey: "lastUpdateTime") as? Date ?? Date()
         }
@@ -47,25 +45,21 @@ class HealthStore {
             defaults.set(newValue, forKey: "lastUpdateTime")
         }
     }
-    
-    func getLastKnownSteps() -> Int {
-        return lastKnownSteps
-    }
-    
-    func getDebugInfo() -> (error: String, updateCount: Int, lastUpdate: Date) {
+
+    static func getDebugInfo() -> (error: String, updateCount: Int, lastUpdate: Date) {
         return (lastError, updateCount, lastUpdateTime)
     }
     
-    func resetDailyStats() {
+    static func resetDailyStats() {
         if !Calendar.current.isDate(lastUpdateTime, inSameDayAs: Date()) {
             print("New day detected, resetting stats")
             updateCount = 0
             lastKnownSteps = 0
-            lastError = "none"
+            lastError = "reset"
         }
     }
     
-    func fetchSteps(for date: Date) async throws -> Int {
+    static func fetchSteps(for date: Date) async throws -> Int {
         print("Fetching steps for date: \(date)")
         let stepType = HKQuantityType(.stepCount)
         
@@ -80,30 +74,21 @@ class HealthStore {
                 quantitySamplePredicate: predicate,
                 options: .cumulativeSum
             ) { _, result, error in
-                self.updateCount += 1
-                self.lastUpdateTime = Date()
-                
                 if let error = error {
-                    print("HealthKit query error: \(error)")
-                    self.lastError = "query"
-                    continuation.resume(throwing: error)
+                    continuation.resume(throwing: "query")
                     return
                 }
                 
                 guard let steps = result?.sumQuantity()?.doubleValue(for: .count()) else {
                     print("No step data available")
-                    self.lastError = "nodata"
-                    continuation.resume(throwing: NSError(domain: "HealthKit", code: -1, userInfo: [NSLocalizedDescriptionKey: "No step data available"]))
+                    continuation.resume(throwing: "nodata")
                     return
                 }
-                
-                self.lastKnownSteps = Int(steps)
-                self.lastError = "none"
                 print("Successfully fetched steps: \(steps)")
-                continuation.resume(returning: Int(self.lastKnownSteps))
+                continuation.resume(returning: Int(steps))
             }
             
-            healthStore.execute(query)
+            HealthStore.myHealthStore.execute(query)
         }
     }
 }
@@ -121,11 +106,11 @@ struct SimpleEntry: TimelineEntry {
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        let debugInfo = HealthStore.shared.getDebugInfo()
+        let debugInfo = HealthStore.getDebugInfo()
         return SimpleEntry(
             date: Date(),
             configuration: ConfigurationAppIntent(),
-            steps: HealthStore.shared.getLastKnownSteps(),
+            steps: HealthStore.lastKnownSteps,
             lastError: debugInfo.error,
             updateCount: debugInfo.updateCount,
             lastUpdateTime: debugInfo.lastUpdate,
@@ -134,11 +119,11 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        let debugInfo = HealthStore.shared.getDebugInfo()
+        let debugInfo = HealthStore.getDebugInfo()
         return SimpleEntry(
             date: Date(),
             configuration: configuration,
-            steps: HealthStore.shared.getLastKnownSteps(),
+            steps: HealthStore.lastKnownSteps,
             lastError: debugInfo.error,
             updateCount: debugInfo.updateCount,
             lastUpdateTime: debugInfo.lastUpdate,
@@ -148,11 +133,13 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         let currentDate = Date()
-        HealthStore.shared.resetDailyStats()
+        HealthStore.resetDailyStats()
         
         do {
-            let steps = try await HealthStore.shared.fetchSteps(for: currentDate)
-            let debugInfo = HealthStore.shared.getDebugInfo()
+            HealthStore.updateCount += 1
+            HealthStore.lastUpdateTime = Date()
+            let steps = try await HealthStore.fetchSteps(for: currentDate)
+            let debugInfo = HealthStore.getDebugInfo()
             
             let entry = SimpleEntry(
                 date: currentDate,
@@ -164,19 +151,22 @@ struct Provider: AppIntentTimelineProvider {
                 family: context.family
             )
             
+            HealthStore.lastKnownSteps = Int(steps) > HealthStore.lastKnownSteps ? Int(steps) : HealthStore.lastKnownSteps
+            HealthStore.lastError = "none"
             // On success, update after 10 minutes
             let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: currentDate)!
             return Timeline(entries: [entry], policy: .after(nextUpdate))
             
         } catch {
+            HealthStore.lastError = "\(error)"
             print("Error fetching health data: \(error)")
-            print("Using last known steps: \(HealthStore.shared.getLastKnownSteps())")
-            let debugInfo = HealthStore.shared.getDebugInfo()
+            print("Using last known steps: \(HealthStore.lastKnownSteps)")
+            let debugInfo = HealthStore.getDebugInfo()
             
             let entry = SimpleEntry(
                 date: currentDate,
                 configuration: configuration,
-                steps: HealthStore.shared.getLastKnownSteps(),
+                steps: HealthStore.lastKnownSteps,
                 lastError: debugInfo.error,
                 updateCount: debugInfo.updateCount,
                 lastUpdateTime: debugInfo.lastUpdate,
