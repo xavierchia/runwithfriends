@@ -160,24 +160,28 @@ struct Provider: AppIntentTimelineProvider {
                 family: context.family
             )
             
-            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!
+            // On success, update after 10 minutes
+            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: currentDate)!
             return Timeline(entries: [entry], policy: .after(nextUpdate))
             
         } catch {
             print("Error fetching health data: \(error)")
             print("Using last known steps: \(HealthStore.shared.getLastKnownSteps())")
             let debugInfo = HealthStore.shared.getDebugInfo()
-            return Timeline(entries: [
-                SimpleEntry(
-                    date: currentDate,
-                    configuration: configuration,
-                    steps: HealthStore.shared.getLastKnownSteps(),
-                    lastError: debugInfo.error,
-                    updateCount: debugInfo.updateCount,
-                    lastUpdateTime: debugInfo.lastUpdate,
-                    family: context.family
-                )
-            ], policy: .after(Date().addingTimeInterval(60)))
+            
+            let entry = SimpleEntry(
+                date: currentDate,
+                configuration: configuration,
+                steps: HealthStore.shared.getLastKnownSteps(),
+                lastError: debugInfo.error,
+                updateCount: debugInfo.updateCount,
+                lastUpdateTime: debugInfo.lastUpdate,
+                family: context.family
+            )
+            
+            // On failure, retry after 2 minutes
+            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 2, to: currentDate)!
+            return Timeline(entries: [entry], policy: .after(nextUpdate))
         }
     }
 }
