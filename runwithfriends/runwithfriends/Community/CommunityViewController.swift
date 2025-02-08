@@ -269,11 +269,20 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         getSteps(from: Date.startOfDay()) { steps in
             self.daySteps.text = "Day: \(Int(steps).withCommas())"
             let groupID = "group.com.wholesomeapps.runwithfriends"
-            let shared = UserDefaults(suiteName: groupID)
-            let savedSteps = shared?.integer(forKey: "userDaySteps") ?? 0
-            if Int(steps) > savedSteps {
-                shared?.set(Int(steps), forKey: "userDaySteps")
-                WidgetCenter.shared.reloadAllTimelines()
+            if let shared = UserDefaults(suiteName: groupID),
+               let lastUpdateTime = shared.object(forKey: "lastUpdateTime") as? Date {
+                if !Calendar.current.isDate(lastUpdateTime, inSameDayAs: Date()) {
+                    shared.set(Int(steps), forKey: "userDaySteps")
+                    shared.set(Date(), forKey: "lastUpdateTime")
+                    WidgetCenter.shared.reloadAllTimelines()
+                } else {
+                    let lastSteps = shared.integer(forKey: "userDaySteps")
+                    if lastSteps < Int(steps) {
+                        shared.set(Int(steps), forKey: "userDaySteps")
+                        shared.set(Date(), forKey: "lastUpdateTime")
+                        WidgetCenter.shared.reloadAllTimelines()
+                    }
+                }
             }
         }
     }

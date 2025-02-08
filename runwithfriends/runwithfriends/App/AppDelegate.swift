@@ -17,7 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         setupGlobalUI()
-        setupAudio()
+        
+        let groupID = "group.com.wholesomeapps.runwithfriends"
+        if let shared = UserDefaults(suiteName: groupID),
+           shared.bool(forKey: "appFirstInstall") == false {
+            shared.set(true, forKey: "appFirstInstall")
+            shared.set(0, forKey: "userDaySteps")
+            shared.set(Date(), forKey: "lastUpdateTime")
+        }
+        
         return true
     }
     
@@ -34,15 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         
         UINavigationBar.appearance().tintColor = .accent
-    }
-    
-    private func setupAudio() {
-        do {
-           try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: AVAudioSession.CategoryOptions.mixWithOthers)
-           try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print(error)
-        }
     }
 
     // MARK: UISceneSession Lifecycle
