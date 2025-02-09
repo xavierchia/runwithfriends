@@ -10,12 +10,142 @@ import MapKit
 import CoreLocation
 import HealthKit
 import WidgetKit
+import CoreMotion
+
+class StepCounter {
+    private let pedometer = CMPedometer()
+    private var isAvailable: Bool {
+        return CMPedometer.isStepCountingAvailable()
+    }
+    
+    // Singleton instance
+    static let shared = StepCounter()
+    
+    private init() {}
+    
+    // Check and request motion permissions
+    func requestMotionPermission(completion: @escaping (Bool) -> Void) {
+        // First check if step counting is available on the device
+        guard isAvailable else {
+            completion(false)
+            return
+        }
+        
+        // Request motion permission by starting updates temporarily
+        pedometer.queryPedometerData(from: Date(), to: Date()) { _, error in
+            DispatchQueue.main.async {
+                if let error = error as NSError? {
+                    switch error.code {
+                    case Int(CMErrorMotionActivityNotAuthorized.rawValue):
+                        completion(false)
+                    default:
+                        // Other errors might mean the permission is granted but there's another issue
+                        completion(true)
+                    }
+                } else {
+                    completion(true)
+                }
+            }
+        }
+    }
+    
+    func getSteps(from startDate: Date, completion: @escaping (Double) -> Void) {
+        guard isAvailable else {
+            updateWidgetData(steps: 0, error: "not available")
+            completion(0.0)
+            return
+        }
+        
+        // First ensure we have permission
+        requestMotionPermission { [weak self] authorized in
+            guard let self = self else { return }
+            
+            guard authorized else {
+                self.updateWidgetData(steps: 0, error: "no permission")
+                completion(0.0)
+                return
+            }
+            
+            self.pedometer.queryPedometerData(from: startDate, to: Date()) { [weak self] data, error in
+                guard let self = self else { return }
+                
+                DispatchQueue.main.async {
+                    if let steps = data?.numberOfSteps.doubleValue {
+                        // Only update widget data if we're querying today's steps
+                        if Calendar.current.isDate(startDate, inSameDayAs: Date()) {
+                            self.updateWidgetData(steps: Int(steps), error: "none")
+                        }
+                        completion(steps)
+                    } else {
+                        self.updateWidgetData(steps: 0, error: error?.localizedDescription ?? "no data")
+                        completion(0.0)
+                    }
+                }
+            }
+        }
+    }
+
+    private func updateWidgetData(steps: Int, error: String) {
+        guard let shared = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends") else { return }
+        
+        // Get current update count and step count
+        let currentCount = shared.integer(forKey: "updateCount")
+        let currentSteps = shared.integer(forKey: "userDaySteps")
+        
+        // Reload widget if steps have updated
+        if currentSteps != steps {
+            print("reloading if steps have updated")
+            // Update the values
+            shared.set(steps, forKey: "userDaySteps")
+            shared.set(Date(), forKey: "lastUpdateTime")
+            shared.set(currentCount + 1, forKey: "updateCount")
+            shared.set(error, forKey: "lastError")
+            
+            // Force UserDefaults to save immediately
+            shared.synchronize()
+            
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+    
+    // Optional: Live updates for step counting
+    private var updateHandlers: [UUID: (Double) -> Void] = [:]
+    
+    func startLiveUpdates(handler: @escaping (Double) -> Void) -> UUID {
+        let id = UUID()
+        updateHandlers[id] = handler
+        
+        guard isAvailable else { return id }
+        
+        // Check permission before starting live updates
+        requestMotionPermission { authorized in
+            guard authorized else { return }
+            
+            self.pedometer.startUpdates(from: Date()) { [weak self] data, error in
+                if let steps = data?.numberOfSteps.doubleValue {
+                    DispatchQueue.main.async {
+                        self?.updateHandlers.values.forEach { $0(steps) }
+                    }
+                }
+            }
+        }
+        
+        return id
+    }
+    
+    func stopLiveUpdates(id: UUID) {
+        updateHandlers.removeValue(forKey: id)
+        if updateHandlers.isEmpty {
+            pedometer.stopUpdates()
+        }
+    }
+}
 
 class CommunityViewController: UIViewController, MKMapViewDelegate {
     // database
     private let supabase = Supabase.shared.client.database
     private let userData: UserData
-    private let healthStore = HKHealthStore()
+    private let stepCounter = StepCounter.shared
     
     // Waiting room pins
     private var pinsSet = false
@@ -39,9 +169,36 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         setupUI()
         
+        // Request motion permission when view loads
+        stepCounter.requestMotionPermission { authorized in
+            if !authorized {
+                // Handle the case where permission is denied
+                DispatchQueue.main.async {
+                    self.showMotionPermissionAlert()
+                }
+            }
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(updateView), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
+    private func showMotionPermissionAlert() {
+        let alert = UIAlertController(
+            title: "Motion Access Required",
+            message: "Please enable motion and fitness access in Settings to track your steps.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
+            }
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -75,7 +232,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         mapView.mapType = .satelliteFlyover
         view.addSubview(mapView)
         mapView.delegate = self
-        //        view.insertSubview(mapView, belowSubview: bottomRow)
         mapView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -107,36 +263,34 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     private func addAnnotations() {
         mapView.removeAnnotations(mapView.annotations)
         // put user on map
-        let stepsQuantityType: Set = [HKQuantityType.quantityType(forIdentifier: .stepCount)!]
         var userWalker = Walker(user_id: userData.user.user_id, username: userData.user.username, emoji: userData.user.emoji, steps: 0, latitude: 0, longitude: 0)
-        healthStore.requestAuthorization(toShare: [], read: stepsQuantityType) { result, error in
-            self.getSteps(from: Date.startOfWeek()) { [self] userSteps in
-                var steps = 0.0
-                var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
-                for (index, coordinate) in coordinates.enumerated() {
-                    let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-                    let nextDistance = currentCoordinate.distance(from: lastCoordinate)
-                    steps += nextDistance / 0.7
+        
+        stepCounter.getSteps(from: Date.startOfWeek()) { [self] userSteps in
+            var steps = 0.0
+            var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
+            for (index, coordinate) in coordinates.enumerated() {
+                let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                let nextDistance = currentCoordinate.distance(from: lastCoordinate)
+                steps += nextDistance / 0.7
+                
+                let isLastIndex = index == coordinates.count - 1
+                if steps >= userSteps || isLastIndex  {
+                    let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
+                    let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
+                    newPin.coordinate = userCoordinate
+                    newPin.title = userData.user.username
+                    newPin.identifier = "user"
+                    self.mapView.addAnnotation(newPin)
                     
-                    let isLastIndex = index == coordinates.count - 1
-                    if steps >= userSteps || isLastIndex  {
-                        let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
-                        let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
-                        newPin.coordinate = userCoordinate
-                        newPin.title = userData.user.username
-                        newPin.identifier = "user"
-                        self.mapView.addAnnotation(newPin)
-                        
-                        userWalker.latitude = userCoordinate.latitude
-                        userWalker.longitude = userCoordinate.longitude
-                        userWalker.steps = Int(userSteps)
-                        
-                        self.userData.updateWalk(with: Int(userSteps), and: userCoordinate)
-                        break
-                    }
+                    userWalker.latitude = userCoordinate.latitude
+                    userWalker.longitude = userCoordinate.longitude
+                    userWalker.steps = Int(userSteps)
                     
-                    lastCoordinate = currentCoordinate
+                    self.userData.updateWalk(with: Int(userSteps), and: userCoordinate)
+                    break
                 }
+                
+                lastCoordinate = currentCoordinate
             }
         }
         
@@ -262,61 +416,12 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func updateSteps() {
-        getSteps(from: Date.startOfWeek()) { steps in
+        stepCounter.getSteps(from: Date.startOfWeek()) { steps in
             self.weekSteps.text = "Week: \(Int(steps).withCommas())"
         }
         
-        getSteps(from: Date.startOfDay()) { steps in
+        stepCounter.getSteps(from: Date.startOfDay()) { steps in
             self.daySteps.text = "Day: \(Int(steps).withCommas())"
-            let groupID = "group.com.wholesomeapps.runwithfriends"
-            if let shared = UserDefaults(suiteName: groupID),
-               let lastUpdateTime = shared.object(forKey: "lastUpdateTime") as? Date {
-                if !Calendar.current.isDate(lastUpdateTime, inSameDayAs: Date()) {
-                    shared.set(Int(steps), forKey: "userDaySteps")
-                    shared.set(Date(), forKey: "lastUpdateTime")
-                    WidgetCenter.shared.reloadAllTimelines()
-                } else {
-                    let lastSteps = shared.integer(forKey: "userDaySteps")
-                    if lastSteps < Int(steps) {
-                        shared.set(Int(steps), forKey: "userDaySteps")
-                        shared.set(Date(), forKey: "lastUpdateTime")
-                        WidgetCenter.shared.reloadAllTimelines()
-                    }
-                }
-            }
         }
-    }
-
-}
-
-// MARK: Healthkit utilities
-extension CommunityViewController {
-    private func getSteps(from startDate: Date, completion: @escaping (Double) -> Void) {
-        let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-        
-        let now = Date()
-        let startDate = startDate
-        let predicate = HKQuery.predicateForSamples(
-            withStart: startDate,
-            end: now,
-            options: .strictStartDate
-        )
-        
-        let query = HKStatisticsQuery(
-            quantityType: stepsQuantityType,
-            quantitySamplePredicate: predicate,
-            options: .cumulativeSum
-        ) { _, result, _ in
-            guard let result = result, let sum = result.sumQuantity() else {
-                DispatchQueue.main.async {
-                    completion(0.0)
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                completion(sum.doubleValue(for: HKUnit.count()))
-            }
-        }
-        healthStore.execute(query)
     }
 }

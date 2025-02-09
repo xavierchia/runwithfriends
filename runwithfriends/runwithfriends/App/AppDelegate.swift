@@ -10,11 +10,12 @@ import CoreData
 import CloudKit
 import AVFoundation
 
-// test
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        UIApplication.shared.setMinimumBackgroundFetchInterval(30 * 60) // 30 minutes
+
         // Override point for customization after application launch.
         setupGlobalUI()
         
@@ -28,6 +29,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // Get steps in background
+        StepCounter.shared.getSteps(from: Date.startOfDay()) { steps in
+            // StepCounter will handle updating UserDefaults and reloading widget
+            completionHandler(.newData)
+        }
+    }
+
     
     private func setupGlobalUI() {
         // MARK: Navigation bar appearance
