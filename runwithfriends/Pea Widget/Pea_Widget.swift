@@ -174,7 +174,7 @@ struct Provider: AppIntentTimelineProvider {
             )
             
             // On failure, retry after 2 minutes
-            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 2, to: currentDate)!
+            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: currentDate)!
             return Timeline(entries: [entry], policy: .after(nextUpdate))
         }
     }
