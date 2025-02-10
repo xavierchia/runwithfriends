@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // Get steps in background
-        StepCounter.shared.getSteps(from: Date.startOfDay()) { steps in
+        StepCounter.shared.getSteps(from: Date.startOfDay(), source: "background") { steps in
             // StepCounter will handle updating UserDefaults and reloading widget
             completionHandler(.newData)
         }

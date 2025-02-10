@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		257EC7A52B882FFE000759A8 /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257EC7A42B882FFE000759A8 /* Progression.swift */; };
-		258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 258508702B2BCEB8005FD81F /* SkeletonView */; };
 		25A4309B2B74CB79000CE771 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A4309A2B74CB79000CE771 /* UIFont.swift */; };
 		25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A5B0DB2B7C9741004DB775 /* Distance.swift */; };
 		25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D47D592B97DEEE003BAF64 /* Collections.swift */; };
@@ -166,7 +165,6 @@
 				951D1A672B32675F00171C62 /* Functions in Frameworks */,
 				951D1A652B32675F00171C62 /* Auth in Frameworks */,
 				951D1A6B2B32675F00171C62 /* Realtime in Frameworks */,
-				258508712B2BCEB8005FD81F /* SkeletonView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +361,6 @@
 			);
 			name = runwithfriends;
 			packageProductDependencies = (
-				258508702B2BCEB8005FD81F /* SkeletonView */,
 				951D1A642B32675F00171C62 /* Auth */,
 				951D1A662B32675F00171C62 /* Functions */,
 				951D1A682B32675F00171C62 /* PostgREST */,
@@ -425,7 +422,6 @@
 			);
 			mainGroup = 952825A72AE1F74D0032B04B;
 			packageReferences = (
-				2585086F2B2BCEB8005FD81F /* XCRemoteSwiftPackageReference "SkeletonView" */,
 				951D1A632B32675F00171C62 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 			);
 			productRefGroup = 952825B12AE1F74D0032B04B /* Products */;
@@ -672,6 +668,7 @@
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Using your health data";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Share your health data";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "update health";
+				INFOPLIST_KEY_NSMotionUsageDescription = "We need access to count your steps";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -711,6 +708,7 @@
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Using your health data";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Share your health data";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "update health";
+				INFOPLIST_KEY_NSMotionUsageDescription = "We need access to count your steps";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -826,14 +824,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2585086F2B2BCEB8005FD81F /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:Juanpe/SkeletonView.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.30.4;
-			};
-		};
 		951D1A632B32675F00171C62 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
@@ -845,11 +835,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		258508702B2BCEB8005FD81F /* SkeletonView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2585086F2B2BCEB8005FD81F /* XCRemoteSwiftPackageReference "SkeletonView" */;
-			productName = SkeletonView;
-		};
 		951D1A642B32675F00171C62 /* Auth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 951D1A632B32675F00171C62 /* XCRemoteSwiftPackageReference "supabase-swift" */;

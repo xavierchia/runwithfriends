@@ -49,7 +49,7 @@ class StepCounter {
         }
     }
     
-    func getSteps(from startDate: Date, completion: @escaping (Double) -> Void) {
+    func getSteps(from startDate: Date, source: String = "app", completion: @escaping (Double) -> Void) {
         guard isAvailable else {
             updateWidgetData(steps: 0, error: "not available")
             completion(0.0)
@@ -73,7 +73,7 @@ class StepCounter {
                     if let steps = data?.numberOfSteps.doubleValue {
                         // Only update widget data if we're querying today's steps
                         if Calendar.current.isDate(startDate, inSameDayAs: Date()) {
-                            self.updateWidgetData(steps: Int(steps), error: "none")
+                            self.updateWidgetData(steps: Int(steps), error: source)
                         }
                         completion(steps)
                     } else {
