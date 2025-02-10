@@ -16,6 +16,9 @@ struct SimpleEntry: TimelineEntry {
 struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
     private let pedometer = CMPedometer()
+    private let activeRefreshInterval = 15
+    private let normalRefreshInterval = 30
+    private let stepThreshold = 1000
     
     private func isStepCountingAvailable() -> Bool {
         return CMPedometer.isStepCountingAvailable()
@@ -36,7 +39,7 @@ struct Provider: AppIntentTimelineProvider {
                 }
                 
                 if let steps = data?.numberOfSteps.intValue {
-                    continuation.resume(returning: (steps, "success"))
+                    continuation.resume(returning: (steps, "widget success"))
                 } else {
                     continuation.resume(returning: (currentSteps, "no step data"))
                 }
@@ -122,6 +125,7 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
+        print("updating widget")
         let currentDate = Date()
         
         // Get current data from defaults first
@@ -146,8 +150,8 @@ struct Provider: AppIntentTimelineProvider {
             family: context.family
         )
         
-        // Check again in 30 minutes
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: currentDate)!
+        let refreshInterval = (motionSteps - data.steps >= stepThreshold) ? activeRefreshInterval : normalRefreshInterval
+        let nextUpdate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: currentDate)!
         return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
 }
