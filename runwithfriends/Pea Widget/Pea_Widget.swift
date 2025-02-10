@@ -21,9 +21,9 @@ struct Provider: AppIntentTimelineProvider {
         return CMPedometer.isStepCountingAvailable()
     }
     
-    private func getStepsFromCoreMotion() async -> (steps: Int, error: String) {
+    private func getStepsFromCoreMotion(currentSteps: Int) async -> (steps: Int, error: String) {
         guard isStepCountingAvailable() else {
-            return (0, "step counting not available")
+            return (currentSteps, "step counting not available")
         }
         
         return await withCheckedContinuation { continuation in
@@ -31,14 +31,14 @@ struct Provider: AppIntentTimelineProvider {
             
             pedometer.queryPedometerData(from: startOfDay, to: Date()) { data, error in
                 if let error = error {
-                    continuation.resume(returning: (0, error.localizedDescription))
+                    continuation.resume(returning: (currentSteps, error.localizedDescription))
                     return
                 }
                 
                 if let steps = data?.numberOfSteps.intValue {
-                    continuation.resume(returning: (steps, "widget"))
+                    continuation.resume(returning: (steps, "success"))
                 } else {
-                    continuation.resume(returning: (0, "no step data"))
+                    continuation.resume(returning: (currentSteps, "no step data"))
                 }
             }
         }
@@ -54,11 +54,6 @@ struct Provider: AppIntentTimelineProvider {
         let lastError = shared.string(forKey: "lastError") ?? "none"
         let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         
-        // Reset if it's a new day
-        if !Calendar.current.isDate(lastUpdate, inSameDayAs: Date()) {
-            return (0, "new day", 0, Date())
-        }
-        
         return (steps, lastError, updateCount, lastUpdate)
     }
     
@@ -68,18 +63,24 @@ struct Provider: AppIntentTimelineProvider {
         let currentSteps = shared.integer(forKey: "userDaySteps")
         let currentCount = shared.integer(forKey: "updateCount")
         
-        // Only update if new step count is higher or it's a new day
+        // Check if it's a new day
         let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
         
-        if isNewDay || steps > currentSteps {
+        if isNewDay {
+            // Reset everything at the start of a new day, but use current steps
+            shared.set(steps, forKey: "userDaySteps")
+            shared.set(Date(), forKey: "lastUpdateTime")
+            shared.set(1, forKey: "updateCount")
+            shared.set("new day", forKey: "lastError")
+            shared.synchronize()
+        } else if steps > currentSteps {
+            // Update only if new step count is higher
             shared.set(steps, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(currentCount + 1, forKey: "updateCount")
             shared.set(error, forKey: "lastError")
             shared.synchronize()
-            
-            WidgetCenter.shared.reloadAllTimelines()
         }
     }
 
@@ -97,11 +98,11 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        // Get steps from CoreMotion
-        let (motionSteps, motionError) = await getStepsFromCoreMotion()
-        
-        // Get current data from defaults
+        // Get current data from defaults first
         let data = getDataFromDefaults()
+        
+        // Get steps from CoreMotion, passing current steps for fallback
+        let (motionSteps, motionError) = await getStepsFromCoreMotion(currentSteps: data.steps)
         
         // Update shared defaults with new step count if necessary
         updateSharedDefaults(steps: motionSteps, error: motionError)
@@ -123,11 +124,11 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         let currentDate = Date()
         
-        // Get steps from CoreMotion
-        let (motionSteps, motionError) = await getStepsFromCoreMotion()
-        
-        // Get current data from defaults
+        // Get current data from defaults first
         let data = getDataFromDefaults()
+        
+        // Get steps from CoreMotion, passing current steps for fallback
+        let (motionSteps, motionError) = await getStepsFromCoreMotion(currentSteps: data.steps)
         
         // Update shared defaults with new step count if necessary
         updateSharedDefaults(steps: motionSteps, error: motionError)
@@ -145,7 +146,7 @@ struct Provider: AppIntentTimelineProvider {
             family: context.family
         )
         
-        // Check again in 15 minutes
+        // Check again in 30 minutes
         let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: currentDate)!
         return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
