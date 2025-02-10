@@ -134,7 +134,7 @@ struct Provider: AppIntentTimelineProvider {
             configuration: configuration,
             steps: finalSteps,
             lastError: motionError,
-            updateCount: data.count,
+            updateCount: data.count + 1,
             lastUpdateTime: Date(),
             family: context.family
         )
