@@ -20,6 +20,22 @@ struct Provider: AppIntentTimelineProvider {
     private let normalRefreshInterval = 30
     private let stepThreshold = 1000
     
+    private func getRefreshInterval(stepDifference: Int, timeSinceLastUpdate: TimeInterval) -> Int {
+        // Convert time difference to minutes
+        let minutesSinceLastUpdate = timeSinceLastUpdate / 60.0
+        
+        // Avoid division by zero
+        guard minutesSinceLastUpdate > 0 else {
+            return normalRefreshInterval
+        }
+        
+        // Calculate steps per minute
+        let stepsPerMinute = Double(stepDifference) / minutesSinceLastUpdate
+        
+        // Return shorter interval if step rate is high (> 33 steps/minute)
+        return stepsPerMinute > 33.0 ? activeRefreshInterval : normalRefreshInterval
+    }
+    
     private func isStepCountingAvailable() -> Bool {
         return CMPedometer.isStepCountingAvailable()
     }
@@ -150,7 +166,15 @@ struct Provider: AppIntentTimelineProvider {
             family: context.family
         )
         
-        let refreshInterval = (motionSteps - data.steps >= stepThreshold) ? activeRefreshInterval : normalRefreshInterval
+        // Calculate time since last update
+        let timeSinceLastUpdate = currentDate.timeIntervalSince(data.lastUpdate)
+        
+        // Get refresh interval based on step rate
+        let refreshInterval = getRefreshInterval(
+            stepDifference: motionSteps - data.steps,
+            timeSinceLastUpdate: timeSinceLastUpdate
+        )
+        
         let nextUpdate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: currentDate)!
         return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
