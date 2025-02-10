@@ -1,7 +1,8 @@
 import WidgetKit
 import SwiftUI
+import CoreMotion
 
-// Keep the entry struct the same since it works well for our display needs
+// Keep the entry struct the same
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
@@ -14,6 +15,34 @@ struct SimpleEntry: TimelineEntry {
 
 struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
+    private let pedometer = CMPedometer()
+    
+    private func isStepCountingAvailable() -> Bool {
+        return CMPedometer.isStepCountingAvailable()
+    }
+    
+    private func getStepsFromCoreMotion() async -> (steps: Int, error: String) {
+        guard isStepCountingAvailable() else {
+            return (0, "step counting not available")
+        }
+        
+        return await withCheckedContinuation { continuation in
+            let startOfDay = Calendar.current.startOfDay(for: Date())
+            
+            pedometer.queryPedometerData(from: startOfDay, to: Date()) { data, error in
+                if let error = error {
+                    continuation.resume(returning: (0, error.localizedDescription))
+                    return
+                }
+                
+                if let steps = data?.numberOfSteps.intValue {
+                    continuation.resume(returning: (steps, "widget"))
+                } else {
+                    continuation.resume(returning: (0, "no step data"))
+                }
+            }
+        }
+    }
     
     private func getDataFromDefaults() -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
         guard let shared = sharedDefaults else {
@@ -32,6 +61,27 @@ struct Provider: AppIntentTimelineProvider {
         
         return (steps, lastError, updateCount, lastUpdate)
     }
+    
+    private func updateSharedDefaults(steps: Int, error: String) {
+        guard let shared = sharedDefaults else { return }
+        
+        let currentSteps = shared.integer(forKey: "userDaySteps")
+        let currentCount = shared.integer(forKey: "updateCount")
+        
+        // Only update if new step count is higher or it's a new day
+        let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
+        let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
+        
+        if isNewDay || steps > currentSteps {
+            shared.set(steps, forKey: "userDaySteps")
+            shared.set(Date(), forKey: "lastUpdateTime")
+            shared.set(currentCount + 1, forKey: "updateCount")
+            shared.set(error, forKey: "lastError")
+            shared.synchronize()
+            
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
 
     func placeholder(in context: Context) -> SimpleEntry {
         let data = getDataFromDefaults()
@@ -47,39 +97,61 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
+        // Get steps from CoreMotion
+        let (motionSteps, motionError) = await getStepsFromCoreMotion()
+        
+        // Get current data from defaults
         let data = getDataFromDefaults()
+        
+        // Update shared defaults with new step count if necessary
+        updateSharedDefaults(steps: motionSteps, error: motionError)
+        
+        // Use the higher value between stored and new steps
+        let finalSteps = max(motionSteps, data.steps)
+        
         return SimpleEntry(
             date: Date(),
             configuration: configuration,
-            steps: data.steps,
-            lastError: data.error,
+            steps: finalSteps,
+            lastError: motionError,
             updateCount: data.count,
-            lastUpdateTime: data.lastUpdate,
+            lastUpdateTime: Date(),
             family: context.family
         )
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         let currentDate = Date()
+        
+        // Get steps from CoreMotion
+        let (motionSteps, motionError) = await getStepsFromCoreMotion()
+        
+        // Get current data from defaults
         let data = getDataFromDefaults()
+        
+        // Update shared defaults with new step count if necessary
+        updateSharedDefaults(steps: motionSteps, error: motionError)
+        
+        // Use the higher value between stored and new steps
+        let finalSteps = max(motionSteps, data.steps)
         
         let entry = SimpleEntry(
             date: currentDate,
             configuration: configuration,
-            steps: data.steps,
-            lastError: data.error,
+            steps: finalSteps,
+            lastError: motionError,
             updateCount: data.count,
-            lastUpdateTime: data.lastUpdate,
+            lastUpdateTime: currentDate,
             family: context.family
         )
         
         // Check again in 15 minutes
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: currentDate)!
+        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: currentDate)!
         return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
 }
 
-// Keep your existing view code
+// Keep your existing view code unchanged
 struct Pea_WidgetEntryView : View {
     var entry: Provider.Entry
     
@@ -141,7 +213,7 @@ struct Pea_Widget: Widget {
     }
 }
 
-// Keep your preview code the same
+// Preview configurations remain unchanged
 extension ConfigurationAppIntent {
     fileprivate static var smiley: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
