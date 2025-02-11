@@ -129,20 +129,17 @@ struct Provider: AppIntentTimelineProvider {
         let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
         
         if isNewDay {
-            // Reset everything at the start of a new day, but use current steps
-            shared.set(steps, forKey: "userDaySteps")
-            shared.set(Date(), forKey: "lastUpdateTime")
+            shared.set(0, forKey: "userDaySteps")
             shared.set(1, forKey: "updateCount")
             shared.set("new day", forKey: "lastError")
-            shared.synchronize()
         } else if steps > currentSteps {
             // Update only if new step count is higher
             shared.set(steps, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(currentCount + 1, forKey: "updateCount")
             shared.set(error, forKey: "lastError")
-            shared.synchronize()
         }
+        shared.synchronize()
     }
     
     private func getFirstFriend() -> FriendProgress? {

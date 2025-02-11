@@ -151,18 +151,23 @@ class StepCounter {
         
         let currentCount = shared.integer(forKey: "updateCount")
         let currentSteps = shared.integer(forKey: "userDaySteps")
+        let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         
-        if currentSteps != steps {
-            print("reloading if steps have updated")
+        let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
+        
+        if isNewDay {
+            shared.set(0, forKey: "userDaySteps")
+            shared.set(1, forKey: "updateCount")
+            shared.set("new day", forKey: "lastError")
+        } else if steps != currentSteps {
+            // Update only if new step count is higher
             shared.set(steps, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(currentCount + 1, forKey: "updateCount")
             shared.set(error, forKey: "lastError")
-            
-            shared.synchronize()
-            
-            WidgetCenter.shared.reloadAllTimelines()
         }
+        shared.synchronize()
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     // Live updates functionality
