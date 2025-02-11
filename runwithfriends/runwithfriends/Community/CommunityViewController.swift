@@ -14,6 +14,7 @@ import CoreMotion
 
 class StepCounter {
     private let pedometer = CMPedometer()
+    private let healthStore = HKHealthStore()
     private var isAvailable: Bool {
         return CMPedometer.isStepCountingAvailable()
     }
@@ -23,15 +24,32 @@ class StepCounter {
     
     private init() {}
     
+    // Request HealthKit permission
+    private func requestHealthKitPermission() async -> Bool {
+        guard HKHealthStore.isHealthDataAvailable() else { return false }
+        
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let typesToRead = Set([stepType])
+        
+        return await withCheckedContinuation { continuation in
+            healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
+                if let error = error {
+                    print("HealthKit authorization error: \(error.localizedDescription)")
+                    continuation.resume(returning: false)
+                } else {
+                    continuation.resume(returning: success)
+                }
+            }
+        }
+    }
+    
     // Check and request motion permissions
     func requestMotionPermission(completion: @escaping (Bool) -> Void) {
-        // First check if step counting is available on the device
         guard isAvailable else {
             completion(false)
             return
         }
         
-        // Request motion permission by starting updates temporarily
         pedometer.queryPedometerData(from: Date(), to: Date()) { _, error in
             DispatchQueue.main.async {
                 if let error = error as NSError? {
@@ -39,7 +57,6 @@ class StepCounter {
                     case Int(CMErrorMotionActivityNotAuthorized.rawValue):
                         completion(false)
                     default:
-                        // Other errors might mean the permission is granted but there's another issue
                         completion(true)
                     }
                 } else {
@@ -49,38 +66,84 @@ class StepCounter {
         }
     }
     
-    func getSteps(from startDate: Date, source: String = "app", completion: @escaping (Double) -> Void) {
+    // Get steps from CoreMotion
+    private func getStepsFromCoreMotion(from startDate: Date) async -> (steps: Double, error: String) {
         guard isAvailable else {
-            updateWidgetData(steps: 0, error: "not available")
-            completion(0.0)
-            return
+            return (0, "CM not available")
         }
         
-        // First ensure we have permission
-        requestMotionPermission { [weak self] authorized in
-            guard let self = self else { return }
-            
-            guard authorized else {
-                self.updateWidgetData(steps: 0, error: "no permission")
-                completion(0.0)
-                return
+        return await withCheckedContinuation { continuation in
+            pedometer.queryPedometerData(from: startDate, to: Date()) { data, error in
+                if let error = error {
+                    continuation.resume(returning: (0, error.localizedDescription))
+                    return
+                }
+                
+                if let steps = data?.numberOfSteps.doubleValue {
+                    continuation.resume(returning: (steps, "CM success"))
+                } else {
+                    continuation.resume(returning: (0, "no CM data"))
+                }
+            }
+        }
+    }
+    
+    // Get steps from HealthKit
+    private func getStepsFromHealthKit(from startDate: Date) async -> (steps: Double, error: String) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            return (0, "HK not available")
+        }
+        
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictStartDate)
+        
+        return await withCheckedContinuation { continuation in
+            let query = HKStatisticsQuery(quantityType: stepType,
+                                        quantitySamplePredicate: predicate,
+                                        options: .cumulativeSum) { _, result, error in
+                if let error = error {
+                    continuation.resume(returning: (0, error.localizedDescription))
+                    return
+                }
+                
+                guard let quantity = result?.sumQuantity() else {
+                    continuation.resume(returning: (0, "no HK data"))
+                    return
+                }
+                
+                let steps = quantity.doubleValue(for: HKUnit.count())
+                continuation.resume(returning: (steps, "HK success"))
             }
             
-            self.pedometer.queryPedometerData(from: startDate, to: Date()) { [weak self] data, error in
-                guard let self = self else { return }
-                
-                DispatchQueue.main.async {
-                    if let steps = data?.numberOfSteps.doubleValue {
-                        // Only update widget data if we're querying today's steps
-                        if Calendar.current.isDate(startDate, inSameDayAs: Date()) {
-                            self.updateWidgetData(steps: Int(steps), error: source)
-                        }
-                        completion(steps)
-                    } else {
-                        self.updateWidgetData(steps: 0, error: error?.localizedDescription ?? "no data")
-                        completion(0.0)
-                    }
-                }
+            healthStore.execute(query)
+        }
+    }
+    
+    // Main function to get steps from both sources
+    func getSteps(from startDate: Date, source: String = "app", completion: @escaping (Double) -> Void) {
+        Task {
+            // Request HealthKit permission first
+            let healthKitAuthorized = await requestHealthKitPermission()
+            
+            // Get steps from both sources
+            async let coreMotionResult = getStepsFromCoreMotion(from: startDate)
+            async let healthKitResult = healthKitAuthorized ? getStepsFromHealthKit(from: startDate) : (steps: 0.0, error: "HK not authorized")
+            
+            let (cmSteps, cmError) = await coreMotionResult
+            let (hkSteps, hkError) = await healthKitResult
+            
+            // Use the higher step count
+            let finalSteps = max(cmSteps, hkSteps)
+            let error = cmSteps > hkSteps ? "CM: \(cmError)" : "HK: \(hkError)"
+            
+            // Update widget if needed
+            if Calendar.current.isDate(startDate, inSameDayAs: Date()) {
+                updateWidgetData(steps: Int(finalSteps), error: error)
+            }
+            
+            // Return the result on the main thread
+            DispatchQueue.main.async {
+                completion(finalSteps)
             }
         }
     }
@@ -88,27 +151,23 @@ class StepCounter {
     private func updateWidgetData(steps: Int, error: String) {
         guard let shared = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends") else { return }
         
-        // Get current update count and step count
         let currentCount = shared.integer(forKey: "updateCount")
         let currentSteps = shared.integer(forKey: "userDaySteps")
         
-        // Reload widget if steps have updated
         if currentSteps != steps {
             print("reloading if steps have updated")
-            // Update the values
             shared.set(steps, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(currentCount + 1, forKey: "updateCount")
             shared.set(error, forKey: "lastError")
             
-            // Force UserDefaults to save immediately
             shared.synchronize()
             
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
-    // Optional: Live updates for step counting
+    // Live updates functionality
     private var updateHandlers: [UUID: (Double) -> Void] = [:]
     
     func startLiveUpdates(handler: @escaping (Double) -> Void) -> UUID {
@@ -117,7 +176,6 @@ class StepCounter {
         
         guard isAvailable else { return id }
         
-        // Check permission before starting live updates
         requestMotionPermission { authorized in
             guard authorized else { return }
             
