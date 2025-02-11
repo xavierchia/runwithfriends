@@ -1,8 +1,8 @@
 import WidgetKit
 import SwiftUI
 import CoreMotion
+import HealthKit
 
-// Keep the entry struct the same
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
@@ -21,18 +21,11 @@ struct Provider: AppIntentTimelineProvider {
     private let stepThreshold = 1000
     
     private func getRefreshInterval(stepDifference: Int, timeSinceLastUpdate: TimeInterval) -> Int {
-        // Convert time difference to minutes
         let minutesSinceLastUpdate = timeSinceLastUpdate / 60.0
-        
-        // Avoid division by zero
         guard minutesSinceLastUpdate > 0 else {
             return normalRefreshInterval
         }
-        
-        // Calculate steps per minute
         let stepsPerMinute = Double(stepDifference) / minutesSinceLastUpdate
-        
-        // Return shorter interval if step rate is high (> 33 steps/minute)
         return stepsPerMinute > 33.0 ? activeRefreshInterval : normalRefreshInterval
     }
     
@@ -40,9 +33,30 @@ struct Provider: AppIntentTimelineProvider {
         return CMPedometer.isStepCountingAvailable()
     }
     
-    private func getStepsFromCoreMotion(currentSteps: Int) async -> (steps: Int, error: String) {
+    private func getStepsFromAllSources() async -> (steps: Int, error: String) {
+        let healthStore = HKHealthStore()
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        
+        // Get steps from both sources
+        async let coreMotionResult = getStepsFromCoreMotionOnly()
+        async let healthKitResult = getStepsFromHealthKit(healthStore: healthStore, stepType: stepType)
+        
+        // Wait for both results
+        let (cmSteps, cmError) = await coreMotionResult
+        let (hkSteps, hkError) = await healthKitResult
+        
+        // Return the higher step count
+        if cmSteps > hkSteps {
+            return (cmSteps, "CM: \(cmError)")
+        } else {
+            return (hkSteps, "HK: \(hkError)")
+        }
+    }
+
+    // Original CoreMotion function renamed
+    private func getStepsFromCoreMotionOnly() async -> (steps: Int, error: String) {
         guard isStepCountingAvailable() else {
-            return (currentSteps, "step counting not available")
+            return (0, "CM not available")
         }
         
         return await withCheckedContinuation { continuation in
@@ -50,16 +64,47 @@ struct Provider: AppIntentTimelineProvider {
             
             pedometer.queryPedometerData(from: startOfDay, to: Date()) { data, error in
                 if let error = error {
-                    continuation.resume(returning: (currentSteps, error.localizedDescription))
+                    continuation.resume(returning: (0, error.localizedDescription))
                     return
                 }
                 
                 if let steps = data?.numberOfSteps.intValue {
-                    continuation.resume(returning: (steps, "widget success"))
+                    continuation.resume(returning: (steps, "CM success"))
                 } else {
-                    continuation.resume(returning: (currentSteps, "no step data"))
+                    continuation.resume(returning: (0, "no CM data"))
                 }
             }
+        }
+    }
+
+    // New HealthKit function
+    private func getStepsFromHealthKit(healthStore: HKHealthStore, stepType: HKQuantityType) async -> (steps: Int, error: String) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            return (0, "HK not available")
+        }
+        
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
+        
+        return await withCheckedContinuation { continuation in
+            let query = HKStatisticsQuery(quantityType: stepType,
+                                        quantitySamplePredicate: predicate,
+                                        options: .cumulativeSum) { _, result, error in
+                if let error = error {
+                    continuation.resume(returning: (0, error.localizedDescription))
+                    return
+                }
+                
+                guard let quantity = result?.sumQuantity() else {
+                    continuation.resume(returning: (0, "no HK data"))
+                    return
+                }
+                
+                let steps = Int(quantity.doubleValue(for: HKUnit.count()))
+                continuation.resume(returning: (steps, "HK success"))
+            }
+            
+            healthStore.execute(query)
         }
     }
     
@@ -117,23 +162,15 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        // Get current data from defaults first
         let data = getDataFromDefaults()
-        
-        // Get steps from CoreMotion, passing current steps for fallback
-        let (motionSteps, motionError) = await getStepsFromCoreMotion(currentSteps: data.steps)
-        
-        // Update shared defaults with new step count if necessary
-        updateSharedDefaults(steps: motionSteps, error: motionError)
-        
-        // Use the higher value between stored and new steps
-        let finalSteps = max(motionSteps, data.steps)
-        
+        let (allSteps, allError) = await getStepsFromAllSources()
+        updateSharedDefaults(steps: allSteps, error: allError)
+        let finalSteps = max(allSteps, data.steps)
         return SimpleEntry(
             date: Date(),
             configuration: configuration,
             steps: finalSteps,
-            lastError: motionError,
+            lastError: allError,
             updateCount: data.count + 1,
             lastUpdateTime: Date(),
             family: context.family
@@ -143,44 +180,31 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         print("updating widget")
         let currentDate = Date()
-        
-        // Get current data from defaults first
         let data = getDataFromDefaults()
-        
-        // Get steps from CoreMotion, passing current steps for fallback
-        let (motionSteps, motionError) = await getStepsFromCoreMotion(currentSteps: data.steps)
-        
-        // Update shared defaults with new step count if necessary
-        updateSharedDefaults(steps: motionSteps, error: motionError)
-        
-        // Use the higher value between stored and new steps
-        let finalSteps = max(motionSteps, data.steps)
+        let (allSteps, allError) = await getStepsFromAllSources()
+        let maxSteps = max(allSteps, data.steps)
+        updateSharedDefaults(steps: maxSteps, error: allError)
         
         let entry = SimpleEntry(
             date: currentDate,
             configuration: configuration,
-            steps: finalSteps,
-            lastError: motionError,
-            updateCount: data.count,
+            steps: maxSteps,
+            lastError: allError,
+            updateCount: data.count + 1,
             lastUpdateTime: currentDate,
             family: context.family
         )
         
-        // Calculate time since last update
         let timeSinceLastUpdate = currentDate.timeIntervalSince(data.lastUpdate)
-        
-        // Get refresh interval based on step rate
         let refreshInterval = getRefreshInterval(
-            stepDifference: motionSteps - data.steps,
+            stepDifference: allSteps - data.steps,
             timeSinceLastUpdate: timeSinceLastUpdate
         )
-        
         let nextUpdate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: currentDate)!
         return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
 }
 
-// Keep your existing view code unchanged
 struct Pea_WidgetEntryView : View {
     var entry: Provider.Entry
     
@@ -242,7 +266,6 @@ struct Pea_Widget: Widget {
     }
 }
 
-// Preview configurations remain unchanged
 extension ConfigurationAppIntent {
     fileprivate static var smiley: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
