@@ -13,18 +13,6 @@ import HealthKit
 struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
     private let pedometer = CMPedometer()
-    private let activeRefreshInterval = 15
-    private let normalRefreshInterval = 30
-    private let stepThreshold = 1000
-    
-    private func getRefreshInterval(stepDifference: Int, timeSinceLastUpdate: TimeInterval) -> Int {
-        let minutesSinceLastUpdate = timeSinceLastUpdate / 60.0
-        guard minutesSinceLastUpdate > 0 else {
-            return normalRefreshInterval
-        }
-        let stepsPerMinute = Double(stepDifference) / minutesSinceLastUpdate
-        return stepsPerMinute > 33.0 ? activeRefreshInterval : normalRefreshInterval
-    }
     
     private func isStepCountingAvailable() -> Bool {
         return CMPedometer.isStepCountingAvailable()
@@ -107,6 +95,7 @@ struct Provider: AppIntentTimelineProvider {
     
     private func getDataFromDefaults() -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
         guard let shared = sharedDefaults else {
+            print("no shared defaults")
             return (0, "no shared defaults", 0, Date())
         }
         
@@ -119,21 +108,20 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     private func updateSharedDefaults(steps: Int, error: String) {
-        guard let shared = sharedDefaults else { return }
+        guard let shared = sharedDefaults else {
+            print("no shared defaults")
+            return
+        }
         
         let currentSteps = shared.integer(forKey: "userDaySteps")
         let currentCount = shared.integer(forKey: "updateCount")
         
-        // Check if it's a new day
         let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
-        
         if isNewDay {
-            shared.set(0, forKey: "userDaySteps")
             shared.set(1, forKey: "updateCount")
-            shared.set("new day", forKey: "lastError")
-        } else if steps > currentSteps {
-            // Update only if new step count is higher
+        }
+        if steps != currentSteps {
             shared.set(steps, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(currentCount + 1, forKey: "updateCount")
@@ -145,6 +133,7 @@ struct Provider: AppIntentTimelineProvider {
     private func getFirstFriend() -> FriendProgress? {
         guard let shared = sharedDefaults,
               let friendData = shared.data(forKey: "friendsProgress") else {
+            print("no shared defaults")
             return nil
         }
         
@@ -172,6 +161,7 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
+        print("snapshot called")
         let data = getDataFromDefaults()
         let (allSteps, allError) = await getStepsFromAllSources()
         updateSharedDefaults(steps: allSteps, error: allError)
@@ -190,7 +180,7 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         print("updating widget")
-        let currentDate = Date()
+        let currentDate = Date().addingTimeInterval(5)
         let data = getDataFromDefaults()
         let (allSteps, allError) = await getStepsFromAllSources()
         let maxSteps = max(allSteps, data.steps)
@@ -207,12 +197,7 @@ struct Provider: AppIntentTimelineProvider {
             firstFriend: getFirstFriend()
         )
         
-        let timeSinceLastUpdate = currentDate.timeIntervalSince(data.lastUpdate)
-        let refreshInterval = getRefreshInterval(
-            stepDifference: allSteps - data.steps,
-            timeSinceLastUpdate: timeSinceLastUpdate
-        )
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: currentDate)!
+        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 20, to: currentDate)!
         return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
 }

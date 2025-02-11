@@ -154,13 +154,10 @@ class StepCounter {
         let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         
         let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
-        
         if isNewDay {
-            shared.set(0, forKey: "userDaySteps")
             shared.set(1, forKey: "updateCount")
-            shared.set("new day", forKey: "lastError")
-        } else if steps != currentSteps {
-            // Update only if new step count is higher
+        }
+        if steps != currentSteps {
             shared.set(steps, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(currentCount + 1, forKey: "updateCount")
