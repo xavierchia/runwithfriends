@@ -54,6 +54,7 @@
 		95DBAC532BA18231002037F1 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBAC522BA18231002037F1 /* Location.swift */; };
 		95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6970E2AFF6CD800B10EB2 /* String.swift */; };
 		95F85B4F2B71AAEC005A705A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 95F85B4E2B71AAEC005A705A /* README.md */; };
+		A5033D822D5B3B89001E98FD /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5033D812D5B3B89001E98FD /* FriendsManager.swift */; };
 		A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4442E2D5B1CE8003F632A /* StepCounter.swift */; };
 		A5E917212D5058470060DD48 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E917202D5058470060DD48 /* WidgetKit.framework */; };
 		A5E917232D5058470060DD48 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E917222D5058470060DD48 /* SwiftUI.framework */; };
@@ -129,6 +130,7 @@
 		95F6970E2AFF6CD800B10EB2 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		95F85B4E2B71AAEC005A705A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runwithfriends.entitlements; sourceTree = "<group>"; };
+		A5033D812D5B3B89001E98FD /* FriendsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsManager.swift; sourceTree = "<group>"; };
 		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounter.swift; sourceTree = "<group>"; };
 		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		A5E9171F2D5058470060DD48 /* Pea WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Pea WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -329,6 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				95DBAC502BA18186002037F1 /* CommunityViewController.swift */,
+				A5033D812D5B3B89001E98FD /* FriendsManager.swift */,
 				A5A4442E2D5B1CE8003F632A /* StepCounter.swift */,
 				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
 				95B8E3382BAC6450003AB055 /* ParseGPX.swift */,
@@ -482,6 +485,7 @@
 				955151242B91583A001AD26B /* DistanceViewController.swift in Sources */,
 				95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
+				A5033D822D5B3B89001E98FD /* FriendsManager.swift in Sources */,
 				95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,

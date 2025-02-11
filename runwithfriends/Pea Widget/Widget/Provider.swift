@@ -144,6 +144,21 @@ struct Provider: AppIntentTimelineProvider {
             shared.synchronize()
         }
     }
+    
+    private func getFirstFriend() -> FriendProgress? {
+        guard let shared = sharedDefaults,
+              let friendData = shared.data(forKey: "friendsProgress") else {
+            return nil
+        }
+        
+        do {
+            let friends = try JSONDecoder().decode([FriendProgress].self, from: friendData)
+            return friends.first
+        } catch {
+            print("Failed to load friends data: \(error)")
+            return nil
+        }
+    }
 
     func placeholder(in context: Context) -> SimpleEntry {
         let data = getDataFromDefaults()
@@ -154,7 +169,8 @@ struct Provider: AppIntentTimelineProvider {
             lastError: data.error,
             updateCount: data.count,
             lastUpdateTime: data.lastUpdate,
-            family: context.family
+            family: context.family,
+            firstFriend: nil
         )
     }
 
@@ -170,7 +186,8 @@ struct Provider: AppIntentTimelineProvider {
             lastError: allError,
             updateCount: data.count + 1,
             lastUpdateTime: Date(),
-            family: context.family
+            family: context.family,
+            firstFriend: getFirstFriend()
         )
     }
     
@@ -189,7 +206,8 @@ struct Provider: AppIntentTimelineProvider {
             lastError: allError,
             updateCount: data.count + 1,
             lastUpdateTime: currentDate,
-            family: context.family
+            family: context.family,
+            firstFriend: getFirstFriend()
         )
         
         let timeSinceLastUpdate = currentDate.timeIntervalSince(data.lastUpdate)

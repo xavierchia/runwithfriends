@@ -58,6 +58,10 @@ class UserData {
                 walker.user_id == user.user_id
             }
             
+            // Side effect: Update friends data in shared defaults
+            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.steps) }
+            FriendsManager.shared.updateFriends(friends)
+            
             return walkers
         } catch {
             print("failed to get walkers \(error)")

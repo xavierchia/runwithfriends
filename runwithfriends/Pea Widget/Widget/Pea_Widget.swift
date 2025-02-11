@@ -16,6 +16,10 @@ struct Pea_WidgetEntryView : View {
         VStack(alignment: .leading, spacing: 2) {
             Text("\(entry.steps) steps")
                 .font(.headline)
+            if let friend = entry.firstFriend {
+                Text("\(friend.username): \(friend.steps)")
+                    .font(.caption2)
+            }
             Text("Err: \(entry.lastError)")
                 .font(.caption2)
             Text("Last: \(entry.lastUpdateTime, formatter: dateFormatter)")

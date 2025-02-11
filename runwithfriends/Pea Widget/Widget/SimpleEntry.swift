@@ -8,6 +8,11 @@
 import Foundation
 import WidgetKit
 
+struct FriendProgress: Codable {
+    let username: String
+    let steps: Int
+}
+
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
@@ -16,4 +21,5 @@ struct SimpleEntry: TimelineEntry {
     let updateCount: Int
     let lastUpdateTime: Date
     let family: WidgetFamily
+    let firstFriend: FriendProgress?
 }
