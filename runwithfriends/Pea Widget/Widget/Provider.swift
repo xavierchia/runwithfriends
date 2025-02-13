@@ -180,7 +180,7 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         print("updating widget")
-        let currentDate = Date().addingTimeInterval(5)
+        let currentDate = Date()
         let data = getDataFromDefaults()
         let (allSteps, allError) = await getStepsFromAllSources()
         let maxSteps = max(allSteps, data.steps)
@@ -197,8 +197,7 @@ struct Provider: AppIntentTimelineProvider {
             firstFriend: getFirstFriend()
         )
         
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 20, to: currentDate)!
-        return Timeline(entries: [entry], policy: .after(nextUpdate))
+        return Timeline(entries: [entry], policy: .atEnd)
     }
 }
 
