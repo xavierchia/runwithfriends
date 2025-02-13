@@ -13,18 +13,16 @@ import HealthKit
 struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
     private let pedometer = CMPedometer()
+    private let healthStore = HKHealthStore()
     
     private func isStepCountingAvailable() -> Bool {
         return CMPedometer.isStepCountingAvailable()
     }
     
     private func getStepsFromAllSources() async -> (steps: Int, error: String) {
-        let healthStore = HKHealthStore()
-        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-        
         // Get steps from both sources
         async let coreMotionResult = getStepsFromCoreMotionOnly()
-        async let healthKitResult = getStepsFromHealthKit(healthStore: healthStore, stepType: stepType)
+        async let healthKitResult = getStepsFromHealthKit()
         
         // Wait for both results
         let (cmSteps, cmError) = await coreMotionResult
@@ -63,8 +61,9 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     // New HealthKit function
-    private func getStepsFromHealthKit(healthStore: HKHealthStore, stepType: HKQuantityType) async -> (steps: Int, error: String) {
-        guard HKHealthStore.isHealthDataAvailable() else {
+    private func getStepsFromHealthKit() async -> (steps: Int, error: String) {
+        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount),
+            HKHealthStore.isHealthDataAvailable() else {
             return (0, "HK not available")
         }
         
@@ -89,7 +88,7 @@ struct Provider: AppIntentTimelineProvider {
                 continuation.resume(returning: (steps, "HK success"))
             }
             
-            healthStore.execute(query)
+            self.healthStore.execute(query)
         }
     }
     
@@ -100,33 +99,45 @@ struct Provider: AppIntentTimelineProvider {
         }
         
         let steps = shared.integer(forKey: "userDaySteps")
-        let updateCount = shared.integer(forKey: "updateCount")
         let lastError = shared.string(forKey: "lastError") ?? "none"
+        let updateCount = shared.integer(forKey: "updateCount")
         let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         
         return (steps, lastError, updateCount, lastUpdate)
     }
     
-    private func updateSharedDefaults(steps: Int, error: String) {
+    private func getCurrentData() async -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
+        let (allSteps, allError) = await getStepsFromAllSources()
+        let data = getDataFromDefaults()
+        
+        var steps = data.steps
+        var count = data.count
+        
+        if data.steps != allSteps {
+            steps = max(allSteps, data.steps)
+            count = data.count + 1
+        }
+
+        let isNewDay = !Calendar.current.isDate(data.lastUpdate, inSameDayAs: Date())
+        if isNewDay {
+            steps = 0
+            count = 1
+        }
+        
+        return (steps, allError, count, Date())
+    }
+    
+    private func updateSharedDefaults(steps: Int, error: String, count: Int) {
         guard let shared = sharedDefaults else {
             print("no shared defaults")
             return
         }
-        
-        let currentSteps = shared.integer(forKey: "userDaySteps")
-        let currentCount = shared.integer(forKey: "updateCount")
-        
-        let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
-        let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
-        if isNewDay {
-            shared.set(1, forKey: "updateCount")
-        }
-        if steps != currentSteps {
-            shared.set(steps, forKey: "userDaySteps")
-            shared.set(Date(), forKey: "lastUpdateTime")
-            shared.set(currentCount + 1, forKey: "updateCount")
-            shared.set(error, forKey: "lastError")
-        }
+    
+        shared.set(steps, forKey: "userDaySteps")
+        shared.set(error, forKey: "lastError")
+        shared.set(count, forKey: "updateCount")
+        shared.set(Date(), forKey: "lastUpdateTime")
+
         shared.synchronize()
     }
     
@@ -162,16 +173,14 @@ struct Provider: AppIntentTimelineProvider {
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
         print("snapshot called")
-        let data = getDataFromDefaults()
-        let (allSteps, allError) = await getStepsFromAllSources()
-        updateSharedDefaults(steps: allSteps, error: allError)
-        let finalSteps = max(allSteps, data.steps)
+        let data = await getCurrentData()
+        updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
         return SimpleEntry(
-            date: Date(),
+            date: data.lastUpdate,
             configuration: configuration,
-            steps: finalSteps,
-            lastError: allError,
-            updateCount: data.count + 1,
+            steps: data.steps,
+            lastError: data.error,
+            updateCount: data.count,
             lastUpdateTime: Date(),
             family: context.family,
             firstFriend: getFirstFriend()
@@ -180,19 +189,16 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         print("updating widget")
-        let currentDate = Date()
-        let data = getDataFromDefaults()
-        let (allSteps, allError) = await getStepsFromAllSources()
-        let maxSteps = max(allSteps, data.steps)
-        updateSharedDefaults(steps: maxSteps, error: allError)
         
+        let data = await getCurrentData()
+        updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
         let entry = SimpleEntry(
-            date: currentDate,
+            date: data.lastUpdate,
             configuration: configuration,
-            steps: maxSteps,
-            lastError: allError,
-            updateCount: data.count + 1,
-            lastUpdateTime: currentDate,
+            steps: data.steps,
+            lastError: data.error,
+            updateCount: data.count,
+            lastUpdateTime: Date(),
             family: context.family,
             firstFriend: getFirstFriend()
         )
