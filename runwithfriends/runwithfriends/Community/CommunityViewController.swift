@@ -10,7 +10,6 @@ import MapKit
 
 class CommunityViewController: UIViewController, MKMapViewDelegate {
     // database
-    private let supabase = Supabase.shared.client.database
     private let userData: UserData
     private let stepCounter = StepCounter.shared
     

@@ -19,7 +19,6 @@ struct Walker: Codable {
 
 class UserData {
     static let defaultUsername = "Pea"
-    let supabase = Supabase.shared
     var user: User
     
     init(user: User) {
@@ -48,7 +47,7 @@ class UserData {
     func getWalkers() async -> [Walker] {
         do {
             let year_week = Date.YearAndWeek()
-            var walkers: [Walker] = try await supabase.client.database
+            var walkers: [Walker] = try await Supabase.shared.client.database
                 .rpc("get_user_steps", params: ["year_week_param": year_week])
                 .select()
                 .execute()

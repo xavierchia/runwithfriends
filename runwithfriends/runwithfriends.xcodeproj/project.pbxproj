@@ -50,6 +50,7 @@
 		95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B8E3382BAC6450003AB055 /* ParseGPX.swift */; };
 		95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BC85302B0ECA9E00DD81BB /* NavigationController.swift */; };
 		95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */; };
+		95D2240A2D61822400CAF40C /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 95D224092D61822400CAF40C /* Supabase */; };
 		95DBAC512BA18186002037F1 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBAC502BA18186002037F1 /* CommunityViewController.swift */; };
 		95DBAC532BA18231002037F1 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBAC522BA18231002037F1 /* Location.swift */; };
 		95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6970E2AFF6CD800B10EB2 /* String.swift */; };
@@ -172,6 +173,7 @@
 			files = (
 				A5E917232D5058470060DD48 /* SwiftUI.framework in Frameworks */,
 				A5E917212D5058470060DD48 /* WidgetKit.framework in Frameworks */,
+				95D2240A2D61822400CAF40C /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +388,7 @@
 			);
 			name = "Pea WidgetExtension";
 			packageProductDependencies = (
+				95D224092D61822400CAF40C /* Supabase */,
 			);
 			productName = "Pea WidgetExtension";
 			productReference = A5E9171F2D5058470060DD48 /* Pea WidgetExtension.appex */;
@@ -857,6 +860,11 @@
 			productName = Storage;
 		};
 		951D1A6E2B32675F00171C62 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 951D1A632B32675F00171C62 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		95D224092D61822400CAF40C /* Supabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 951D1A632B32675F00171C62 /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;
