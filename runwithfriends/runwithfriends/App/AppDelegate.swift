@@ -12,13 +12,15 @@ import AVFoundation
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    static let appGroupIdentifier = "group.com.wholesomeapps.runwithfriends"
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         setupGlobalUI()
         
-        let groupID = "group.com.wholesomeapps.runwithfriends"
-        if let shared = UserDefaults(suiteName: groupID),
+        if let shared = UserDefaults(suiteName: AppDelegate.appGroupIdentifier),
            shared.bool(forKey: "appFirstInstall") == false {
             shared.set(true, forKey: "appFirstInstall")
             shared.set(0, forKey: "userDaySteps")

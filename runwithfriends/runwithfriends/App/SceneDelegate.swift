@@ -26,8 +26,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         Task {
             do {
-//                sign out for testing
-//                try await Supabase.shared.client.auth.signOut()
+                
+                let accessToken = try KeychainManager.shared.getAccessToken()
+                let refreshToken = try KeychainManager.shared.getRefreshToken()
                 
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)
@@ -36,7 +37,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     window.rootViewController = TabViewController(with: userData)
                 }
             } catch {
-                print("User not signed in, routing to LoginViewController")
+                print("User not signed in or session token not stored, routing to LoginViewController")
+
+                try await Supabase.shared.client.auth.signOut()
+
                 DispatchQueue.main.async {
                     window.rootViewController = LoginViewController()
                 }

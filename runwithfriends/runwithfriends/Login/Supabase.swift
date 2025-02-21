@@ -19,6 +19,14 @@ class Supabase {
         let credentials = OpenIDConnectCredentials(provider: .apple, idToken: idToken, nonce: nonce)
         do {
             let session = try await client.auth.signInWithIdToken(credentials: credentials)
+            
+            // Save tokens to keychain
+            try KeychainManager.shared.saveTokens(
+                accessToken: session.accessToken,
+                refreshToken: session.refreshToken
+            )
+            
+            print("xxavier sdaving session \(session)")
             return session
         } catch {
             return nil
