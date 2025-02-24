@@ -40,52 +40,87 @@ class Supabase {
                 .upsert(walk)
                 .eq("user_id", value: user.id)
                 .execute()
+            print("upserted user data")
         } catch {
             print("failed to upsert steps \(error)")
         }
     }
     
-//    func getSteps() async -> [Walker] {
-//        do {
-//            let client = try await getAuthenticatedClient()
-//            let user = try await client.auth.session.user
-//            let walk = Walk(last_update: Date(), day_steps: steps)
-//            
-//            try await client.database.from("walks")
-//                .upsert(walk)
-//                .eq("user_id", value: user.id)
-//                .execute()
-//        } catch {
-//            print("failed to upsert steps \(error)")
-//        }
-//        
-//        
-//        do {
-//            let year_week = Date.YearAndWeek()
-//            var walkers: [Walker] = try await Supabase.shared.client.database
-//                .rpc("get_user_steps", params: ["year_week_param": year_week])
-//                .select()
-//                .execute()
-//                .value
-//            
-//            walkers.removeAll { walker in
-//                walker.user_id == user.user_id
-//            }
-//            
-//            // Side effect: Update friends data in shared defaults
-//            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.steps) }
-//            FriendsManager.shared.updateFriends(friends)
-//            
-//            return walkers
-//        } catch {
-//            print("failed to get walkers \(error)")
-//            return []
-//        }
-//    }
+    func getFriends() async {
+        do {
+            let client = try await getAuthenticatedClient()
+            let user = try await client.auth.session.user
+            var walkers: [Walker] = try await client
+                    .from("users")
+                    .select("""
+                        user_id,
+                        username,
+                        emoji,
+                        walks!inner (
+                            day_steps,
+                            latitude,
+                            longitude
+                        )
+                    """)
+                    .execute()
+                    .value
+            
+            print("got friends")
+            walkers.removeAll { walker in
+                walker.user_id == user.id
+            }
+            // Side effect: Update friends data in shared defaults
+            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.day_steps) }
+            FriendsManager.shared.updateFriends(friends)
+            
+        } catch {
+            print("failed to get friends \(error)")
+        }
+    }
 }
 
 
 struct Walk: Codable {
     let last_update: Date
     let day_steps: Int
+}
+
+struct Walker: Codable {
+    let user_id: UUID
+    let username: String
+    let emoji: String
+    var walk: Walker.Walk
+    
+    struct Walk: Codable {
+        var day_steps: Int
+        var latitude: Double
+        var longitude: Double
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case user_id
+        case username
+        case emoji
+        case walk = "walks"
+    }
+}
+
+class FriendsManager {
+    static let shared = FriendsManager()
+    private let defaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
+    private let friendsKey = "friendsProgress"
+    
+    private init() {}
+    
+    func updateFriends(_ friends: [FriendProgress]) {
+        guard let defaults = defaults else { return }
+        do {
+            print("saved friends")
+            let data = try JSONEncoder().encode(friends)
+            defaults.set(data, forKey: friendsKey)
+            defaults.synchronize()
+        } catch {
+            print("Failed to save friends data: \(error)")
+        }
+    }
 }
