@@ -106,25 +106,28 @@ struct Provider: AppIntentTimelineProvider {
         return (steps, lastError, updateCount, lastUpdate)
     }
     
-    private func getCurrentData() async -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
+    private func getCurrentData() async -> (steps: Int, error: String, count: Int, lastUpdate: Date, isNewSteps: Bool) {
         let (allSteps, allError) = await getStepsFromAllSources()
         let data = getDataFromDefaults()
         
         var steps = data.steps
         var count = data.count
+        var isNewSteps = false
         
         if data.steps != allSteps {
             steps = max(allSteps, data.steps)
             count = data.count + 1
+            isNewSteps = true
         }
 
         let isNewDay = !Calendar.current.isDate(data.lastUpdate, inSameDayAs: Date())
         if isNewDay {
             steps = 0
             count = 1
+            isNewSteps = true
         }
         
-        return (steps, allError, count, Date())
+        return (steps, allError, count, Date(), isNewSteps)
     }
     
     private func updateSharedDefaults(steps: Int, error: String, count: Int) {
@@ -191,9 +194,13 @@ struct Provider: AppIntentTimelineProvider {
         print("updating widget")
         
         let data = await getCurrentData()
-        Task {
-            await Supabase.shared.upsert(steps: data.steps)
+        
+        if data.isNewSteps {
+            Task {
+                await Supabase.shared.upsert(steps: data.steps)
+            }
         }
+
         updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
         let entry = SimpleEntry(
             date: data.lastUpdate,

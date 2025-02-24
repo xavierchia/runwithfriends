@@ -25,10 +25,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         
         Task {
+            _ = await Supabase.shared.client.auth.onAuthStateChange { event, session in
+                print("auth state change event \(event)")
+                switch event {
+                case .signedOut:
+                    try? KeychainManager.shared.deleteTokens()
+                    print("User signed out. Session ended.")
+                default:
+                    guard let session else { return }
+                    try? KeychainManager.shared.saveTokens(accessToken: session.accessToken, refreshToken: session.refreshToken)
+                }
+            }
+        }
+        
+        Task {
             do {
                 
-                let accessToken = try KeychainManager.shared.getAccessToken()
-                let refreshToken = try KeychainManager.shared.getRefreshToken()
+                _ = try KeychainManager.shared.getAccessToken()
+                _ = try KeychainManager.shared.getRefreshToken()
                 
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)

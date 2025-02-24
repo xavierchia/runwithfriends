@@ -26,6 +26,7 @@ class KeychainManager {
     // MARK: - Save Tokens
     
     func saveTokens(accessToken: String, refreshToken: String) throws {
+        print("saved tokens")
         try saveToKeychain(accessToken, forKey: accessTokenKey)
         try saveToKeychain(refreshToken, forKey: refreshTokenKey)
     }
@@ -43,6 +44,7 @@ class KeychainManager {
     // MARK: - Delete Tokens
     
     func deleteTokens() throws {
+        print("deleting tokens")
         try deleteFromKeychain(forKey: accessTokenKey)
         try deleteFromKeychain(forKey: refreshTokenKey)
     }
