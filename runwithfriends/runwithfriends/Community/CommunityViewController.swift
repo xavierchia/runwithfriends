@@ -129,7 +129,8 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     private func addAnnotations() {
         mapView.removeAnnotations(mapView.annotations)
         // put user on map
-        var userWalker = Walker(user_id: userData.user.user_id, username: userData.user.username, emoji: userData.user.emoji, steps: 0, latitude: 0, longitude: 0)
+        let walk = Walker.Walk(steps: 0, latitude: 0, longitude: 0)
+        var userWalker = Walker(user_id: userData.user.user_id, username: userData.user.username, emoji: userData.user.emoji, walk: walk)
         
         stepCounter.getSteps(from: Date.startOfWeek()) { [self] userSteps in
             var steps = 0.0
@@ -148,9 +149,9 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                     newPin.identifier = "user"
                     self.mapView.addAnnotation(newPin)
                     
-                    userWalker.latitude = userCoordinate.latitude
-                    userWalker.longitude = userCoordinate.longitude
-                    userWalker.steps = Int(userSteps)
+                    userWalker.walk.latitude = userCoordinate.latitude
+                    userWalker.walk.longitude = userCoordinate.longitude
+                    userWalker.walk.steps = Int(userSteps)
                     
                     self.userData.updateWalk(with: Int(userSteps), and: userCoordinate)
                     break
@@ -164,7 +165,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             var walkers = await userData.getWalkers()
             walkers.append(userWalker)
             walkers.sort { lhs, rhs in
-                lhs.steps < rhs.steps
+                lhs.walk.steps < rhs.walk.steps
             }
             
             let finalCoordinate = coordinates.last!
@@ -194,18 +195,18 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                     newPin.color = .lightAccent
                 }
                                 
-                if walker.longitude == finalCoordinate.longitude && walker.latitude == finalCoordinate.latitude {
-                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude + 0.005 * collisions, longitude: walker.longitude)
+                if walker.walk.longitude == finalCoordinate.longitude && walker.walk.latitude == finalCoordinate.latitude {
+                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.walk.latitude + 0.005 * collisions, longitude: walker.walk.longitude)
                     collisions += 1
-                } else if walker.longitude == lastLongitude {
-                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude, longitude: walker.longitude + 0.005 * collisions)
+                } else if walker.walk.longitude == lastLongitude {
+                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.walk.latitude, longitude: walker.walk.longitude + 0.005 * collisions)
                     collisions += 1
                 } else {
-                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.latitude, longitude: walker.longitude)
+                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.walk.latitude, longitude: walker.walk.longitude)
                     collisions = 1
                 }
                 
-                lastLongitude = walker.longitude
+                lastLongitude = walker.walk.longitude
                 newPin.title = walker.username
                 self.mapView.addAnnotation(newPin)
             }

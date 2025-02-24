@@ -12,9 +12,20 @@ struct Walker: Codable {
     let user_id: UUID
     let username: String
     let emoji: String
-    var steps: Int
-    var latitude: Double
-    var longitude: Double
+    var walk: Walker.Walk
+    
+    struct Walk: Codable {
+        var steps: Int
+        var latitude: Double
+        var longitude: Double
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case user_id
+        case username
+        case emoji
+        case walk = "walks"
+    }
 }
 
 class UserData {
@@ -46,19 +57,27 @@ class UserData {
     
     func getWalkers() async -> [Walker] {
         do {
-            let year_week = Date.YearAndWeek()
-            var walkers: [Walker] = try await Supabase.shared.client.database
-                .rpc("get_user_steps", params: ["year_week_param": year_week])
-                .select()
-                .execute()
-                .value
+            var walkers: [Walker] = try await Supabase.shared.client
+                    .from("users")
+                    .select("""
+                        user_id,
+                        username,
+                        emoji,
+                        walks!inner (
+                            steps,
+                            latitude,
+                            longitude
+                        )
+                    """)
+                    .execute()
+                    .value
             
             walkers.removeAll { walker in
                 walker.user_id == user.user_id
             }
-            
+            print(walkers)
             // Side effect: Update friends data in shared defaults
-            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.steps) }
+            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.steps) }
             FriendsManager.shared.updateFriends(friends)
             
             return walkers

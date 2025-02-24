@@ -44,6 +44,44 @@ class Supabase {
             print("failed to upsert steps \(error)")
         }
     }
+    
+//    func getSteps() async -> [Walker] {
+//        do {
+//            let client = try await getAuthenticatedClient()
+//            let user = try await client.auth.session.user
+//            let walk = Walk(last_update: Date(), day_steps: steps)
+//            
+//            try await client.database.from("walks")
+//                .upsert(walk)
+//                .eq("user_id", value: user.id)
+//                .execute()
+//        } catch {
+//            print("failed to upsert steps \(error)")
+//        }
+//        
+//        
+//        do {
+//            let year_week = Date.YearAndWeek()
+//            var walkers: [Walker] = try await Supabase.shared.client.database
+//                .rpc("get_user_steps", params: ["year_week_param": year_week])
+//                .select()
+//                .execute()
+//                .value
+//            
+//            walkers.removeAll { walker in
+//                walker.user_id == user.user_id
+//            }
+//            
+//            // Side effect: Update friends data in shared defaults
+//            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.steps) }
+//            FriendsManager.shared.updateFriends(friends)
+//            
+//            return walkers
+//        } catch {
+//            print("failed to get walkers \(error)")
+//            return []
+//        }
+//    }
 }
 
 

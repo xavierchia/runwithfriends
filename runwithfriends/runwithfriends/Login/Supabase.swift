@@ -20,7 +20,6 @@ class Supabase {
         do {
             let session = try await client.auth.signInWithIdToken(credentials: credentials)
             
-            print("xxavier saving session \(session)")
             return session
         } catch {
             return nil
