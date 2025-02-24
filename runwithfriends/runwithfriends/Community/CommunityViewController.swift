@@ -129,7 +129,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     private func addAnnotations() {
         mapView.removeAnnotations(mapView.annotations)
         // put user on map
-        let walk = Walker.Walk(steps: 0, latitude: 0, longitude: 0)
+        let walk = Walker.Walk(steps: 0, latitude: 0, longitude: 0, day_steps: 0)
         var userWalker = Walker(user_id: userData.user.user_id, username: userData.user.username, emoji: userData.user.emoji, walk: walk)
         
         stepCounter.getSteps(from: Date.startOfWeek()) { [self] userSteps in

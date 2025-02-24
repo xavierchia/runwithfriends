@@ -18,6 +18,7 @@ struct Walker: Codable {
         var steps: Int
         var latitude: Double
         var longitude: Double
+        var day_steps: Int
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -66,7 +67,8 @@ class UserData {
                         walks!inner (
                             steps,
                             latitude,
-                            longitude
+                            longitude,
+                            day_steps
                         )
                     """)
                     .execute()
@@ -77,7 +79,7 @@ class UserData {
             }
             print(walkers)
             // Side effect: Update friends data in shared defaults
-            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.steps) }
+            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.day_steps) }
             FriendsManager.shared.updateFriends(friends)
             
             return walkers
