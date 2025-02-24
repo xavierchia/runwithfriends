@@ -28,4 +28,25 @@ class Supabase {
         
         return client
     }
+    
+    func upsert(steps: Int) async {
+        do {
+            let client = try await getAuthenticatedClient()
+            let user = try await client.auth.session.user
+            let walk = Walk(last_update: Date(), day_steps: steps)
+            
+            try await client.database.from("walks")
+                .upsert(walk)
+                .eq("user_id", value: user.id)
+                .execute()
+        } catch {
+            print("failed to upsert steps \(error)")
+        }
+    }
+}
+
+
+struct Walk: Codable {
+    let last_update: Date
+    let day_steps: Int
 }

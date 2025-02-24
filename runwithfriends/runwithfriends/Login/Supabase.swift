@@ -26,7 +26,7 @@ class Supabase {
                 refreshToken: session.refreshToken
             )
             
-            print("xxavier sdaving session \(session)")
+            print("xxavier saving session \(session)")
             return session
         } catch {
             return nil

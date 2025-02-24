@@ -57,6 +57,7 @@
 		A5033D822D5B3B89001E98FD /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5033D812D5B3B89001E98FD /* FriendsManager.swift */; };
 		A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4442E2D5B1CE8003F632A /* StepCounter.swift */; };
 		A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E394D82D67FC13009BBC93 /* KeychainManager.swift */; };
+		A5E394F42D6C0F40009BBC93 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A5E394F32D6C0F40009BBC93 /* Supabase */; };
 		A5E917212D5058470060DD48 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E917202D5058470060DD48 /* WidgetKit.framework */; };
 		A5E917232D5058470060DD48 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E917222D5058470060DD48 /* SwiftUI.framework */; };
 		A5E917342D5058480060DD48 /* Pea WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A5E9171F2D5058470060DD48 /* Pea WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -174,6 +175,7 @@
 			files = (
 				A5E917232D5058470060DD48 /* SwiftUI.framework in Frameworks */,
 				A5E917212D5058470060DD48 /* WidgetKit.framework in Frameworks */,
+				A5E394F42D6C0F40009BBC93 /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +391,7 @@
 			);
 			name = "Pea WidgetExtension";
 			packageProductDependencies = (
+				A5E394F32D6C0F40009BBC93 /* Supabase */,
 			);
 			productName = "Pea WidgetExtension";
 			productReference = A5E9171F2D5058470060DD48 /* Pea WidgetExtension.appex */;
@@ -861,6 +864,11 @@
 			productName = Storage;
 		};
 		951D1A6E2B32675F00171C62 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 951D1A632B32675F00171C62 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		A5E394F32D6C0F40009BBC93 /* Supabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 951D1A632B32675F00171C62 /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;

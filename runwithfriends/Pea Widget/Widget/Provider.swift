@@ -191,6 +191,9 @@ struct Provider: AppIntentTimelineProvider {
         print("updating widget")
         
         let data = await getCurrentData()
+        Task {
+            await Supabase.shared.upsert(steps: data.steps)
+        }
         updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
         let entry = SimpleEntry(
             date: data.lastUpdate,
