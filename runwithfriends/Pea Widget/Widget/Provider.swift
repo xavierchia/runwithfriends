@@ -196,13 +196,11 @@ struct Provider: AppIntentTimelineProvider {
         let data = await getCurrentData()
         
         if data.lastUpdate.timeIntervalSinceNow < -5 {
-            Task {
-                if data.isNewSteps {
-                    await Supabase.shared.upsert(steps: data.steps)
-                }
-                
-                await Supabase.shared.getFriends()
+            if data.isNewSteps {
+                await Supabase.shared.upsert(steps: data.steps)
             }
+            
+            await Supabase.shared.getFriends()
         }
 
         updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
