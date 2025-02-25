@@ -91,8 +91,11 @@ class UserData {
     
     // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> User {
+        let accessToken = try KeychainManager.shared.getAccessToken()
+        let refreshToken = try KeychainManager.shared.getRefreshToken()
         let supabase = Supabase.shared
-        let user = try await supabase.client.auth.session.user
+        let session = try await supabase.client.auth.setSession(accessToken: accessToken, refreshToken: refreshToken)
+        let user = session.user
         let retrievedUser: User = try await supabase.client.database
             .from("users")
             .select()

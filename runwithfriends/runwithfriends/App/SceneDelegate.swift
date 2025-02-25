@@ -19,7 +19,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         
-//        DispatchQueue.main.async {
         let launchScreen = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()
         window.rootViewController = launchScreen
         window.makeKeyAndVisible()
@@ -40,10 +39,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         Task {
             do {
-                
-                _ = try KeychainManager.shared.getAccessToken()
-                _ = try KeychainManager.shared.getRefreshToken()
-                
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)
                 print("User signed in, routing to TabViewConroller")

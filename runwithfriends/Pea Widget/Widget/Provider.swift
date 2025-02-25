@@ -19,6 +19,24 @@ struct Provider: AppIntentTimelineProvider {
         return CMPedometer.isStepCountingAvailable()
     }
     
+    init() {
+        Task {
+            _ = await Supabase.shared.client.auth.onAuthStateChange { event, session in
+                print("auth state change event \(event)")
+                switch event {
+                case .signedOut:
+                    try? KeychainManager.shared.deleteTokens()
+                    print("User signed out. Session ended.")
+                default:
+                    guard let session else { return }
+                    try? KeychainManager.shared.saveTokens(accessToken: session.accessToken,
+                                                           refreshToken: session.refreshToken)
+                }
+            }
+        }
+    }
+    
+    
     private func getStepsFromAllSources() async -> (steps: Int, error: String) {
         // Get steps from both sources
         async let coreMotionResult = getStepsFromCoreMotionOnly()
@@ -106,28 +124,25 @@ struct Provider: AppIntentTimelineProvider {
         return (steps, lastError, updateCount, lastUpdate)
     }
     
-    private func getCurrentData() async -> (steps: Int, error: String, count: Int, lastUpdate: Date, isNewSteps: Bool) {
+    private func getCurrentData() async -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
         let (allSteps, allError) = await getStepsFromAllSources()
         let data = getDataFromDefaults()
         
         var steps = data.steps
         var count = data.count
-        var isNewSteps = false
         
         if data.steps != allSteps {
             steps = max(allSteps, data.steps)
             count = data.count + 1
-            isNewSteps = true
         }
 
         let isNewDay = !Calendar.current.isDate(data.lastUpdate, inSameDayAs: Date())
         if isNewDay {
             steps = 0
             count = 1
-            isNewSteps = true
         }
         
-        return (steps, allError, count, data.lastUpdate, isNewSteps)
+        return (steps, allError, count, data.lastUpdate)
     }
     
     private func updateSharedDefaults(steps: Int, error: String, count: Int) {
@@ -196,11 +211,10 @@ struct Provider: AppIntentTimelineProvider {
         let data = await getCurrentData()
         
         if data.lastUpdate.timeIntervalSinceNow < -5 {
-            if data.isNewSteps {
-                await Supabase.shared.upsert(steps: data.steps)
-            }
+            async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
+            async let getFriends: () = await Supabase.shared.getFriends()
             
-            await Supabase.shared.getFriends()
+            _ = await (upsert, getFriends)
         }
 
         updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
@@ -214,7 +228,7 @@ struct Provider: AppIntentTimelineProvider {
             family: context.family,
             firstFriend: getFirstFriend()
         )
-        
+            
         return Timeline(entries: [entry], policy: .atEnd)
     }
 }
