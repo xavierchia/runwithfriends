@@ -12,13 +12,14 @@ import Supabase
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    
+    static var coldStart = true
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         self.window = window
-        
+        print("scene connecting")
         let launchScreen = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()
         window.rootViewController = launchScreen
         window.makeKeyAndVisible()
@@ -35,15 +36,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     try? KeychainManager.shared.saveTokens(accessToken: session.accessToken, refreshToken: session.refreshToken)
                 }
             }
-        }
-        
-        Task {
+                        
             do {
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)
                 print("User signed in, routing to TabViewConroller")
                 DispatchQueue.main.async {
                     window.rootViewController = TabViewController(with: userData)
+                    UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
                 }
             } catch {
                 print("User not signed in or session token not stored, routing to LoginViewController")
@@ -52,13 +52,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
                 DispatchQueue.main.async {
                     window.rootViewController = LoginViewController()
+                    UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
                 }
             }
-            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+            
+            SceneDelegate.coldStart = false
         }
-        
-        self.window = window
-        self.window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -80,7 +79,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
+        // Use this method to undo the changes made on entering the background.        
+        if SceneDelegate.coldStart == false {
+            print("foreground not cold")
+            Task {
+                try? await UserData.loadSession()
+            }
+        }
+        
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
@@ -91,7 +97,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
-
-
 }
 

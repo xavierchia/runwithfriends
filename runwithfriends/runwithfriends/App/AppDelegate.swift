@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             shared.set(Date(), forKey: "lastUpdateTime")
         }
         
+        print("did finish launching")
+        
         return true
     }
     
