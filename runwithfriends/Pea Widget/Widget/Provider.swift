@@ -110,18 +110,17 @@ struct Provider: AppIntentTimelineProvider {
         }
     }
     
-    private func getDataFromDefaults() -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
+    private func getDataFromDefaults() -> (steps: Int, count: Int, lastUpdate: Date) {
         guard let shared = sharedDefaults else {
             print("no shared defaults")
-            return (0, "no shared defaults", 0, Date())
+            return (0, 0, Date())
         }
         
         let steps = shared.integer(forKey: "userDaySteps")
-        let lastError = shared.string(forKey: "lastError") ?? "none"
         let updateCount = shared.integer(forKey: "updateCount")
         let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         
-        return (steps, lastError, updateCount, lastUpdate)
+        return (steps, updateCount, lastUpdate)
     }
     
     private func getCurrentData() async -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
@@ -152,7 +151,6 @@ struct Provider: AppIntentTimelineProvider {
         }
     
         shared.set(steps, forKey: "userDaySteps")
-        shared.set(error, forKey: "lastError")
         shared.set(count, forKey: "updateCount")
         shared.set(Date(), forKey: "lastUpdateTime")
 
@@ -181,7 +179,6 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: ConfigurationAppIntent(),
             steps: data.steps,
-            lastError: data.error,
             updateCount: data.count,
             lastUpdateTime: data.lastUpdate,
             family: context.family,
@@ -197,7 +194,6 @@ struct Provider: AppIntentTimelineProvider {
             date: data.lastUpdate,
             configuration: configuration,
             steps: data.steps,
-            lastError: data.error,
             updateCount: data.count,
             lastUpdateTime: Date(),
             family: context.family,
@@ -210,11 +206,12 @@ struct Provider: AppIntentTimelineProvider {
         
         let data = await getCurrentData()
         
-        if data.lastUpdate.timeIntervalSinceNow < -5 {
-            async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
-            async let getFriends: () = await Supabase.shared.getFriends()
-            
-            _ = await (upsert, getFriends)
+        if context.family == .systemSmall,
+           data.lastUpdate.timeIntervalSinceNow < -5 {
+                async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
+                async let getFriends: () = await Supabase.shared.getFriends()
+                
+                _ = await (upsert, getFriends)
         }
 
         updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
@@ -222,7 +219,6 @@ struct Provider: AppIntentTimelineProvider {
             date: data.lastUpdate,
             configuration: configuration,
             steps: data.steps,
-            lastError: data.error,
             updateCount: data.count,
             lastUpdateTime: Date(),
             family: context.family,

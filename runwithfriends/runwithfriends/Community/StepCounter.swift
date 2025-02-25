@@ -161,7 +161,6 @@ class StepCounter {
             shared.set(steps, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(currentCount + 1, forKey: "updateCount")
-            shared.set(error, forKey: "lastError")
         }
         shared.synchronize()
         WidgetCenter.shared.reloadAllTimelines()
