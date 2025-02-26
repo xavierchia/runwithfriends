@@ -246,10 +246,33 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         waitingRoomTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             waitingRoomTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            waitingRoomTitle.heightAnchor.constraint(equalToConstant: 120),
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            waitingRoomTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+        
+        let podTitle = UIButton()
+        podTitle.setTitle("Pea Pods", for: .normal)
+        podTitle.titleLabel?.font = UIFont.KefirBold(size: 14)
+        podTitle.titleLabel?.textAlignment = .right
+        podTitle.setTitleColor(.cream, for: .normal)
+        podTitle.backgroundColor = .clear
+        view.addSubview(podTitle)
+        podTitle.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            podTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            podTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
+        ])
+        
+        podTitle.addTarget(self, action: #selector(podButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc private func podButtonPressed() {
+        print("poddy")
+        let vc = PodIntroViewController()
+        if let presentationController = vc.presentationController as? UISheetPresentationController {
+            let height = view.bounds.height * 0.75
+            presentationController.detents = [.custom { context in height }]
+        }
+        present(vc, animated: true)
     }
     
     private func setupUserDistance() {
