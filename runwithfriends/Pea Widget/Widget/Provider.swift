@@ -110,48 +110,43 @@ struct Provider: AppIntentTimelineProvider {
         }
     }
     
-    private func getDataFromDefaults() -> (steps: Int, count: Int, lastUpdate: Date) {
+    private func getDataFromDefaults() -> (steps: Int, lastUpdate: Date) {
         guard let shared = sharedDefaults else {
             print("no shared defaults")
-            return (0, 0, Date())
+            return (0, Date())
         }
         
         let steps = shared.integer(forKey: "userDaySteps")
-        let updateCount = shared.integer(forKey: "updateCount")
         let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
         
-        return (steps, updateCount, lastUpdate)
+        return (steps, lastUpdate)
     }
     
-    private func getCurrentData() async -> (steps: Int, error: String, count: Int, lastUpdate: Date) {
+    private func getCurrentData() async -> (steps: Int, error: String, lastUpdate: Date) {
         let (allSteps, allError) = await getStepsFromAllSources()
         let data = getDataFromDefaults()
         
         var steps = data.steps
-        var count = data.count
         
         if data.steps != allSteps {
             steps = max(allSteps, data.steps)
-            count = data.count + 1
         }
 
         let isNewDay = !Calendar.current.isDate(data.lastUpdate, inSameDayAs: Date())
         if isNewDay {
             steps = 0
-            count = 1
         }
         
-        return (steps, allError, count, data.lastUpdate)
+        return (steps, allError, data.lastUpdate)
     }
     
-    private func updateSharedDefaults(steps: Int, error: String, count: Int) {
+    private func updateSharedDefaults(steps: Int, error: String) {
         guard let shared = sharedDefaults else {
             print("no shared defaults")
             return
         }
     
         shared.set(steps, forKey: "userDaySteps")
-        shared.set(count, forKey: "updateCount")
         shared.set(Date(), forKey: "lastUpdateTime")
 
         shared.synchronize()
@@ -179,7 +174,6 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: ConfigurationAppIntent(),
             steps: data.steps,
-            updateCount: data.count,
             lastUpdateTime: data.lastUpdate,
             family: context.family,
             firstFriend: nil
@@ -189,12 +183,11 @@ struct Provider: AppIntentTimelineProvider {
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
         print("snapshot called")
         let data = await getCurrentData()
-        updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
+        updateSharedDefaults(steps: data.steps, error: data.error)
         return SimpleEntry(
             date: data.lastUpdate,
             configuration: configuration,
             steps: data.steps,
-            updateCount: data.count,
             lastUpdateTime: Date(),
             family: context.family,
             firstFriend: getFirstFriend()
@@ -214,12 +207,11 @@ struct Provider: AppIntentTimelineProvider {
                 _ = await (upsert, getFriends)
         }
 
-        updateSharedDefaults(steps: data.steps, error: data.error, count: data.count)
+        updateSharedDefaults(steps: data.steps, error: data.error)
         let entry = SimpleEntry(
             date: data.lastUpdate,
             configuration: configuration,
             steps: data.steps,
-            updateCount: data.count,
             lastUpdateTime: Date(),
             family: context.family,
             firstFriend: getFirstFriend()
