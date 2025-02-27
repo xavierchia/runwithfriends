@@ -43,8 +43,7 @@ struct Provider: AppIntentTimelineProvider {
         async let healthKitResult = getStepsFromHealthKit()
         
         // Wait for both results
-        let (cmSteps, cmError) = await coreMotionResult
-        let (hkSteps, hkError) = await healthKitResult
+        let ((cmSteps, cmError), (hkSteps, hkError)) = await (coreMotionResult, healthKitResult)
         
         // Return the higher step count
         if cmSteps > hkSteps {
