@@ -53,7 +53,7 @@ struct Provider: AppIntentTimelineProvider {
         }
     }
 
-    // Original CoreMotion function renamed
+    // TODO: We can use continuation.throw to throw an error and handle it later, widget should show error if necessary
     private func getStepsFromCoreMotionOnly() async -> (steps: Int, error: String) {
         guard isStepCountingAvailable() else {
             return (0, "CM not available")
