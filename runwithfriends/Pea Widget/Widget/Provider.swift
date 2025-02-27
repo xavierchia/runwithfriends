@@ -14,28 +14,12 @@ struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
     private let pedometer = CMPedometer()
     private let healthStore = HKHealthStore()
+    private static var lastUpdate = Date().addingTimeInterval(-20)
+    private static var lastNetworkUpdate = Date().addingTimeInterval(-20)
     
     private func isStepCountingAvailable() -> Bool {
         return CMPedometer.isStepCountingAvailable()
     }
-    
-    init() {
-        Task {
-            _ = await Supabase.shared.client.auth.onAuthStateChange { event, session in
-                print("auth state change event \(event)")
-                switch event {
-                case .signedOut:
-                    try? KeychainManager.shared.deleteTokens()
-                    print("User signed out. Session ended.")
-                default:
-                    guard let session else { return }
-                    try? KeychainManager.shared.saveTokens(accessToken: session.accessToken,
-                                                           refreshToken: session.refreshToken)
-                }
-            }
-        }
-    }
-    
     
     private func getStepsFromAllSources() async -> (steps: Int, error: String) {
         // Get steps from both sources
@@ -52,7 +36,7 @@ struct Provider: AppIntentTimelineProvider {
             return (hkSteps, "HK: \(hkError)")
         }
     }
-
+    
     // TODO: We can use continuation.throw to throw an error and handle it later, widget should show error if necessary
     private func getStepsFromCoreMotionOnly() async -> (steps: Int, error: String) {
         guard isStepCountingAvailable() else {
@@ -76,11 +60,11 @@ struct Provider: AppIntentTimelineProvider {
             }
         }
     }
-
+    
     // New HealthKit function
     private func getStepsFromHealthKit() async -> (steps: Int, error: String) {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount),
-            HKHealthStore.isHealthDataAvailable() else {
+              HKHealthStore.isHealthDataAvailable() else {
             return (0, "HK not available")
         }
         
@@ -89,8 +73,8 @@ struct Provider: AppIntentTimelineProvider {
         
         return await withCheckedContinuation { continuation in
             let query = HKStatisticsQuery(quantityType: stepType,
-                                        quantitySamplePredicate: predicate,
-                                        options: .cumulativeSum) { _, result, error in
+                                          quantitySamplePredicate: predicate,
+                                          options: .cumulativeSum) { _, result, error in
                 if let error = error {
                     continuation.resume(returning: (0, error.localizedDescription))
                     return
@@ -109,45 +93,39 @@ struct Provider: AppIntentTimelineProvider {
         }
     }
     
-    private func getDataFromDefaults() -> (steps: Int, lastUpdate: Date) {
+    private func getDataFromDefaults() -> Int {
         guard let shared = sharedDefaults else {
             print("no shared defaults")
-            return (0, Date())
+            return 0
         }
         
         let steps = shared.integer(forKey: "userDaySteps")
-        let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
-        
-        return (steps, lastUpdate)
+        return steps
     }
     
-    private func getCurrentData() async -> (steps: Int, error: String, lastUpdate: Date) {
+    private func getCurrentData() async -> (steps: Int, error: String) {
         let (allSteps, allError) = await getStepsFromAllSources()
-        let data = getDataFromDefaults()
+        var steps = getDataFromDefaults()
+        steps = max(allSteps, steps)
         
-        var steps = data.steps
-        
-        if data.steps != allSteps {
-            steps = max(allSteps, data.steps)
-        }
-
-        let isNewDay = !Calendar.current.isDate(data.lastUpdate, inSameDayAs: Date())
+        let isNewDay = !Calendar.current.isDate(Provider.lastUpdate, inSameDayAs: Date())
         if isNewDay {
             steps = 0
         }
         
-        return (steps, allError, data.lastUpdate)
+        return (steps, allError)
     }
     
-    private func updateSharedDefaults(steps: Int, error: String) {
+    private func updateSharedDefaults(steps: Int? = nil) {
         guard let shared = sharedDefaults else {
             print("no shared defaults")
             return
         }
+        
+        if let steps {
+            shared.set(steps, forKey: "userDaySteps")
+        }
     
-        shared.set(steps, forKey: "userDaySteps")
-        shared.set(Date(), forKey: "lastUpdateTime")
-
         shared.synchronize()
     }
     
@@ -168,12 +146,11 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func placeholder(in context: Context) -> SimpleEntry {
-        let data = getDataFromDefaults()
+        let steps = getDataFromDefaults()
         return SimpleEntry(
             date: Date(),
             configuration: ConfigurationAppIntent(),
-            steps: data.steps,
-            lastUpdateTime: data.lastUpdate,
+            steps: steps,
             family: context.family,
             firstFriend: nil
         )
@@ -182,36 +159,37 @@ struct Provider: AppIntentTimelineProvider {
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
         print("snapshot called")
         let data = await getCurrentData()
-        updateSharedDefaults(steps: data.steps, error: data.error)
+        updateSharedDefaults(steps: data.steps)
         return SimpleEntry(
-            date: data.lastUpdate,
+            date: Date(),
             configuration: configuration,
             steps: data.steps,
-            lastUpdateTime: Date(),
             family: context.family,
             firstFriend: getFirstFriend()
         )
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        print("updating widget")
-        
         let data = await getCurrentData()
+        print("updating widget \(context.family) lastUpdate: \(Provider.lastUpdate.timeIntervalSinceNow) lastNetworkUpdate: \(Provider.lastNetworkUpdate.timeIntervalSinceNow)")
         
         if context.family == .systemSmall,
-           data.lastUpdate.timeIntervalSinceNow < -5 {
-                async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
-                async let getFriends: () = await Supabase.shared.getFriends()
-                
-                _ = await (upsert, getFriends)
+           Provider.lastNetworkUpdate.timeIntervalSinceNow < -5 {
+            async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
+            async let getFriends: () = await Supabase.shared.getFriends()
+            _ = await (upsert, getFriends)
+            Provider.lastNetworkUpdate = Date()
+        } else {
+            print("failed to upsert and get friends \(context.family) lastUpdate: \(Provider.lastUpdate.timeIntervalSinceNow) lastNetworkUpdate: \(Provider.lastNetworkUpdate.timeIntervalSinceNow)")
         }
+        
+        updateSharedDefaults(steps: data.steps)
+        Provider.lastUpdate = Date()
 
-        updateSharedDefaults(steps: data.steps, error: data.error)
         let entry = SimpleEntry(
-            date: data.lastUpdate,
+            date: Date(),
             configuration: configuration,
             steps: data.steps,
-            lastUpdateTime: Date(),
             family: context.family,
             firstFriend: getFirstFriend()
         )

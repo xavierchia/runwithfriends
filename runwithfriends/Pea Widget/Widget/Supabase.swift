@@ -15,30 +15,14 @@ class Supabase {
     
     let client = SupabaseClient(supabaseURL: URL(string: "https://yfzsopmnnvlbezldkstu.supabase.co")!, supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmenNvcG1ubnZsYmV6bGRrc3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDMwMzA0MTgsImV4cCI6MjAxODYwNjQxOH0.hlFyXx9YazvPAOqeTtRc9WSuhwntVnGPd-OUBBVRGD8")
     
-    func getAuthenticatedClient() async throws -> SupabaseClient {
-        
-        // Get tokens from keychain
-        let accessToken = try KeychainManager.shared.getAccessToken()
-        let refreshToken = try KeychainManager.shared.getRefreshToken()
-        
-        // Set the session
-        try await client.auth.setSession(
-            accessToken: accessToken,
-            refreshToken: refreshToken
-        )
-        
-        return client
-    }
-    
     func upsert(steps: Int) async {
         do {
-            let client = try await getAuthenticatedClient()
-            let user = try await client.auth.session.user
-            let walk = Walk(last_update: Date(), day_steps: steps)
+            let userId = try KeychainManager.shared.getUserIdToken()
+            let walk = Walk(user_id: userId, last_update: Date(), day_steps: steps)
             
             try await client.database.from("walks")
                 .upsert(walk)
-                .eq("user_id", value: user.id)
+                .eq("user_id", value: userId)
                 .execute()
             print("upserted user data")
         } catch {
@@ -48,8 +32,7 @@ class Supabase {
     
     func getFriends() async {
         do {
-            let client = try await getAuthenticatedClient()
-            let user = try await client.auth.session.user
+            let userId = try KeychainManager.shared.getUserIdToken()
             var walkers: [Walker] = try await client
                     .from("users")
                     .select("""
@@ -67,7 +50,7 @@ class Supabase {
             
             print("got friends")
             walkers.removeAll { walker in
-                walker.user_id == user.id
+                walker.user_id == userId
             }
             // Side effect: Update friends data in shared defaults
             let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.day_steps) }
@@ -81,6 +64,7 @@ class Supabase {
 
 
 struct Walk: Codable {
+    let user_id: UUID
     let last_update: Date
     let day_steps: Int
 }

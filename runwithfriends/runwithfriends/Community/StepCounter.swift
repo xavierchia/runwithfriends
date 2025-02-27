@@ -154,10 +154,11 @@ class StepCounter {
         
         let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
         if isNewDay {
+            shared.set(Date(), forKey: "lastUpdateTime")
         }
+
         if steps != currentSteps {
             shared.set(steps, forKey: "userDaySteps")
-            shared.set(Date(), forKey: "lastUpdateTime")
         }
         shared.synchronize()
         WidgetCenter.shared.reloadAllTimelines()

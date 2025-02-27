@@ -17,7 +17,6 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
     let steps: Int
-    let lastUpdateTime: Date
     let family: WidgetFamily
     let firstFriend: FriendProgress?
 }

@@ -10,6 +10,7 @@ enum KeychainError: Error {
     case unknown(OSStatus)
     case itemNotFound
     case invalidItemFormat
+    case invalidUserIdFormat
 }
 
 class KeychainManager {
@@ -18,35 +19,33 @@ class KeychainManager {
     // Replace this with your actual app group identifier
     private let appGroupIdentifier = AppDelegate.appGroupIdentifier
     
-    private let accessTokenKey = "supabase_access_token"
-    private let refreshTokenKey = "supabase_refresh_token"
+    private let userIdKey = "supabase_user_id"
     
     private init() {}
     
     // MARK: - Save Tokens
     
-    func saveTokens(accessToken: String, refreshToken: String) throws {
+    func saveTokens(userId: UUID) throws {
         print("saved tokens")
-        try saveToKeychain(accessToken, forKey: accessTokenKey)
-        try saveToKeychain(refreshToken, forKey: refreshTokenKey)
+        try saveToKeychain(userId.uuidString, forKey: userIdKey)
     }
     
     // MARK: - Retrieve Tokens
     
-    func getAccessToken() throws -> String {
-        return try retrieveFromKeychain(forKey: accessTokenKey)
-    }
-    
-    func getRefreshToken() throws -> String {
-        return try retrieveFromKeychain(forKey: refreshTokenKey)
+    func getUserIdToken() throws -> UUID {
+        let userId = try retrieveFromKeychain(forKey: userIdKey)
+        guard let userIdUUID = UUID(uuidString: userId) else {
+            throw KeychainError.invalidUserIdFormat
+        }
+        
+        return userIdUUID
     }
     
     // MARK: - Delete Tokens
     
     func deleteTokens() throws {
         print("deleting tokens")
-        try deleteFromKeychain(forKey: accessTokenKey)
-        try deleteFromKeychain(forKey: refreshTokenKey)
+        try deleteFromKeychain(forKey: userIdKey)
     }
     
     // MARK: - Private Helper Methods

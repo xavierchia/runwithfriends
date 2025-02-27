@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            shared.bool(forKey: "appFirstInstall") == false {
             shared.set(true, forKey: "appFirstInstall")
             shared.set(0, forKey: "userDaySteps")
-            shared.set(Date(), forKey: "lastUpdateTime")
         }
         
         print("did finish launching")

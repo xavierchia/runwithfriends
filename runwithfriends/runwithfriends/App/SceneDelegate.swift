@@ -13,8 +13,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-    static var coldStart = true
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
@@ -33,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("User signed out. Session ended.")
                 default:
                     guard let session else { return }
-                    try? KeychainManager.shared.saveTokens(accessToken: session.accessToken, refreshToken: session.refreshToken)
+                    try? KeychainManager.shared.saveTokens(userId: session.user.id)
                 }
             }
                         
@@ -54,9 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     window.rootViewController = LoginViewController()
                     UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
                 }
-            }
-            
-            SceneDelegate.coldStart = false
+            }            
         }
     }
 
@@ -79,14 +75,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.        
-        if SceneDelegate.coldStart == false {
-            print("foreground not cold")
-            Task {
-                try? await UserData.loadSession()
-            }
-        }
-        
+        // Use this method to undo the changes made on entering the background.
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
