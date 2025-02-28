@@ -21,7 +21,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .cream
+        view.backgroundColor = .baseBackground
         addTextStack()
         addSignInButton()
     }

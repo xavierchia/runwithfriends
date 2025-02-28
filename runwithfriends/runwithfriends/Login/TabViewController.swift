@@ -69,13 +69,13 @@ class TabViewController: UITabBarController {
     private func setDark() {
         self.tabBar.backgroundColor = .black
         self.tabBar.barTintColor = .black
-        self.tabBar.tintColor = .cream
+        self.tabBar.tintColor = .baseBackground
         self.tabBar.isTranslucent = true
     }
     
     private func setLight() {
-        self.tabBar.backgroundColor = .cream
-        self.tabBar.barTintColor = .cream
+        self.tabBar.backgroundColor = .baseBackground
+        self.tabBar.barTintColor = .baseBackground
         self.tabBar.tintColor = .black
         self.tabBar.isTranslucent = true
     }

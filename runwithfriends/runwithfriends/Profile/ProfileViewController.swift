@@ -49,7 +49,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .cream
+        view.backgroundColor = .baseBackground
         setupNavigationController()
         setupSettingsTableView()
     }
@@ -72,7 +72,7 @@ class ProfileViewController: UIViewController {
     private func setupSettingsTableView() {
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
-        settingsTableView.backgroundColor = .cream
+        settingsTableView.backgroundColor = .baseBackground
         settingsTableView.tableHeaderView = UIView()
         view.addSubview(settingsTableView)
         settingsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,7 +106,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.image = data.emoji
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .shadow
-        cell.textLabel?.textColor = .almostBlack
+        cell.textLabel?.textColor = .baseText
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
         return cell
     }

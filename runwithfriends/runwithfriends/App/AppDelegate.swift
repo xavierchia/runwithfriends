@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: Navigation bar appearance
         let navigationBarAppearance = UINavigationBarAppearance()
         navigationBarAppearance.configureWithOpaqueBackground()
-        navigationBarAppearance.backgroundColor = .cream
+        navigationBarAppearance.backgroundColor = .baseBackground
         navigationBarAppearance.shadowColor = .clear
         navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.KefirBold(size: 34)]
         navigationBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.KefirBold(size: 34)]

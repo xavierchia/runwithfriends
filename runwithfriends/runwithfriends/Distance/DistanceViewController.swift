@@ -36,7 +36,7 @@ class DistanceViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .cream
+        view.backgroundColor = .baseBackground
         setupNavigationController()
         setupDistanceTableView()
     }
@@ -57,7 +57,7 @@ class DistanceViewController: UIViewController {
     private func setupDistanceTableView() {
         distanceTableView.delegate = self
         distanceTableView.dataSource = self
-        distanceTableView.backgroundColor = .cream
+        distanceTableView.backgroundColor = .baseBackground
         distanceTableView.tableHeaderView = UIView()
         view.addSubview(distanceTableView)
         distanceTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,10 +80,10 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         let fontSize = cell.textLabel?.font.pointSize ?? 17
         cell.selectionStyle = .none
         cell.backgroundColor = .shadow
-        cell.textLabel?.textColor = .almostBlack
+        cell.textLabel?.textColor = .baseText
         cell.textLabel?.font = UIFont.Kefir(size: fontSize)
         cell.detailTextLabel?.font = UIFont.Kefir(size: fontSize)
-        cell.detailTextLabel?.textColor = .almostBlack
+        cell.detailTextLabel?.textColor = .baseText
         
         if indexPath.row == 0 {
             cell.textLabel?.text = "Run to see more"
@@ -97,10 +97,10 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.image = cellInfo.emoji.image(pointSize: 20)
 
         if indexPath.row == 1 {
-            let color: UIColor = distance == 0 ? .pumpkin : .almostBlack
+            let color: UIColor = distance == 0 ? .pumpkin : .baseText
             let textString = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
             cell.detailTextLabel?.attributedText = textString.attributedStringWithColorAndBold([textString], color: color, boldWords: [], size: fontSize)
-            cell.textLabel?.attributedText = cellInfo.name.attributedStringWithColorAndBold([], color: .almostBlack, boldWords: [], size: fontSize)
+            cell.textLabel?.attributedText = cellInfo.name.attributedStringWithColorAndBold([], color: .baseText, boldWords: [], size: fontSize)
         } else {
             cell.detailTextLabel?.attributedText = cellInfo.distance == 0
             ? NSAttributedString(string: "-")
@@ -140,7 +140,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             
             let progress = UIProgressView(frame: CGRect(x: 0, y: 40, width: tableWidth, height: 30))
             progress.setProgress(progressPercentage, animated: true)
-            progress.progressTintColor = .almostBlack
+            progress.progressTintColor = .baseText
             progress.trackTintColor = distance == 0 ? .darkerGray :.pumpkin
             header.addSubview(progress)
         }
@@ -174,7 +174,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension UILabel {
     func setHeaderButton() -> UILabel {
-        self.textColor = .almostBlack
+        self.textColor = .baseText
         self.font = UIFont.KefirLight(size: 20)
         self.textAlignment = .left
         self.lineBreakMode = .byWordWrapping

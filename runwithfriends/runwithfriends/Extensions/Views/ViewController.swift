@@ -17,7 +17,7 @@ extension UIViewController {
         let width = view.frame.width - 30
         let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - width/2, y: self.view.frame.size.height - heightFromBottom, width: width, height: 70))
         toastLabel.accessibilityIdentifier = "toastView"
-        toastLabel.backgroundColor = UIColor.cream
+        toastLabel.backgroundColor = .baseBackground
         toastLabel.textColor = UIColor.accent
         toastLabel.font = UIFont.Kefir(size: 24)
         toastLabel.layer.borderColor = UIColor.accent.cgColor

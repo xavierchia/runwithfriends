@@ -89,6 +89,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         addPath()
         
         setupWaitingRoomTitle()
+        setupPodTitle()
         setupUserDistance()
     }
     
@@ -227,7 +228,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKGradientPolylineRenderer(overlay: overlay)
         
-        renderer.strokeColor = overlay.title == "main" ? UIColor.accent : .cream
+        renderer.strokeColor = overlay.title == "main" ? UIColor.accent : .baseBackground
         renderer.lineWidth = overlay.title == "main" ? 5 : 7
         renderer.lineCap = .round
         return renderer
@@ -248,7 +249,9 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             waitingRoomTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
         ])
-        
+    }
+    
+    private func setupPodTitle() {
         let podTitle = UIButton()
         podTitle.setTitle("Pea Pods", for: .normal)
         podTitle.titleLabel?.font = UIFont.KefirBold(size: 14)
