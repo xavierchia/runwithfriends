@@ -228,7 +228,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKGradientPolylineRenderer(overlay: overlay)
         
-        renderer.strokeColor = overlay.title == "main" ? UIColor.accent : .baseBackground
+        renderer.strokeColor = overlay.title == "main" ? UIColor.accent : .darkerGray
         renderer.lineWidth = overlay.title == "main" ? 5 : 7
         renderer.lineCap = .round
         return renderer
@@ -270,11 +270,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     
     @objc private func podButtonPressed() {
         print("poddy")
-        let vc = PodIntroViewController()
-        if let presentationController = vc.presentationController as? UISheetPresentationController {
-            let height = view.bounds.height * 0.75
-            presentationController.detents = [.custom { context in height }]
-        }
+        let vc = PodContainerViewController()
         present(vc, animated: true)
     }
     
