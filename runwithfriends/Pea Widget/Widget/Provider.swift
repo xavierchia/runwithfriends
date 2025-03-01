@@ -14,8 +14,6 @@ struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
     private let pedometer = CMPedometer()
     private let healthStore = HKHealthStore()
-    private static var lastUpdate = Date().addingTimeInterval(-20)
-    private static var lastNetworkUpdate = Date().addingTimeInterval(-20)
     
     private func isStepCountingAvailable() -> Bool {
         return CMPedometer.isStepCountingAvailable()
@@ -108,10 +106,13 @@ struct Provider: AppIntentTimelineProvider {
         var steps = getDataFromDefaults()
         steps = max(allSteps, steps)
         
-        let isNewDay = !Calendar.current.isDate(Provider.lastUpdate, inSameDayAs: Date())
-        if isNewDay {
-            steps = 0
+        if let lastUpdate = sharedDefaults?.object(forKey: "lastUpdate") as? Date {
+            let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
+            if isNewDay {
+                steps = 0
+            }
         }
+
         
         return (steps, allError)
     }
@@ -171,20 +172,21 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         let data = await getCurrentData()
-        print("updating widget \(context.family) lastUpdate: \(Provider.lastUpdate.timeIntervalSinceNow) lastNetworkUpdate: \(Provider.lastNetworkUpdate.timeIntervalSinceNow)")
+        print("updating widget \(context.family)")
         
         if context.family == .systemSmall,
-           Provider.lastNetworkUpdate.timeIntervalSinceNow < -5 {
+           let lastNetworkUpdate = sharedDefaults?.object(forKey: "lastNetworkUpdate") as? Date,
+           lastNetworkUpdate.timeIntervalSinceNow < -5 {
             async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
             async let getFriends: () = await Supabase.shared.getFriends()
             _ = await (upsert, getFriends)
-            Provider.lastNetworkUpdate = Date()
+            sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
         } else {
-            print("failed to upsert and get friends \(context.family) lastUpdate: \(Provider.lastUpdate.timeIntervalSinceNow) lastNetworkUpdate: \(Provider.lastNetworkUpdate.timeIntervalSinceNow)")
+            print("failed to upsert and get friends \(context.family)")
         }
         
         updateSharedDefaults(steps: data.steps)
-        Provider.lastUpdate = Date()
+        sharedDefaults?.set(Date(), forKey: "lastUpdate")
 
         let entry = SimpleEntry(
             date: Date(),

@@ -100,7 +100,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "profileCell")
         let data = tableCellTitles[indexPath.section][indexPath.row]
         cell.textLabel?.text = data.title
         cell.imageView?.image = data.emoji

@@ -150,11 +150,11 @@ class StepCounter {
         guard let shared = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends") else { return }
         
         let currentSteps = shared.integer(forKey: "userDaySteps")
-        let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date ?? Date()
-        
-        let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
-        if isNewDay {
-            shared.set(Date(), forKey: "lastUpdateTime")
+        if let lastUpdate = shared.object(forKey: "lastUpdate") as? Date {
+            let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
+            if isNewDay {
+                shared.set(Date(), forKey: "lastUpdateTime")
+            }
         }
 
         if steps != currentSteps {

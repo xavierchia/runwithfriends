@@ -21,9 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupGlobalUI()
         
         if let shared = UserDefaults(suiteName: AppDelegate.appGroupIdentifier),
-           shared.bool(forKey: "appFirstInstall") == false {
-            shared.set(true, forKey: "appFirstInstall")
+           shared.bool(forKey: "appFirstInstall2") == false {
+            shared.set(true, forKey: "appFirstInstall2")
             shared.set(0, forKey: "userDaySteps")
+            shared.set(Date(), forKey: "lastUpdateTime")
+            shared.set(Date(), forKey: "lastNetworkUpdate")
         }
         
         print("did finish launching")

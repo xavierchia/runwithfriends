@@ -76,7 +76,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
+        let cell = UITableViewCell(style: .value1, reuseIdentifier: "distanceCell")
         let fontSize = cell.textLabel?.font.pointSize ?? 17
         cell.selectionStyle = .none
         cell.backgroundColor = .shadow

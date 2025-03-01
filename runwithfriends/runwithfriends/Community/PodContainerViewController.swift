@@ -8,9 +8,10 @@ class PodContainerViewController: UIViewController, PodIntroDelegate {
         return vc
     }()
     
-    private lazy var groupsTableViewController: GroupsTableViewController = {
+    private lazy var groupsTableViewController: UINavigationController = {
         let vc = GroupsTableViewController()
-        return vc
+        let navController = UINavigationController(rootViewController: vc)
+        return navController
     }()
         
     override func viewDidLoad() {
@@ -22,10 +23,10 @@ class PodContainerViewController: UIViewController, PodIntroDelegate {
     private func setupInitialState() {
         // Check if user is first-time visitor
 //        if UserDefaults.standard.bool(forKey: "seenGroupIntro") {
-            showGroupsTable()
+//            showGroupsTable()
 //             intro seen
 //        } else {
-//            showIntro()
+            showIntro()
 //        }
     }
     

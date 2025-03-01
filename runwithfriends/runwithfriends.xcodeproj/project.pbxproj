@@ -41,6 +41,7 @@
 		9557F76C2B350794002CAE30 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76B2B350794002CAE30 /* AlertController.swift */; };
 		9557F7702B35706D002CAE30 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76F2B35706D002CAE30 /* User.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
+		95671C172D7288F000980CB4 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95671C162D7288F000980CB4 /* GroupsTableViewController.swift */; };
 		95813B622BB4E76400B12525 /* NYCMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 95813B612BB4E76400B12525 /* NYCMarathon.gpx */; };
 		95877BC32B042F7500A81839 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95877BC22B042F7500A81839 /* Cell.swift */; };
 		95966EB42AF329450086DABB /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95966EB32AF329450086DABB /* TabViewController.swift */; };
@@ -58,8 +59,6 @@
 		A51CC1982D6EB8D700125C4A /* PodIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51CC1972D6EB8D700125C4A /* PodIntroViewController.swift */; };
 		A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4442E2D5B1CE8003F632A /* StepCounter.swift */; };
 		A5BCC0652D71AE62005C30E5 /* PodContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BCC0642D71AE62005C30E5 /* PodContainerViewController.swift */; };
-		A5BCC0672D71AEB5005C30E5 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BCC0662D71AEB5005C30E5 /* GroupsTableViewController.swift */; };
-		A5BCC0682D71AEB5005C30E5 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BCC0662D71AEB5005C30E5 /* GroupsTableViewController.swift */; };
 		A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E394D82D67FC13009BBC93 /* KeychainManager.swift */; };
 		A5E394F42D6C0F40009BBC93 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A5E394F32D6C0F40009BBC93 /* Supabase */; };
 		A5E917212D5058470060DD48 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E917202D5058470060DD48 /* WidgetKit.framework */; };
@@ -122,6 +121,7 @@
 		9557F76B2B350794002CAE30 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		9557F76F2B35706D002CAE30 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
+		95671C162D7288F000980CB4 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
 		95813B612BB4E76400B12525 /* NYCMarathon.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NYCMarathon.gpx; sourceTree = "<group>"; };
 		95877BC22B042F7500A81839 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		95966EB32AF329450086DABB /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -140,7 +140,6 @@
 		A51CC1972D6EB8D700125C4A /* PodIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodIntroViewController.swift; sourceTree = "<group>"; };
 		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounter.swift; sourceTree = "<group>"; };
 		A5BCC0642D71AE62005C30E5 /* PodContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodContainerViewController.swift; sourceTree = "<group>"; };
-		A5BCC0662D71AEB5005C30E5 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
 		A5E394D82D67FC13009BBC93 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		A5E9171F2D5058470060DD48 /* Pea WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Pea WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -244,7 +243,6 @@
 		952825A72AE1F74D0032B04B = {
 			isa = PBXGroup;
 			children = (
-				A5BCC0662D71AEB5005C30E5 /* GroupsTableViewController.swift */,
 				A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */,
 				952825B22AE1F74D0032B04B /* runwithfriends */,
 				A5E917242D5058470060DD48 /* Pea Widget */,
@@ -344,8 +342,9 @@
 			isa = PBXGroup;
 			children = (
 				95DBAC502BA18186002037F1 /* CommunityViewController.swift */,
-				A51CC1972D6EB8D700125C4A /* PodIntroViewController.swift */,
 				A5BCC0642D71AE62005C30E5 /* PodContainerViewController.swift */,
+				95671C162D7288F000980CB4 /* GroupsTableViewController.swift */,
+				A51CC1972D6EB8D700125C4A /* PodIntroViewController.swift */,
 				A5033D812D5B3B89001E98FD /* FriendsManager.swift */,
 				A5A4442E2D5B1CE8003F632A /* StepCounter.swift */,
 				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
@@ -509,7 +508,7 @@
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
 				95DBAC532BA18231002037F1 /* Location.swift in Sources */,
 				25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */,
-				A5BCC0682D71AEB5005C30E5 /* GroupsTableViewController.swift in Sources */,
+				95671C172D7288F000980CB4 /* GroupsTableViewController.swift in Sources */,
 				257EC7A52B882FFE000759A8 /* Progression.swift in Sources */,
 				A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
@@ -523,7 +522,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5BCC0672D71AEB5005C30E5 /* GroupsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

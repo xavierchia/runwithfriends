@@ -41,7 +41,7 @@ class PodIntroViewController: UIViewController {
         ])
         
         let body = UILabel()
-        body.text = "Feet feeling heavy\nand tight?\n\nNeed a push\nto feel right?\n\nWalking picks up\nthe pace...\n\nWhen you pass friends\nwith grace 🤭"
+        body.text = "Feet feeling stiff\nand tight?\n\nNeed something\nto make it right?\n\nFriends by your side\nmake walking light\n\nEspecially when you pass\nthem in delight! 🤭"
         body.font = UIFont.KefirLight(size: 22)
         body.numberOfLines = 0
         body.textAlignment = .left
