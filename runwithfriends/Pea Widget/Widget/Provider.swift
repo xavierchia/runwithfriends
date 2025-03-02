@@ -14,6 +14,7 @@ struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
     private let pedometer = CMPedometer()
     private let healthStore = HKHealthStore()
+    static var networkUpdateCount = 0
     
     private func isStepCountingAvailable() -> Bool {
         return CMPedometer.isStepCountingAvailable()
@@ -176,7 +177,8 @@ struct Provider: AppIntentTimelineProvider {
         
         if context.family == .systemSmall,
            let lastNetworkUpdate = sharedDefaults?.object(forKey: "lastNetworkUpdate") as? Date,
-           lastNetworkUpdate.timeIntervalSinceNow < -5 {
+           lastNetworkUpdate.timeIntervalSinceNow < -20,
+           Provider.networkUpdateCount % 2 == 0 {
             async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
             async let getFriends: () = await Supabase.shared.getFriends()
             _ = await (upsert, getFriends)
@@ -184,6 +186,8 @@ struct Provider: AppIntentTimelineProvider {
         } else {
             print("failed to upsert and get friends \(context.family)")
         }
+        
+        Provider.networkUpdateCount += 1
         
         updateSharedDefaults(steps: data.steps)
         sharedDefaults?.set(Date(), forKey: "lastUpdate")
