@@ -18,6 +18,15 @@ struct User: Codable {
     let username: String
     let emoji: String
     let search_id: Int
+    let group_users: group_users?
+    
+    struct group_users: Codable {
+        var group_id: String?
+    }
+    
+    var group_id: String? {
+        self.group_users?.group_id
+    }
 }
 
 struct Walk: Codable {

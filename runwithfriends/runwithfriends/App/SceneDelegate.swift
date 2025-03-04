@@ -34,6 +34,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     try? KeychainManager.shared.saveTokens(userId: session.user.id)
                 }
             }
+            
+            // for testing
+//            try await Supabase.shared.client.auth.signOut()
                         
             do {
                 let user = try await UserData.getUserOnAppInit()

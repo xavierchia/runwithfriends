@@ -93,9 +93,18 @@ class UserData {
     static func getUserOnAppInit() async throws -> User {
         let _ = try KeychainManager.shared.getUserIdToken()
         let user = try await Supabase.shared.client.auth.session.user
-        let retrievedUser: User = try await Supabase.shared.client.database
+        let retrievedUser: User = try await Supabase.shared.client
             .from("users")
-            .select()
+            .select("""
+                user_id,
+                apple_id,
+                username,
+                emoji,
+                search_id,
+                group_users!inner (
+                    group_id
+                )
+            """)
             .eq("user_id", value: user.id)
             .single()
             .execute()
@@ -106,7 +115,7 @@ class UserData {
     
     static func saveUser(_ initialUser: InitialUser) async throws -> User {
         let supabase = Supabase.shared
-        let user: User = try await supabase.client.database
+        let user: User = try await supabase.client
           .from("users")
           .insert(initialUser, returning: .representation)
           .single()
@@ -117,13 +126,23 @@ class UserData {
     
     static func getUser(with id: String) async throws -> User? {
         let supabase = Supabase.shared
-        let users: [User] = try await supabase.client.database
+        let retrievedUser: User = try await supabase.client
             .from("users")
-            .select()
+            .select("""
+                user_id,
+                apple_id,
+                username,
+                emoji,
+                search_id,
+                group_users!inner (
+                    group_id
+                )
+            """)
             .eq("apple_id", value: id)
+            .single()
             .execute()
             .value
-        let retrievedUser = users.first
+        print(retrievedUser)
         return retrievedUser
     }
 }
