@@ -19,6 +19,10 @@ class GroupsTableViewController: UITableViewController {
         tableView.backgroundColor = .baseBackground
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "groupTableCell")
+        
+        Task {
+            _ = try? await UserData.getGroups()
+        }
     }
 
     // MARK: - Table view data source

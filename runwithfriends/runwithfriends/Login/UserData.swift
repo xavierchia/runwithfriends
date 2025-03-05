@@ -29,6 +29,15 @@ struct Walker: Codable {
     }
 }
 
+struct Group: Codable {
+    let group_id: UUID
+    let created_at: Date
+    let name: String
+    let emoji: String
+    let members_count: Int
+}
+
+
 class UserData {
     static let defaultUsername = "Pea"
     var user: User
@@ -43,7 +52,7 @@ class UserData {
             do {
                 let year_week = Date.YearAndWeek()
                 let walk = Walk(user_id: user.user_id, year_week: year_week, steps: steps, longitude: coordinate.longitude, latitude: coordinate.latitude)
-                let supabase = Supabase.shared.client.database
+                let supabase = Supabase.shared.client
                 try await supabase.from("walks")
                     .upsert(walk)
                     .eq("user_id", value: user.user_id)
@@ -144,5 +153,16 @@ class UserData {
             .value
         print(retrievedUser)
         return retrievedUser
+    }
+    
+    static func getGroups() async throws -> [ Group ] {
+        let supabase = Supabase.shared
+        let groups: [Group] = try await supabase.client
+            .from("groups")
+            .select()
+            .execute()
+            .value
+        print(groups)
+        return groups
     }
 }
