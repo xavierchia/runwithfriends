@@ -9,7 +9,26 @@ class SubtitleTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
     
-    func configureUI() {
+    func configureUI(with group: Group) {
+        baseUI()
+        
+        textLabel?.text = group.name
+        let memberString = group.members_count == 1 ? "member" : "members"
+        detailTextLabel?.text = "\(group.members_count) \(memberString)"
+            
+        accessoryType = .disclosureIndicator
+    }
+    
+    func configureEmptyUI() {
+        baseUI()
+        
+        textLabel?.text = "Loading..."
+        detailTextLabel?.text = ""
+        
+        accessoryType = .none
+    }
+    
+    private func baseUI() {
         backgroundColor = .baseBackground
         textLabel?.textColor = .baseText
         detailTextLabel?.textColor = .baseText
@@ -19,7 +38,6 @@ class SubtitleTableViewCell: UITableViewCell {
         
         textLabel?.font = UIFont.Kefir(size: labelSize)
         detailTextLabel?.font = UIFont.Kefir(size: detailSize)
-        accessoryType = .disclosureIndicator
     }
 
     required init?(coder aDecoder: NSCoder) {

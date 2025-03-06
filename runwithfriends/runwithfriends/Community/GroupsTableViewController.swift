@@ -40,8 +40,8 @@ class GroupsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return groups.count
+        
+        return groups.count > 0 ? groups.count : 1
     }
 
     
@@ -50,13 +50,13 @@ class GroupsTableViewController: UITableViewController {
             return UITableViewCell()
         }
         
+        guard groups.count > 0 else {
+            cell.configureEmptyUI()
+            return cell
+        }
+        
         let group = groups[indexPath.row]
-        
-        cell.textLabel?.text = group.name
-        let memberString = group.members_count == 1 ? "member" : "members"
-        cell.detailTextLabel?.text = "\(group.members_count) \(memberString)"
-        
-        cell.configureUI()
+        cell.configureUI(with: group)
         return cell
     }
 }
