@@ -162,7 +162,6 @@ class UserData {
             .select()
             .execute()
             .value
-        print(groups)
         return groups
     }
 }

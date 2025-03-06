@@ -9,25 +9,57 @@ import UIKit
 
 class GroupsTableViewController: UITableViewController {
     
-    var groups = [Group]()
+    private var groups = [Group]()
+    
+    private var loadingTimer: Timer?
+    private var loadingState = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
+        startLoadingAnimation()
+
         Task {
             do {
                 self.groups = try await UserData.getGroups()
+                stopLoadingAnimation()
+                self.navigationItem.title = "Groups"
                 self.tableView.reloadData()
             }
             catch {
                 self.groups = [Group]()
+                stopLoadingAnimation()
+                self.navigationItem.title = "Oops! Swipe down"
             }
         }
     }
+
+    private func startLoadingAnimation() {
+        // Cancel any existing timer
+        loadingTimer?.invalidate()
+        
+        // Create a new timer that fires every 0.5 seconds
+        loadingTimer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(updateLoadingText), userInfo: nil, repeats: true)
+        
+        // Set initial text
+        updateLoadingText()
+    }
+
+    @objc private func updateLoadingText() {
+        let loadingTexts = ["Loading", "Loading.", "Loading..", "Loading..."]
+        self.navigationItem.title = loadingTexts[loadingState]
+        loadingState = (loadingState + 1) % 4
+    }
+
+    // Call this method when you need to stop the animation
+    func stopLoadingAnimation() {
+        loadingTimer?.invalidate()
+        loadingTimer = nil
+        loadingState = 0
+    }
     
     private func setupUI() {
-        self.navigationItem.title = "Groups"
+        self.navigationItem.title = "Loading"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -51,8 +83,7 @@ class GroupsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return groups.count > 0 ? groups.count : 1
+        return groups.count
     }
 
     
@@ -60,12 +91,7 @@ class GroupsTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubtitleTableViewCell.reuseIdentifier, for: indexPath) as? SubtitleTableViewCell else {
             return UITableViewCell()
         }
-        
-        guard groups.count > 0 else {
-            cell.configureEmptyUI()
-            return cell
-        }
-        
+
         let group = groups[indexPath.row]
         cell.configureUI(with: group)
         return cell

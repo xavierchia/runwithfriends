@@ -19,15 +19,6 @@ class SubtitleTableViewCell: UITableViewCell {
         accessoryType = .disclosureIndicator
     }
     
-    func configureEmptyUI() {
-        baseUI()
-        
-        textLabel?.text = "Loading..."
-        detailTextLabel?.text = ""
-        
-        accessoryType = .none
-    }
-    
     private func baseUI() {
         backgroundColor = .baseBackground
         textLabel?.textColor = .baseText
