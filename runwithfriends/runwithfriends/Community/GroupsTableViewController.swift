@@ -46,7 +46,9 @@ class GroupsTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SubtitleTableViewCell.reuseIdentifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SubtitleTableViewCell.reuseIdentifier, for: indexPath) as? SubtitleTableViewCell else {
+            return UITableViewCell()
+        }
         
         let group = groups[indexPath.row]
         
@@ -54,14 +56,7 @@ class GroupsTableViewController: UITableViewController {
         let memberString = group.members_count == 1 ? "member" : "members"
         cell.detailTextLabel?.text = "\(group.members_count) \(memberString)"
         
-        // Additional styling
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 16)
-        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
-        cell.accessoryType = .disclosureIndicator
-
+        cell.configureUI()
         return cell
-    }
-        
-
     }
 }
