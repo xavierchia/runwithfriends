@@ -8,91 +8,60 @@
 import UIKit
 
 class GroupsTableViewController: UITableViewController {
+    
+    var groups = [Group]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        
+        Task {
+            do {
+                self.groups = try await UserData.getGroups()
+                self.tableView.reloadData()
+            }
+            catch {
+                self.groups = [Group]()
+            }
+        }
+    }
+    
+    private func setupUI() {
         self.navigationItem.title = "Groups"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         tableView.backgroundColor = .baseBackground
+        tableView.register(SubtitleTableViewCell.self,
+                           forCellReuseIdentifier: SubtitleTableViewCell.reuseIdentifier)
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "groupTableCell")
-        
-        Task {
-            _ = try? await UserData.getGroups()
-        }
     }
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        return groups.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: SubtitleTableViewCell.reuseIdentifier, for: indexPath)
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "groupTableCell", for: indexPath)
+        let group = groups[indexPath.row]
         
-        cell.textLabel?.text = "heyyyy"
+        cell.textLabel?.text = group.name
+        let memberString = group.members_count == 1 ? "member" : "members"
+        cell.detailTextLabel?.text = "\(group.members_count) \(memberString)"
         
+        // Additional styling
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 16)
+        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
+        cell.accessoryType = .disclosureIndicator
 
         return cell
     }
         
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
