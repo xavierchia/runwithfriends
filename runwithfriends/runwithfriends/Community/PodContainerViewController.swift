@@ -47,9 +47,10 @@ class PodContainerViewController: UIViewController, PodIntroDelegate {
         if let sheet = self.sheetPresentationController {
             sheet.animateChanges {
                 sheet.detents = [.large()]
-                sheet.prefersGrabberVisible = true
+                sheet.prefersGrabberVisible = false
             }
         }
+        self.isModalInPresentation = true
         addChild(groupsTableViewController)
         groupsTableViewController.view.frame = view.bounds
         view.addSubview(groupsTableViewController.view)

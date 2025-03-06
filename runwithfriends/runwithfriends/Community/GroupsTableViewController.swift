@@ -35,7 +35,18 @@ class GroupsTableViewController: UITableViewController {
         tableView.backgroundColor = .baseBackground
         tableView.register(SubtitleTableViewCell.self,
                            forCellReuseIdentifier: SubtitleTableViewCell.reuseIdentifier)
-        
+                
+        let closeButton = UIBarButtonItem(
+            image: UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)),
+            style: .plain,
+            target: self,
+            action: #selector(dismissViewController)
+        )
+        navigationItem.rightBarButtonItem = closeButton
+    }
+    
+    @objc func dismissViewController() {
+        dismiss(animated: true)
     }
 
     // MARK: - Table view data source

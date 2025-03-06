@@ -31,13 +31,13 @@ class SubtitleTableViewCell: UITableViewCell {
     private func baseUI() {
         backgroundColor = .baseBackground
         textLabel?.textColor = .baseText
-        detailTextLabel?.textColor = .baseText
+        detailTextLabel?.textColor = .darkerGray
         
         let labelSize = textLabel?.font.pointSize ?? 17
         let detailSize = detailTextLabel?.font.pointSize ?? 12
         
         textLabel?.font = UIFont.Kefir(size: labelSize)
-        detailTextLabel?.font = UIFont.Kefir(size: detailSize)
+        detailTextLabel?.font = UIFont.KefirLight(size: detailSize)
     }
 
     required init?(coder aDecoder: NSCoder) {
