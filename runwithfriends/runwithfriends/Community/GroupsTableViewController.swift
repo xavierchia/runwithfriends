@@ -20,6 +20,11 @@ class GroupsTableViewController: UITableViewController {
         refreshData()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopLoadingAnimation()
+    }
+    
     private func setupRefreshControl() {
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
