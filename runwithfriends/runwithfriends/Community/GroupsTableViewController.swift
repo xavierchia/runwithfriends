@@ -36,10 +36,10 @@ class GroupsTableViewController: UITableViewController {
         Task {
             do {
                 self.groups = try await UserData.getGroups()
-                stopLoadingAnimation()
-                refreshControl?.endRefreshing()
+                self.stopLoadingAnimation()
                 self.navigationItem.title = "Groups"
                 self.tableView.reloadData()
+                self.refreshControl?.endRefreshing()
             }
             catch {
                 self.groups = [Group]()
