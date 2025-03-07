@@ -10,25 +10,36 @@ import UIKit
 class GroupsTableViewController: UITableViewController {
     
     private var groups = [Group]()
-    
     private var loadingTimer: Timer?
     private var loadingState = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupRefreshControl()
+        refreshData()
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+    }
+    
+    @objc private func refreshData() {
         startLoadingAnimation()
-
         Task {
             do {
                 self.groups = try await UserData.getGroups()
                 stopLoadingAnimation()
+                refreshControl?.endRefreshing()
                 self.navigationItem.title = "Groups"
                 self.tableView.reloadData()
             }
             catch {
                 self.groups = [Group]()
                 stopLoadingAnimation()
+                refreshControl?.endRefreshing()
                 self.navigationItem.title = "Oops! Swipe down"
             }
         }
