@@ -18,11 +18,12 @@ class Supabase {
     func upsert(steps: Int) async {
         do {
             let userId = try KeychainManager.shared.getUserIdToken()
-            let walk = Walk(user_id: userId, last_update: Date(), day_steps: steps)
+            let dateString = Date().getDateString()
+            let walk = Walk(user_id: userId, date: dateString, steps: steps)
             
-            try await client.database.from("walks")
+            try await client
+                .from("steps")
                 .upsert(walk)
-                .eq("user_id", value: userId)
                 .execute()
             print("upserted user data")
         } catch {
@@ -34,8 +35,8 @@ class Supabase {
 
 struct Walk: Codable {
     let user_id: UUID
-    let last_update: Date
-    let day_steps: Int
+    let date: String
+    let steps: Int
 }
 
 struct Walker: Codable {
@@ -56,6 +57,11 @@ struct Walker: Codable {
         case emoji
         case walk = "walks"
     }
+}
+
+struct FriendProgress: Codable {
+    let username: String
+    let steps: Int
 }
 
 class FriendsManager {
