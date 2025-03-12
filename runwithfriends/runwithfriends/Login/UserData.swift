@@ -55,25 +55,27 @@ class UserData {
         self.user = user
     }
     
-    func updateStepsIfNeeded(dailySteps: [DailySteps]) async {
-        if let lastSync = lastServerSync,
-            Date().timeIntervalSince(lastSync) < minimumSyncInterval {
-             return
-         }
-         
-         do {
-             let steps = dailySteps.map { dailyStep in
-                 Step(user_id: user.user_id, date: dailyStep.date.getDateString(), steps: Int(dailyStep.steps))
+    func updateStepsIfNeeded(dailySteps: [DailySteps]) {
+        Task {
+            if let lastSync = lastServerSync,
+                Date().timeIntervalSince(lastSync) < minimumSyncInterval {
+                 return
              }
              
-             try await Supabase.shared.client.from("steps")
-                 .upsert(steps)
-                 .execute()
+             do {
+                 let steps = dailySteps.map { dailyStep in
+                     Step(user_id: user.user_id, date: dailyStep.date.getDateString(), steps: Int(dailyStep.steps))
+                 }
+                 
+                 try await Supabase.shared.client.from("steps")
+                     .upsert(steps)
+                     .execute()
 
-             lastServerSync = Date()
-         } catch {
-             print("Failed to sync with server: \(error.localizedDescription)")
-         }
+                 lastServerSync = Date()
+             } catch {
+                 print("Failed to sync with server: \(error.localizedDescription)")
+             }
+        }
     }
     
     func getPublicUsers() async -> [User] {

@@ -18,12 +18,11 @@ struct User: Codable {
     let search_id: Int
     let username: String
     let emoji: String
-    let week_steps: Int?
-    let day_steps: Int?
-    let group_users: group_users?
-    
-    private let week_date: String?
-    private let day_date: String?
+    var week_steps: Int?
+    var day_steps: Int?
+    var group_users: group_users?
+    var week_date: String?
+    var day_date: String?
     
     struct group_users: Codable {
         var group_id: String?

@@ -97,11 +97,8 @@ class StepCounter {
         calendar.firstWeekday = 2  // 2 represents Monday
         
         let today = Date()
-        let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: today))!
-        
-        // Calculate the start of week (Monday)
-        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today)
-        let startOfWeek = calendar.date(from: components)!
+        let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: today))!        
+        let startOfWeek = Date.startOfWeek()
 
         return (start: startOfWeek, end: endOfToday)
     }

@@ -48,6 +48,11 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(updateView), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateView()
+    }
+    
     private func showMotionPermissionAlert() {
         let alert = UIAlertController(
             title: "Motion Access Required",
@@ -66,11 +71,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         present(alert, animated: true)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateView()
-    }
-    
     @objc private func updateView() {
         print("updating view: region, annotations, labels")
         // set map region
@@ -79,9 +79,34 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         let region = MKCoordinateRegion(center: centerCoordinate, span: span)
         self.mapView.setRegion(region, animated: false)
         
-        addAnnotations()
-        
-        updateSteps()
+        Task {
+            let result = await stepCounter.getStepsForWeek()
+            let weekSteps = result.reduce(0) { $0 + $1.steps }
+            
+            let daySteps = result.first { dailyStep in
+                dailyStep.date == Date.startOfToday()
+            }?.steps ?? 0
+            
+            self.userData.user.day_date = Date.startOfToday().getDateString()
+            self.userData.user.week_date = Date.startOfWeek().getDateString()
+            self.userData.user.day_steps = Int(daySteps)
+            self.userData.user.week_steps = Int(weekSteps)
+            
+            await MainActor.run {
+                self.weekSteps.text = "Week: \(Int(weekSteps).withCommas())"
+                self.daySteps.text = "Day: \(Int(daySteps).withCommas())"
+            }
+            
+            userData.updateStepsIfNeeded(dailySteps: result)
+            
+            let pubs = await userData.getPublicUsers()
+            print(pubs)
+            
+            mapView.removeAnnotations(mapView.annotations)
+            addStartAndEnd()
+            addUserAnnotation(user: userData.user)
+//            addAnnotations()
+        }
     }
     
     private func setupUI() {
@@ -127,44 +152,48 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    private func addStartAndEnd() {
+        guard let firstCoordinate = coordinates.first else { return }
+        let startPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "⛩️"))
+        startPin.coordinate = firstCoordinate
+        self.mapView.addAnnotation(startPin)
+        
+        // add ending flag
+        guard let lastCoordinate = coordinates.last else { return }
+        let endPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"))
+        endPin.coordinate = lastCoordinate
+        self.mapView.addAnnotation(endPin)
+    }
+    
+    private func addUserAnnotation(user: User) {
+        guard let userWeekSteps = user.week_steps else { return }
+        var steps = 0.0
+        var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
+        for (index, coordinate) in coordinates.enumerated() {
+            let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            let nextDistance = currentCoordinate.distance(from: lastCoordinate)
+            steps += nextDistance / 0.7
+            
+            let isLastIndex = index == coordinates.count - 1
+            if steps >= Double(userWeekSteps) || isLastIndex  {
+                let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
+                let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
+                newPin.coordinate = userCoordinate
+                newPin.title = userData.user.username
+                newPin.identifier = "user"
+                self.mapView.addAnnotation(newPin)
+        
+                break
+            }
+            
+            lastCoordinate = currentCoordinate
+        }
+    }
+    
     private func addAnnotations() {
-        mapView.removeAnnotations(mapView.annotations)
-        // put user on map
-        let walk = Walker.Walk(steps: 0, latitude: 0, longitude: 0, day_steps: 0)
-        var userWalker = Walker(user_id: userData.user.user_id, username: userData.user.username, emoji: userData.user.emoji, walk: walk)
-        
-//        stepCounter.getSteps(from: Date.startOfWeek()) { [self] userSteps in
-//            var steps = 0.0
-//            var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
-//            for (index, coordinate) in coordinates.enumerated() {
-//                let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-//                let nextDistance = currentCoordinate.distance(from: lastCoordinate)
-//                steps += nextDistance / 0.7
-//                
-//                let isLastIndex = index == coordinates.count - 1
-//                if steps >= userSteps || isLastIndex  {
-//                    let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
-//                    let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
-//                    newPin.coordinate = userCoordinate
-//                    newPin.title = userData.user.username
-//                    newPin.identifier = "user"
-//                    self.mapView.addAnnotation(newPin)
-//                    
-//                    userWalker.walk.latitude = userCoordinate.latitude
-//                    userWalker.walk.longitude = userCoordinate.longitude
-//                    userWalker.walk.steps = Int(userSteps)
-//                    
-//                    self.userData.updateWalk(with: Int(userSteps), and: userCoordinate)
-//                    break
-//                }
-//                
-//                lastCoordinate = currentCoordinate
-//            }
-//        }
-        
         Task {
             var walkers = await userData.getWalkers()
-            walkers.append(userWalker)
+//            walkers.append(userWalker)
             walkers.sort { lhs, rhs in
                 lhs.walk.steps < rhs.walk.steps
             }
@@ -212,17 +241,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                 self.mapView.addAnnotation(newPin)
             }
         }
-        
-        guard let firstCoordinate = coordinates.first else { return }
-        let startPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "⛩️"))
-        startPin.coordinate = firstCoordinate
-        self.mapView.addAnnotation(startPin)
-        
-        // add ending flag
-        guard let lastCoordinate = coordinates.last else { return }
-        let endPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"))
-        endPin.coordinate = lastCoordinate
-        self.mapView.addAnnotation(endPin)
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -302,24 +320,5 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             daySteps.heightAnchor.constraint(equalToConstant: 40),
             daySteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
         ])
-    }
-    
-    private func updateSteps() {
-        Task {
-            let result = await stepCounter.getStepsForWeek()
-            let weekSteps = result.reduce(0) { $0 + $1.steps }
-            self.weekSteps.text = "Week: \(Int(weekSteps).withCommas())"
-            
-            let daySteps = result.first { dailyStep in
-                dailyStep.date == Date.startOfToday()
-            }?.steps ?? 0
-            
-            self.daySteps.text = "Day: \(Int(daySteps).withCommas())"
-            
-            await userData.updateStepsIfNeeded(dailySteps: result)
-            
-            let pubs = await userData.getPublicUsers()
-            print(pubs)
-        }
     }
 }
