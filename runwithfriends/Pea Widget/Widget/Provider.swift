@@ -130,22 +130,6 @@ struct Provider: AppIntentTimelineProvider {
     
         shared.synchronize()
     }
-    
-    private func getFirstFriend() -> FriendProgress? {
-        guard let shared = sharedDefaults,
-              let friendData = shared.data(forKey: "friendsProgress") else {
-            print("no shared defaults")
-            return nil
-        }
-        
-        do {
-            let friends = try JSONDecoder().decode([FriendProgress].self, from: friendData)
-            return friends.first
-        } catch {
-            print("Failed to load friends data: \(error)")
-            return nil
-        }
-    }
 
     func placeholder(in context: Context) -> SimpleEntry {
         let steps = getDataFromDefaults()
@@ -153,8 +137,7 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: ConfigurationAppIntent(),
             steps: steps,
-            family: context.family,
-            firstFriend: nil
+            family: context.family
         )
     }
 
@@ -166,8 +149,7 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: configuration,
             steps: data.steps,
-            family: context.family,
-            firstFriend: getFirstFriend()
+            family: context.family
         )
     }
     
@@ -180,8 +162,7 @@ struct Provider: AppIntentTimelineProvider {
            lastNetworkUpdate.timeIntervalSinceNow < -20,
            Provider.networkUpdateCount % 2 == 0 {
             async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
-            async let getFriends: () = await Supabase.shared.getFriends()
-            _ = await (upsert, getFriends)
+            _ = await (upsert)
             sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
         } else {
             print("failed to upsert and get friends \(context.family)")
@@ -196,8 +177,7 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: configuration,
             steps: data.steps,
-            family: context.family,
-            firstFriend: getFirstFriend()
+            family: context.family
         )
             
         return Timeline(entries: [entry], policy: .atEnd)

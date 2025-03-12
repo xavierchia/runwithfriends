@@ -29,37 +29,6 @@ class Supabase {
             print("failed to upsert steps \(error)")
         }
     }
-    
-    func getFriends() async {
-        do {
-            let userId = try KeychainManager.shared.getUserIdToken()
-            var walkers: [Walker] = try await client
-                    .from("users")
-                    .select("""
-                        user_id,
-                        username,
-                        emoji,
-                        walks!inner (
-                            day_steps,
-                            latitude,
-                            longitude
-                        )
-                    """)
-                    .execute()
-                    .value
-            
-            print("got friends")
-            walkers.removeAll { walker in
-                walker.user_id == userId
-            }
-            // Side effect: Update friends data in shared defaults
-            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.day_steps) }
-            FriendsManager.shared.updateFriends(friends)
-            
-        } catch {
-            print("failed to get friends \(error)")
-        }
-    }
 }
 
 
