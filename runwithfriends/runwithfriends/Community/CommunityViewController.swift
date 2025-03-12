@@ -307,7 +307,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     private func updateSteps() {
         Task {
             let result = await stepCounter.getStepsForWeek()
-            print(result)
             let weekSteps = result.reduce(0) { $0 + $1.steps }
             self.weekSteps.text = "Week: \(Int(weekSteps).withCommas())"
             
@@ -316,6 +315,8 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             }?.steps ?? 0
             
             self.daySteps.text = "Day: \(Int(daySteps).withCommas())"
+            
+            await userData.updateStepsIfNeeded(dailySteps: result)
         }
     }
 }

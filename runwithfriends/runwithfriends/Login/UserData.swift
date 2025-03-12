@@ -29,6 +29,12 @@ struct Walker: Codable {
     }
 }
 
+struct Step: Codable {
+    let user_id: UUID
+    let date: String
+    let steps: Int
+}
+
 struct Group: Codable {
     let group_id: UUID
     let created_at: Date
@@ -42,8 +48,32 @@ class UserData {
     static let defaultUsername = "Pea"
     var user: User
     
+    private var lastServerSync: Date?
+    private let minimumSyncInterval: TimeInterval = 60 * 5
+    
     init(user: User) {
         self.user = user
+    }
+    
+    func updateStepsIfNeeded(dailySteps: [DailySteps]) async {
+        if let lastSync = lastServerSync,
+            Date().timeIntervalSince(lastSync) < minimumSyncInterval {
+             return
+         }
+         
+         do {
+             let steps = dailySteps.map { dailyStep in
+                 Step(user_id: user.user_id, date: dailyStep.date.getDateString(), steps: Int(dailyStep.steps))
+             }
+             
+             try await Supabase.shared.client.from("steps")
+                 .upsert(steps)
+                 .execute()
+
+             lastServerSync = Date()
+         } catch {
+             print("Failed to sync with server: \(error.localizedDescription)")
+         }
     }
     
     func updateWalk(with steps: Int, and coordinate: CLLocationCoordinate2D) {

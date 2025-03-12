@@ -13,7 +13,6 @@ import CoreMotion
 struct DailySteps {
     let date: Date
     let steps: Double
-    let weekday: Int  // 1 = Monday, 2 = Tuesday, ..., 7 = Sunday
 }
 
 class StepCounter {
@@ -28,37 +27,46 @@ class StepCounter {
     
     private init() {}
     
-    private func getWeekToDateRange() -> (start: Date, end: Date) {
-        var calendar = Calendar.current
-        calendar.firstWeekday = 2  // 2 represents Monday
+    func getStepsForWeek() async -> [DailySteps] {
+        // Request HealthKit permission first
+        let healthKitAuthorized = await requestHealthKitPermission()
         
+        // Get the week's date range
+        let weekRange = getWeekToDateRange()
+        
+        // Get steps from both sources for the whole week
+        async let healthKitSteps = healthKitAuthorized ? await getStepsFromHealthKit(from: weekRange.start, to: weekRange.end) : [:]
+        async let coreMotionSteps = await getStepsFromCoreMotion(from: weekRange.start, to: weekRange.end)
+        
+        // Await both results
+        let (hkSteps, cmSteps) = await (healthKitSteps, coreMotionSteps)
+        
+        // Combine results, taking the higher count for each day
+        var combinedSteps = [DailySteps]()
+        let calendar = Calendar.current
         let today = Date()
-        let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: today))!
         
-        // Calculate the start of week (Monday)
-        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today)
-        let startOfWeek = calendar.date(from: components)!
+        // Calculate days between start of week and today (inclusive)
+        let components = calendar.dateComponents([.day], from: calendar.startOfDay(for: weekRange.start), to: calendar.startOfDay(for: today))
+        let daysToProcess = min((components.day ?? 0) + 1, 7)
         
-        return (start: startOfWeek, end: endOfToday)
-    }
-    
-    // Request HealthKit permission
-    private func requestHealthKitPermission() async -> Bool {
-        guard HKHealthStore.isHealthDataAvailable() else { return false }
-        
-        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-        let typesToRead = Set([stepType])
-        
-        return await withCheckedContinuation { continuation in
-            healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
-                if let error = error {
-                    print("HealthKit authorization error: \(error.localizedDescription)")
-                    continuation.resume(returning: false)
-                } else {
-                    continuation.resume(returning: success)
-                }
+        for dayOffset in 0..<daysToProcess {
+            let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: weekRange.start)!
+            let startOfDay = calendar.startOfDay(for: dayDate)
+            
+            let hkCount = hkSteps[startOfDay] ?? 0
+            let cmCount = cmSteps[startOfDay] ?? 0
+            let finalCount = max(hkCount, cmCount)
+            
+            combinedSteps.append(DailySteps(date: startOfDay, steps: finalCount))
+            
+            // Update widget if this is today
+            if calendar.isDateInToday(startOfDay) {
+                updateWidgetData(steps: Int(finalCount), error: "")
             }
         }
+        
+        return combinedSteps
     }
     
     // Check and request motion permissions
@@ -84,12 +92,44 @@ class StepCounter {
         }
     }
     
+    private func getWeekToDateRange() -> (start: Date, end: Date) {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2  // 2 represents Monday
+        
+        let today = Date()
+        let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: today))!
+        
+        // Calculate the start of week (Monday)
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today)
+        let startOfWeek = calendar.date(from: components)!
+
+        return (start: startOfWeek, end: endOfToday)
+    }
+    
+    // Request HealthKit permission
+    private func requestHealthKitPermission() async -> Bool {
+        guard HKHealthStore.isHealthDataAvailable() else { return false }
+        
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let typesToRead = Set([stepType])
+        
+        return await withCheckedContinuation { continuation in
+            healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
+                if let error = error {
+                    print("HealthKit authorization error: \(error.localizedDescription)")
+                    continuation.resume(returning: false)
+                } else {
+                    continuation.resume(returning: success)
+                }
+            }
+        }
+    }
+    
     private func getStepsFromCoreMotion(from startDate: Date, to endDate: Date) async -> [Date: Double] {
         guard isAvailable else {
             return [:]
         }
         
-        let (startDate, endDate) = getWeekToDateRange()
         let calendar = Calendar.current
         
         var stepsDict = [Date: Double]()
@@ -179,46 +219,6 @@ class StepCounter {
                 }
             }
         }
-    }
-    
-    func getStepsForWeek() async -> [DailySteps] {
-        // Request HealthKit permission first
-        let healthKitAuthorized = await requestHealthKitPermission()
-        
-        // Get the week's date range
-        let weekRange = getWeekToDateRange()
-        
-        // Get steps from both sources for the whole week
-        async let healthKitSteps = healthKitAuthorized ? await getStepsFromHealthKit(from: weekRange.start, to: weekRange.end) : [:]
-        async let coreMotionSteps = await getStepsFromCoreMotion(from: weekRange.start, to: weekRange.end)
-        
-        // Await both results
-        let (hkSteps, cmSteps) = await (healthKitSteps, coreMotionSteps)
-        
-        // Combine results, taking the higher count for each day
-        var combinedSteps = [DailySteps]()
-        let calendar = Calendar.current
-        
-        for dayOffset in 0..<7 {
-            let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: weekRange.start)!
-            let startOfDay = calendar.startOfDay(for: dayDate)
-            
-            let hkCount = hkSteps[startOfDay] ?? 0
-            let cmCount = cmSteps[startOfDay] ?? 0
-            let finalCount = max(hkCount, cmCount)
-            
-            // Weekday: 1 = Monday, 2 = Tuesday, etc.
-            let weekday = dayOffset + 1
-            
-            combinedSteps.append(DailySteps(date: startOfDay, steps: finalCount, weekday: weekday))
-            
-            // Update widget if this is today
-            if calendar.isDateInToday(startOfDay) {
-                updateWidgetData(steps: Int(finalCount), error: "")
-            }
-        }
-        
-        return combinedSteps
     }
     
     private func updateWidgetData(steps: Int, error: String) {
