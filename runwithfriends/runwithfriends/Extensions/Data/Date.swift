@@ -26,7 +26,7 @@ extension Date {
         return calendar.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: Date()).date!
     }
     
-    static func startOfDay() -> Date {
+    static func startOfToday() -> Date {
         let calendar = Calendar.current
         return calendar.startOfDay(for: Date())
     }
@@ -67,6 +67,14 @@ extension Date {
         guard let rawTimeString = dateArray.first,
               let rawAmOrPmString = dateArray.last else { return nil }
         return DisplayTime(time: String(rawTimeString), amOrPm: String(rawAmOrPmString))
+    }
+    
+    func getDateString() -> String {
+        let currentDay = Calendar.current.startOfDay(for: self)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: currentDay)
+        return dateString
     }
 }
 

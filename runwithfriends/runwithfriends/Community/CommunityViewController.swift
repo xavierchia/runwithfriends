@@ -133,34 +133,34 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
         let walk = Walker.Walk(steps: 0, latitude: 0, longitude: 0, day_steps: 0)
         var userWalker = Walker(user_id: userData.user.user_id, username: userData.user.username, emoji: userData.user.emoji, walk: walk)
         
-        stepCounter.getSteps(from: Date.startOfWeek()) { [self] userSteps in
-            var steps = 0.0
-            var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
-            for (index, coordinate) in coordinates.enumerated() {
-                let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-                let nextDistance = currentCoordinate.distance(from: lastCoordinate)
-                steps += nextDistance / 0.7
-                
-                let isLastIndex = index == coordinates.count - 1
-                if steps >= userSteps || isLastIndex  {
-                    let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
-                    let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
-                    newPin.coordinate = userCoordinate
-                    newPin.title = userData.user.username
-                    newPin.identifier = "user"
-                    self.mapView.addAnnotation(newPin)
-                    
-                    userWalker.walk.latitude = userCoordinate.latitude
-                    userWalker.walk.longitude = userCoordinate.longitude
-                    userWalker.walk.steps = Int(userSteps)
-                    
-                    self.userData.updateWalk(with: Int(userSteps), and: userCoordinate)
-                    break
-                }
-                
-                lastCoordinate = currentCoordinate
-            }
-        }
+//        stepCounter.getSteps(from: Date.startOfWeek()) { [self] userSteps in
+//            var steps = 0.0
+//            var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
+//            for (index, coordinate) in coordinates.enumerated() {
+//                let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+//                let nextDistance = currentCoordinate.distance(from: lastCoordinate)
+//                steps += nextDistance / 0.7
+//                
+//                let isLastIndex = index == coordinates.count - 1
+//                if steps >= userSteps || isLastIndex  {
+//                    let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
+//                    let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
+//                    newPin.coordinate = userCoordinate
+//                    newPin.title = userData.user.username
+//                    newPin.identifier = "user"
+//                    self.mapView.addAnnotation(newPin)
+//                    
+//                    userWalker.walk.latitude = userCoordinate.latitude
+//                    userWalker.walk.longitude = userCoordinate.longitude
+//                    userWalker.walk.steps = Int(userSteps)
+//                    
+//                    self.userData.updateWalk(with: Int(userSteps), and: userCoordinate)
+//                    break
+//                }
+//                
+//                lastCoordinate = currentCoordinate
+//            }
+//        }
         
         Task {
             var walkers = await userData.getWalkers()
@@ -305,12 +305,17 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func updateSteps() {
-        stepCounter.getSteps(from: Date.startOfWeek()) { steps in
-            self.weekSteps.text = "Week: \(Int(steps).withCommas())"
-        }
-        
-        stepCounter.getSteps(from: Date.startOfDay()) { steps in
-            self.daySteps.text = "Day: \(Int(steps).withCommas())"
+        Task {
+            let result = await stepCounter.getStepsForWeek()
+            print(result)
+            let weekSteps = result.reduce(0) { $0 + $1.steps }
+            self.weekSteps.text = "Week: \(Int(weekSteps).withCommas())"
+            
+            let daySteps = result.first { dailyStep in
+                dailyStep.date == Date.startOfToday()
+            }?.steps ?? 0
+            
+            self.daySteps.text = "Day: \(Int(daySteps).withCommas())"
         }
     }
 }
