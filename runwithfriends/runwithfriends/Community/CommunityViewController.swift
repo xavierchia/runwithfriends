@@ -317,6 +317,9 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             self.daySteps.text = "Day: \(Int(daySteps).withCommas())"
             
             await userData.updateStepsIfNeeded(dailySteps: result)
+            
+            let pubs = await userData.getPublicUsers()
+            print(pubs)
         }
     }
 }

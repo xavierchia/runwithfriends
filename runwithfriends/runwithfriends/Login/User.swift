@@ -15,10 +15,15 @@ struct InitialUser: Codable {
 struct User: Codable {
     let user_id: UUID
     let apple_id: String
+    let search_id: Int
     let username: String
     let emoji: String
-    let search_id: Int
+    let week_steps: Int?
+    let day_steps: Int?
     let group_users: group_users?
+    
+    private let week_date: String?
+    private let day_date: String?
     
     struct group_users: Codable {
         var group_id: String?
@@ -26,6 +31,14 @@ struct User: Codable {
     
     var group_id: String? {
         self.group_users?.group_id
+    }
+    
+    var weekDate: Date? {
+        week_date?.getDate()
+    }
+    
+    var dayDate: Date? {
+        day_date?.getDate()
     }
 }
 

@@ -76,6 +76,24 @@ class UserData {
          }
     }
     
+    func getPublicUsers() async -> [User] {
+        do {
+            var publicUsers: [User] = try await Supabase.shared.client.from("public_users")
+                .select()
+                .execute()
+                .value
+            
+            publicUsers.removeAll { publicUser in
+                publicUser.user_id == user.user_id
+            }
+            
+            return publicUsers
+        } catch {
+            print("unable to get public users")
+            return []
+        }
+    }
+    
     func updateWalk(with steps: Int, and coordinate: CLLocationCoordinate2D) {
         guard steps > 0 else { return }
         Task {
@@ -116,7 +134,6 @@ class UserData {
             walkers.removeAll { walker in
                 walker.user_id == user.user_id
             }
-            print(walkers)
             // Side effect: Update friends data in shared defaults
             let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.day_steps) }
             FriendsManager.shared.updateFriends(friends)
@@ -135,12 +152,8 @@ class UserData {
         let retrievedUser: User = try await Supabase.shared.client
             .from("users")
             .select("""
-                user_id,
-                apple_id,
-                username,
-                emoji,
-                search_id,
-                group_users!inner (
+                *,
+                group_users (
                     group_id
                 )
             """)
@@ -148,6 +161,8 @@ class UserData {
             .single()
             .execute()
             .value
+        
+        print(retrievedUser)
         
         return retrievedUser
     }
@@ -168,12 +183,8 @@ class UserData {
         let retrievedUser: User = try await supabase.client
             .from("users")
             .select("""
-                user_id,
-                apple_id,
-                username,
-                emoji,
-                search_id,
-                group_users!inner (
+                *,
+                group_users(
                     group_id
                 )
             """)

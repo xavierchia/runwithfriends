@@ -8,7 +8,6 @@
 import UIKit
 
 extension String {
-    // For conversion of emoji to images
     func image(pointSize: CGFloat, backgroundColor: UIColor = .clear) -> UIImage {
          let font = UIFont.systemFont(ofSize: pointSize)
          let emojiSize = self.size(withAttributes: [.font: font])
@@ -21,9 +20,7 @@ extension String {
         
         return image.withRenderingMode(.alwaysOriginal)
      }
-}
-
-extension String {
+    
     func strikeThrough() -> NSAttributedString {
         let attributeString =  NSMutableAttributedString(string: self)
         attributeString.addAttribute(
@@ -31,10 +28,8 @@ extension String {
                value: NSUnderlineStyle.single.rawValue,
                    range:NSMakeRange(0,attributeString.length))
         return attributeString
-    }    
-}
-
-extension String {
+    }
+    
     func attributedStringWithColorAndBold(_ colorizeWords: [String], color: UIColor, boldWords: [String] = [], size: CGFloat = 20) -> NSAttributedString {
         // Create a mutable attributed string based on the original string.
         let attributedString = NSMutableAttributedString(string: self)
@@ -52,5 +47,13 @@ extension String {
         }
 
         return attributedString
+    }
+}
+
+extension String {
+    func getDate() -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: self)
     }
 }
