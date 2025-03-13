@@ -19,11 +19,11 @@ class Supabase {
         do {
             let userId = try KeychainManager.shared.getUserIdToken()
             let dateString = Date().getDateString()
-            let walk = Walk(user_id: userId, date: dateString, steps: steps)
+            let step = Step(user_id: userId, date: dateString, steps: steps)
             
             try await client
                 .from("steps")
-                .upsert(walk)
+                .upsert(step)
                 .execute()
             print("upserted user data")
         } catch {
@@ -32,31 +32,10 @@ class Supabase {
     }
 }
 
-
-struct Walk: Codable {
+struct Step: Codable {
     let user_id: UUID
     let date: String
     let steps: Int
-}
-
-struct Walker: Codable {
-    let user_id: UUID
-    let username: String
-    let emoji: String
-    var walk: Walker.Walk
-    
-    struct Walk: Codable {
-        var day_steps: Int
-        var latitude: Double
-        var longitude: Double
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case user_id
-        case username
-        case emoji
-        case walk = "walks"
-    }
 }
 
 struct FriendProgress: Codable {
