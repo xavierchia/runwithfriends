@@ -25,6 +25,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     private func configureMapDefaults() {
         self.delegate = self
         self.mapType = .satelliteFlyover
+        self.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
     }
 
     func addPath() {
@@ -73,11 +74,12 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
             let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: user.emoji))
             newPin.coordinate = userCoordinate
             newPin.title = user.username
-            newPin.identifier = "user"
+            newPin.identifier = "other"
             
             // Color pin for current user
             if user.user_id == currentUser.user_id {
                 newPin.color = .lightAccent
+                newPin.identifier = "user"
             }
             
             // Special annotations
