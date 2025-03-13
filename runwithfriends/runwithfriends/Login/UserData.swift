@@ -25,6 +25,8 @@ struct Group: Codable {
 
 class UserData {
     static let defaultUsername = "Pea"
+    
+    @MainActor
     var user: User
     
     private var lastServerSync: Date?
@@ -42,8 +44,9 @@ class UserData {
              }
              
              do {
+                 let userId = await self.user.user_id
                  let steps = dailySteps.map { dailyStep in
-                     Step(user_id: user.user_id, date: dailyStep.date.getDateString(), steps: Int(dailyStep.steps))
+                     Step(user_id: userId, date: dailyStep.date.getDateString(), steps: Int(dailyStep.steps))
                  }
                  
                  try await Supabase.shared.client.from("steps")
@@ -64,11 +67,12 @@ class UserData {
                 .execute()
                 .value
             
+            let currentUser = await self.user
             publicUsers.removeAll { publicUser in
-                publicUser.user_id == user.user_id
+                publicUser.user_id == currentUser.user_id
             }
             
-            publicUsers.append(user)
+            publicUsers.append(currentUser)
             
             return publicUsers
         } catch {

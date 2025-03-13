@@ -94,14 +94,13 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             }
             
             userData.updateStepsIfNeeded(dailySteps: result)
-            
             let pubs = await userData.getPublicUsers()
-            print(pubs)
             
-            mapView.removeAnnotations(mapView.annotations)
-            mapView.addStartAndEnd()
-            mapView.addUserAnnotation(allUsers: pubs, currentUser: userData.user)
-//            addAnnotations()
+            await MainActor.run {
+                mapView.removeAnnotations(mapView.annotations)
+                mapView.addStartAndEnd()
+                mapView.addUserAnnotation(allUsers: pubs, currentUser: userData.user)
+            }
         }
     }
     
