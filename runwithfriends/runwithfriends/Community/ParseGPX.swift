@@ -1,10 +1,15 @@
 import Foundation
 import CoreLocation
 
+struct StepCoordinate {
+    let steps: Double
+    let coordinate: CLLocationCoordinate2D
+}
+
 class Parser {
     private let coordinateParser = CoordinatesParser()
-
-    func parseCoordinates(fromGpxFile filePath: String) -> [CLLocationCoordinate2D]? {
+    
+    func parseCoordinatesAndSteps(fromGpxFile filePath: String) -> (coordinates: [CLLocationCoordinate2D], stepCoordinates: [StepCoordinate])? {
         guard let data = FileManager.default.contents(atPath: filePath) else { return nil }
     
         coordinateParser.prepare()
@@ -15,7 +20,30 @@ class Parser {
         let success = parser.parse()
     
         guard success else { return nil }
-        return coordinateParser.coordinates
+        
+        // Create stepCoordinates here
+        let coordinates = coordinateParser.coordinates
+        var stepCoordinates = [StepCoordinate]()
+        
+        if !coordinates.isEmpty {
+            var cumulativeSteps = 0.0
+            var lastCoordinate = CLLocation(latitude: coordinates[0].latitude, longitude: coordinates[0].longitude)
+            
+            // Add the starting point
+            stepCoordinates.append(StepCoordinate(steps: cumulativeSteps, coordinate: coordinates[0]))
+            
+            // Process remaining coordinates
+            for i in 1..<coordinates.count {
+                let currentCoordinate = CLLocation(latitude: coordinates[i].latitude, longitude: coordinates[i].longitude)
+                let nextDistance = currentCoordinate.distance(from: lastCoordinate)
+                cumulativeSteps += nextDistance / 0.7 // Convert distance to steps
+                
+                stepCoordinates.append(StepCoordinate(steps: cumulativeSteps, coordinate: coordinates[i]))
+                lastCoordinate = currentCoordinate
+            }
+        }
+        
+        return (coordinates, stepCoordinates)
     }
 }
 

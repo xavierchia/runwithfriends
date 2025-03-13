@@ -13,14 +13,10 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     private let userData: UserData
     private let stepCounter = StepCounter.shared
     
-    // Waiting room pins
-    private var pinsSet = false
-    private var coordinates = [CLLocationCoordinate2D]()
-    
     // UI
-    private let mapView = MKMapView()
+    private let mapView = PeaMapView()
     private let weekSteps = UILabel()
-    let daySteps = UILabel()
+    private let daySteps = UILabel()
     
     init(userData: UserData) {
         self.userData = userData
@@ -103,15 +99,15 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             print(pubs)
             
             mapView.removeAnnotations(mapView.annotations)
-            addStartAndEnd()
-            addUserAnnotation(user: userData.user)
+            mapView.addStartAndEnd()
+            mapView.addUserAnnotation(allUsers: pubs, currentUser: userData.user)
 //            addAnnotations()
         }
     }
     
     private func setupUI() {
         setupMapView()
-        addPath()
+        mapView.addPath()
         
         setupWaitingRoomTitle()
         setupPodTitle()
@@ -121,9 +117,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     // MARK: Setup Map
     private func setupMapView() {
         // setup map
-        mapView.mapType = .satelliteFlyover
         view.addSubview(mapView)
-        mapView.delegate = self
         mapView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -132,124 +126,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             mapView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         mapView.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-    }
-    
-    private func addPath() {
-        // get current path coordinates
-        if let audioFilePath = Bundle.main.path(forResource: "NYCMarathon", ofType: "gpx") {
-            let parser = Parser()
-            if let coordinates = parser.parseCoordinates(fromGpxFile: audioFilePath) {
-                self.coordinates = coordinates
-                
-                let borderPolyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-                borderPolyline.title = "border"
-                mapView.addOverlay(borderPolyline)
-                
-                let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-                polyline.title = "main"
-                mapView.addOverlay(polyline)
-            }
-        }
-    }
-    
-    private func addStartAndEnd() {
-        guard let firstCoordinate = coordinates.first else { return }
-        let startPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "⛩️"))
-        startPin.coordinate = firstCoordinate
-        self.mapView.addAnnotation(startPin)
-        
-        // add ending flag
-        guard let lastCoordinate = coordinates.last else { return }
-        let endPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"))
-        endPin.coordinate = lastCoordinate
-        self.mapView.addAnnotation(endPin)
-    }
-    
-    private func addUserAnnotation(user: User) {
-        guard let userWeekSteps = user.week_steps else { return }
-        var steps = 0.0
-        var lastCoordinate = CLLocation(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
-        for (index, coordinate) in coordinates.enumerated() {
-            let currentCoordinate = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            let nextDistance = currentCoordinate.distance(from: lastCoordinate)
-            steps += nextDistance / 0.7
-            
-            let isLastIndex = index == coordinates.count - 1
-            if steps >= Double(userWeekSteps) || isLastIndex  {
-                let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: userData.user.emoji), color: .lightAccent)
-                let userCoordinate = isLastIndex ? currentCoordinate.coordinate : lastCoordinate.coordinate
-                newPin.coordinate = userCoordinate
-                newPin.title = userData.user.username
-                newPin.identifier = "user"
-                self.mapView.addAnnotation(newPin)
-        
-                break
-            }
-            
-            lastCoordinate = currentCoordinate
-        }
-    }
-    
-    private func addAnnotations() {
-        Task {
-            var walkers = await userData.getWalkers()
-//            walkers.append(userWalker)
-            walkers.sort { lhs, rhs in
-                lhs.walk.steps < rhs.walk.steps
-            }
-            
-            let finalCoordinate = coordinates.last!
-            print(finalCoordinate)
-            var lastLongitude = 0.0
-            var collisions = 1.0
-            for (index, walker) in walkers.enumerated() {
-                
-                // Remove original user emoji that was placed so there's no duplicate
-                if walker.user_id == userData.user.user_id {
-                    if let selfAnnotation = mapView.annotations.first(where: { annotation in
-                        let emojiAnnotation = annotation as? EmojiAnnotation
-                        return emojiAnnotation?.identifier == "user"
-                    }) {
-                        mapView.removeAnnotation(selfAnnotation)
-                    }
-                }
-                
-                let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: walker.emoji))
-                if index == walkers.count - 1 {
-                    newPin.emojiImage = OriginalUIImage(emojiString: "👑")
-                }
-                if walker.username.lowercased() == "zombie" {
-                    newPin.color = .red
-                }
-                if walker.user_id == userData.user.user_id {
-                    newPin.color = .lightAccent
-                }
-                                
-                if walker.walk.longitude == finalCoordinate.longitude && walker.walk.latitude == finalCoordinate.latitude {
-                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.walk.latitude + 0.005 * collisions, longitude: walker.walk.longitude)
-                    collisions += 1
-                } else if walker.walk.longitude == lastLongitude {
-                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.walk.latitude, longitude: walker.walk.longitude + 0.005 * collisions)
-                    collisions += 1
-                } else {
-                    newPin.coordinate = CLLocationCoordinate2D(latitude: walker.walk.latitude, longitude: walker.walk.longitude)
-                    collisions = 1
-                }
-                
-                lastLongitude = walker.walk.longitude
-                newPin.title = walker.username
-                self.mapView.addAnnotation(newPin)
-            }
-        }
-    }
-    
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKGradientPolylineRenderer(overlay: overlay)
-        
-        renderer.strokeColor = overlay.title == "main" ? UIColor.accent : .darkerGray
-        renderer.lineWidth = overlay.title == "main" ? 5 : 7
-        renderer.lineCap = .round
-        return renderer
     }
     
     // MARK: Setup UI

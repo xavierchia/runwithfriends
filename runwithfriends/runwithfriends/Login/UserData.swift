@@ -8,27 +8,6 @@ import Foundation
 import CoreLocation
 import Supabase
 
-struct Walker: Codable {
-    let user_id: UUID
-    let username: String
-    let emoji: String
-    var walk: Walker.Walk
-    
-    struct Walk: Codable {
-        var steps: Int
-        var latitude: Double
-        var longitude: Double
-        var day_steps: Int
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case user_id
-        case username
-        case emoji
-        case walk = "walks"
-    }
-}
-
 struct Step: Codable {
     let user_id: UUID
     let date: String
@@ -89,60 +68,11 @@ class UserData {
                 publicUser.user_id == user.user_id
             }
             
+            publicUsers.append(user)
+            
             return publicUsers
         } catch {
             print("unable to get public users")
-            return []
-        }
-    }
-    
-    func updateWalk(with steps: Int, and coordinate: CLLocationCoordinate2D) {
-        guard steps > 0 else { return }
-        Task {
-            do {
-                let year_week = Date.YearAndWeek()
-                let walk = Walk(user_id: user.user_id, year_week: year_week, steps: steps, longitude: coordinate.longitude, latitude: coordinate.latitude)
-                let supabase = Supabase.shared.client
-                try await supabase.from("walks")
-                    .upsert(walk)
-                    .eq("user_id", value: user.user_id)
-                    .eq("year_week", value: year_week)
-                    .execute()
-                print("updated user steps")
-            } catch {
-                print("failed to updated user location \(error)")
-            }
-        }
-    }
-    
-    func getWalkers() async -> [Walker] {
-        do {
-            var walkers: [Walker] = try await Supabase.shared.client
-                    .from("users")
-                    .select("""
-                        user_id,
-                        username,
-                        emoji,
-                        walks!inner (
-                            steps,
-                            latitude,
-                            longitude,
-                            day_steps
-                        )
-                    """)
-                    .execute()
-                    .value
-            
-            walkers.removeAll { walker in
-                walker.user_id == user.user_id
-            }
-            // Side effect: Update friends data in shared defaults
-            let friends = walkers.map { FriendProgress(username: $0.username, steps: $0.walk.day_steps) }
-            FriendsManager.shared.updateFriends(friends)
-            
-            return walkers
-        } catch {
-            print("failed to get walkers \(error)")
             return []
         }
     }
