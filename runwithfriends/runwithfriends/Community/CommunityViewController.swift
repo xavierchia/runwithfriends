@@ -83,12 +83,12 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                 dailyStep.date == Date.startOfToday()
             }?.steps ?? 0
             
-            self.userData.user.day_date = Date.startOfToday().getDateString()
-            self.userData.user.week_date = Date.startOfWeek().getDateString()
-            self.userData.user.day_steps = Int(daySteps)
-            self.userData.user.week_steps = Int(weekSteps)
-            
             await MainActor.run {
+                self.userData.user.day_date = Date.startOfToday().getDateString()
+                self.userData.user.week_date = Date.startOfWeek().getDateString()
+                self.userData.user.day_steps = Int(daySteps)
+                self.userData.user.week_steps = Int(weekSteps)
+                
                 self.weekSteps.text = "Week: \(Int(weekSteps).withCommas())"
                 self.daySteps.text = "Day: \(Int(daySteps).withCommas())"
             }
