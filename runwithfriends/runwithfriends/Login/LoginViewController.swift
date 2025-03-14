@@ -135,7 +135,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             }
             
             do {
-                guard let user = try await UserData.getUser(with: credentials.user) else {
+                guard let user = await UserData.getUser(with: credentials.user) else {
                     print("User does not exist in the database, save to the database")
                     let initialUser = InitialUser(
                         apple_id: credentials.user,

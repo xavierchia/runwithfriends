@@ -119,22 +119,28 @@ class UserData {
         return user
     }
     
-    static func getUser(with id: String) async throws -> User? {
+    static func getUser(with id: String) async -> User? {
         let supabase = Supabase.shared
-        let retrievedUser: User = try await supabase.client
-            .from("users")
-            .select("""
-                *,
-                group_users(
-                    group_id
-                )
-            """)
-            .eq("apple_id", value: id)
-            .single()
-            .execute()
-            .value
-        print(retrievedUser)
-        return retrievedUser
+        do {
+            let retrievedUser: User = try await supabase.client
+                .from("users")
+                .select("""
+                    *,
+                    group_users(
+                        group_id
+                    )
+                """)
+                .eq("apple_id", value: id)
+                .single()
+                .execute()
+                .value
+            print("User found:", retrievedUser)
+            return retrievedUser
+        } catch {
+            // No user found - this is an expected condition for new users
+            print("No user found with apple_id: \(id)")
+            return nil
+        }
     }
     
     static func getGroups() async throws -> [ Group ] {

@@ -100,7 +100,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                 mapView.removeAnnotations(mapView.annotations)
                 mapView.addStartAndEnd()
                 mapView.addUserAnnotation(allUsers: pubs, currentUser: userData.user)
-                mapView.zoomToCurrentUserContext(currentUserId: userData.user.user_id.uuidString)
+//                mapView.zoomToCurrentUserContext(currentUserId: userData.user.user_id.uuidString)
             }
         }
     }
