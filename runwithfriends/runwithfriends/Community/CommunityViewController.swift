@@ -15,6 +15,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     
     // UI
     private let mapView = PeaMapView()
+    private let stepsTitle = UILabel()
     private let weekSteps = UILabel()
     private let daySteps = UILabel()
     
@@ -90,7 +91,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
                 self.userData.user.week_steps = Int(weekSteps)
                 
                 self.weekSteps.text = "Week: \(Int(weekSteps).withCommas())"
-                self.daySteps.text = "Day: \(Int(daySteps).withCommas())"
+                self.daySteps.text = "Today: \(Int(daySteps).withCommas())"
             }
             
             userData.updateStepsIfNeeded(dailySteps: result)
@@ -168,8 +169,22 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func setupUserDistance() {
-        weekSteps.font = UIFont.QuicksandMedium(size: 16)
-        weekSteps.text = "week"
+        stepsTitle.font = UIFont.QuicksandSemiBold(size: 16)
+        stepsTitle.backgroundColor = .clear
+        stepsTitle.textAlignment = .left
+        stepsTitle.textColor = .cream
+        stepsTitle.text = "Steps"
+        view.addSubview(stepsTitle)
+        stepsTitle.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stepsTitle.widthAnchor.constraint(equalToConstant: view.frame.width),
+            stepsTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            stepsTitle.heightAnchor.constraint(equalToConstant: 40),
+            stepsTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
+        ])
+        
+        weekSteps.font = UIFont.QuicksandSemiBold(size: 16)
+        weekSteps.text = "Week: 0 steps"
         weekSteps.textAlignment = .left
         weekSteps.textColor = .cream
         weekSteps.backgroundColor = .clear
@@ -182,8 +197,8 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             weekSteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
         
-        daySteps.font = UIFont.QuicksandMedium(size: 16)
-        daySteps.text = "Today: 300 steps"
+        daySteps.font = UIFont.QuicksandSemiBold(size: 16)
+        daySteps.text = "Today: 0 steps"
         daySteps.textAlignment = .left
         daySteps.textColor = .cream
         daySteps.backgroundColor = .clear
