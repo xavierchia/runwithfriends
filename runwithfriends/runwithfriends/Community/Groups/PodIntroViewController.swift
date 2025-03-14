@@ -67,6 +67,7 @@ class PodIntroViewController: UIViewController {
             cta.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30),
             cta.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30),
             cta.topAnchor.constraint(equalTo: body.bottomAnchor, constant: 33),
+            cta.heightAnchor.constraint(equalToConstant: 55)
         ])
         
         cta.addTarget(self, action: #selector(joinGroupPressed), for: .touchUpInside)

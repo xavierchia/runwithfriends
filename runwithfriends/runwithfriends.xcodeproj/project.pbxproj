@@ -12,13 +12,6 @@
 		25A5B0DC2B7C9741004DB775 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A5B0DB2B7C9741004DB775 /* Distance.swift */; };
 		25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D47D592B97DEEE003BAF64 /* Collections.swift */; };
 		25D47D5C2B97DF90003BAF64 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D47D5B2B97DF90003BAF64 /* Int.swift */; };
-		25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */; };
-		25FC3CA82B82D61200D90ED2 /* Kefir-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */; };
-		25FC3CA92B82D61200D90ED2 /* Kefir-DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */; };
-		25FC3CAA2B82D61200D90ED2 /* Kefir-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA32B82D61200D90ED2 /* Kefir-Medium.otf */; };
-		25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */; };
-		25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */; };
-		25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */; };
 		9519A6C52B19593A000B952F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519A6C42B19593A000B952F /* Date.swift */; };
 		951D1A652B32675F00171C62 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A642B32675F00171C62 /* Auth */; };
 		951D1A672B32675F00171C62 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A662B32675F00171C62 /* Functions */; };
@@ -95,13 +88,6 @@
 		25A5B0DB2B7C9741004DB775 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
 		25D47D592B97DEEE003BAF64 /* Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
 		25D47D5B2B97DF90003BAF64 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
-		25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-ExtraBold.otf"; sourceTree = "<group>"; };
-		25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Light.otf"; sourceTree = "<group>"; };
-		25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-DemiBold.otf"; sourceTree = "<group>"; };
-		25FC3CA32B82D61200D90ED2 /* Kefir-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Medium.otf"; sourceTree = "<group>"; };
-		25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Black.otf"; sourceTree = "<group>"; };
-		25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Regular.otf"; sourceTree = "<group>"; };
-		25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kefir-Bold.otf"; sourceTree = "<group>"; };
 		9519A6C42B19593A000B952F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		951D1A702B326F1000171C62 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		952825B02AE1F74D0032B04B /* runwithfriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runwithfriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,6 +143,8 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A577BF832D82880D00E3789B /* Groups */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Groups; sourceTree = "<group>"; };
+		A5A1E8E12D83C00500846762 /* Kefir */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Kefir; sourceTree = "<group>"; };
+		A5A1E8E22D83C00B00846762 /* Quicksand */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Quicksand; sourceTree = "<group>"; };
 		A5E917242D5058470060DD48 /* Pea Widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A5E917382D5058480060DD48 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Pea Widget"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -199,13 +187,8 @@
 		25FC3C9F2B82D60000D90ED2 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				25FC3CA42B82D61200D90ED2 /* Kefir-Black.otf */,
-				25FC3CA62B82D61200D90ED2 /* Kefir-Bold.otf */,
-				25FC3CA22B82D61200D90ED2 /* Kefir-DemiBold.otf */,
-				25FC3CA02B82D61200D90ED2 /* Kefir-ExtraBold.otf */,
-				25FC3CA12B82D61200D90ED2 /* Kefir-Light.otf */,
-				25FC3CA32B82D61200D90ED2 /* Kefir-Medium.otf */,
-				25FC3CA52B82D61200D90ED2 /* Kefir-Regular.otf */,
+				A5A1E8E22D83C00B00846762 /* Quicksand */,
+				A5A1E8E12D83C00500846762 /* Kefir */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -371,6 +354,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				A577BF832D82880D00E3789B /* Groups */,
+				A5A1E8E12D83C00500846762 /* Kefir */,
+				A5A1E8E22D83C00B00846762 /* Quicksand */,
 			);
 			name = runwithfriends;
 			packageProductDependencies = (
@@ -455,15 +440,8 @@
 			files = (
 				952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */,
 				95F85B4F2B71AAEC005A705A /* README.md in Resources */,
-				25FC3CAA2B82D61200D90ED2 /* Kefir-Medium.otf in Resources */,
-				25FC3CAD2B82D61200D90ED2 /* Kefir-Bold.otf in Resources */,
 				95813B622BB4E76400B12525 /* NYCMarathon.gpx in Resources */,
-				25FC3CA72B82D61200D90ED2 /* Kefir-ExtraBold.otf in Resources */,
-				25FC3CAC2B82D61200D90ED2 /* Kefir-Regular.otf in Resources */,
-				25FC3CAB2B82D61200D90ED2 /* Kefir-Black.otf in Resources */,
 				952825C02AE1F74E0032B04B /* Assets.xcassets in Resources */,
-				25FC3CA82B82D61200D90ED2 /* Kefir-Light.otf in Resources */,
-				25FC3CA92B82D61200D90ED2 /* Kefir-DemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

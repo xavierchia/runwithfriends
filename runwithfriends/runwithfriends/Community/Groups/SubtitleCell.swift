@@ -27,8 +27,8 @@ class SubtitleTableViewCell: UITableViewCell {
         let labelSize = textLabel?.font.pointSize ?? 17
         let detailSize = detailTextLabel?.font.pointSize ?? 12
         
-        textLabel?.font = UIFont.Kefir(size: labelSize)
-        detailTextLabel?.font = UIFont.KefirLight(size: detailSize)
+        textLabel?.font = UIFont.QuicksandMedium(size: labelSize)
+        detailTextLabel?.font = UIFont.Quicksand(size: detailSize)
     }
 
     required init?(coder aDecoder: NSCoder) {

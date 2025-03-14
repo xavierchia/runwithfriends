@@ -167,7 +167,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func setupUserDistance() {
-        weekSteps.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        weekSteps.font = UIFont.QuicksandMedium(size: 16)
         weekSteps.text = "week"
         weekSteps.textAlignment = .left
         weekSteps.textColor = .cream
@@ -181,7 +181,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             weekSteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
         
-        daySteps.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        daySteps.font = UIFont.QuicksandMedium(size: 16)
         daySteps.text = "Today: 300 steps"
         daySteps.textAlignment = .left
         daySteps.textColor = .cream

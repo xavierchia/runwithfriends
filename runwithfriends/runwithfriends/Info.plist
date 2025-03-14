@@ -4,10 +4,13 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Kefir-Black.otf</string>
+		<string>Quicksand-Bold.ttf</string>
+		<string>Quicksand-Light.ttf</string>
+		<string>Quicksand-Medium.ttf</string>
+		<string>Quicksand-SemiBold.ttf</string>
+		<string>Quicksand-Regular.ttf</string>
 		<string>Kefir-Bold.otf</string>
 		<string>Kefir-DemiBold.otf</string>
-		<string>Kefir-ExtraBold.otf</string>
 		<string>Kefir-Light.otf</string>
 		<string>Kefir-Medium.otf</string>
 		<string>Kefir-Regular.otf</string>
