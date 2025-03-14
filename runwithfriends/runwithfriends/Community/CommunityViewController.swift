@@ -15,7 +15,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     
     // UI
     private let mapView = PeaMapView()
-    private let stepsTitle = UILabel()
+    private let stepsTitle = UIImageView()
     private let weekSteps = UILabel()
     private let daySteps = UILabel()
     
@@ -169,21 +169,24 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func setupUserDistance() {
-        stepsTitle.font = UIFont.QuicksandSemiBold(size: 16)
-        stepsTitle.backgroundColor = .clear
-        stepsTitle.textAlignment = .left
-        stepsTitle.textColor = .cream
-        stepsTitle.text = "Steps"
+//        stepsTitle.font = UIFont.QuicksandSemiBold(size: 16)
+//        stepsTitle.backgroundColor = .clear
+//        stepsTitle.textAlignment = .left
+//        stepsTitle.textColor = .cream
+//        stepsTitle.text = "Steps"
+        stepsTitle.image = UIImage(systemName: "figure.walk.motion")
+        stepsTitle.tintColor = .cream
+        stepsTitle.contentMode = .scaleAspectFit
         view.addSubview(stepsTitle)
         stepsTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stepsTitle.widthAnchor.constraint(equalToConstant: view.frame.width),
+            stepsTitle.widthAnchor.constraint(equalToConstant: 22),
             stepsTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            stepsTitle.heightAnchor.constraint(equalToConstant: 40),
-            stepsTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
+            stepsTitle.heightAnchor.constraint(equalToConstant: 22),
+            stepsTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
         ])
         
-        weekSteps.font = UIFont.QuicksandSemiBold(size: 16)
+        weekSteps.font = UIFont.QuicksandMedium(size: 16)
         weekSteps.text = "Week: 0 steps"
         weekSteps.textAlignment = .left
         weekSteps.textColor = .cream
@@ -197,7 +200,7 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
             weekSteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
         
-        daySteps.font = UIFont.QuicksandSemiBold(size: 16)
+        daySteps.font = UIFont.QuicksandMedium(size: 16)
         daySteps.text = "Today: 0 steps"
         daySteps.textAlignment = .left
         daySteps.textColor = .cream
