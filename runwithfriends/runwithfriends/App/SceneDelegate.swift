@@ -31,12 +31,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("User signed out. Session ended.")
                 default:
                     guard let session else { return }
-                    try? KeychainManager.shared.saveTokens(userId: session.user.id)
+                    KeychainManager.shared.saveSession(session: session)
                 }
             }
             
-            // for testing
-//            try await Supabase.shared.client.auth.signOut()
+            // when we need to log out the user
+            if let shared = UserDefaults(suiteName: AppDelegate.appGroupIdentifier),
+               shared.integer(forKey: "forceSignOut") != 1 {
+                try await Supabase.shared.client.auth.signOut()
+                shared.set(1, forKey: "forceSignOut")
+            }
                         
             do {
                 let user = try await UserData.getUserOnAppInit()
@@ -47,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
                 }
             } catch {
-                print("User not signed in or session token not stored, routing to LoginViewController")
+                print("User not signed in or force sign out, routing to LoginViewController")
 
                 try await Supabase.shared.client.auth.signOut()
 

@@ -155,18 +155,10 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         let data = await getCurrentData()
-        print("updating widget \(context.family)")
         
-        if context.family == .systemSmall,
-           let lastNetworkUpdate = sharedDefaults?.object(forKey: "lastNetworkUpdate") as? Date,
-           lastNetworkUpdate.timeIntervalSinceNow < -20,
-           Provider.networkUpdateCount % 2 == 0 {
-            async let upsert: () = await Supabase.shared.upsert(steps: data.steps)
-            _ = await (upsert)
-            sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
-        } else {
-            print("failed to upsert and get friends \(context.family)")
-        }
+        await doNetworking(context: context, steps: data.steps)
+        
+//        print("xxavier \(try? await Supabase.shared.client.auth.session)")
         
         Provider.networkUpdateCount += 1
         
@@ -181,6 +173,22 @@ struct Provider: AppIntentTimelineProvider {
         )
             
         return Timeline(entries: [entry], policy: .atEnd)
+    }
+    
+    private func doNetworking(context: Context, steps: Int) async {
+        
+        guard context.family == .systemSmall else {
+            return
+        }
+                
+        if let lastNetworkUpdate = sharedDefaults?.object(forKey: "lastNetworkUpdate") as? Date,
+           lastNetworkUpdate.timeIntervalSinceNow < -20,
+           Provider.networkUpdateCount % 2 == 0 {
+            await Supabase.shared.setSessionIfNeeded()
+            async let upsert: () = await Supabase.shared.upsert(steps: steps)
+            _ = await (upsert)
+            sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
+        }
     }
 }
 

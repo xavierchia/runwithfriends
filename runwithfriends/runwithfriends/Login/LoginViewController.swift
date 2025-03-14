@@ -156,11 +156,19 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             
             @MainActor func routeToTabVC(with user: User) {
                 Task {
-                    spinner.stopAnimating()
-                    let userData = UserData(user: user)
-                    let tabVC = TabViewController(with: userData)
-                    print("User signed in, routing to TabViewController")
-                    self.view.window!.rootViewController = tabVC
+                    do {
+                        let session = try await Supabase.shared.client.auth.session
+                        KeychainManager.shared.saveSession(session: session)
+                        
+                        spinner.stopAnimating()
+                        let userData = UserData(user: user)
+                        let tabVC = TabViewController(with: userData)
+                        print("User signed in, routing to TabViewController")
+                        self.view.window!.rootViewController = tabVC
+                    }
+                    catch {
+                        print("unable to save session")
+                    }
                 }
             }
             

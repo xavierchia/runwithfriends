@@ -57,3 +57,5 @@ extension String {
         return dateFormatter.date(from: self)
     }
 }
+
+extension String: Error {}

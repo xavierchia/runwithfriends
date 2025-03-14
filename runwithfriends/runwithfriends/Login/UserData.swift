@@ -52,7 +52,7 @@ class UserData {
                  try await Supabase.shared.client.from("steps")
                      .upsert(steps)
                      .execute()
-
+                 print("Synced steps with server")
                  lastServerSync = Date()
              } catch {
                  print("Failed to sync with server: \(error.localizedDescription)")
@@ -82,8 +82,7 @@ class UserData {
     }
     
     // MARK: User methods before UserData has been created
-    static func getUserOnAppInit() async throws -> User {
-        let _ = try KeychainManager.shared.getUserIdToken()
+    static func getUserOnAppInit() async throws -> User {        
         let user = try await Supabase.shared.client.auth.session.user
         let retrievedUser: User = try await Supabase.shared.client
             .from("users")

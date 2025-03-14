@@ -4,6 +4,7 @@
 
 import Foundation
 import Security
+import Supabase
 
 enum KeychainError: Error {
     case duplicateEntry
@@ -20,18 +21,29 @@ class KeychainManager {
     private let appGroupIdentifier = "group.com.wholesomeapps.runwithfriends"
     
     private let userIdKey = "supabase_user_id"
+    private let accessTokenKey = "supabase_access_token"
+    private let refreshTokenKey = "supabase_refresh_token"
     
     private init() {}
     
     // MARK: - Retrieve Tokens
     
-    func getUserIdToken() throws -> UUID {
+    func saveSession(session: Session) throws {
+        print("saved tokens")
+        try saveToKeychain(session.user.id.uuidString, forKey: userIdKey)
+        try saveToKeychain(session.accessToken, forKey: accessTokenKey)
+        try saveToKeychain(session.refreshToken, forKey: refreshTokenKey)
+    }
+    
+    func getSession() throws -> (userId: UUID, accessToken: String, refreshToken: String) {
         let userId = try retrieveFromKeychain(forKey: userIdKey)
         guard let userIdUUID = UUID(uuidString: userId) else {
             throw KeychainError.invalidUserIdFormat
         }
+        let accessToken = try retrieveFromKeychain(forKey: accessTokenKey)
+        let refreshToken = try retrieveFromKeychain(forKey: refreshTokenKey)
         
-        return userIdUUID
+        return (userIdUUID, accessToken, refreshToken)
     }
     
     // MARK: - Delete Tokens
