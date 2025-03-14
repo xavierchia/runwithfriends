@@ -109,25 +109,6 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         }
     }
     
-    func selectUserAnnotation(userId: String) {
-        // Find the annotation with the matching user ID
-        if let userAnnotation = annotations.first(where: { annotation in
-            if let emojiAnnotation = annotation as? EmojiAnnotation,
-               emojiAnnotation.identifier == "user" {
-                return true
-            }
-            return false
-        }) {
-            // Select the annotation
-            self.selectAnnotation(userAnnotation, animated: true)
-            
-            // Optionally center the map on this annotation
-            let span = MKCoordinateSpan(latitudeDelta: 0.0392143104880347, longitudeDelta: 0.02828775277940565)
-            let region = MKCoordinateRegion(center: userAnnotation.coordinate, span: span)
-            self.setRegion(region, animated: true)
-        }
-    }
-    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKGradientPolylineRenderer(overlay: overlay)
         
@@ -139,5 +120,100 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         print(mapView.region.span)
+    }
+}
+
+
+extension PeaMapView {
+    func zoomToCurrentUserContext(currentUserId: String) {
+        // Find current user annotation
+        guard let currentUserAnnotation = annotations.first(where: { annotation in
+            if let emojiAnnotation = annotation as? EmojiAnnotation,
+               emojiAnnotation.identifier == "user" {
+                return true
+            }
+            return false
+        }) else { return }
+        
+        // First select the user annotation
+        self.selectAnnotation(currentUserAnnotation, animated: true)
+        
+        // Get current user location
+        let currentUserCoordinate = currentUserAnnotation.coordinate
+        let currentUserLocation = CLLocation(
+            latitude: currentUserCoordinate.latitude,
+            longitude: currentUserCoordinate.longitude
+        )
+        
+        // Find nearest annotations of any type (other users, landmarks, start/finish)
+        var nearestAnnotations: [(annotation: MKAnnotation, distance: CLLocationDistance)] = []
+        
+        for annotation in annotations {
+            // Skip the current user annotation
+            if annotation === currentUserAnnotation {
+                continue
+            }
+            
+            let otherLocation = CLLocation(
+                latitude: annotation.coordinate.latitude,
+                longitude: annotation.coordinate.longitude
+            )
+            
+            let distance = currentUserLocation.distance(from: otherLocation)
+            nearestAnnotations.append((annotation, distance))
+        }
+        
+        // Sort by distance
+        nearestAnnotations.sort { $0.distance < $1.distance }
+        
+        // Create a region that includes the current user and at least 2 nearest annotations
+        var annotationsToInclude = [currentUserAnnotation]
+        
+        // Add up to 2 nearest annotations, if available
+        let annotationsToAdd = min(2, nearestAnnotations.count)
+        for i in 0..<annotationsToAdd {
+            annotationsToInclude.append(nearestAnnotations[i].annotation)
+        }
+        
+        // Calculate a map rect that includes all these annotations
+        let rect = mapRectThatFits(annotations: annotationsToInclude,
+                                  edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50))
+        
+        // Set the visible region
+        self.setVisibleMapRect(rect, animated: true)
+    }
+
+    // Helper function to calculate a map rect that includes all specified annotations
+    private func mapRectThatFits(annotations: [MKAnnotation], edgePadding: UIEdgeInsets) -> MKMapRect {
+        guard !annotations.isEmpty else {
+            // Fallback if no annotations
+            return MKMapRect(x: 0, y: 0, width: 1, height: 1)
+        }
+        
+        let mapPoints = annotations.map { MKMapPoint($0.coordinate) }
+        
+        // Find the minimum and maximum map points
+        var minX = mapPoints[0].x
+        var minY = mapPoints[0].y
+        var maxX = minX
+        var maxY = minY
+        
+        for point in mapPoints {
+            minX = min(minX, point.x)
+            minY = min(minY, point.y)
+            maxX = max(maxX, point.x)
+            maxY = max(maxY, point.y)
+        }
+        
+        // Create a map rect that encompasses all the points
+        let width = maxX - minX
+        let height = maxY - minY
+        
+        // Add padding (extra space around the points)
+        let paddingFactor: Double = 1.3 // 30% extra space
+        return MKMapRect(x: minX - width * (paddingFactor - 1) / 2,
+                        y: minY - height * (paddingFactor - 1) / 2,
+                        width: width * paddingFactor,
+                        height: height * paddingFactor)
     }
 }
