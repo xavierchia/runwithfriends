@@ -47,6 +47,7 @@
 		95DBAC532BA18231002037F1 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBAC522BA18231002037F1 /* Location.swift */; };
 		95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6970E2AFF6CD800B10EB2 /* String.swift */; };
 		95F85B4F2B71AAEC005A705A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 95F85B4E2B71AAEC005A705A /* README.md */; };
+		A50337D02D841096001D4A06 /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50337CF2D841096001D4A06 /* NSAttributedString.swift */; };
 		A5033D822D5B3B89001E98FD /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5033D812D5B3B89001E98FD /* FriendsManager.swift */; };
 		A531425E2D826F3100382837 /* PeaMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425D2D826F3100382837 /* PeaMapView.swift */; };
 		A53142602D827C3A00382837 /* PathSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425F2D827C3A00382837 /* PathSearch.swift */; };
@@ -120,6 +121,7 @@
 		95F6970E2AFF6CD800B10EB2 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		95F85B4E2B71AAEC005A705A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runwithfriends.entitlements; sourceTree = "<group>"; };
+		A50337CF2D841096001D4A06 /* NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString.swift; sourceTree = "<group>"; };
 		A5033D812D5B3B89001E98FD /* FriendsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsManager.swift; sourceTree = "<group>"; };
 		A531425D2D826F3100382837 /* PeaMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeaMapView.swift; sourceTree = "<group>"; };
 		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathSearch.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				95877BC22B042F7500A81839 /* Cell.swift */,
 				95AC658A2B0227860084FF15 /* UIView.swift */,
 				95BC85302B0ECA9E00DD81BB /* NavigationController.swift */,
+				A50337CF2D841096001D4A06 /* NSAttributedString.swift */,
 				9557F76B2B350794002CAE30 /* AlertController.swift */,
 			);
 			path = Views;
@@ -482,6 +485,7 @@
 				955151242B91583A001AD26B /* DistanceViewController.swift in Sources */,
 				95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
+				A50337D02D841096001D4A06 /* NSAttributedString.swift in Sources */,
 				A5033D822D5B3B89001E98FD /* FriendsManager.swift in Sources */,
 				95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
