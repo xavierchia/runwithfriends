@@ -83,7 +83,13 @@ class UserData {
     
     // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> User {        
-        let user = try await Supabase.shared.client.auth.session.user
+        var session = try await Supabase.shared.client.auth.session
+        
+        if session.expiresIn < 86400 {
+            session = try await Supabase.shared.client.auth.refreshSession()
+            KeychainManager.shared.saveSession(session: session)
+        }
+        
         let retrievedUser: User = try await Supabase.shared.client
             .from("users")
             .select("""
@@ -92,7 +98,7 @@ class UserData {
                     group_id
                 )
             """)
-            .eq("user_id", value: user.id)
+            .eq("user_id", value: session.user.id)
             .single()
             .execute()
             .value
