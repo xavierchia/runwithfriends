@@ -658,7 +658,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -698,7 +698,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -737,7 +737,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";
@@ -768,7 +768,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";
