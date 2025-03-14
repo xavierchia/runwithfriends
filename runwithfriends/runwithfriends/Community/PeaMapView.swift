@@ -61,6 +61,8 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     }
     
     func addUserAnnotation(allUsers: [User], currentUser: User) {
+        var collisions = 1.0
+
         let sortedUsers = allUsers.sorted { lhs, rhs in
             (lhs.week_steps ?? 0) < (rhs.week_steps ?? 0)
         }
@@ -95,22 +97,34 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
             //            }
             
             /// Handle potential annotation collisions
-            //            if userCoordinate.longitude == finalCoordinate.longitude && userCoordinate.latitude == finalCoordinate.latitude {
-            //                // If at the finish line, space them out vertically
-            //                newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude + 0.005 * collisions, longitude: userCoordinate.longitude)
-            //                collisions += 1
-            //            } else if userCoordinate.longitude == lastLongitude {
-            //                // If same longitude as previous annotation, space them out horizontally
-            //                newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude, longitude: userCoordinate.longitude + 0.005 * collisions)
-            //                collisions += 1
-            //            } else {
-            //                // No collision
-            //                newPin.coordinate = userCoordinate
-            //                collisions = 1
-            //            }
-            //        }
-            
+            guard let finalCoordinate = coordinates.last else { return }
+            if userCoordinate.longitude == finalCoordinate.longitude &&
+                userCoordinate.latitude == finalCoordinate.latitude {
+                // If at the finish line, space them out vertically
+                newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude + 0.005 * collisions, longitude: userCoordinate.longitude)
+                collisions += 1
+            }
+        
             self.addAnnotation(newPin)
+        }
+    }
+    
+    func selectUserAnnotation(userId: String) {
+        // Find the annotation with the matching user ID
+        if let userAnnotation = annotations.first(where: { annotation in
+            if let emojiAnnotation = annotation as? EmojiAnnotation,
+               emojiAnnotation.identifier == "user" {
+                return true
+            }
+            return false
+        }) {
+            // Select the annotation
+            self.selectAnnotation(userAnnotation, animated: true)
+            
+            // Optionally center the map on this annotation
+            let span = MKCoordinateSpan(latitudeDelta: 0.0392143104880347, longitudeDelta: 0.02828775277940565)
+            let region = MKCoordinateRegion(center: userAnnotation.coordinate, span: span)
+            self.setRegion(region, animated: true)
         }
     }
     
@@ -121,5 +135,9 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         renderer.lineWidth = overlay.title == "main" ? 5 : 7
         renderer.lineCap = .round
         return renderer
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        print(mapView.region.span)
     }
 }
