@@ -101,8 +101,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
             
             /// Handle potential annotation collisions
             guard let finalCoordinate = coordinates.last else { return }
-            if userCoordinate.longitude == finalCoordinate.longitude &&
-                userCoordinate.latitude == finalCoordinate.latitude {
+            if userCoordinate == finalCoordinate {
                 // If at the finish line, space them out vertically
                 newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude + 0.005 * collisions, longitude: userCoordinate.longitude)
                 collisions += 1
