@@ -62,6 +62,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     
     func addUserAnnotation(allUsers: [User], currentUser: User) {
         var collisions = 1.0
+        var lastCoordinate = CLLocationCoordinate2DMake(0, 0)
 
         let sortedUsers = allUsers.sorted { lhs, rhs in
             (lhs.week_steps ?? 0) < (rhs.week_steps ?? 0)
@@ -105,7 +106,16 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
                 // If at the finish line, space them out vertically
                 newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude + 0.005 * collisions, longitude: userCoordinate.longitude)
                 collisions += 1
+            } else if userCoordinate == lastCoordinate {
+                // If same coordinate as previous annotation, space them out horizontally
+                newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude, longitude: userCoordinate.longitude + 0.005 * collisions)
+                collisions += 1
+            } else {
+                // No collision
+                newPin.coordinate = userCoordinate
+                collisions = 1
             }
+            lastCoordinate = userCoordinate
         
             self.addAnnotation(newPin)
         }
@@ -120,9 +130,9 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         return renderer
     }
     
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print(mapView.region.span)
-    }
+//    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+//        print(mapView.region.span)
+//    }
 }
 
 
@@ -178,15 +188,14 @@ extension PeaMapView {
         }
         
         // Calculate a map rect that includes all these annotations
-        let rect = mapRectThatFits(annotations: annotationsToInclude,
-                                  edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50))
+        let rect = mapRectThatFits(annotations: annotationsToInclude)
         
         // Set the visible region
         self.setVisibleMapRect(rect, animated: true)
     }
 
     // Helper function to calculate a map rect that includes all specified annotations
-    private func mapRectThatFits(annotations: [MKAnnotation], edgePadding: UIEdgeInsets) -> MKMapRect {
+    private func mapRectThatFits(annotations: [MKAnnotation]) -> MKMapRect {
         guard !annotations.isEmpty else {
             // Fallback if no annotations
             return MKMapRect(x: 0, y: 0, width: 1, height: 1)
@@ -212,7 +221,7 @@ extension PeaMapView {
         let height = maxY - minY
         
         // Add padding (extra space around the points)
-        let paddingFactor: Double = 1.3 // 30% extra space
+        let paddingFactor: Double = 2 // 30% extra space
         return MKMapRect(x: minX - width * (paddingFactor - 1) / 2,
                         y: minY - height * (paddingFactor - 1) / 2,
                         width: width * paddingFactor,

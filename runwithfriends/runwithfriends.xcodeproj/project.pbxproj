@@ -51,6 +51,7 @@
 		A5033D822D5B3B89001E98FD /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5033D812D5B3B89001E98FD /* FriendsManager.swift */; };
 		A531425E2D826F3100382837 /* PeaMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425D2D826F3100382837 /* PeaMapView.swift */; };
 		A53142602D827C3A00382837 /* PathSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425F2D827C3A00382837 /* PathSearch.swift */; };
+		A56EB4172D8912B200B823A9 /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56EB4162D8912B200B823A9 /* CLLocationCoordinate2D.swift */; };
 		A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4442E2D5B1CE8003F632A /* StepCounter.swift */; };
 		A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E394D82D67FC13009BBC93 /* KeychainManager.swift */; };
 		A5E394F42D6C0F40009BBC93 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A5E394F32D6C0F40009BBC93 /* Supabase */; };
@@ -125,6 +126,7 @@
 		A5033D812D5B3B89001E98FD /* FriendsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsManager.swift; sourceTree = "<group>"; };
 		A531425D2D826F3100382837 /* PeaMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeaMapView.swift; sourceTree = "<group>"; };
 		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathSearch.swift; sourceTree = "<group>"; };
+		A56EB4162D8912B200B823A9 /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounter.swift; sourceTree = "<group>"; };
 		A5E394D82D67FC13009BBC93 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				95BC85302B0ECA9E00DD81BB /* NavigationController.swift */,
 				A50337CF2D841096001D4A06 /* NSAttributedString.swift */,
 				9557F76B2B350794002CAE30 /* AlertController.swift */,
+				A56EB4162D8912B200B823A9 /* CLLocationCoordinate2D.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
 				95F6970F2AFF6CD800B10EB2 /* String.swift in Sources */,
 				95DBAC532BA18231002037F1 /* Location.swift in Sources */,
+				A56EB4172D8912B200B823A9 /* CLLocationCoordinate2D.swift in Sources */,
 				25D47D5A2B97DEEE003BAF64 /* Collections.swift in Sources */,
 				257EC7A52B882FFE000759A8 /* Progression.swift in Sources */,
 				A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */,

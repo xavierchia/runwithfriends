@@ -113,6 +113,7 @@ class CommunityViewController: UIViewController {
         setupWaitingRoomTitle()
         setupPodTitle()
         setupUserDistance()
+        setupZoomButton()
     }
     
     // MARK: Setup Map
@@ -166,6 +167,27 @@ class CommunityViewController: UIViewController {
         print("poddy")
         let vc = PodContainerViewController()
         present(vc, animated: true)
+    }
+    
+    private func setupZoomButton() {
+        let zoomTitle = UIButton()
+        zoomTitle.setTitle("Zoom", for: .normal)
+        zoomTitle.titleLabel?.font = UIFont.KefirBold(size: 14)
+        zoomTitle.titleLabel?.textAlignment = .right
+        zoomTitle.setTitleColor(.cream, for: .normal)
+        zoomTitle.backgroundColor = .clear
+        view.addSubview(zoomTitle)
+        zoomTitle.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            zoomTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            zoomTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+        ])
+        
+        zoomTitle.addTarget(self, action: #selector(zoomToUser), for: .touchUpInside)
+    }
+    
+    @objc private func zoomToUser() {
+        mapView.zoomToCurrentUserContext(currentUserId: userData.user.user_id.uuidString)
     }
     
     private func setupUserDistance() {
