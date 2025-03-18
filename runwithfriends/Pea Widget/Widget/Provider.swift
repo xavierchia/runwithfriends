@@ -185,8 +185,10 @@ struct Provider: AppIntentTimelineProvider {
            lastNetworkUpdate.timeIntervalSinceNow < -20,
            Provider.networkUpdateCount % 2 == 0 {
             await Supabase.shared.setSessionIfNeeded()
-            async let upsert: () = await Supabase.shared.upsert(steps: steps)
-            _ = await (upsert)
+            async let upsertResult: () = await Supabase.shared.upsert(steps: steps)
+            async let publicUsersResult = await Supabase.shared.getPublicUsers()
+            let (_, publicUsers) = await (upsertResult, publicUsersResult)
+//            print(publicUsers)
             sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
         }
     }

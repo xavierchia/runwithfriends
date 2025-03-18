@@ -16,3 +16,11 @@ extension Date {
         return dateString
     }
 }
+
+extension String {
+    func getDate() -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: self)
+    }
+}
