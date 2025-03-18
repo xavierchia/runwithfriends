@@ -1,10 +1,10 @@
 import Foundation
 import MapKit
 
-// This struct provides an efficient way to find coordinates on a path based on step count
+/// This struct provides an efficient way to find coordinates on a path based on step count
 struct PathSearch {
     
-    /// Finds the exact coordinate on a path that corresponds to a given step count using binary search
+    /// Finds the closest coordinate on a path that corresponds to a given step count using binary search
     /// - Parameters:
     ///   - stepCoordinates: Array of step coordinates with cumulative step information
     ///   - targetSteps: The number of steps to find position for
@@ -32,32 +32,30 @@ struct PathSearch {
                 // Exact match found
                 return stepCoordinates[mid].coordinate
             } else if stepCoordinates[mid].steps < targetSteps {
-                // Check if we're between this and the next point
-                if mid + 1 < stepCoordinates.count && stepCoordinates[mid + 1].steps > targetSteps {
-                    // Use the interpolate helper function
-                    return interpolate(from: stepCoordinates[mid], to: stepCoordinates[mid + 1], targetSteps: targetSteps)
-                }
                 left = mid + 1
             } else {
                 right = mid - 1
             }
         }
         
-        // If we didn't find an exact interpolation point, use the closest index
-        return left < stepCoordinates.count ? stepCoordinates[left].coordinate : stepCoordinates.last!.coordinate
-    }
-    
-    // Private helper function to interpolate between two coordinates
-    private static func interpolate(from start: StepCoordinate, to end: StepCoordinate, targetSteps: Double) -> CLLocationCoordinate2D {
-        // Calculate ratio for interpolation (0.0 to 1.0)
-        let totalSteps = end.steps - start.steps
-        let stepsFromStart = targetSteps - start.steps
-        let ratio = Double(stepsFromStart) / Double(totalSteps)
+        // Now 'left' points to the smallest element greater than target
+        // and 'right' points to the largest element smaller than target
         
-        // Interpolate the coordinate
-        let lat = start.coordinate.latitude + (end.coordinate.latitude - start.coordinate.latitude) * ratio
-        let lon = start.coordinate.longitude + (end.coordinate.longitude - start.coordinate.longitude) * ratio
-        
-        return CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        // Find which one is closer
+        if right < 0 {
+            return stepCoordinates[0].coordinate
+        } else if left >= stepCoordinates.count {
+            return stepCoordinates.last!.coordinate
+        } else {
+            // Choose the closer point
+            let diffRight = abs(stepCoordinates[left].steps - targetSteps)
+            let diffLeft = abs(targetSteps - stepCoordinates[right].steps)
+            
+            if diffRight < diffLeft {
+                return stepCoordinates[left].coordinate
+            } else {
+                return stepCoordinates[right].coordinate
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-class CommunityViewController: UIViewController, MKMapViewDelegate {
+class CommunityViewController: UIViewController {
     // database
     private let userData: UserData
     private let stepCounter = StepCounter.shared
@@ -169,11 +169,6 @@ class CommunityViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func setupUserDistance() {
-//        stepsTitle.font = UIFont.QuicksandSemiBold(size: 16)
-//        stepsTitle.backgroundColor = .clear
-//        stepsTitle.textAlignment = .left
-//        stepsTitle.textColor = .cream
-//        stepsTitle.text = "Steps"
         stepsTitle.image = UIImage(systemName: "figure.walk.motion")
         stepsTitle.tintColor = .cream
         stepsTitle.contentMode = .scaleAspectFit

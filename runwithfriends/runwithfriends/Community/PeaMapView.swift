@@ -75,7 +75,9 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
             
             let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: user.emoji))
             newPin.coordinate = userCoordinate
-            newPin.title = user.username
+            
+            let stepString = String(format: "%.1f", Double(userWeekSteps)/1000)
+            newPin.title = "\(user.username): \(stepString)"
             newPin.identifier = "other"
             
             // Color pin for current user
