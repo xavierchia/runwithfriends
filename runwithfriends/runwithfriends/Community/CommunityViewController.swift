@@ -97,11 +97,16 @@ class CommunityViewController: UIViewController {
             userData.updateStepsIfNeeded(dailySteps: result)
             let pubs = await userData.getPublicUsers()
             
+            let friendsProgress = pubs.map { user in
+                return FriendProgress(user_id: user.user_id, username: user.username, steps: user.day_steps ?? 0)
+            }
+            
+            FriendsManager.shared.updateFriends(friendsProgress)
+            
             await MainActor.run {
                 mapView.removeAnnotations(mapView.annotations)
                 mapView.addStartAndEnd()
                 mapView.addUserAnnotation(allUsers: pubs, currentUser: userData.user)
-//                mapView.zoomToCurrentUserContext(currentUserId: userData.user.user_id.uuidString)
             }
         }
     }

@@ -9,7 +9,7 @@ struct Pea_WidgetEntryView : View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             // Header with steps count
-            Text("STEPS TODAY")
+            Text("TODAY'S STEPS")
                 .font(.caption)
                 .fontWeight(.bold)
                 .foregroundColor(.gray)
