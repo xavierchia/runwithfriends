@@ -161,9 +161,7 @@ struct Provider: AppIntentTimelineProvider {
         let data = await getCurrentData()
         
         await doNetworking(context: context, steps: data.steps)
-                
-        Provider.networkUpdateCount += 1
-        
+                        
         updateUserSteps(steps: data.steps)
         sharedDefaults?.set(Date(), forKey: "lastUpdateTime")
         
@@ -201,6 +199,7 @@ struct Provider: AppIntentTimelineProvider {
             FriendsManager.shared.updateFriends(friendsProgress)
             
             sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
+            Provider.networkUpdateCount += 1
         }
     }
         
