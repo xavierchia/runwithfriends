@@ -92,19 +92,19 @@ struct Provider: AppIntentTimelineProvider {
         }
     }
     
-    private func getDataFromDefaults() -> Int {
-        guard let shared = sharedDefaults else {
-            print("no shared defaults")
+    private func getStepsFromKeychain() -> Int {
+        do {
+            let user = try KeychainManager.shared.getUser()
+            return user.day_steps ?? 0
+        } catch {
+            print("unable to get user from keychain")
             return 0
         }
-        
-        let steps = shared.integer(forKey: "userDaySteps")
-        return steps
     }
     
     private func getCurrentData() async -> (steps: Int, error: String) {
         let (allSteps, allError) = await getStepsFromAllSources()
-        var steps = getDataFromDefaults()
+        var steps = getStepsFromKeychain()
         steps = max(allSteps, steps)
         
         if let lastUpdate = sharedDefaults?.object(forKey: "lastUpdate") as? Date {
@@ -118,21 +118,18 @@ struct Provider: AppIntentTimelineProvider {
         return (steps, allError)
     }
     
-    private func updateSharedDefaults(steps: Int? = nil) {
-        guard let shared = sharedDefaults else {
-            print("no shared defaults")
-            return
+    private func updateUserSteps(steps: Int) {
+        do {
+            var user = try KeychainManager.shared.getUser()
+            user.day_steps = steps
+            KeychainManager.shared.saveUser(user: user)
+        } catch {
+            print("unable to update user steps")
         }
-        
-        if let steps {
-            shared.set(steps, forKey: "userDaySteps")
-        }
-    
-        shared.synchronize()
     }
 
     func placeholder(in context: Context) -> SimpleEntry {
-        let steps = getDataFromDefaults()
+        let steps = getStepsFromKeychain()
         return SimpleEntry(
             date: Date(),
             configuration: ConfigurationAppIntent(),
@@ -144,7 +141,7 @@ struct Provider: AppIntentTimelineProvider {
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
         print("snapshot called")
         let data = await getCurrentData()
-        updateSharedDefaults(steps: data.steps)
+        updateUserSteps(steps: data.steps)
         return SimpleEntry(
             date: Date(),
             configuration: configuration,
@@ -162,7 +159,7 @@ struct Provider: AppIntentTimelineProvider {
         
         Provider.networkUpdateCount += 1
         
-        updateSharedDefaults(steps: data.steps)
+        updateUserSteps(steps: data.steps)
         sharedDefaults?.set(Date(), forKey: "lastUpdate")
 
         let entry = SimpleEntry(

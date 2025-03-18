@@ -27,7 +27,11 @@ class UserData {
     static let defaultUsername = "Pea"
     
     @MainActor
-    var user: User
+    var user: User {
+        didSet {
+            KeychainManager.shared.saveUser(user: user)
+        }
+    }
     
     private var lastServerSync: Date?
     private let minimumSyncInterval: TimeInterval = 60 * 5

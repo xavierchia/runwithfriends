@@ -52,7 +52,7 @@ class Supabase {
     func upsert(steps: Int) async {
         do {
             let session = try KeychainManager.shared.getSession()
-            let userId = session.userId
+            let userId = session.user.id
             let dateString = Date().getDateString()
             let step = Step(user_id: userId, date: dateString, steps: steps)
             

@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let shared = UserDefaults(suiteName: AppDelegate.appGroupIdentifier),
            shared.bool(forKey: "appFirstInstall2") == false {
             shared.set(true, forKey: "appFirstInstall2")
-            shared.set(0, forKey: "userDaySteps")
             shared.set(Date(), forKey: "lastUpdateTime")
             shared.set(Date(), forKey: "lastNetworkUpdate")
         }
