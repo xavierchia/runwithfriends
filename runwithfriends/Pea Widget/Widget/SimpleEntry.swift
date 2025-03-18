@@ -13,4 +13,5 @@ struct SimpleEntry: TimelineEntry {
     let configuration: ConfigurationAppIntent
     let steps: Int
     let family: WidgetFamily
+    let friends: [FriendProgress]
 }

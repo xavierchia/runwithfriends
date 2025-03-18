@@ -108,6 +108,7 @@ struct Step: Codable {
 }
 
 struct FriendProgress: Codable {
+    let user_id: UUID
     let username: String
     let steps: Int
 }
@@ -129,5 +130,21 @@ class FriendsManager {
         } catch {
             print("Failed to save friends data: \(error)")
         }
+    }
+    
+    func getFriends() -> [FriendProgress] {
+        guard let defaults = defaults else { return [] }
+        
+        if let data = defaults.data(forKey: friendsKey) {
+            do {
+                let friends = try JSONDecoder().decode([FriendProgress].self, from: data)
+                return friends
+            } catch {
+                print("Failed to decode friends data: \(error)")
+                return []
+            }
+        }
+        
+        return []
     }
 }

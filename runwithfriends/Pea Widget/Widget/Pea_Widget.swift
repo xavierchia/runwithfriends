@@ -5,20 +5,43 @@ import HealthKit
 
 struct Pea_WidgetEntryView : View {
     var entry: Provider.Entry
-    
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mma"
-        return formatter
-    }()
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text("\(entry.steps) steps")
-                .font(.headline)
+        VStack(alignment: .leading, spacing: 6) {
+            // Header with steps count
+            Text("STEPS TODAY")
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundColor(.gray)
+            
+            if entry.friends.isEmpty {
+                Text("\(entry.steps)")
+                    .font(.title)
+                    .fontWeight(.bold)
+            } else {
+                Divider()
+                
+                // Friends list
+                VStack(alignment: .leading, spacing: 4) {
+                    ForEach(entry.friends, id: \.user_id) { friend in
+                        HStack {
+                            Text(friend.username)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .lineLimit(1)
+                            
+                            Spacer()
+                            
+                            Text("\(friend.steps)")
+                                .font(.subheadline)
+                        }
+                    }
+                }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 8)
         .foregroundColor(.black)
     }
 }

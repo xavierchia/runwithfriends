@@ -107,7 +107,7 @@ struct Provider: AppIntentTimelineProvider {
         var steps = getStepsFromKeychain()
         steps = max(allSteps, steps)
         
-        if let lastUpdate = sharedDefaults?.object(forKey: "lastUpdate") as? Date {
+        if let lastUpdate = sharedDefaults?.object(forKey: "lastUpdateTime") as? Date {
             let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
             if isNewDay {
                 steps = 0
@@ -119,6 +119,11 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     private func updateUserSteps(steps: Int) {
+        guard let lastUpdate = sharedDefaults?.object(forKey: "lastUpdateTime") as? Date,
+            lastUpdate.timeIntervalSinceNow < -20 else {
+            return
+        }
+        
         do {
             var user = try KeychainManager.shared.getUser()
             user.day_steps = steps
@@ -134,7 +139,8 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: ConfigurationAppIntent(),
             steps: steps,
-            family: context.family
+            family: context.family,
+            friends: []
         )
     }
 
@@ -146,7 +152,8 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: configuration,
             steps: data.steps,
-            family: context.family
+            family: context.family,
+            friends: []
         )
     }
     
@@ -154,19 +161,20 @@ struct Provider: AppIntentTimelineProvider {
         let data = await getCurrentData()
         
         await doNetworking(context: context, steps: data.steps)
-        
-//        print("xxavier \(try? await Supabase.shared.client.auth.session)")
-        
+                
         Provider.networkUpdateCount += 1
         
         updateUserSteps(steps: data.steps)
-        sharedDefaults?.set(Date(), forKey: "lastUpdate")
+        sharedDefaults?.set(Date(), forKey: "lastUpdateTime")
+        
+        let leaderboard = createSandwichLeaderboard(context: context)
 
         let entry = SimpleEntry(
             date: Date(),
             configuration: configuration,
             steps: data.steps,
-            family: context.family
+            family: context.family,
+            friends: leaderboard
         )
             
         return Timeline(entries: [entry], policy: .atEnd)
@@ -185,8 +193,74 @@ struct Provider: AppIntentTimelineProvider {
             async let upsertResult: () = await Supabase.shared.upsert(steps: steps)
             async let publicUsersResult = await Supabase.shared.getPublicUsers()
             let (_, publicUsers) = await (upsertResult, publicUsersResult)
-//            print(publicUsers)
+            
+            let friendsProgress = publicUsers.map { user in
+                return FriendProgress(user_id: user.user_id, username: user.username, steps: user.day_steps ?? 0)
+            }
+            
+            FriendsManager.shared.updateFriends(friendsProgress)
+            
             sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
+        }
+    }
+        
+    private func createSandwichLeaderboard(context: Context) -> [FriendProgress] {
+        guard context.family == .systemSmall else {
+            return []
+        }
+        
+        do {
+            let publicUsers = FriendsManager.shared.getFriends()
+
+            // Get the current user from keychain
+            let user = try KeychainManager.shared.getUser()
+            let currentUser = FriendProgress(user_id: user.user_id, username: user.username, steps: user.day_steps ?? 0)
+            
+            // Create a mutable copy of the public users
+            var allUsers = publicUsers
+            
+            // Find if current user exists in the public users
+            if let index = allUsers.firstIndex(where: { $0.user_id == currentUser.user_id }) {
+                // Replace with local user data which is fresher
+                allUsers[index] = currentUser
+            } else {
+                // Add current user if not found
+                allUsers.append(currentUser)
+            }
+            
+            // Sort users by step count in descending order
+            allUsers.sort {
+                $0.steps > $1.steps
+            }
+            
+            // Find current user's position in the sorted list
+            guard let currentUserIndex = allUsers.firstIndex(where: { $0.user_id == currentUser.user_id }) else {
+                // Fallback: return current user only if we can't find them in the sorted list
+                return [currentUser]
+            }
+            
+            // Create sandwich view based on user's position
+            var sandwichLeaderboard: [FriendProgress] = []
+            
+            if currentUserIndex == 0 {
+                // User is at the top, show them and up to 2 users below
+                let endIndex = min(currentUserIndex + 3, allUsers.count)
+                sandwichLeaderboard = Array(allUsers[currentUserIndex..<endIndex])
+            } else if currentUserIndex == allUsers.count - 1 {
+                // User is at the bottom, show up to 2 users above and them
+                let startIndex = max(currentUserIndex - 2, 0)
+                sandwichLeaderboard = Array(allUsers[startIndex...currentUserIndex])
+            } else {
+                // User is in the middle, show 1 above, them, and 1 below
+                let startIndex = max(currentUserIndex - 1, 0)
+                let endIndex = min(currentUserIndex + 2, allUsers.count)
+                sandwichLeaderboard = Array(allUsers[startIndex..<endIndex])
+            }
+            
+            return sandwichLeaderboard
+        } catch {
+            print("Failed to create sandwich leaderboard: \(error)")
+            return []
         }
     }
 }
