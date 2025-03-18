@@ -166,13 +166,16 @@ struct Provider: AppIntentTimelineProvider {
         sharedDefaults?.set(Date(), forKey: "lastUpdateTime")
         
         let leaderboard = createSandwichLeaderboard(context: context)
+        let friends = leaderboard.map { user in
+            return FriendProgress(user_id: user.user_id, steps: user.day_steps ?? 0, username: user.username)
+        }
 
         let entry = SimpleEntry(
             date: Date(),
             configuration: configuration,
             steps: data.steps,
             family: context.family,
-            friends: leaderboard
+            friends: friends
         )
             
         return Timeline(entries: [entry], policy: .atEnd)
@@ -192,31 +195,34 @@ struct Provider: AppIntentTimelineProvider {
             async let publicUsersResult = await Supabase.shared.getPublicUsers()
             let (_, publicUsers) = await (upsertResult, publicUsersResult)
             
-            let friendsProgress = publicUsers.map { user in
-                return FriendProgress(user_id: user.user_id, username: user.username, steps: user.day_steps ?? 0)
-            }
-            
-            FriendsManager.shared.updateFriends(friendsProgress)
+            FriendsManager.shared.updateFriends(publicUsers)
             
             sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
             Provider.networkUpdateCount += 1
         }
     }
         
-    private func createSandwichLeaderboard(context: Context) -> [FriendProgress] {
+    private func createSandwichLeaderboard(context: Context) -> [User] {
         guard context.family == .systemSmall else {
             return []
         }
         
         do {
             let publicUsers = FriendsManager.shared.getFriends()
+            let publicUsersToday = publicUsers.filter { user in
+                if let dayDate = user.day_date,
+                   dayDate == Date.startOfToday().getDateString() {
+                    return true
+                } else {
+                    return false
+                }
+            }
 
             // Get the current user from keychain
-            let user = try KeychainManager.shared.getUser()
-            let currentUser = FriendProgress(user_id: user.user_id, username: user.username, steps: user.day_steps ?? 0)
+            let currentUser = try KeychainManager.shared.getUser()
             
             // Create a mutable copy of the public users
-            var allUsers = publicUsers
+            var allUsers = publicUsersToday
             
             // Find if current user exists in the public users
             if let index = allUsers.firstIndex(where: { $0.user_id == currentUser.user_id }) {
@@ -229,7 +235,7 @@ struct Provider: AppIntentTimelineProvider {
             
             // Sort users by step count in descending order
             allUsers.sort {
-                $0.steps > $1.steps
+                $0.day_steps ?? 0 > $1.day_steps ?? 0
             }
             
             // Find current user's position in the sorted list
@@ -239,7 +245,7 @@ struct Provider: AppIntentTimelineProvider {
             }
             
             // Create sandwich view based on user's position
-            var sandwichLeaderboard: [FriendProgress] = []
+            var sandwichLeaderboard: [User] = []
             
             if currentUserIndex == 0 {
                 // User is at the top, show them and up to 2 users below
