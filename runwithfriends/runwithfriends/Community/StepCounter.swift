@@ -9,6 +9,7 @@ import CoreLocation
 import HealthKit
 import WidgetKit
 import CoreMotion
+import SharedCode
 
 struct DailySteps {
     let date: Date

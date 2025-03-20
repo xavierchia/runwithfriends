@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 import CloudKit
 import AVFoundation
+import SharedCode
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
