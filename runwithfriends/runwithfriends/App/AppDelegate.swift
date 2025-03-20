@@ -14,17 +14,17 @@ import AVFoundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     static let appGroupIdentifier = "group.com.wholesomeapps.runwithfriends"
-
+    static let appUserDefaults = UserDefaults(suiteName: AppDelegate.appGroupIdentifier)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         setupGlobalUI()
         
-        if let shared = UserDefaults(suiteName: AppDelegate.appGroupIdentifier),
-           shared.bool(forKey: "appFirstInstall2") == false {
-            shared.set(true, forKey: "appFirstInstall2")
-            shared.set(Date(), forKey: "lastUpdateTime")
-            shared.set(Date(), forKey: "lastNetworkUpdate")
+        if let shared = AppDelegate.appUserDefaults,
+           shared.bool(forKey: UserDefaultsKey.appFirstInstallVersion) == false {
+            shared.set(true, forKey: UserDefaultsKey.appFirstInstallVersion)
+            shared.set(Date(), forKey: UserDefaultsKey.lastUpdateTime)
+            shared.set(Date(), forKey: UserDefaultsKey.lastNetworkUpdate)
         }
         
         print("did finish launching")

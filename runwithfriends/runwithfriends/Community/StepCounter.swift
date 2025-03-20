@@ -219,12 +219,12 @@ class StepCounter {
     }
     
     private func updateWidgetData(steps: Int, error: String) {
-        guard let shared = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends") else { return }
+        guard let shared = AppDelegate.appUserDefaults else { return }
         
-        if let lastUpdate = shared.object(forKey: "lastUpdateTime") as? Date {
+        if let lastUpdate = shared.object(forKey: UserDefaultsKey.lastUpdateTime) as? Date {
             let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
             if isNewDay {
-                shared.set(Date(), forKey: "lastUpdateTime")
+                shared.set(Date(), forKey: UserDefaultsKey.lastUpdateTime)
             }
         }
 

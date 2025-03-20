@@ -36,11 +36,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             
             // when we need to log out the user
-            if let shared = UserDefaults(suiteName: AppDelegate.appGroupIdentifier),
-               shared.integer(forKey: "forceSignOut") != 1 {
-                try await Supabase.shared.client.auth.signOut()
-                shared.set(1, forKey: "forceSignOut")
-            }
+            
+//            if let shared = AppDelegate.appUserDefaults,
+//               shared.bool(forKey: UserDefaultsKey.forceSignOutVersion) == false {
+//                try await Supabase.shared.client.auth.signOut()
+//                shared.set(true, forKey: UserDefaultsKey.forceSignOutVersion)
+//            }
                         
             do {
                 let user = try await UserData.getUserOnAppInit()

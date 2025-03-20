@@ -10,13 +10,12 @@ import WidgetKit
 
 class FriendsManager {
     static let shared = FriendsManager()
-    private let defaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
     private let friendsKey = "friendsProgress"
     
     private init() {}
     
     func updateFriends(_ friends: [User]) {
-        guard let defaults = defaults else { return }
+        guard let defaults = AppDelegate.appUserDefaults else { return }
         do {
             print("saved friends")
             let data = try JSONEncoder().encode(friends)
