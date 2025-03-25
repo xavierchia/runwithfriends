@@ -9,6 +9,7 @@ import Foundation
 import WidgetKit
 import CoreMotion
 import HealthKit
+import SharedCode
 
 struct Provider: AppIntentTimelineProvider {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
@@ -107,7 +108,7 @@ struct Provider: AppIntentTimelineProvider {
         var steps = getStepsFromKeychain()
         steps = max(allSteps, steps)
         
-        if let lastUpdate = sharedDefaults?.object(forKey: "lastUpdateTime") as? Date {
+        if let lastUpdate = sharedDefaults?.object(forKey: UserDefaultsKey.lastUpdateTime) as? Date {
             let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
             if isNewDay {
                 steps = 0
@@ -119,7 +120,7 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     private func updateUserSteps(steps: Int) {
-        guard let lastUpdate = sharedDefaults?.object(forKey: "lastUpdateTime") as? Date,
+        guard let lastUpdate = sharedDefaults?.object(forKey: UserDefaultsKey.lastUpdateTime) as? Date,
             lastUpdate.timeIntervalSinceNow < -20 else {
             return
         }
@@ -187,7 +188,7 @@ struct Provider: AppIntentTimelineProvider {
             return
         }
                 
-        if let lastNetworkUpdate = sharedDefaults?.object(forKey: "lastNetworkUpdate") as? Date,
+        if let lastNetworkUpdate = sharedDefaults?.object(forKey: UserDefaultsKey.lastNetworkUpdate) as? Date,
            lastNetworkUpdate.timeIntervalSinceNow < -20 {
             await Supabase.shared.setSessionIfNeeded()
             if Provider.networkUpdateCount % 2 == 0 {
@@ -196,7 +197,7 @@ struct Provider: AppIntentTimelineProvider {
                 let publicUsers = await Supabase.shared.getPublicUsers()
                 FriendsManager.shared.updateFriends(publicUsers)
             }
-            sharedDefaults?.set(Date(), forKey: "lastNetworkUpdate")
+            sharedDefaults?.set(Date(), forKey: UserDefaultsKey.lastNetworkUpdate)
             Provider.networkUpdateCount += 1
         }
     }
