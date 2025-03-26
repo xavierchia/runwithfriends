@@ -202,7 +202,7 @@ struct Provider: AppIntentTimelineProvider {
         }
     }
         
-    private func createSandwichLeaderboard(context: Context) -> [User] {
+    private func createSandwichLeaderboard(context: Context) -> [PeaUser] {
         guard context.family == .systemSmall else {
             return []
         }
@@ -245,7 +245,7 @@ struct Provider: AppIntentTimelineProvider {
             }
             
             // Create sandwich view based on user's position
-            var sandwichLeaderboard: [User] = []
+            var sandwichLeaderboard: [PeaUser] = []
             
             if currentUserIndex == 0 {
                 // User is at the top, show them and up to 2 users below

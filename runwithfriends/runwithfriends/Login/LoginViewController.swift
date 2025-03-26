@@ -10,6 +10,7 @@ import UIKit
 import Supabase
 import CryptoKit
 import CommonCrypto
+import SharedCode
 
 class LoginViewController: UIViewController {
     private var currentNonce: String?
@@ -154,7 +155,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 showOops()
             }
             
-            @MainActor func routeToTabVC(with user: User) {
+            @MainActor func routeToTabVC(with user: PeaUser) {
                 Task {
                     do {
                         let session = try await Supabase.shared.client.auth.session

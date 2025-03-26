@@ -13,36 +13,6 @@ enum SessionError: Error {
     case expired
 }
 
-struct User: Codable {
-    let user_id: UUID
-    let apple_id: String
-    let search_id: Int
-    let username: String
-    let emoji: String
-    var week_steps: Int?
-    var day_steps: Int?
-    var group_users: group_users?
-    var week_date: String?
-    var day_date: String?
-    
-    struct group_users: Codable {
-        var group_id: String?
-    }
-    
-    var group_id: String? {
-        self.group_users?.group_id
-    }
-    
-    var weekDate: Date? {
-        week_date?.getDate()
-    }
-    
-    var dayDate: Date? {
-        day_date?.getDate()
-    }
-}
-
-
 class Supabase {
     static let shared = Supabase()
     
@@ -87,9 +57,9 @@ class Supabase {
         }
     }
     
-    func getPublicUsers() async -> [User] {
+    func getPublicUsers() async -> [PeaUser] {
         do {
-            let publicUsers: [User] = try await Supabase.shared.client.from("public_users")
+            let publicUsers: [PeaUser] = try await Supabase.shared.client.from("public_users")
                 .select()
                 .execute()
                 .value
@@ -115,7 +85,7 @@ class FriendsManager {
     
     private init() {}
     
-    func updateFriends(_ friends: [User]) {
+    func updateFriends(_ friends: [PeaUser]) {
         guard let defaults = defaults else { return }
         do {
             print("saved friends")
@@ -127,12 +97,12 @@ class FriendsManager {
         }
     }
     
-    func getFriends() -> [User] {
+    func getFriends() -> [PeaUser] {
         guard let defaults = defaults else { return [] }
         
         if let data = defaults.data(forKey: friendsKey) {
             do {
-                let friends = try JSONDecoder().decode([User].self, from: data)
+                let friends = try JSONDecoder().decode([PeaUser].self, from: data)
                 return friends
             } catch {
                 print("Failed to decode friends data: \(error)")

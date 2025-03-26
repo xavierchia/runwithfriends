@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SharedCode
 
 class ProfileViewController: UIViewController {
     
@@ -84,7 +85,7 @@ class ProfileViewController: UIViewController {
         ])
     }
     
-    private func setupProfile(with user: User) {
+    private func setupProfile(with user: PeaUser) {
 //        let currentPea = Progression.getPea(for: userData.getTotalDistance())
 //        self.navigationItem.title = currentPea.info.name
     }

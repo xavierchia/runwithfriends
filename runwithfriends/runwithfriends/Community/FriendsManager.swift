@@ -7,6 +7,7 @@
 
 import Foundation
 import WidgetKit
+import SharedCode
 
 class FriendsManager {
     static let shared = FriendsManager()
@@ -14,7 +15,7 @@ class FriendsManager {
     
     private init() {}
     
-    func updateFriends(_ friends: [User]) {
+    func updateFriends(_ friends: [PeaUser]) {
         guard let defaults = AppDelegate.appUserDefaults else { return }
         do {
             print("saved friends")

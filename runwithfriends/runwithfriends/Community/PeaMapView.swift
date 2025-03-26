@@ -7,6 +7,7 @@
 
 import Foundation
 import MapKit
+import SharedCode
 
 class PeaMapView: MKMapView, MKMapViewDelegate {
     private var coordinates = [CLLocationCoordinate2D]()
@@ -60,7 +61,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         self.addAnnotation(endPin)
     }
     
-    func addUserAnnotation(allUsers: [User], currentUser: User) {
+    func addUserAnnotation(allUsers: [PeaUser], currentUser: PeaUser) {
         var collisions = 1.0
         var lastCoordinate = CLLocationCoordinate2DMake(0, 0)
 

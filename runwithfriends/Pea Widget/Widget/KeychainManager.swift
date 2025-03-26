@@ -38,7 +38,7 @@ class KeychainManager {
         return try retrieveObject(forKey: sessionKey)
     }
     
-    func saveUser(user: User) {
+    func saveUser(user: PeaUser) {
         print("saving user")
         do {
             try saveObject(user, forKey: userKey)
@@ -47,7 +47,7 @@ class KeychainManager {
         }
     }
     
-    func getUser() throws -> User {
+    func getUser() throws -> PeaUser {
         return try retrieveObject(forKey: userKey)
     }
     

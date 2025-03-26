@@ -32,7 +32,7 @@ class KeychainManager {
         }
     }
     
-    func saveUser(user: User) {
+    func saveUser(user: PeaUser) {
         print("saving user")
         do {
             try saveObject(user, forKey: userKey)

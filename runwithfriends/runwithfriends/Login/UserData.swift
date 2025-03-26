@@ -7,6 +7,7 @@
 import Foundation
 import CoreLocation
 import Supabase
+import SharedCode
 
 struct Step: Codable {
     let user_id: UUID
@@ -27,7 +28,7 @@ class UserData {
     static let defaultUsername = "Pea"
     
     @MainActor
-    var user: User {
+    var user: PeaUser {
         didSet {
             KeychainManager.shared.saveUser(user: user)
         }
@@ -36,7 +37,7 @@ class UserData {
     private var lastServerSync: Date?
     private let minimumSyncInterval: TimeInterval = 60 * 5
     
-    init(user: User) {
+    init(user: PeaUser) {
         self.user = user
     }
     
@@ -64,9 +65,9 @@ class UserData {
         }
     }
     
-    func getPublicUsers() async -> [User] {
+    func getPublicUsers() async -> [PeaUser] {
         do {
-            var publicUsers: [User] = try await Supabase.shared.client.from("public_users")
+            var publicUsers: [PeaUser] = try await Supabase.shared.client.from("public_users")
                 .select()
                 .execute()
                 .value
@@ -86,7 +87,7 @@ class UserData {
     }
     
     // MARK: User methods before UserData has been created
-    static func getUserOnAppInit() async throws -> User {        
+    static func getUserOnAppInit() async throws -> PeaUser {
         var session = try await Supabase.shared.client.auth.session
         
         if session.expiresIn < 86400 {
@@ -94,7 +95,7 @@ class UserData {
             KeychainManager.shared.saveSession(session: session)
         }
         
-        let retrievedUser: User = try await Supabase.shared.client
+        let retrievedUser: PeaUser = try await Supabase.shared.client
             .from("users")
             .select("""
                 *,
@@ -112,9 +113,9 @@ class UserData {
         return retrievedUser
     }
     
-    static func saveUser(_ initialUser: InitialUser) async throws -> User {
+    static func saveUser(_ initialUser: InitialUser) async throws -> PeaUser {
         let supabase = Supabase.shared
-        let user: User = try await supabase.client
+        let user: PeaUser = try await supabase.client
           .from("users")
           .insert(initialUser, returning: .representation)
           .single()
@@ -123,10 +124,10 @@ class UserData {
         return user
     }
     
-    static func getUser(with id: String) async -> User? {
+    static func getUser(with id: String) async -> PeaUser? {
         let supabase = Supabase.shared
         do {
-            let retrievedUser: User = try await supabase.client
+            let retrievedUser: PeaUser = try await supabase.client
                 .from("users")
                 .select("""
                     *,
