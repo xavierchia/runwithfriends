@@ -11,7 +11,7 @@ extension NSMutableAttributedString {
     var boldFont: UIFont { return UIFont.QuicksandBold(size: 22) }
     var normalFont: UIFont { return UIFont.Quicksand(size: 22) }
     
-    func bold(_ value:String) -> NSMutableAttributedString {
+    public func bold(_ value:String) -> NSMutableAttributedString {
         
         let attributes:[NSAttributedString.Key : Any] = [
             .font : boldFont
@@ -21,7 +21,7 @@ extension NSMutableAttributedString {
         return self
     }
     
-    func normal(_ value:String) -> NSMutableAttributedString {
+    public func normal(_ value:String) -> NSMutableAttributedString {
         
         let attributes:[NSAttributedString.Key : Any] = [
             .font : normalFont,

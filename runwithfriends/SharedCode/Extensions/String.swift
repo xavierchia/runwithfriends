@@ -8,7 +8,7 @@
 import UIKit
 
 extension String {
-    func image(pointSize: CGFloat, backgroundColor: UIColor = .clear) -> UIImage {
+    public func image(pointSize: CGFloat, backgroundColor: UIColor = .clear) -> UIImage {
          let font = UIFont.systemFont(ofSize: pointSize)
          let emojiSize = self.size(withAttributes: [.font: font])
 
@@ -21,7 +21,7 @@ extension String {
         return image.withRenderingMode(.alwaysOriginal)
      }
     
-    func strikeThrough() -> NSAttributedString {
+    public func strikeThrough() -> NSAttributedString {
         let attributeString =  NSMutableAttributedString(string: self)
         attributeString.addAttribute(
             NSAttributedString.Key.strikethroughStyle,
@@ -30,7 +30,7 @@ extension String {
         return attributeString
     }
     
-    func attributedStringWithColorAndBold(_ colorizeWords: [String], color: UIColor, boldWords: [String] = [], size: CGFloat = 20) -> NSAttributedString {
+    public func attributedStringWithColorAndBold(_ colorizeWords: [String], color: UIColor, boldWords: [String] = [], size: CGFloat = 20) -> NSAttributedString {
         // Create a mutable attributed string based on the original string.
         let attributedString = NSMutableAttributedString(string: self)
 
@@ -51,11 +51,11 @@ extension String {
 }
 
 extension String {
-    func getDate() -> Date? {
+    public func getDate() -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.date(from: self)
     }
 }
 
-extension String: Error {}
+extension String: @retroactive Error {}

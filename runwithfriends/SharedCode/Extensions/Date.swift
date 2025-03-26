@@ -1,19 +1,11 @@
 //
-//  Extensions.swift
-//  Pea WidgetExtension
+//  Date.swift
+//  runwithfriends
 //
-//  Created by Xavier Chia PY on 12/3/25.
+//  Created by xavier chia on 1/12/23.
 //
 
 import Foundation
-
-extension String {
-    func getDate() -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.date(from: self)
-    }
-}
 
 struct DisplayTime {
     let time: String
@@ -28,13 +20,13 @@ extension Int {
 }
 
 extension Date {
-    static func startOfWeek() -> Date {
+    public static func startOfWeek() -> Date {
         var calendar = Calendar.current
         calendar.firstWeekday = 2
         return calendar.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: Date()).date!
     }
     
-    static func startOfToday() -> Date {
+    public static func startOfToday() -> Date {
         let calendar = Calendar.current
         return calendar.startOfDay(for: Date())
     }
@@ -77,7 +69,7 @@ extension Date {
         return DisplayTime(time: String(rawTimeString), amOrPm: String(rawAmOrPmString))
     }
     
-    func getDateString() -> String {
+    public func getDateString() -> String {
         let currentDay = Calendar.current.startOfDay(for: self)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"

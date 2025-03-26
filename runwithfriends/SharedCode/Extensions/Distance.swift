@@ -25,7 +25,7 @@ extension Int {
         }
     }
     
-    var valueShort: String {
+    public var valueShort: String {
         if self > 1000 {
             let kmValue: Double = Double(self) / 1000
             return String(format: "%.1f", kmValue)
@@ -34,7 +34,7 @@ extension Int {
         }
     }
     
-    var metricShort: String {
+    public var metricShort: String {
         if self > 1000 {
             return "km"
         } else {
