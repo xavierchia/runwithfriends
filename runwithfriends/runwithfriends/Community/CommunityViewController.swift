@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import SharedCode
 
 class CommunityViewController: UIViewController {
     // database

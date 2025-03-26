@@ -77,39 +77,3 @@ struct Step: Codable {
     let date: String
     let steps: Int
 }
-
-class FriendsManager {
-    static let shared = FriendsManager()
-    private let defaults = PeaDefaults.shared
-    private let friendsKey = "friendsProgress"
-    
-    private init() {}
-    
-    func updateFriends(_ friends: [PeaUser]) {
-        guard let defaults = defaults else { return }
-        do {
-            print("saved friends")
-            let data = try JSONEncoder().encode(friends)
-            defaults.set(data, forKey: friendsKey)
-            defaults.synchronize()
-        } catch {
-            print("Failed to save friends data: \(error)")
-        }
-    }
-    
-    func getFriends() -> [PeaUser] {
-        guard let defaults = defaults else { return [] }
-        
-        if let data = defaults.data(forKey: friendsKey) {
-            do {
-                let friends = try JSONDecoder().decode([PeaUser].self, from: data)
-                return friends
-            } catch {
-                print("Failed to decode friends data: \(error)")
-                return []
-            }
-        }
-        
-        return []
-    }
-}
