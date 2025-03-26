@@ -71,9 +71,3 @@ class Supabase {
         }
     }
 }
-
-struct Step: Codable {
-    let user_id: UUID
-    let date: String
-    let steps: Int
-}

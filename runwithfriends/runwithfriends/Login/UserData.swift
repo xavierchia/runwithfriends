@@ -9,12 +9,6 @@ import CoreLocation
 import Supabase
 import SharedCode
 
-struct Step: Codable {
-    let user_id: UUID
-    let date: String
-    let steps: Int
-}
-
 struct Group: Codable {
     let group_id: UUID
     let created_at: Date
