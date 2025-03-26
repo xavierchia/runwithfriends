@@ -7,6 +7,7 @@
 
 import Foundation
 import Supabase
+import SharedCode
 
 enum SessionError: Error {
     case expired
@@ -109,7 +110,7 @@ struct Step: Codable {
 
 class FriendsManager {
     static let shared = FriendsManager()
-    private let defaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
+    private let defaults = PeaDefaults.shared
     private let friendsKey = "friendsProgress"
     
     private init() {}

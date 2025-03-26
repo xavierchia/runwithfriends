@@ -1,6 +1,7 @@
 import Foundation
 import Security
 import Supabase
+import SharedCode
 
 enum KeychainError: Error {
     case duplicateEntry
@@ -15,7 +16,7 @@ enum KeychainError: Error {
 class KeychainManager {
     static let shared = KeychainManager()
     
-    private let appGroupIdentifier = "group.com.wholesomeapps.runwithfriends"
+    private let appGroupIdentifier = PeaDefaults.identifier
     
     private let sessionKey = "supabase_session"
     private let userKey = "supabase_user"

@@ -14,8 +14,7 @@ import SharedCode
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    static let appGroupIdentifier = "group.com.wholesomeapps.runwithfriends"
-    static let appUserDefaults = UserDefaults(suiteName: AppDelegate.appGroupIdentifier)
+    static let appUserDefaults = PeaDefaults.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

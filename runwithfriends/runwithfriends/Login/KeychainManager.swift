@@ -1,6 +1,7 @@
 import Foundation
 import Security
 import Supabase
+import SharedCode
 
 enum KeychainError: Error {
     case duplicateEntry
@@ -14,10 +15,7 @@ enum KeychainError: Error {
 
 class KeychainManager {
     static let shared = KeychainManager()
-    
-    // Replace this with your actual app group identifier
-    private let appGroupIdentifier = AppDelegate.appGroupIdentifier
-    
+        
     private let sessionKey = "supabase_session"
     private let userKey = "supabase_user"
     
@@ -97,7 +95,7 @@ class KeychainManager {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecValueData as String: data,
-            kSecAttrAccessGroup as String: appGroupIdentifier,
+            kSecAttrAccessGroup as String: PeaDefaults.identifier,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
         ]
         
@@ -108,7 +106,7 @@ class KeychainManager {
             let updateQuery: [String: Any] = [
                 kSecClass as String: kSecClassGenericPassword,
                 kSecAttrAccount as String: key,
-                kSecAttrAccessGroup as String: appGroupIdentifier
+                kSecAttrAccessGroup as String: PeaDefaults.identifier
             ]
             
             let attributesToUpdate: [String: Any] = [
@@ -140,7 +138,7 @@ class KeychainManager {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecReturnData as String: true,
-            kSecAttrAccessGroup as String: appGroupIdentifier,
+            kSecAttrAccessGroup as String: PeaDefaults.identifier,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
         
@@ -162,7 +160,7 @@ class KeychainManager {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
-            kSecAttrAccessGroup as String: appGroupIdentifier
+            kSecAttrAccessGroup as String: PeaDefaults.identifier
         ]
         
         let status = SecItemDelete(query as CFDictionary)

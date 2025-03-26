@@ -12,7 +12,7 @@ import HealthKit
 import SharedCode
 
 struct Provider: AppIntentTimelineProvider {
-    let sharedDefaults = UserDefaults(suiteName: "group.com.wholesomeapps.runwithfriends")
+    let sharedDefaults = PeaDefaults.shared
     private let pedometer = CMPedometer()
     private let healthStore = HKHealthStore()
     static var networkUpdateCount = 0
