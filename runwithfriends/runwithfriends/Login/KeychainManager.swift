@@ -15,7 +15,9 @@ enum KeychainError: Error {
 
 class KeychainManager {
     static let shared = KeychainManager()
-        
+    
+    private let appGroupIdentifier = PeaDefaults.identifier
+    
     private let sessionKey = "supabase_session"
     private let userKey = "supabase_user"
     
@@ -32,6 +34,10 @@ class KeychainManager {
         }
     }
     
+    func getSession() throws -> Session {
+        return try retrieveObject(forKey: sessionKey)
+    }
+    
     func saveUser(user: PeaUser) {
         print("saving user")
         do {
@@ -41,8 +47,8 @@ class KeychainManager {
         }
     }
     
-    func getSession() throws -> Session {
-        return try retrieveObject(forKey: sessionKey)
+    func getUser() throws -> PeaUser {
+        return try retrieveObject(forKey: userKey)
     }
     
     // MARK: - Save and Retrieve Codable Objects
@@ -60,7 +66,7 @@ class KeychainManager {
     }
     
     /// Retrieve any Decodable object from the keychain
-    private func retrieveObject<T: Decodable>(forKey key: String) throws -> T {
+    func retrieveObject<T: Decodable>(forKey key: String) throws -> T {
         let data = try retrieveDataFromKeychain(forKey: key)
         
         let decoder = JSONDecoder()
@@ -95,7 +101,7 @@ class KeychainManager {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecValueData as String: data,
-            kSecAttrAccessGroup as String: PeaDefaults.identifier,
+            kSecAttrAccessGroup as String: appGroupIdentifier,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
         ]
         
@@ -106,7 +112,7 @@ class KeychainManager {
             let updateQuery: [String: Any] = [
                 kSecClass as String: kSecClassGenericPassword,
                 kSecAttrAccount as String: key,
-                kSecAttrAccessGroup as String: PeaDefaults.identifier
+                kSecAttrAccessGroup as String: appGroupIdentifier
             ]
             
             let attributesToUpdate: [String: Any] = [
@@ -138,7 +144,7 @@ class KeychainManager {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecReturnData as String: true,
-            kSecAttrAccessGroup as String: PeaDefaults.identifier,
+            kSecAttrAccessGroup as String: appGroupIdentifier,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
         
@@ -160,7 +166,7 @@ class KeychainManager {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
-            kSecAttrAccessGroup as String: PeaDefaults.identifier
+            kSecAttrAccessGroup as String: appGroupIdentifier
         ]
         
         let status = SecItemDelete(query as CFDictionary)
