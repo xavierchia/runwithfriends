@@ -12,7 +12,6 @@ import SwiftUI
 struct Pea_WidgetBundle: WidgetBundle {
     var body: some Widget {
         Pea_Widget()
-        Pea_WidgetControl()
         Pea_WidgetLiveActivity()
     }
 }
