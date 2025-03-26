@@ -15,7 +15,6 @@ struct SharedCodeUtilities {
 public struct FriendsManager {
     public static let shared = FriendsManager()
     private let defaults = PeaDefaults.shared
-    private let friendsKey = "friendsProgress"
     
     private init() {}
     
@@ -24,7 +23,7 @@ public struct FriendsManager {
         do {
             print("saved friends")
             let data = try JSONEncoder().encode(friends)
-            defaults.set(data, forKey: friendsKey)
+            defaults.set(data, forKey: UserDefaultsKey.friendsProgress)
             defaults.synchronize()
             
             if SharedCodeUtilities.isWidget {
@@ -39,7 +38,7 @@ public struct FriendsManager {
     public func getFriends() -> [PeaUser] {
         guard let defaults = defaults else { return [] }
         
-        if let data = defaults.data(forKey: friendsKey) {
+        if let data = defaults.data(forKey: UserDefaultsKey.friendsProgress) {
             do {
                 let friends = try JSONDecoder().decode([PeaUser].self, from: data)
                 return friends

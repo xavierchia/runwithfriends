@@ -14,4 +14,5 @@ public struct UserDefaultsKey {
 
     public static let lastUpdateTime = "lastUpdateTime"
     public static let lastNetworkUpdate = "lastNetworkUpdate"
+    public static let friendsProgress = "friendsProgress"
 }
