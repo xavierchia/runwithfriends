@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = launchScreen
         window.makeKeyAndVisible()
         
-        Task {
+        Task { @MainActor in
             _ = await Supabase.shared.client.auth.onAuthStateChange { event, session in
                 print("auth state change event \(event)")
                 switch event {
@@ -55,6 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            let userData = UserData(user: peaUser)
 //            window.rootViewController = TabViewController(with: userData)
 //            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+//            return
                         
             do {
                 let user = try await UserData.getUserOnAppInit()

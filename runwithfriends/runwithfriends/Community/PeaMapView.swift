@@ -12,6 +12,9 @@ import SharedCode
 class PeaMapView: MKMapView, MKMapViewDelegate {
     private var coordinates = [CLLocationCoordinate2D]()
     private var stepCoordinates = [StepCoordinate]()
+    private var currentMarathon: Marathon {
+        return MarathonData.getCurrentMarathon()
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,13 +33,12 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     }
     
     func setMapRegion() {
-        let currentMarathon = MarathonData.getCurrentMarathon()
         self.setRegion(currentMarathon.region, animated: false)
     }
 
     func addPath() {
         // get current path coordinates
-        if let nycMarathonPath = Bundle.main.path(forResource: "NYCMarathon", ofType: "gpx") {
+        if let nycMarathonPath = Bundle.main.path(forResource: currentMarathon.gpxFileName, ofType: "gpx") {
             let parser = Parser()
             if let (coordinates, stepCoordinates) = parser.parseCoordinatesAndSteps(fromGpxFile: nycMarathonPath) {
                 self.coordinates = coordinates
@@ -135,9 +137,9 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         return renderer
     }
     
-//    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//        print(mapView.region.span)
-//    }
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        print(mapView.region)
+    }
 }
 
 

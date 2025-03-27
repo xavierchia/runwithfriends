@@ -131,7 +131,7 @@ class CommunityViewController: UIViewController {
     // MARK: Setup UI
     private func setupWaitingRoomTitle() {
         let waitingRoomTitle = UILabel()
-        waitingRoomTitle.text = "New York\nMarathon\nin steps"
+        waitingRoomTitle.text = MarathonData.getCurrentMarathon().title
         waitingRoomTitle.font = UIFont.KefirBold(size: 28)
         waitingRoomTitle.numberOfLines = 0
         waitingRoomTitle.textAlignment = .left
