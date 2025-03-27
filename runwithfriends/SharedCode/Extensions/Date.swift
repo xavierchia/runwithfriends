@@ -31,6 +31,13 @@ extension Date {
         return calendar.startOfDay(for: Date())
     }
     
+    public static func currentWeek() -> Int {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        let weekOfYear = calendar.component(.weekOfYear, from: Date())
+        return weekOfYear
+    }
+    
     static func YearAndWeek() -> Int {
         var calendar = Calendar.current
         calendar.firstWeekday = 2

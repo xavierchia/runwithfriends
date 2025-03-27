@@ -72,10 +72,7 @@ class CommunityViewController: UIViewController {
     @objc private func updateView() {
         print("updating view: region, annotations, labels")
         // set map region
-        let centerCoordinate = CLLocationCoordinate2D(latitude: 40.71588675681417, longitude: -74.01905943032843)
-        let span = MKCoordinateSpan(latitudeDelta: 0.3298624346496055, longitudeDelta: 0.2226401886051832)
-        let region = MKCoordinateRegion(center: centerCoordinate, span: span)
-        self.mapView.setRegion(region, animated: false)
+        mapView.setMapRegion()
         
         Task {
             let result = await stepCounter.getStepsForWeek()

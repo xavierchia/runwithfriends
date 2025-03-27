@@ -28,6 +28,11 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         self.mapType = .satelliteFlyover
         self.register(EmojiAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
     }
+    
+    func setMapRegion() {
+        let currentMarathon = MarathonData.getCurrentMarathon()
+        self.setRegion(currentMarathon.region, animated: false)
+    }
 
     func addPath() {
         // get current path coordinates

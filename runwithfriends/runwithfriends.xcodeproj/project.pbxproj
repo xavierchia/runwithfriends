@@ -47,6 +47,7 @@
 		95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A4D56C2B900D6100FF7D38 /* UIApplication.swift */; };
 		95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */; };
 		95AC658B2B0227860084FF15 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AC658A2B0227860084FF15 /* UIView.swift */; };
+		95AD49302D95261800EC03D5 /* Marathon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AD492F2D95261800EC03D5 /* Marathon.swift */; };
 		95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B8E3382BAC6450003AB055 /* ParseGPX.swift */; };
 		95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BC85302B0ECA9E00DD81BB /* NavigationController.swift */; };
 		95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */; };
@@ -141,18 +142,19 @@
 		95A42DF82D93E488001022DE /* SanDiegoMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SanDiegoMarathon.gpx; sourceTree = "<group>"; };
 		95A42DF92D93E488001022DE /* VeniceMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VeniceMarathon.gpx; sourceTree = "<group>"; };
 		95A4D56C2B900D6100FF7D38 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
-		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EmojiAnnotation.swift; path = ../Runs/WaitingRoom/EmojiAnnotation.swift; sourceTree = "<group>"; };
+		95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EmojiAnnotation.swift; path = ../../Runs/WaitingRoom/EmojiAnnotation.swift; sourceTree = "<group>"; };
 		95AC658A2B0227860084FF15 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
-		95B8E3382BAC6450003AB055 /* ParseGPX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseGPX.swift; sourceTree = "<group>"; };
+		95AD492F2D95261800EC03D5 /* Marathon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marathon.swift; sourceTree = "<group>"; };
+		95B8E3382BAC6450003AB055 /* ParseGPX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ParseGPX.swift; path = ../ParseGPX.swift; sourceTree = "<group>"; };
 		95BC85302B0ECA9E00DD81BB /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		95D16BCC2AFCCA9300AF3B89 /* Prefixes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prefixes.swift; sourceTree = "<group>"; };
-		95DBAC502BA18186002037F1 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
+		95DBAC502BA18186002037F1 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommunityViewController.swift; path = ../CommunityViewController.swift; sourceTree = "<group>"; };
 		95F85B4E2B71AAEC005A705A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runwithfriends.entitlements; sourceTree = "<group>"; };
 		A51A557C2D8BB32500D5D818 /* SharedCode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SharedCode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A531425D2D826F3100382837 /* PeaMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeaMapView.swift; sourceTree = "<group>"; };
-		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathSearch.swift; sourceTree = "<group>"; };
-		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounter.swift; sourceTree = "<group>"; };
+		A531425D2D826F3100382837 /* PeaMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PeaMapView.swift; path = ../PeaMapView.swift; sourceTree = "<group>"; };
+		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PathSearch.swift; path = ../PathSearch.swift; sourceTree = "<group>"; };
+		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StepCounter.swift; path = ../StepCounter.swift; sourceTree = "<group>"; };
 		A5E394D82D67FC13009BBC93 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		A5E9171F2D5058470060DD48 /* Pea WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Pea WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -353,6 +355,20 @@
 			path = Marathons;
 			sourceTree = "<group>";
 		};
+		95AD492E2D95260800EC03D5 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				95DBAC502BA18186002037F1 /* CommunityViewController.swift */,
+				A531425D2D826F3100382837 /* PeaMapView.swift */,
+				95AD492F2D95261800EC03D5 /* Marathon.swift */,
+				A531425F2D827C3A00382837 /* PathSearch.swift */,
+				A5A4442E2D5B1CE8003F632A /* StepCounter.swift */,
+				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
+				95B8E3382BAC6450003AB055 /* ParseGPX.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
 		95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,12 +383,7 @@
 		95DBAC4F2BA18175002037F1 /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				95DBAC502BA18186002037F1 /* CommunityViewController.swift */,
-				A531425D2D826F3100382837 /* PeaMapView.swift */,
-				A531425F2D827C3A00382837 /* PathSearch.swift */,
-				A5A4442E2D5B1CE8003F632A /* StepCounter.swift */,
-				95AC65842B021CE50084FF15 /* EmojiAnnotation.swift */,
-				95B8E3382BAC6450003AB055 /* ParseGPX.swift */,
+				95AD492E2D95260800EC03D5 /* Map */,
 				A577BF832D82880D00E3789B /* Groups */,
 			);
 			path = Community;
@@ -562,6 +573,7 @@
 				952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */,
 				951D1A712B326F1000171C62 /* Supabase.swift in Sources */,
 				95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */,
+				95AD49302D95261800EC03D5 /* Marathon.swift in Sources */,
 				9557F7702B35706D002CAE30 /* User.swift in Sources */,
 				95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */,
 				95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */,

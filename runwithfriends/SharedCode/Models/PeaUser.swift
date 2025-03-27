@@ -34,4 +34,12 @@ public struct PeaUser: Codable {
     public var dayDate: Date? {
         day_date?.getDate()
     }
+    
+    public init(user_id: UUID, apple_id: String, search_id: Int, username: String, emoji: String) {
+        self.user_id = user_id
+        self.apple_id = apple_id
+        self.search_id = search_id
+        self.username = username
+        self.emoji = emoji
+    }
 }
