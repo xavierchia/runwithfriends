@@ -87,6 +87,8 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
             
             let stepString = String(format: "%.1f", Double(userWeekSteps)/1000)
             newPin.title = "\(user.username): \(stepString)"
+            let todaySteps = String(format: "%.1f", Double(user.day_steps ?? 0)/1000)
+            newPin.subtitle = "Today: \(todaySteps)"
             newPin.identifier = "other"
             
             // Color pin for current user

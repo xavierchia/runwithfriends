@@ -339,6 +339,8 @@
 				95813B612BB4E76400B12525 /* NYCMarathon.gpx */,
 				95A42DEF2D93E488001022DE /* AthensMarathon.gpx */,
 				95A42DF02D93E488001022DE /* BostonMarathon.gpx */,
+				95A42DEC2D93D7C7001022DE /* BerlinMarathon.gpx */,
+				95A42DF92D93E488001022DE /* VeniceMarathon.gpx */,
 				95A42DF12D93E488001022DE /* CalaisMarathon.gpx */,
 				95A42DF32D93E488001022DE /* FuerteMarathon.gpx */,
 				95A42DF42D93E488001022DE /* GreatOceanRoadMarathon.gpx */,
@@ -346,8 +348,6 @@
 				95A42DF62D93E488001022DE /* OkinawaMarathon.gpx */,
 				95A42DF72D93E488001022DE /* RoundAucklandMarathon.gpx */,
 				95A42DF82D93E488001022DE /* SanDiegoMarathon.gpx */,
-				95A42DF92D93E488001022DE /* VeniceMarathon.gpx */,
-				95A42DEC2D93D7C7001022DE /* BerlinMarathon.gpx */,
 			);
 			path = Marathons;
 			sourceTree = "<group>";
@@ -766,7 +766,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -807,7 +807,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -921,7 +921,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";
@@ -952,7 +952,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";
