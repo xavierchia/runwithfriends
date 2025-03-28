@@ -31,6 +31,7 @@ class UserData {
     private var lastServerSync: Date?
     private let minimumSyncInterval: TimeInterval = 60 * 5
     
+    @MainActor
     init(user: PeaUser) {
         self.user = user
     }

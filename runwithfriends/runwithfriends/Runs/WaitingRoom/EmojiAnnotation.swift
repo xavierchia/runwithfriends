@@ -76,7 +76,7 @@ class EmojiAnnotationView: MKMarkerAnnotationView {
     }
 }
 
-class OriginalUIImage: UIImage {
+class OriginalUIImage: UIImage, @unchecked Sendable {
     convenience init(emojiString: String) {
         let image = emojiString.image(pointSize: 30)
         self.init(cgImage: image.cgImage!)
