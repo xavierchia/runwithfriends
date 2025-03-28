@@ -245,5 +245,10 @@ extension CommunityViewController: PeaMapViewDelegate {
         
         let introViewController = UserIntroViewController(weekSteps: annotation.weekSteps)
         present(introViewController, animated: true)
+        PeaDefaults.shared?.set(true, forKey: UserDefaultsKey.isUserIntroTapped)
+        let annotationTitle = annotation.title ?? ""
+        if annotationTitle.contains(" (Click me!)") {
+            annotation.title = "\(annotationTitle.dropLast(12))"
+        }
     }
 }

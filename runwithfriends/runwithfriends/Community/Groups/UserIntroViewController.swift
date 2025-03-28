@@ -58,9 +58,10 @@ class UserIntroViewController: UIViewController {
             .bold("dreamed of running a marathon ")
             .normal("but just don't have the legs for it?\n\nWith WalkingPeas, ")
             .bold("you can finish a marathon ")
-            .normal("once a week! At only 8k steps a day, ")
-            .bold("it is totally do-able!")
-            .normal("\n\nYou have currently walked \(weekSteps.withCommas()) (\(weekSteps.valueKM)k) steps this week.")
+            .normal("once a week! At only 8k steps a day, it is totally do-able!")
+            .normal("\n\nYou have currently walked ")
+            .bold("\(weekSteps.withCommas()) (\(weekSteps.valueKM)k) ")
+            .normal("steps this week.")
         body.numberOfLines = 0
         body.textAlignment = .left
         body.textColor = .baseText

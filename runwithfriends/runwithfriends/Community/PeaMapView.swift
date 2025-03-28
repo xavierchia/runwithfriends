@@ -63,13 +63,13 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     
     func addStartAndEnd() {
         guard let firstCoordinate = coordinates.first else { return }
-        let startPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "⛩️"))
+        let startPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "⛩️"), identifier: "start")
         startPin.coordinate = firstCoordinate
         self.addAnnotation(startPin)
         
         // add ending flag
         guard let lastCoordinate = coordinates.last else { return }
-        let endPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"))
+        let endPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"), identifier: "end")
         endPin.coordinate = lastCoordinate
         self.addAnnotation(endPin)
     }
@@ -89,28 +89,14 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
                 return
             }
             
-            let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: user.emoji),
+            let identifier = user.user_id == currentUser.user_id ? "user" : "other"
+            let newPin = EmojiAnnotation(username: user.username,
+                                         emojiImage: OriginalUIImage(emojiString: user.emoji),
+                                         identifier: identifier,
                                          daySteps: userDaySteps,
                                          weekSteps: userWeekSteps)
             newPin.coordinate = userCoordinate
-            
-            let stepString = userWeekSteps.valueKM
-            newPin.title = "\(user.username): \(stepString)"
-            let todaySteps = userDaySteps.valueKM
-            newPin.subtitle = "Today: \(todaySteps)"
-            newPin.identifier = "other"
-            
-            // Color pin for current user
-            if user.user_id == currentUser.user_id {
-                newPin.color = .lightAccent
-                newPin.identifier = "user"
-                
-                if let isUserIntroTapped = PeaDefaults.shared?.bool(forKey: UserDefaultsKey.isUserIntroTapped),
-                   isUserIntroTapped == false {
-                    newPin.title = newPin.title?.appending(" (Click me!)")
-                }
-            }
-            
+
             // Special annotations
             if index == sortedUsers.count - 1 && sortedUsers.count > 1 {
                 // Crown for the user in the lead
