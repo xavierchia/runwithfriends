@@ -10,13 +10,17 @@ import MapKit
 
 // MARK: Custom classes to support emoji map annotations
 class EmojiAnnotation: MKPointAnnotation {
+    let weekSteps: Int
+    let daySteps: Int
     var emojiImage: UIImage
     var color: UIColor
-    var identifier: String?
+    var identifier: String = ""
     
-    init(emojiImage: UIImage, color: UIColor = .white) {
+    init(emojiImage: UIImage, color: UIColor = .white, daySteps: Int = 0, weekSteps: Int = 0) {
         self.emojiImage = emojiImage
         self.color = color
+        self.daySteps = daySteps
+        self.weekSteps = weekSteps
     }
 }
 

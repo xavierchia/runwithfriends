@@ -31,6 +31,7 @@ class CommunityViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.peaMapViewDelegate = self
         setupUI()
         
         // Request motion permission when view loads
@@ -229,5 +230,20 @@ class CommunityViewController: UIViewController {
             daySteps.heightAnchor.constraint(equalToConstant: 40),
             daySteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
         ])
+    }
+}
+
+extension CommunityViewController: PeaMapViewDelegate {
+    func annotationViewSelected(_ annotationView: MKAnnotationView) {
+        guard let emojiView = annotationView as? EmojiAnnotationView,
+              let annotation = emojiView.annotation as? EmojiAnnotation,
+              annotation.identifier == "user",
+              let isUserIntroTapped = PeaDefaults.shared?.bool(forKey: UserDefaultsKey.isUserIntroTapped),
+              isUserIntroTapped == false else {
+            return
+        }
+        
+        let introViewController = UserIntroViewController(weekSteps: annotation.weekSteps)
+        present(introViewController, animated: true)
     }
 }

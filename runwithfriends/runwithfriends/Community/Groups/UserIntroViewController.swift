@@ -6,28 +6,40 @@
 //
 
 import UIKit
+import SharedCode
 
-protocol PodIntroDelegate {
-    func joinGroupPressed()
-}
-
-class PodIntroViewController: UIViewController {
+class UserIntroViewController: UIViewController {
     
-    var delegate: PodIntroDelegate?
+    private let weekSteps: Int
     
+    init(weekSteps: Int) {
+        self.weekSteps = weekSteps
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
     private func setupUI() {
+        if let sheet = self.sheetPresentationController {
+            let fraction = UISheetPresentationController.Detent.custom { context in 480 }
+            sheet.detents = [fraction]
+            sheet.prefersGrabberVisible = true
+        }
+        
         view.backgroundColor = .baseBackground
         addTopTitle()
     }
     
     private func addTopTitle() {
         let topTitle = UILabel()
-        topTitle.text = "🌱 Need Inspiration?"
+        topTitle.text = "🌱 Adventure awaits!"
         topTitle.font = UIFont.KefirBold(size: 28)
         topTitle.numberOfLines = 1
         topTitle.textAlignment = .center
@@ -42,14 +54,13 @@ class PodIntroViewController: UIViewController {
         
         let body = UILabel()
         body.attributedText = NSMutableAttributedString()
-            .normal("Feet feeling stiff\nand ")
-            .bold("tight?\n\n")
-            .normal("Need something\nto make it ")
-            .bold("right?\n\n")
-            .normal("Friends by your side\nmake walking ")
-            .bold("light...\n\n")
-            .normal("Especially when you pass\nthem in ")
-            .bold("delight! 🤭")
+            .normal("Have you ever ")
+            .bold("dreamed of running a marathon ")
+            .normal("but just don't have the legs for it?\n\nWith WalkingPeas, ")
+            .bold("you can finish a marathon ")
+            .normal("once a week! At only 8k steps a day, ")
+            .bold("it is totally do-able!")
+            .normal("\n\nYou have currently walked \(weekSteps.withCommas()) (\(weekSteps.valueKM)k) steps this week.")
         body.numberOfLines = 0
         body.textAlignment = .left
         body.textColor = .baseText
@@ -63,7 +74,7 @@ class PodIntroViewController: UIViewController {
         ])
         
         let cta = UIButton()
-        cta.setTitle("Join a Group", for: .normal)
+        cta.setTitle("Keep going 💪", for: .normal)
         cta.titleLabel?.font = UIFont.KefirBold(size: 28)
         cta.backgroundColor = .accent
         cta.titleLabel?.textColor = .cream
@@ -77,18 +88,10 @@ class PodIntroViewController: UIViewController {
             cta.heightAnchor.constraint(equalToConstant: 55)
         ])
         
-        cta.addTarget(self, action: #selector(joinGroupPressed), for: .touchUpInside)
+        cta.addTarget(self, action: #selector(ctaPressed), for: .touchUpInside)
     }
     
-    @objc private func joinGroupPressed() {
-        delegate?.joinGroupPressed()
+    @objc private func ctaPressed() {
+        self.dismiss(animated: true)
     }
 }
-
-/*
- A 2017 meta-analysis published in the International Journal of Behavioral Nutrition and Physical Activity found that people participating in group walking programs increased their walking time by an average of 30% compared to those walking alone.
- 
- 
- 
- A study from the University of Southern Denmark reported that 68% of participants in walking groups found it easier to stick to their walking routine due to accountability and social interaction.
- */

@@ -42,7 +42,7 @@ extension Int {
         }
     }
     
-    var valueKM: String {
+    public var valueKM: String {
         let kmValue: Double = Double(self) / 1000
         return String(format: "%.1f", kmValue)
     }

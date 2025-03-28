@@ -1,10 +1,10 @@
 
 import UIKit
 
-class PodContainerViewController: UIViewController, PodIntroDelegate {
-    private lazy var introViewController: PodIntroViewController = {
-        let vc = PodIntroViewController()
-        vc.delegate = self
+class PodContainerViewController: UIViewController {
+    private lazy var introViewController: UserIntroViewController = {
+        let vc = UserIntroViewController(weekSteps: 0)
+//        vc.delegate = self
         return vc
     }()
     

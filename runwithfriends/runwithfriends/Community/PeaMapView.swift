@@ -9,7 +9,13 @@ import Foundation
 import MapKit
 import SharedCode
 
+protocol PeaMapViewDelegate {
+    func annotationViewSelected(_ annotationView: MKAnnotationView)
+}
+
 class PeaMapView: MKMapView, MKMapViewDelegate {
+    var peaMapViewDelegate: PeaMapViewDelegate?
+
     private var coordinates = [CLLocationCoordinate2D]()
     private var stepCoordinates = [StepCoordinate]()
     private var currentMarathon: Marathon {
@@ -78,16 +84,19 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         
         sortedUsers.enumerated().forEach { index, user in
             guard let userWeekSteps = user.week_steps,
+                  let userDaySteps = user.day_steps,
                   let userCoordinate = PathSearch.findCoordinateForSteps(in: self.stepCoordinates, targetSteps: Double(userWeekSteps)) else {
                 return
             }
             
-            let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: user.emoji))
+            let newPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: user.emoji),
+                                         daySteps: userDaySteps,
+                                         weekSteps: userWeekSteps)
             newPin.coordinate = userCoordinate
             
-            let stepString = String(format: "%.1f", Double(userWeekSteps)/1000)
+            let stepString = userWeekSteps.valueKM
             newPin.title = "\(user.username): \(stepString)"
-            let todaySteps = String(format: "%.1f", Double(user.day_steps ?? 0)/1000)
+            let todaySteps = userDaySteps.valueKM
             newPin.subtitle = "Today: \(todaySteps)"
             newPin.identifier = "other"
             
@@ -95,6 +104,11 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
             if user.user_id == currentUser.user_id {
                 newPin.color = .lightAccent
                 newPin.identifier = "user"
+                
+                if let isUserIntroTapped = PeaDefaults.shared?.bool(forKey: UserDefaultsKey.isUserIntroTapped),
+                   isUserIntroTapped == false {
+                    newPin.title = newPin.title?.appending(" (Click me!)")
+                }
             }
             
             // Special annotations
@@ -139,8 +153,12 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         return renderer
     }
     
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print(mapView.region)
+//    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+//        print(mapView.region)
+//    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        peaMapViewDelegate?.annotationViewSelected(view)
     }
 }
 
