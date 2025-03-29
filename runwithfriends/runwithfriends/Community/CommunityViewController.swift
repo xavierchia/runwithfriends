@@ -111,7 +111,6 @@ class CommunityViewController: UIViewController {
         mapView.addPath()
         
         setupWaitingRoomTitle()
-        setupPodTitle()
         setupUserDistance()
         setupZoomButton()
     }
@@ -144,29 +143,6 @@ class CommunityViewController: UIViewController {
             waitingRoomTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             waitingRoomTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
         ])
-    }
-    
-    private func setupPodTitle() {
-        let podTitle = UIButton()
-        podTitle.setTitle("Pea Pods", for: .normal)
-        podTitle.titleLabel?.font = UIFont.KefirBold(size: 14)
-        podTitle.titleLabel?.textAlignment = .right
-        podTitle.setTitleColor(.cream, for: .normal)
-        podTitle.backgroundColor = .clear
-        view.addSubview(podTitle)
-        podTitle.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            podTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            podTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
-        ])
-        
-        podTitle.addTarget(self, action: #selector(podButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc private func podButtonPressed() {
-        print("poddy")
-        let vc = PodContainerViewController()
-        present(vc, animated: true)
     }
     
     private func setupZoomButton() {

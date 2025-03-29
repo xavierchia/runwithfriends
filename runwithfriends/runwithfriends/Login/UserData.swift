@@ -9,15 +9,6 @@ import CoreLocation
 import Supabase
 import SharedCode
 
-struct Group: Codable {
-    let group_id: UUID
-    let created_at: Date
-    let name: String
-    let emoji: String
-    let members_count: Int
-}
-
-
 class UserData {
     static let defaultUsername = "Pea"
     
@@ -92,12 +83,7 @@ class UserData {
         
         let retrievedUser: PeaUser = try await Supabase.shared.client
             .from("users")
-            .select("""
-                *,
-                group_users (
-                    group_id
-                )
-            """)
+            .select()
             .eq("user_id", value: session.user.id)
             .single()
             .execute()
@@ -124,12 +110,7 @@ class UserData {
         do {
             let retrievedUser: PeaUser = try await supabase.client
                 .from("users")
-                .select("""
-                    *,
-                    group_users(
-                        group_id
-                    )
-                """)
+                .select()
                 .eq("apple_id", value: id)
                 .single()
                 .execute()
@@ -141,15 +122,5 @@ class UserData {
             print("No user found with apple_id: \(id)")
             return nil
         }
-    }
-    
-    static func getGroups() async throws -> [ Group ] {
-        let supabase = Supabase.shared
-        let groups: [Group] = try await supabase.client
-            .from("groups")
-            .select()
-            .execute()
-            .value
-        return groups
     }
 }

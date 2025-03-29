@@ -9,7 +9,7 @@ import UIKit
 
 class GroupsTableViewController: UITableViewController {
     
-    private var groups = [Group]()
+//    private var groups = [Group]()
     private var loadingTimer: Timer?
     private var loadingState = 0
 
@@ -35,14 +35,14 @@ class GroupsTableViewController: UITableViewController {
         startLoadingAnimation()
         Task {
             do {
-                self.groups = try await UserData.getGroups()
+//                self.groups = try await UserData.getGroups()
                 self.stopLoadingAnimation()
                 self.navigationItem.title = "Groups"
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
             }
             catch {
-                self.groups = [Group]()
+//                self.groups = [Group]()
                 stopLoadingAnimation()
                 refreshControl?.endRefreshing()
                 self.navigationItem.title = "Oops! Swipe down"
@@ -99,7 +99,8 @@ class GroupsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups.count
+//        return groups.count
+        return 1
     }
 
     
@@ -108,8 +109,8 @@ class GroupsTableViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        let group = groups[indexPath.row]
-        cell.configureUI(with: group)
+//        let group = groups[indexPath.row]
+//        cell.configureUI(with: group)
         return cell
     }
 }

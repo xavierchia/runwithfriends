@@ -9,15 +9,15 @@ class SubtitleTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
     
-    func configureUI(with group: Group) {
-        baseUI()
-        
-        textLabel?.text = group.name
-        let memberString = group.members_count == 1 ? "member" : "members"
-        detailTextLabel?.text = "\(group.members_count) \(memberString)"
-            
-        accessoryType = .disclosureIndicator
-    }
+//    func configureUI(with group: Group) {
+//        baseUI()
+//        
+//        textLabel?.text = group.name
+//        let memberString = group.members_count == 1 ? "member" : "members"
+//        detailTextLabel?.text = "\(group.members_count) \(memberString)"
+//            
+//        accessoryType = .disclosureIndicator
+//    }
     
     private func baseUI() {
         backgroundColor = .baseBackground
