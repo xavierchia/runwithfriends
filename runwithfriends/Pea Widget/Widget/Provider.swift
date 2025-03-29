@@ -96,7 +96,7 @@ struct Provider: AppIntentTimelineProvider {
     private func getStepsFromKeychain() -> Int {
         do {
             let user = try KeychainManager.shared.getUser()
-            return user.day_steps ?? 0
+            return user.currentDaySteps
         } catch {
             print("unable to get user from keychain")
             return 0
@@ -127,7 +127,7 @@ struct Provider: AppIntentTimelineProvider {
         
         do {
             var user = try KeychainManager.shared.getUser()
-            user.day_steps = steps
+            user.setDaySteps(steps)
             KeychainManager.shared.saveUser(user: user)
         } catch {
             print("unable to update user steps")
@@ -168,7 +168,7 @@ struct Provider: AppIntentTimelineProvider {
         
         let leaderboard = createSandwichLeaderboard(context: context)
         let friends = leaderboard.map { user in
-            return FriendProgress(user_id: user.user_id, steps: user.day_steps ?? 0, username: user.username)
+            return FriendProgress(user_id: user.user_id, steps: user.currentDaySteps, username: user.username)
         }
 
         let entry = SimpleEntry(
@@ -209,20 +209,12 @@ struct Provider: AppIntentTimelineProvider {
         
         do {
             let publicUsers = FriendsManager.shared.getFriends()
-            let publicUsersToday = publicUsers.filter { user in
-                if let dayDate = user.day_date,
-                   dayDate == Date.startOfToday().getDateString() {
-                    return true
-                } else {
-                    return false
-                }
-            }
 
             // Get the current user from keychain
             let currentUser = try KeychainManager.shared.getUser()
             
             // Create a mutable copy of the public users
-            var allUsers = publicUsersToday
+            var allUsers = publicUsers
             
             // Find if current user exists in the public users
             if let index = allUsers.firstIndex(where: { $0.user_id == currentUser.user_id }) {
@@ -234,8 +226,8 @@ struct Provider: AppIntentTimelineProvider {
             }
             
             // Sort users by step count in descending order
-            allUsers.sort {
-                $0.day_steps ?? 0 > $1.day_steps ?? 0
+            allUsers.sort { (user1: PeaUser, user2: PeaUser) in
+                user1.currentDaySteps > user2.currentDaySteps
             }
             
             // Find current user's position in the sorted list

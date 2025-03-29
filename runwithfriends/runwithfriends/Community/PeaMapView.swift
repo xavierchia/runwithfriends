@@ -84,10 +84,10 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         
         sortedUsers.enumerated().forEach { index, user in
             guard let userWeekSteps = user.week_steps,
-                  let userDaySteps = user.day_steps,
                   let userCoordinate = PathSearch.findCoordinateForSteps(in: self.stepCoordinates, targetSteps: Double(userWeekSteps)) else {
                 return
             }
+            let userDaySteps = user.currentDaySteps
             
             let identifier = user.user_id == currentUser.user_id ? "user" : "other"
             let newPin = EmojiAnnotation(username: user.username,
