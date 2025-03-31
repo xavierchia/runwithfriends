@@ -39,6 +39,8 @@ class ProfileViewController: UIViewController {
 //    ]
     private let userData: UserData
     
+    private let navImageView = UIImageView()
+    
     init(with userData: UserData) {
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
@@ -67,7 +69,16 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationItem.title = userData.user.username
+        
+        let profileImageTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        navImageView.isUserInteractionEnabled = true
+        navImageView.addGestureRecognizer(profileImageTapGestureRecognizer)
+        self.navigationController?.navigationBar.setImageView(navImageView)
+        
+        let usernameTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(usernameTapped))
+        let navigationBar = navigationController?.navigationBar
+        navigationBar?.isUserInteractionEnabled = true
+        navigationBar?.addGestureRecognizer(usernameTapGestureRecognizer)
     }
     
     private func setupSettingsTableView() {
@@ -86,8 +97,17 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupProfile(with user: PeaUser) {
-//        let currentPea = Progression.getPea(for: userData.getTotalDistance())
-//        self.navigationItem.title = currentPea.info.name
+        self.navigationItem.title = userData.user.username
+        let emoji = userData.user.emoji
+        navImageView.image = emoji.image(pointSize: 20)
+    }
+    
+    @objc func usernameTapped() {
+        print("username tapped")
+    }
+    
+    @objc func handleProfileImageTapped() {
+        print("profile image tapped ")
     }
 }
 
