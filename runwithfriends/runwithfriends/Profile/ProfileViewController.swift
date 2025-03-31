@@ -67,7 +67,7 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationItem.title = "Loading..."
+        self.navigationItem.title = userData.user.username
     }
     
     private func setupSettingsTableView() {

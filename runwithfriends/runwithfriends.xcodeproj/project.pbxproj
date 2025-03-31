@@ -181,7 +181,7 @@
 		A51A557D2D8BB32500D5D818 /* SharedCode */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A51A55932D8BB32500D5D818 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SharedCode; sourceTree = "<group>"; };
 		A51A558B2D8BB32500D5D818 /* SharedCodeTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SharedCodeTests; sourceTree = "<group>"; };
 		A575E5382D939E030035ED9C /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
-		A577BF832D82880D00E3789B /* Groups */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Groups; sourceTree = "<group>"; };
+		A577BF832D82880D00E3789B /* GroupsArchived */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GroupsArchived; sourceTree = "<group>"; };
 		A5E917242D5058470060DD48 /* Pea Widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A5E917382D5058480060DD48 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Pea Widget"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -381,7 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				95AD492E2D95260800EC03D5 /* Map */,
-				A577BF832D82880D00E3789B /* Groups */,
+				A577BF832D82880D00E3789B /* GroupsArchived */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -417,7 +417,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				A575E5382D939E030035ED9C /* Fonts */,
-				A577BF832D82880D00E3789B /* Groups */,
+				A577BF832D82880D00E3789B /* GroupsArchived */,
 			);
 			name = runwithfriends;
 			packageProductDependencies = (

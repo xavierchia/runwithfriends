@@ -25,14 +25,8 @@ class TabViewController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var selectedViewController: UIViewController? {
-        didSet {
-            setTabColor()
-        }
-    }
-    
     private func setupTabs() {
-        UITabBar.appearance().unselectedItemTintColor = .gray
+        setDark()
 
         let communityVC = CommunityViewController(userData: userData)
         communityVC.tabBarItem.title = "Community"
@@ -49,34 +43,20 @@ class TabViewController: UITabBarController {
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem.title = "Profile"
         profileNav.tabBarItem.image = UIImage(systemName: "person")
+        profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
         
-        setViewControllers([communityVC], animated: false)
+        setViewControllers([communityVC, profileNav], animated: false)
         self.selectedIndex = 0
         // for testing
 //        self.selectedIndex = 1
-        
-        setTabColor()
-    }
-    
-    private func setTabColor() {
-        if selectedViewController is CommunityViewController {
-            setDark()
-        } else {
-            setLight()
-        }
     }
     
     private func setDark() {
+        UITabBar.appearance().unselectedItemTintColor = .gray
+
         self.tabBar.backgroundColor = .black
         self.tabBar.barTintColor = .black
-        self.tabBar.tintColor = .baseBackground
-        self.tabBar.isTranslucent = true
-    }
-    
-    private func setLight() {
-        self.tabBar.backgroundColor = .baseBackground
-        self.tabBar.barTintColor = .baseBackground
-        self.tabBar.tintColor = .black
-        self.tabBar.isTranslucent = true
+        self.tabBar.tintColor = .cream
+        self.tabBar.isTranslucent = false
     }
 }
