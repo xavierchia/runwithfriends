@@ -43,23 +43,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                try await Supabase.shared.client.auth.signOut()
 //                shared.set(true, forKey: UserDefaultsKey.forceSignOutVersion)
 //            }
-            
-            /// For testing without internet
-//            let peaUser = PeaUser(user_id: UUID(),
-//                               apple_id: "apple_id",
-//                               search_id: 1,
-//                               username: "xavierrr",
-//                               emoji: "emoji"
-//                               )
-//            
-//            let userData = UserData(user: peaUser)
-//            window.rootViewController = TabViewController(with: userData)
-//            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
-//            return
                         
             do {
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)
+                print("xxavier user first sign in \(user.first_login)")
                 print("User signed in, routing to TabViewConroller")
                 DispatchQueue.main.async {
                     window.rootViewController = TabViewController(with: userData)

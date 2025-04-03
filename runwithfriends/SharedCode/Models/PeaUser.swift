@@ -13,6 +13,7 @@ public struct PeaUser: Codable {
     public let search_id: Int
     public let username: String
     public let emoji: String
+    public let first_login: Date
     public var week_steps: Int?
     private var day_steps: Int?
     public var week_date: String?
@@ -37,13 +38,5 @@ public struct PeaUser: Codable {
     
     mutating public func setDaySteps(_ steps: Int) {
         self.day_steps = steps
-    }
-    
-    public init(user_id: UUID, apple_id: String, search_id: Int, username: String, emoji: String) {
-        self.user_id = user_id
-        self.apple_id = apple_id
-        self.search_id = search_id
-        self.username = username
-        self.emoji = emoji
     }
 }
