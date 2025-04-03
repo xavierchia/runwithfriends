@@ -28,6 +28,36 @@ class StepCounter {
     
     private init() {}
     
+    func getCumulativeStepsFromHealthKit(from startDate: Date, to endDate: Date) async -> Int {
+        guard HKHealthStore.isHealthDataAvailable(),
+              let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
+            return 0
+        }
+        
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        
+        return await withCheckedContinuation { continuation in
+            let query = HKStatisticsQuery(
+                quantityType: stepType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum
+            ) { _, result, error in
+                guard let result = result, let sum = result.sumQuantity() else {
+                    if let error = error {
+                        print("HealthKit query error: \(error.localizedDescription)")
+                    }
+                    continuation.resume(returning: 0)
+                    return
+                }
+                
+                let steps = sum.doubleValue(for: HKUnit.count())
+                continuation.resume(returning: Int(steps))
+            }
+            
+            healthStore.execute(query)
+        }
+    }
+    
     func getStepsForWeek() async -> [DailySteps] {
         // Request HealthKit permission first
         let healthKitAuthorized = await requestHealthKitPermission()
