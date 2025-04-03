@@ -36,9 +36,9 @@ extension Int {
     
     public var metricShort: String {
         if self > 1000 {
-            return "km"
+            return "k"
         } else {
-            return "m"
+            return ""
         }
     }
     

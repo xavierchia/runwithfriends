@@ -126,13 +126,13 @@ enum Landmark: CaseIterable, Milestone {
     var info: (distance: Int, name: String, emoji: String, shortDescription: String) {
         switch self {
         case .EiffelTower:
-            return (471, "Eiffel Tower", "🗼", "the Eiffel Tower in Paris")
+            return (471, "Eiffel Tower Height", "🗼", "the Eiffel Tower in Paris")
         case .BrooklynBridge:
             return (2620, "Brooklyn Bridge", "🛤️", "the Brooklyn Bridge in New York City")
         case .GoldenGateBridge:
             return (3910, "Golden Gate Bridge", "🌉", "the Golden Gate Bridge in San Francisco")
         case .MountFuji:
-            return (5394, "Mount Fuji", "🗻", "Mount Fuji in Japan")
+            return (5394, "Mount Fuji Height", "🗻", "Mount Fuji in Japan")
         case .HydePark:
             return (10114, "Hyde Park", "🦢", "around Hyde Park in London")
         case .CentralPark:

@@ -13,11 +13,11 @@ public struct PeaUser: Codable {
     public let search_id: Int
     public let username: String
     public let emoji: String
-    public let first_login: Date
     public var week_steps: Int?
-    private var day_steps: Int?
     public var week_date: String?
     public var day_date: String?
+    private let first_login: String
+    private var day_steps: Int?
     
     public var weekDate: Date? {
         week_date?.getDate()
@@ -25,6 +25,10 @@ public struct PeaUser: Codable {
     
     public var dayDate: Date? {
         day_date?.getDate()
+    }
+    
+    public var firstLoginDate: Date {
+        first_login.getDate() ?? Date.startOfToday()
     }
     
     public var currentDaySteps: Int {

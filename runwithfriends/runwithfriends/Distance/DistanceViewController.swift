@@ -42,14 +42,14 @@ class DistanceViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Task { @MainActor in
-            let lifetimeStepsToBeginningOfToday = await StepCounter.shared.getCumulativeStepsFromHealthKit(from: userData.user.first_login, to: Date.startOfToday())
+            let lifetimeStepsToBeginningOfToday = await StepCounter.shared.getCumulativeStepsFromHealthKit(from: userData.user.firstLoginDate, to: Date())
             let stepsToday = userData.user.currentDaySteps
             self.distance = lifetimeStepsToBeginningOfToday + stepsToday
             
             // testing
-//            self.distance = 10
+            self.distance = 0
             
-            self.navigationItem.title "Milestones"
+            self.navigationItem.title = "Milestones"
             distanceTableRows = Progression.getDistanceTableRows(for: distance)
             distanceTableView.reloadData()
         }
@@ -107,7 +107,6 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             let color: UIColor = distance == 0 ? .pumpkin : .baseText
             let textString = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
             cell.detailTextLabel?.attributedText = textString.attributedStringWithColorAndBold([textString], color: color, boldWords: [], size: fontSize)
-            cell.textLabel?.attributedText = cellInfo.name.attributedStringWithColorAndBold([], color: .baseText, boldWords: [], size: fontSize)
         } else {
             cell.detailTextLabel?.attributedText = cellInfo.distance == 0
             ? NSAttributedString(string: "-")
@@ -166,7 +165,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
                 secondLabel.text = "Start walking to cross your first milestone."
                 return
             } else {
-                let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"
+                let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort) steps"
                 let distanceLeftString = "Finish \(nextLandmark.info.name) in \(distanceLeftvalue)"
                 let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([distanceLeftvalue], color: .pumpkin, boldWords: [distanceLeftString])
                 firstLabel.attributedText = distanceLeftAttributedString
