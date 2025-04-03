@@ -126,33 +126,33 @@ enum Landmark: CaseIterable, Milestone {
     var info: (distance: Int, name: String, emoji: String, shortDescription: String) {
         switch self {
         case .EiffelTower:
-            return (330, "Eiffel Tower", "🗼", "the Eiffel Tower in Paris")
+            return (471, "Eiffel Tower", "🗼", "the Eiffel Tower in Paris")
         case .BrooklynBridge:
-            return (1834, "Brooklyn Bridge", "🛤️", "the Brooklyn Bridge in New York City")
+            return (2620, "Brooklyn Bridge", "🛤️", "the Brooklyn Bridge in New York City")
         case .GoldenGateBridge:
-            return (2737, "Golden Gate Bridge", "🌉", "the Golden Gate Bridge in San Francisco")
+            return (3910, "Golden Gate Bridge", "🌉", "the Golden Gate Bridge in San Francisco")
         case .MountFuji:
-            return (3776, "Mount Fuji", "🗻", "Mount Fuji in Japan")
+            return (5394, "Mount Fuji", "🗻", "Mount Fuji in Japan")
         case .HydePark:
-            return (7080, "Hyde Park", "🦢", "around Hyde Park in London")
+            return (10114, "Hyde Park", "🦢", "around Hyde Park in London")
         case .CentralPark:
-            return (9817, "Central Park", "🥯", "Central Park in New York City")
+            return (14024, "Central Park", "🥯", "Central Park in New York City")
         case .LakeGarda:
-            return (16700, "Lake Garda", "⛵️", "Lake Garda in Italy")
+            return (23857, "Lake Garda", "⛵️", "Lake Garda in Italy")
         case .Manhattan:
-            return (21100, "Manhattan", "🍕", "Manhattan in New York City")
+            return (30143, "Manhattan", "🍕", "Manhattan in New York City")
         case .CERN:
-            return (27000, "CERN", "🧀", "CERN in Switzerland")
+            return (38571, "CERN", "🧀", "CERN in Switzerland")
         case .EnglishChannel:
-            return (34000, "English Channel", "🫖", "the English Channel")
+            return (48571, "English Channel", "🫖", "the English Channel")
         case .NYCMarathon:
-            return (42000, "New York City Marathon", "🗽", "the New York City Marathon")
+            return (60000, "New York City Marathon", "🗽", "the New York City Marathon")
         case .Badwater:
-            return (50000, "Badwater Capefear", "🧨", "Badwater Capefear in North Carolina")
+            return (71429, "Badwater Capefear", "🧨", "Badwater Capefear in North Carolina")
         case .CinqueTerre:
-            return (65000, "Cinque Terre", "🏖️", "the Cinque Terra coast in Italy")
+            return (92857, "Cinque Terre", "🏖️", "the Cinque Terra coast in Italy")
         case .JavelinaJundred:
-            return (100000, "Javelina Jundred", "💯", "Javelina Jundred in Arizona")
+            return (142857, "Javelina Jundred", "💯", "Javelina Jundred in Arizona")
         }
     }
 }

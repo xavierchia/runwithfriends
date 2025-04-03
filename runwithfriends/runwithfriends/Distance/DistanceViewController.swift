@@ -6,13 +6,12 @@
 //
 
 import UIKit
+import SharedCode
 
 class DistanceViewController: UIViewController {
     
     private let userData: UserData
-    private var distance: Int {
-        return 10
-    }
+    private var distance = 0
     
     // Distance report
     enum HeaderState {
@@ -27,7 +26,6 @@ class DistanceViewController: UIViewController {
     init(with userData: UserData) {
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
-        self.distanceTableRows = Progression.getDistanceTableRows(for: distance)
     }
     
     required init?(coder: NSCoder) {
@@ -43,9 +41,18 @@ class DistanceViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = distance == 0 ? "Milestones" : "Ran: \(distance.valueShort)\(distance.metricShort)"
-        distanceTableRows = Progression.getDistanceTableRows(for: distance)
-        distanceTableView.reloadData()
+        Task { @MainActor in
+            let lifetimeStepsToBeginningOfToday = await StepCounter.shared.getCumulativeStepsFromHealthKit(from: userData.user.first_login, to: Date.startOfToday())
+            let stepsToday = userData.user.currentDaySteps
+            self.distance = lifetimeStepsToBeginningOfToday + stepsToday
+            
+            // testing
+//            self.distance = 10
+            
+            self.navigationItem.title "Milestones"
+            distanceTableRows = Progression.getDistanceTableRows(for: distance)
+            distanceTableView.reloadData()
+        }
     }
     
     private func setupNavigationController() {
@@ -86,7 +93,7 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.detailTextLabel?.textColor = .baseText
         
         if indexPath.row == 0 {
-            cell.textLabel?.text = "Run to see more"
+            cell.textLabel?.text = "Walk to see more"
             cell.textLabel?.textColor = .gray
             cell.imageView?.image = "🗺️".image(pointSize: 20).withHorizontallyFlippedOrientation()
             return cell
@@ -155,8 +162,8 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             header.addSubview(secondLabel)
             
             if distance == 0 {
-                firstLabel.text = "Each time you run it adds up."
-                secondLabel.text = "Start running to cross your first milestone."
+                firstLabel.text = "Each time you walk it adds up."
+                secondLabel.text = "Start walking to cross your first milestone."
                 return
             } else {
                 let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort)"

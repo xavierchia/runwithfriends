@@ -45,7 +45,7 @@ class TabViewController: UITabBarController {
         profileNav.tabBarItem.image = UIImage(systemName: "person")
         profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
         
-        setViewControllers([communityVC, profileNav], animated: false)
+        setViewControllers([communityVC, distanceNav, profileNav], animated: false)
         self.selectedIndex = 0
         // for testing
 //        self.selectedIndex = 1
