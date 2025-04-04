@@ -47,8 +47,8 @@ class DistanceViewController: UIViewController {
             self.distance = lifetimeStepsToBeginningOfToday + stepsToday
             
             // testing
-            self.distance = 0
-            
+//            self.distance = 0
+                        
             self.navigationItem.title = "Milestones"
             distanceTableRows = Progression.getDistanceTableRows(for: distance)
             distanceTableView.reloadData()
@@ -88,10 +88,11 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .baseText
-        cell.textLabel?.font = UIFont.Kefir(size: fontSize)
-        cell.detailTextLabel?.font = UIFont.Kefir(size: fontSize)
+        cell.textLabel?.font = UIFont.Quicksand(size: fontSize)
+        cell.detailTextLabel?.font = UIFont.Quicksand(size: fontSize)
         cell.detailTextLabel?.textColor = .baseText
         
+        // First cell shows a walk to see more prompt
         if indexPath.row == 0 {
             cell.textLabel?.text = "Walk to see more"
             cell.textLabel?.textColor = .gray
@@ -104,13 +105,12 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.image = cellInfo.emoji.image(pointSize: 20)
 
         if indexPath.row == 1 {
-            let color: UIColor = distance == 0 ? .pumpkin : .baseText
             let textString = "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)"
-            cell.detailTextLabel?.attributedText = textString.attributedStringWithColorAndBold([textString], color: color, boldWords: [], size: fontSize)
+            cell.detailTextLabel?.text = textString
+            cell.textLabel?.font = UIFont.QuicksandMedium(size: fontSize)
+            cell.detailTextLabel?.font = UIFont.QuicksandMedium(size: fontSize)
         } else {
-            cell.detailTextLabel?.attributedText = cellInfo.distance == 0
-            ? NSAttributedString(string: "-")
-            : "\(cellInfo.distance.valueShort)\(cellInfo.distance.metricShort)".strikeThrough()
+            cell.detailTextLabel?.text = cellInfo.distance == 0 ? "-" : "✅"
         }
         return cell
     }
@@ -122,9 +122,8 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
         let header = UIView()
         let tableWidth = view.frame.width - 32
         
-        let nextLandmark = progressData.nextLandmark
+        let nextLandmark = progressData.nextMilestone
         let progressPercentage = progressData.progress
-        let distanceLeft = progressData.distanceLeft
         
         addProgressView()
         addDistanceLabels()
@@ -156,32 +155,19 @@ extension DistanceViewController: UITableViewDelegate, UITableViewDataSource {
             firstLabel.frame = CGRect(x: 0, y: 60, width: tableWidth, height: 30)
             header.addSubview(firstLabel)
             
-            let secondLabel = UILabel().setHeaderButton()
-            secondLabel.frame = CGRect(x: 0, y: 90, width: tableWidth, height: 60)
-            header.addSubview(secondLabel)
-            
-            if distance == 0 {
-                firstLabel.text = "Each time you walk it adds up."
-                secondLabel.text = "Start walking to cross your first milestone."
-                return
-            } else {
-                let distanceLeftvalue = "\(distanceLeft.valueShort)\(distanceLeft.metricShort) steps"
-                let distanceLeftString = "Finish \(nextLandmark.info.name) in \(distanceLeftvalue)"
-                let distanceLeftAttributedString = distanceLeftString.attributedStringWithColorAndBold([distanceLeftvalue], color: .pumpkin, boldWords: [distanceLeftString])
-                firstLabel.attributedText = distanceLeftAttributedString
-            }
+            firstLabel.text = "Lifetime steps: \(distance.valueShort)\(distance.metricShort)"
         }
     }
         
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return distance == 0 ? 165 : 105
+        return 105
     }
 }
 
 private extension UILabel {
     func setHeaderButton() -> UILabel {
         self.textColor = .baseText
-        self.font = UIFont.KefirLight(size: 20)
+        self.font = UIFont.QuicksandMedium(size: 20)
         self.textAlignment = .left
         self.lineBreakMode = .byWordWrapping
         self.numberOfLines = 0

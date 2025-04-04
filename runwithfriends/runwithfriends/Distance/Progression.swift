@@ -13,101 +13,43 @@ struct Progression {
     
     struct ProgressData {
         let progress: Float
-        let distanceLeft: Int
-        let currentLandmark: Milestone
-        let nextLandmark: Milestone
+        let nextMilestone: Milestone
     }
     
     static func getProgressData(for distance: Int) -> ProgressData {
-        let distanceTableRows = getLandmarkTable(for: distance)
+        var distanceTableRows = getDistanceTableRows(for: distance)
         
-        let nextLandmark = distanceTableRows.first!
-        let currentLandmark = distanceTableRows[safe: 1] ?? Pea.CasualPea
-        
-        let landmarkDifference = nextLandmark.info.distance - currentLandmark.info.distance
-        let differenceCovered = distance - currentLandmark.info.distance
-        let distanceLeft = nextLandmark.info.distance - distance
-        let progressPercentage = Float(differenceCovered) / Float(landmarkDifference)
-        
-        return ProgressData(progress: progressPercentage, distanceLeft: distanceLeft, currentLandmark: currentLandmark, nextLandmark: nextLandmark)
+        let nextMilestone = distanceTableRows.removeFirst()
+        let milestoneDistanceSoFar = distanceTableRows.reduce(0) {$0 + $1.info.distance}
+        let nextMilestoneCovered = distance - milestoneDistanceSoFar
+        let progress = Float(nextMilestoneCovered) / Float(nextMilestone.info.distance)
+        return ProgressData(progress: progress, nextMilestone: nextMilestone)
     }
     
-    static private func getLandmarkTable(for distance: Int) -> [Milestone] {
-        var landmarkTable = [Milestone]()
-        
-        for landmark in Landmark.allCases {
-            if landmark.info.distance <= distance {
-                landmarkTable.append(landmark)
-            } else {
-                landmarkTable.append(landmark)
-                break
-            }
-        }
-        
-        landmarkTable.sort { lhs, rhs in
-            lhs.info.distance > rhs.info.distance
-        }
-        
-        return landmarkTable
-    }
-    
-    // Includes Peas and Milestones
     static func getDistanceTableRows(for distance: Int) -> [Milestone] {
-        var distanceTableRows = [Milestone]()
+        var milestoneTable = [Milestone]()
+        var currentDistance = distance
         
-        for landmark in Landmark.allCases {
-            if landmark.info.distance <= distance {
-                distanceTableRows.append(landmark)
+        for milestone in Milestone.allCases {
+            if milestone.info.distance <= currentDistance {
+                milestoneTable.append(milestone)
+                currentDistance -= milestone.info.distance
             } else {
-                distanceTableRows.append(landmark)
+                milestoneTable.append(milestone)
                 break
             }
         }
         
-        for pea in Pea.allCases {
-            if pea.info.distance <= distance {
-                distanceTableRows.append(pea)
-            }
-        }
-        
-        distanceTableRows.sort { lhs, rhs in
+        milestoneTable.sort { lhs, rhs in
             lhs.info.distance > rhs.info.distance
         }
         
-        return distanceTableRows
-    }
-    
-    static func getPea(for distance: Int) -> Pea {
-        var currentPea = Pea.CasualPea
-        for pea in Pea.allCases {
-            if distance >= pea.info.distance {
-                currentPea = pea
-            }
-        }
-        
-        return currentPea
+        return milestoneTable
     }
 }
 
-protocol Milestone {
-    var info: (distance: Int, name: String, emoji: String, shortDescription: String) { get }
-}
-
-enum Pea: CaseIterable, Milestone {
+enum Milestone: CaseIterable {
     case CasualPea
-    case ProgressivePea
-    
-    var info: (distance: Int, name: String, emoji: String, shortDescription: String) {
-        switch self {
-        case .CasualPea:
-            return (0, "Casual Pea", "🫛", "")
-        case .ProgressivePea:
-            return (5000, "Progressive Pea", "🫛", "")
-        }
-    }
-}
-
-enum Landmark: CaseIterable, Milestone {
     case EiffelTower
     case BrooklynBridge
     case GoldenGateBridge
@@ -118,13 +60,14 @@ enum Landmark: CaseIterable, Milestone {
     case Manhattan
     case CERN
     case EnglishChannel
-    case NYCMarathon
     case Badwater
     case CinqueTerre
     case JavelinaJundred
     
     var info: (distance: Int, name: String, emoji: String, shortDescription: String) {
         switch self {
+        case .CasualPea:
+            return (0, "Casual Pea", "🫛", "")
         case .EiffelTower:
             return (471, "Eiffel Tower Height", "🗼", "the Eiffel Tower in Paris")
         case .BrooklynBridge:
@@ -145,8 +88,6 @@ enum Landmark: CaseIterable, Milestone {
             return (38571, "CERN", "🧀", "CERN in Switzerland")
         case .EnglishChannel:
             return (48571, "English Channel", "🫖", "the English Channel")
-        case .NYCMarathon:
-            return (60000, "New York City Marathon", "🗽", "the New York City Marathon")
         case .Badwater:
             return (71429, "Badwater Capefear", "🧨", "Badwater Capefear in North Carolina")
         case .CinqueTerre:
