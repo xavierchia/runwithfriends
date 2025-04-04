@@ -766,7 +766,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -781,6 +781,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -807,7 +808,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -822,6 +823,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -921,7 +923,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";
@@ -952,7 +954,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";
