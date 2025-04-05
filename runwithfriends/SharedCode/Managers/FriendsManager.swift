@@ -26,7 +26,8 @@ public struct FriendsManager {
             defaults.set(data, forKey: UserDefaultsKey.friendsProgress)
             defaults.synchronize()
             
-            if SharedCodeUtilities.isWidget {
+            if !SharedCodeUtilities.isWidget {
+                print("reloading widgets")
                 WidgetCenter.shared.reloadAllTimelines()
             }
         } catch {
