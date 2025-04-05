@@ -274,7 +274,7 @@
 				9536C1702AF9AED800263871 /* App */,
 				9536C1712AF9AEE700263871 /* Login */,
 				95DBAC4F2BA18175002037F1 /* Community */,
-				955151222B915811001AD26B /* Distance */,
+				955151222B915811001AD26B /* DistanceArchived */,
 				95457DFA2AF8C2F300E4414C /* Profile */,
 				95659B8C2AEF1F9B008D7BA8 /* Extensions */,
 				95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */,
@@ -316,13 +316,13 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		955151222B915811001AD26B /* Distance */ = {
+		955151222B915811001AD26B /* DistanceArchived */ = {
 			isa = PBXGroup;
 			children = (
 				955151232B91583A001AD26B /* DistanceViewController.swift */,
 				257EC7A42B882FFE000759A8 /* Progression.swift */,
 			);
-			path = Distance;
+			path = DistanceArchived;
 			sourceTree = "<group>";
 		};
 		95659B8C2AEF1F9B008D7BA8 /* Extensions */ = {
