@@ -60,7 +60,13 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupProfile(with: userData.user)
-        settingsTableView.reloadData()
+        self.navigationController?.navigationBar.setImageView(navImageView)
+        settingsTableView.reloadData()        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navImageView.removeFromSuperview()
     }
     
     // MARK: SetupUI
@@ -73,7 +79,6 @@ class ProfileViewController: UIViewController {
         let profileImageTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
         navImageView.isUserInteractionEnabled = true
         navImageView.addGestureRecognizer(profileImageTapGestureRecognizer)
-        self.navigationController?.navigationBar.setImageView(navImageView)
         
         let usernameTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(usernameTapped))
         let navigationBar = navigationController?.navigationBar
@@ -130,5 +135,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.textColor = .baseText
         cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let followVC = FollowViewController()
+        navigationController?.pushViewController(followVC, animated: true)
     }
 }

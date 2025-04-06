@@ -27,8 +27,6 @@ extension UINavigationBar {
     
     func setImageView(_ imageView: UIImageView) {
         self.addSubview(imageView)
-//        imageView.layer.cornerRadius = Const.ImageSizeForLargeState / 2
-//        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -Const.ImageRightMargin),
