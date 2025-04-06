@@ -50,7 +50,7 @@ class Supabase {
                 let session = try KeychainManager.shared.getSession()
                 print(session)
                 let newSession = try await client.auth.refreshSession(refreshToken: session.refreshToken)
-                try KeychainManager.shared.saveSession(session: newSession)
+                KeychainManager.shared.saveSession(session: newSession)
             } catch let setSessionError {
                 print("Failed to set session... \(setSessionError)")
             }

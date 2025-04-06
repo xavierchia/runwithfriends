@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            shared.bool(forKey: UserDefaultsKey.appFirstInstallVersion) == false {
             shared.set(true, forKey: UserDefaultsKey.appFirstInstallVersion)
             shared.set(Date(), forKey: UserDefaultsKey.lastUpdateTime)
-            shared.set(Date(), forKey: UserDefaultsKey.lastNetworkUpdate)
         }
         
         print("did finish launching")

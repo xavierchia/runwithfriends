@@ -188,18 +188,14 @@ struct Provider: AppIntentTimelineProvider {
             return
         }
                 
-        if let lastNetworkUpdate = sharedDefaults?.object(forKey: UserDefaultsKey.lastNetworkUpdate) as? Date,
-           lastNetworkUpdate.timeIntervalSinceNow < -20 {
-            await Supabase.shared.setSessionIfNeeded()
-            if Provider.networkUpdateCount % 2 == 0 {
-                let _: () = await Supabase.shared.upsert(steps: steps)
-            } else {
-                let publicUsers = await Supabase.shared.getPublicUsers()
-                FriendsManager.shared.updateFriends(publicUsers)
-            }
-            sharedDefaults?.set(Date(), forKey: UserDefaultsKey.lastNetworkUpdate)
-            Provider.networkUpdateCount += 1
+        await Supabase.shared.setSessionIfNeeded()
+        if Provider.networkUpdateCount % 2 == 0 {
+            let _: () = await Supabase.shared.upsert(steps: steps)
+        } else {
+            let publicUsers = await Supabase.shared.getPublicUsers()
+            FriendsManager.shared.updateFriends(publicUsers)
         }
+        Provider.networkUpdateCount += 1
     }
         
     private func createSandwichLeaderboard(context: Context) -> [PeaUser] {
