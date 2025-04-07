@@ -152,10 +152,10 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         let data = await getCurrentData()
         
-        await doNetworking(context: context, steps: data.steps)
-                        
         updateUserSteps(steps: data.steps)
         
+        await doNetworking(context: context, steps: data.steps)
+                        
         let leaderboard = createSandwichLeaderboard(context: context)
         let friends = leaderboard.map { user in
             return FriendProgress(user_id: user.user_id, steps: user.currentDaySteps, username: user.username)
