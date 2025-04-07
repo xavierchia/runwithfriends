@@ -96,7 +96,8 @@ struct Provider: AppIntentTimelineProvider {
     private func getStepsFromKeychain() -> Int {
         do {
             let user = try KeychainManager.shared.getUser()
-            if user.dayDate == Date.startOfToday().getDateString() {
+            if let currentDate = user.dayDate,
+            currentDate == Date.startOfToday() {
                 return user.currentDaySteps
             } else {
                 return 0
