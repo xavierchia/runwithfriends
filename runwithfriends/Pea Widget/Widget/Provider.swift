@@ -108,23 +108,10 @@ struct Provider: AppIntentTimelineProvider {
         var steps = getStepsFromKeychain()
         steps = max(allSteps, steps)
         
-        if let lastUpdate = sharedDefaults?.object(forKey: UserDefaultsKey.lastUpdateTime) as? Date {
-            let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
-            if isNewDay {
-                steps = 0
-            }
-        }
-
-        
         return (steps, allError)
     }
     
     private func updateUserSteps(steps: Int) {
-        guard let lastUpdate = sharedDefaults?.object(forKey: UserDefaultsKey.lastUpdateTime) as? Date,
-            lastUpdate.timeIntervalSinceNow < -20 else {
-            return
-        }
-        
         do {
             var user = try KeychainManager.shared.getUser()
             user.setDaySteps(steps)
@@ -164,7 +151,6 @@ struct Provider: AppIntentTimelineProvider {
         await doNetworking(context: context, steps: data.steps)
                         
         updateUserSteps(steps: data.steps)
-        sharedDefaults?.set(Date(), forKey: "lastUpdateTime")
         
         let leaderboard = createSandwichLeaderboard(context: context)
         let friends = leaderboard.map { user in

@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let shared = AppDelegate.appUserDefaults,
            shared.bool(forKey: UserDefaultsKey.appFirstInstallVersion) == false {
             shared.set(true, forKey: UserDefaultsKey.appFirstInstallVersion)
-            shared.set(Date(), forKey: UserDefaultsKey.lastUpdateTime)
         }
         
         print("did finish launching")

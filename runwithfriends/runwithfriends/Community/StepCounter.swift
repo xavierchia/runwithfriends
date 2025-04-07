@@ -251,13 +251,6 @@ class StepCounter {
     
     private func updateWidgetData(steps: Int, error: String) {
         guard let shared = AppDelegate.appUserDefaults else { return }
-        
-        if let lastUpdate = shared.object(forKey: UserDefaultsKey.lastUpdateTime) as? Date {
-            let isNewDay = !Calendar.current.isDate(lastUpdate, inSameDayAs: Date())
-            if isNewDay {
-                shared.set(Date(), forKey: UserDefaultsKey.lastUpdateTime)
-            }
-        }
 
         shared.synchronize()
         WidgetCenter.shared.reloadAllTimelines()
