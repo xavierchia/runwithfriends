@@ -96,7 +96,11 @@ struct Provider: AppIntentTimelineProvider {
     private func getStepsFromKeychain() -> Int {
         do {
             let user = try KeychainManager.shared.getUser()
-            return user.currentDaySteps
+            if user.dayDate == Date.startOfToday().getDateString() {
+                return user.currentDaySteps
+            } else {
+                return 0
+            }
         } catch {
             print("unable to get user from keychain")
             return 0
@@ -114,7 +118,7 @@ struct Provider: AppIntentTimelineProvider {
     private func updateUserSteps(steps: Int) {
         do {
             var user = try KeychainManager.shared.getUser()
-            user.setDaySteps(steps)
+            user.setDayStepsAndDate(steps)
             KeychainManager.shared.saveUser(user: user)
         } catch {
             print("unable to update user steps")

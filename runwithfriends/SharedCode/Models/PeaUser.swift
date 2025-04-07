@@ -40,7 +40,8 @@ public struct PeaUser: Codable {
         }
     }
     
-    mutating public func setDaySteps(_ steps: Int) {
+    mutating public func setDayStepsAndDate(_ steps: Int) {
         self.day_steps = steps
+        self.day_date = Date.startOfToday().getDateString()
     }
 }
