@@ -51,33 +51,15 @@ class UserData {
         }
     }
     
-    func getPublicUsers() async -> [PeaUser] {
+    func getFollowingUsers() async -> [PeaUser] {
         do {
-            var publicUsers: [PeaUser] = try await Supabase.shared.client.from("public_users")
-                .select()
+            var following: [PeaUser] = try await Supabase.shared.client
+                .rpc("get_following_users", params: ["follower_id": user.user_id.uuidString])
                 .execute()
                 .value
             
             let currentUser = await self.user
-            publicUsers.removeAll { publicUser in
-                publicUser.user_id == currentUser.user_id
-            }
-            
-            publicUsers.append(currentUser)
-            
-            return publicUsers
-        } catch {
-            print("unable to get public users")
-            return []
-        }
-    }
-    
-    func getFollowingUsers() async -> [PeaUser] {
-        do {
-            let following: [PeaUser] = try await Supabase.shared.client
-                .rpc("get_following_users", params: ["follower_id": user.user_id.uuidString])
-                .execute()
-                .value
+            following.append(currentUser)
             
             print("xxavier \(following)")
             return following

@@ -41,12 +41,6 @@ class GroupsTableViewController: UITableViewController {
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
             }
-            catch {
-//                self.groups = [Group]()
-                stopLoadingAnimation()
-                refreshControl?.endRefreshing()
-                self.navigationItem.title = "Oops! Swipe down"
-            }
         }
     }
 

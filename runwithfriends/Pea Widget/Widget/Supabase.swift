@@ -57,16 +57,19 @@ class Supabase {
         }
     }
     
-    func getPublicUsers() async -> [PeaUser] {
+    func getFollowingUsers() async -> [PeaUser] {
         do {
-            let publicUsers: [PeaUser] = try await Supabase.shared.client.from("public_users")
-                .select()
+            let session = try KeychainManager.shared.getSession()
+            let userId = session.user.id
+            let following: [PeaUser] = try await Supabase.shared.client
+                .rpc("get_following_users", params: ["follower_id": userId.uuidString])
                 .execute()
                 .value
-            print("received public users")
-            return publicUsers
+            
+            print("xxavier \(following)")
+            return following
         } catch {
-            print("unable to get public users \(error)")
+            print("unable to get following users \(error)")
             return []
         }
     }

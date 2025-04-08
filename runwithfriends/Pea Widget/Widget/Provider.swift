@@ -183,7 +183,7 @@ struct Provider: AppIntentTimelineProvider {
         if Provider.networkUpdateCount % 2 == 0 {
             let _: () = await Supabase.shared.upsert(steps: steps)
         } else {
-            let publicUsers = await Supabase.shared.getPublicUsers()
+            let publicUsers = await Supabase.shared.getFollowingUsers()
             FriendsManager.shared.updateFriends(publicUsers)
         }
         Provider.networkUpdateCount += 1
