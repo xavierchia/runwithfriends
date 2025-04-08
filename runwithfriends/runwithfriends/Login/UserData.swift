@@ -58,9 +58,6 @@ class UserData {
                 .execute()
                 .value
             
-            let currentUser = await self.user
-            following.append(currentUser)
-            
             print("xxavier \(following)")
             return following
         } catch {

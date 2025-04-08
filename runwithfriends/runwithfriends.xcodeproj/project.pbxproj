@@ -53,6 +53,7 @@
 		95DBAC512BA18186002037F1 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBAC502BA18186002037F1 /* CommunityViewController.swift */; };
 		95F85B4F2B71AAEC005A705A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 95F85B4E2B71AAEC005A705A /* README.md */; };
 		95FF666A2DA0C57F002BD296 /* FollowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF66692DA0C57F002BD296 /* FollowViewController.swift */; };
+		95FF68382DA5240B002BD296 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF68372DA5240B002BD296 /* FollowCell.swift */; };
 		A51A55912D8BB32500D5D818 /* SharedCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51A557C2D8BB32500D5D818 /* SharedCode.framework */; };
 		A51A55922D8BB32500D5D818 /* SharedCode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A51A557C2D8BB32500D5D818 /* SharedCode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A531425E2D826F3100382837 /* PeaMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425D2D826F3100382837 /* PeaMapView.swift */; };
@@ -151,6 +152,7 @@
 		95F85B4E2B71AAEC005A705A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runwithfriends.entitlements; sourceTree = "<group>"; };
 		95FF66692DA0C57F002BD296 /* FollowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowViewController.swift; sourceTree = "<group>"; };
+		95FF68372DA5240B002BD296 /* FollowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		A51A557C2D8BB32500D5D818 /* SharedCode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SharedCode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A531425D2D826F3100382837 /* PeaMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PeaMapView.swift; path = ../PeaMapView.swift; sourceTree = "<group>"; };
 		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PathSearch.swift; path = ../PathSearch.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 			children = (
 				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
 				95FF66692DA0C57F002BD296 /* FollowViewController.swift */,
+				95FF68372DA5240B002BD296 /* FollowCell.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -582,6 +585,7 @@
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
 				A53142602D827C3A00382837 /* PathSearch.swift in Sources */,
+				95FF68382DA5240B002BD296 /* FollowCell.swift in Sources */,
 				953D209D2B7D973500A32185 /* ViewController.swift in Sources */,
 				A531425E2D826F3100382837 /* PeaMapView.swift in Sources */,
 				95DBAC512BA18186002037F1 /* CommunityViewController.swift in Sources */,

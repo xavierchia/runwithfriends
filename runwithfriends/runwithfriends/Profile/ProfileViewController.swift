@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController {
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private let tableCellTitles = [
         [
-          CellData(emoji: "🥸".image(pointSize: 20), title: "Coming Soon!")
+          CellData(emoji: "🥸".image(pointSize: 20), title: "Following")
         ]
     ]
     
@@ -133,12 +133,12 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .baseText
-        cell.textLabel?.font = UIFont.Kefir(size: cell.textLabel?.font.pointSize ?? 15)
+        cell.textLabel?.font = UIFont.QuicksandMedium(size: cell.textLabel?.font.pointSize ?? 15)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let followVC = FollowViewController()
+        let followVC = FollowViewController(with: userData)
         navigationController?.pushViewController(followVC, animated: true)
     }
 }
