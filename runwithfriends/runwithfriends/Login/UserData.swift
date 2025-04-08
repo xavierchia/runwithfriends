@@ -72,6 +72,21 @@ class UserData {
         }
     }
     
+    func getFollowingUsers() async -> [PeaUser] {
+        do {
+            let following: [PeaUser] = try await Supabase.shared.client
+                .rpc("get_following_users", params: ["follower_id": user.user_id.uuidString])
+                .execute()
+                .value
+            
+            print("xxavier \(following)")
+            return following
+        } catch {
+            print("unable to get following users \(error)")
+            return []
+        }
+    }
+    
     // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> PeaUser {
         var session = try await Supabase.shared.client.auth.session

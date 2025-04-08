@@ -94,6 +94,7 @@ class CommunityViewController: UIViewController {
             
             userData.updateStepsIfNeeded(dailySteps: result)
             let pubs = await userData.getPublicUsers()
+            await userData.getFollowingUsers()
             
             FriendsManager.shared.updateFriends(pubs)
             
