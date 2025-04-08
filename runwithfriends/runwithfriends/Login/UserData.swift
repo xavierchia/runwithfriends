@@ -53,7 +53,7 @@ class UserData {
     
     func getFollowingUsers() async -> [PeaUser] {
         do {
-            var following: [PeaUser] = try await Supabase.shared.client
+            let following: [PeaUser] = try await Supabase.shared.client
                 .rpc("get_following_users", params: ["follower_id": user.user_id.uuidString])
                 .execute()
                 .value

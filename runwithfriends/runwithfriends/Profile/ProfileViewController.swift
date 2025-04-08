@@ -59,6 +59,7 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
         setupProfile(with: userData.user)
         self.navigationController?.navigationBar.setImageView(navImageView)
         settingsTableView.reloadData()        
@@ -67,12 +68,12 @@ class ProfileViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navImageView.removeFromSuperview()
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     // MARK: SetupUI
     
     private func setupNavigationController() {
-        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
