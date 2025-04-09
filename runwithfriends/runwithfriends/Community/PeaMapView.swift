@@ -115,9 +115,17 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
                 newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude + 0.005 * collisions, longitude: userCoordinate.longitude)
                 collisions += 1
             } else if userCoordinate == lastPin.coordinate {
-                // If same coordinate as previous annotation, space them out horizontally
-                newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude, longitude: userCoordinate.longitude + 0.005 * collisions)
-                collisions += 1
+                newPin.coordinate = userCoordinate
+                newPin.titleString += "\n\(lastPin.titleString)"
+                newPin.subtitleString += "\n\(lastPin.subtitleString)"
+                
+                if lastPin.identifier == "user" {
+                    newPin.identifier = "user"
+                    newPin.emojiImage = lastPin.emojiImage
+                }
+                
+                removeAnnotation(lastPin)
+                collisions = 1
             } else {
                 // No collision
                 newPin.coordinate = userCoordinate

@@ -11,11 +11,23 @@ import SharedCode
 
 // MARK: Custom classes to support emoji map annotations
 class EmojiAnnotation: MKPointAnnotation {
-    var titleString: String?
-    var subtitleString: String?
+    var titleString: String {
+        didSet {
+            title = titleString
+        }
+    }
+    var subtitleString: String {
+        didSet {
+            subtitle = subtitleString
+        }
+    }
     var emojiImage: UIImage
     var color: UIColor = .white
-    var identifier: String = ""
+    var identifier: String = "" {
+        didSet {
+            self.color = identifier == "user" ? .lightAccent : .white
+        }
+    }
     
     init(titleString: String = "",
          subtitleString: String = "",
@@ -33,10 +45,6 @@ class EmojiAnnotation: MKPointAnnotation {
         if identifier == "user" || identifier == "other" {
             title = titleString
             subtitle = subtitleString
-//            let stepString = weekSteps.valueKM
-//            title = "\(username): \(stepString)"
-//            let todaySteps = daySteps.valueKM
-//            subtitle = "Today: \(todaySteps)"
         }
     }
 }
