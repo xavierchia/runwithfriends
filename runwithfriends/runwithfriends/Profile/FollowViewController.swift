@@ -31,6 +31,8 @@ class FollowViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
         resultsTableVC.tableView.register(FollowCell.self, forCellReuseIdentifier: FollowCell.identifier)
         resultsTableVC.tableView.dataSource = self
         resultsTableVC.tableView.delegate = self
@@ -80,6 +82,11 @@ class FollowViewController: UIViewController {
         mainTableView.separatorStyle = .singleLine
         mainTableView.backgroundColor = .baseBackground
         mainTableView.sectionHeaderTopPadding = 0
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
 

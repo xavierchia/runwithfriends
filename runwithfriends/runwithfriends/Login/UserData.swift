@@ -58,7 +58,6 @@ class UserData {
                 .execute()
                 .value
             
-            print("xxavier \(following)")
             return following
         } catch {
             print("unable to get following users \(error)")
