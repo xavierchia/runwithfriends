@@ -76,7 +76,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     
     func addUserAnnotation(allUsers: [PeaUser], currentUser: PeaUser) {
         var collisions = 1.0
-        var lastCoordinate = CLLocationCoordinate2DMake(0, 0)
+        var lastPin = EmojiAnnotation(emojiImage: UIImage(), identifier: "")
 
         let sortedUsers = allUsers.sorted { lhs, rhs in
             (lhs.week_steps ?? 0) < (rhs.week_steps ?? 0)
@@ -90,11 +90,10 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
             let userDaySteps = user.currentDaySteps
             
             let identifier = user.user_id == currentUser.user_id ? "user" : "other"
-            let newPin = EmojiAnnotation(username: user.username,
+            let newPin = EmojiAnnotation(titleString: "\(user.username): \(userWeekSteps.valueKM)",
+                                         subtitleString: "Today: \(userDaySteps.valueKM)",
                                          emojiImage: OriginalUIImage(emojiString: user.emoji),
-                                         identifier: identifier,
-                                         daySteps: userDaySteps,
-                                         weekSteps: userWeekSteps)
+                                         identifier: identifier)
             newPin.coordinate = userCoordinate
 
             // Special annotations
@@ -115,7 +114,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
                 // If at the finish line, space them out vertically
                 newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude + 0.005 * collisions, longitude: userCoordinate.longitude)
                 collisions += 1
-            } else if userCoordinate == lastCoordinate {
+            } else if userCoordinate == lastPin.coordinate {
                 // If same coordinate as previous annotation, space them out horizontally
                 newPin.coordinate = CLLocationCoordinate2D(latitude: userCoordinate.latitude, longitude: userCoordinate.longitude + 0.005 * collisions)
                 collisions += 1
@@ -124,7 +123,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
                 newPin.coordinate = userCoordinate
                 collisions = 1
             }
-            lastCoordinate = userCoordinate
+            lastPin = newPin
         
             self.addAnnotation(newPin)
         }

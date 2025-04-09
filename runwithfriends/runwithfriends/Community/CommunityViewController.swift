@@ -212,20 +212,6 @@ class CommunityViewController: UIViewController {
 
 extension CommunityViewController: PeaMapViewDelegate {
     func annotationViewSelected(_ annotationView: MKAnnotationView) {
-        guard let emojiView = annotationView as? EmojiAnnotationView,
-              let annotation = emojiView.annotation as? EmojiAnnotation,
-              annotation.identifier == "user",
-              let isUserIntroTapped = PeaDefaults.shared?.bool(forKey: UserDefaultsKey.isUserIntroTapped),
-              isUserIntroTapped == false else {
-            return
-        }
-        
-        let introViewController = UserIntroViewController(weekSteps: annotation.weekSteps)
-        present(introViewController, animated: true)
-        PeaDefaults.shared?.set(true, forKey: UserDefaultsKey.isUserIntroTapped)
-        let annotationTitle = annotation.title ?? ""
-        if annotationTitle.contains(" (Click me!)") {
-            annotation.title = "\(annotationTitle.dropLast(12))"
-        }
+
     }
 }

@@ -73,7 +73,7 @@ class ProfileViewController: UIViewController {
     
     private func setupNavigationController() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationControlle\r?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         let profileImageTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))

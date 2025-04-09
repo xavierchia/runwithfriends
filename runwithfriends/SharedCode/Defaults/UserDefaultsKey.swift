@@ -13,6 +13,4 @@ public struct UserDefaultsKey {
     public static let forceSignOutVersion = "forceSignOut"
 
     public static let friendsProgress = "friendsProgress"
-    
-    public static let isUserIntroTapped = "isUserIntroTapped"
 }

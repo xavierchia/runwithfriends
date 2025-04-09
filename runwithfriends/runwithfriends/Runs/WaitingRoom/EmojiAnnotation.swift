@@ -11,39 +11,32 @@ import SharedCode
 
 // MARK: Custom classes to support emoji map annotations
 class EmojiAnnotation: MKPointAnnotation {
-    let username: String
-    let weekSteps: Int
-    let daySteps: Int
+    var titleString: String?
+    var subtitleString: String?
     var emojiImage: UIImage
     var color: UIColor = .white
     var identifier: String = ""
     
-    init(username: String = "",
+    init(titleString: String = "",
+         subtitleString: String = "",
          emojiImage: UIImage,
-         identifier: String,
-         daySteps: Int = 0,
-         weekSteps: Int = 0) {
-        self.username = username
+         identifier: String) {
+        self.titleString = titleString
+        self.subtitleString = subtitleString
         self.emojiImage = emojiImage
         self.identifier = identifier
-        self.daySteps = daySteps
-        self.weekSteps = weekSteps
         
         super.init()
         
         self.color = identifier == "user" ? .lightAccent : .white
         
         if identifier == "user" || identifier == "other" {
-            let stepString = weekSteps.valueKM
-            title = "\(username): \(stepString)"
-            let todaySteps = daySteps.valueKM
-            subtitle = "Today: \(todaySteps)"
-        }
-        
-        if identifier == "user",
-           let isUserIntroTapped = PeaDefaults.shared?.bool(forKey: UserDefaultsKey.isUserIntroTapped),
-           isUserIntroTapped == false {
-            title = title?.appending(" (Click me!)")
+            title = titleString
+            subtitle = subtitleString
+//            let stepString = weekSteps.valueKM
+//            title = "\(username): \(stepString)"
+//            let todaySteps = daySteps.valueKM
+//            subtitle = "Today: \(todaySteps)"
         }
     }
 }
