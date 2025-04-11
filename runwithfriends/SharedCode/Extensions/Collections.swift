@@ -15,9 +15,9 @@ extension Collection {
 }
 
 extension Array where Element: Equatable {
-    public mutating func appendIfNotExists(_ element: Element) {
+    public mutating func prependIfNotExists(_ element: Element) {
         if !self.contains(element) {
-            self.append(element)
+            self.insert(element, at: 0)
         }
     }
 }

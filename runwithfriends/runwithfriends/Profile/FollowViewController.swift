@@ -14,7 +14,7 @@ class FollowViewController: UIViewController {
     private var trueFollowing = [PeaUser]()
     private var mainTableArray = [PeaUser(username: "Loading...")]
     private let mainTableView = {
-        let mainTableView = UITableView()
+        let mainTableView = UITableView(frame: .zero, style: .insetGrouped)
         mainTableView.register(FollowCell.self, forCellReuseIdentifier: FollowCell.identifier)
         mainTableView.rowHeight = 60
         mainTableView.separatorStyle = .singleLine
@@ -26,7 +26,7 @@ class FollowViewController: UIViewController {
     private lazy var searchController = { UISearchController(searchResultsController: resultsTableVC) }()
     private var results = [PeaUser]()
     private let resultsTableVC = {
-        let resultsTableVC = UITableViewController()
+        let resultsTableVC = UITableViewController(style: .insetGrouped)
         resultsTableVC.tableView.register(FollowCell.self, forCellReuseIdentifier: FollowCell.identifier)
         resultsTableVC.tableView.rowHeight = 60
         resultsTableVC.tableView.separatorStyle = .singleLine
@@ -47,6 +47,9 @@ class FollowViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .baseBackground
+        
+        // for testing
+//        PeaDefaults.shared?.set(false, forKey: UserDefaultsKey.hasSearchedFollowing)
 
         setupNavAndSearch()
         setupTables()
@@ -69,8 +72,8 @@ class FollowViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.title = "Following"
         navigationItem.hidesSearchBarWhenScrolling = false
-        
-        searchController.searchBar.placeholder = "Search"
+    
+        searchController.searchBar.placeholder = "Search by id"
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = false
@@ -121,6 +124,8 @@ extension FollowViewController: UISearchResultsUpdating, UISearchBarDelegate {
             results = [retrievedUser]
             resultsTableVC.tableView.reloadData()
         }
+        
+        PeaDefaults.shared?.set(true, forKey: UserDefaultsKey.hasSearchedFollowing)
     }
 }
 
@@ -156,7 +161,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         cell.buttonTapHandler = { [weak self] followAction in
             if followAction == .follow {
                 self?.trueFollowing.append(item)
-                self?.mainTableArray.appendIfNotExists(item)
+                self?.mainTableArray.prependIfNotExists(item)
                 self?.mainTableView.reloadData()
             } else {
                 self?.trueFollowing.removeAll(where: {$0.user_id == item.user_id})
@@ -173,12 +178,32 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let defaults = PeaDefaults.shared else { return nil }
+        
         if tableView == mainTableView {
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 20))
-            headerView.backgroundColor = .baseBackground
+            var headerHeight: CGFloat = 20
+            var headerText = "Your search id is \(userData.user.search_id)"
+            if !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
+                headerHeight = 60
+                headerText = "Hi! 👋 You start off with five friends!\nAren't you popular 🤭"
+            }
+
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight))
+            let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.frame.width - 30, height: headerHeight))
             
-            let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.frame.width - 30, height: 20))
-            label.text = "Your user id is \(userData.user.search_id)"
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 4
+            let attributedString = NSAttributedString(
+                string: headerText,
+                attributes: [
+                    .paragraphStyle: paragraphStyle
+                ]
+            )
+            label.attributedText = attributedString
+            
+            label.numberOfLines = 0
+            headerView.backgroundColor = .baseBackground
+            label.lineBreakMode = .byWordWrapping
             label.font = UIFont.QuicksandMedium(size: label.font.pointSize)
             label.textColor = .gray
             
@@ -190,10 +215,59 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let defaults = PeaDefaults.shared,
+              trueFollowing.count > 0 else { return 0 }
         if tableView == mainTableView {
-            return 20
+            if defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
+                return 20
+            } else {
+                return 60
+            }
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let defaults = PeaDefaults.shared else { return nil }
+        
+        if tableView == mainTableView && !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
+            let footerHeight: CGFloat = 60
+            let footerText = "Try searching for id 28 🧐\nThat is Ally 🙆‍♀️ our community manager"
+            
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: footerHeight))
+            let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.frame.width - 30, height: footerHeight))
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 4
+            let attributedString = NSAttributedString(
+                string: footerText,
+                attributes: [
+                    .paragraphStyle: paragraphStyle
+                ]
+            )
+            label.attributedText = attributedString
+            
+            label.numberOfLines = 0
+            headerView.backgroundColor = .baseBackground
+            label.lineBreakMode = .byWordWrapping
+            label.font = UIFont.QuicksandMedium(size: label.font.pointSize)
+            label.textColor = .gray
+            
+            headerView.addSubview(label)
+            return headerView
         } else {
-            return 0
+            return nil
         }
     }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard let defaults = PeaDefaults.shared else { return 0 }
+        
+        if tableView == mainTableView && !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
+            return 60
+        }
+        return 0
+    }
 }
+
+

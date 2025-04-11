@@ -69,7 +69,7 @@ class FollowCell: UITableViewCell {
     
     // MARK: - UI Setup
     private func setupUI() {
-        contentView.backgroundColor = .baseBackground
+        contentView.backgroundColor = .cream
         
         // Add subviews
         contentView.addSubview(titleLabel)
