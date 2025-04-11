@@ -62,14 +62,9 @@ class FollowViewController: UIViewController {
             mainTableView.reloadData()
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
+
     private func setupNavAndSearch() {
-        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Following"
         navigationItem.hidesSearchBarWhenScrolling = false
     

@@ -72,6 +72,7 @@ class ProfileViewController: UIViewController {
     // MARK: SetupUI
     
     private func setupNavigationController() {
+        navigationItem.largeTitleDisplayMode = .always
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
