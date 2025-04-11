@@ -65,6 +65,22 @@ class UserData {
         }
     }
     
+    func getUser(searchId: Int) async -> PeaUser? {
+        do {
+            let peaUser: PeaUser = try await Supabase.shared.client
+                .from("users")
+                .select()
+                .eq("search_id", value: searchId)
+                .single()
+                .execute()
+                .value
+            return peaUser
+        } catch {
+            print("can't get specific user")
+        }
+        return nil
+    }
+    
     // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> PeaUser {
         var session = try await Supabase.shared.client.auth.session

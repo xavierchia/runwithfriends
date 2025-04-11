@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PeaUser: Codable {
+public struct PeaUser: Codable, Equatable {
     public let user_id: UUID
     public let apple_id: String
     public let search_id: Int
@@ -43,5 +43,29 @@ public struct PeaUser: Codable {
     mutating public func setDayStepsAndDate(_ steps: Int) {
         self.day_steps = steps
         self.day_date = Date.startOfToday().getDateString()
+    }
+    
+    public init(
+        user_id: UUID = UUID(),
+        apple_id: String = "",
+        search_id: Int = 0,
+        username: String,
+        emoji: String = "",
+        first_login: String = "",
+        week_steps: Int? = nil,
+        week_date: String? = nil,
+        day_date: String? = nil,
+        day_steps: Int? = nil
+    ) {
+        self.user_id = user_id
+        self.apple_id = apple_id
+        self.search_id = search_id
+        self.username = username
+        self.emoji = emoji
+        self.first_login = first_login
+        self.week_steps = week_steps
+        self.week_date = week_date
+        self.day_date = day_date
+        self.day_steps = day_steps
     }
 }

@@ -1,8 +1,33 @@
 import UIKit
 
 class FollowCell: UITableViewCell {
+    enum FollowAction {
+        case follow
+        case unfollow
+    }
+    
     // MARK: - Properties
     static let identifier = "FollowCell"
+    
+    var isFollowing = false {
+        didSet {
+            if isFollowing {
+                actionButton.setTitle("Following", for: .normal)
+                actionButton.setTitleColor(.baseText, for: .normal)
+                actionButton.backgroundColor = .clear
+                actionButton.layer.cornerRadius = 5
+                actionButton.layer.borderWidth = 1.5
+                actionButton.layer.borderColor = UIColor.baseText.cgColor
+            } else {
+                actionButton.setTitle("Follow", for: .normal)
+                actionButton.setTitleColor(.cream, for: .normal)
+                actionButton.backgroundColor = .moss
+                actionButton.layer.cornerRadius = 5
+                actionButton.layer.borderWidth = 0
+                actionButton.layer.borderColor = UIColor.clear.cgColor
+            }
+        }
+    }
     
     // Left label
     private let titleLabel: UILabel = {
@@ -18,23 +43,18 @@ class FollowCell: UITableViewCell {
     private let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Action", for: .normal)
-        button.setTitleColor(.baseText, for: .normal)
         button.titleLabel?.font = UIFont.QuicksandMedium(size: button.titleLabel?.font.pointSize ?? 17)
-        button.backgroundColor = .clear
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 1.5
-        button.layer.borderColor = UIColor.baseText.cgColor
+        button.setTitle("Action", for: .normal)
+
         var configuration = UIButton.Configuration.filled()
         configuration.baseBackgroundColor = .clear
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-        
         button.configuration = configuration
         return button
     }()
     
     // MARK: - Action Callback
-    var buttonTapHandler: (() -> Void)?
+    var buttonTapHandler: ((FollowAction) -> Void)?
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -73,9 +93,9 @@ class FollowCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func configure(title: String, buttonTitle: String) {
+    func configure(title: String, isFollowing: Bool) {
         titleLabel.text = title
-        actionButton.setTitle(buttonTitle, for: .normal)
+        self.isFollowing = isFollowing
         
         if title == "Loading..." {
             actionButton.isHidden = true
@@ -86,7 +106,9 @@ class FollowCell: UITableViewCell {
     
     // MARK: - Actions
     @objc private func actionButtonTapped() {
-        buttonTapHandler?()
+        let followAction: FollowAction = isFollowing ? .unfollow : .follow
+        isFollowing.toggle()
+        buttonTapHandler?(followAction)
     }
     
     // MARK: - Cell Reuse

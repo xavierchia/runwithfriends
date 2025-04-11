@@ -13,3 +13,11 @@ extension Collection {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
+extension Array where Element: Equatable {
+    public mutating func appendIfNotExists(_ element: Element) {
+        if !self.contains(element) {
+            self.append(element)
+        }
+    }
+}
