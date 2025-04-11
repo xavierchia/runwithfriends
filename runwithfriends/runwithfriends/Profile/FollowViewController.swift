@@ -73,6 +73,7 @@ class FollowViewController: UIViewController {
         navigationItem.title = "Following"
         navigationItem.hidesSearchBarWhenScrolling = false
     
+        searchController.searchBar.searchTextField.font = UIFont.QuicksandMedium(size: searchController.searchBar.searchTextField.font?.pointSize ?? 17)
         searchController.searchBar.placeholder = "Search by id"
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
@@ -181,11 +182,13 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         guard let defaults = PeaDefaults.shared else { return nil }
         
         if tableView == mainTableView {
-            var headerHeight: CGFloat = 20
-            var headerText = "Your search id is \(userData.user.search_id)"
+            var headerHeight: CGFloat = 30
+            var headerText = "\(userData.user.search_id). \(userData.user.username)"
+            var textColor: UIColor = .baseText
             if !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
                 headerHeight = 60
                 headerText = "Hi! 👋 You start off with five friends!\nAren't you popular 🤭"
+                textColor = .gray
             }
 
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight))
@@ -205,7 +208,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
             headerView.backgroundColor = .baseBackground
             label.lineBreakMode = .byWordWrapping
             label.font = UIFont.QuicksandMedium(size: label.font.pointSize)
-            label.textColor = .gray
+            label.textColor = textColor
             
             headerView.addSubview(label)
             return headerView
@@ -219,7 +222,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
               trueFollowing.count > 0 else { return 0 }
         if tableView == mainTableView {
             if defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
-                return 20
+                return 30
             } else {
                 return 60
             }
@@ -232,7 +235,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         
         if tableView == mainTableView && !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
             let footerHeight: CGFloat = 60
-            let footerText = "Try searching for id 28 🧐\nThat is Ally 🙆‍♀️ our community manager"
+            let footerText = "Try searching for id 28 🧐\nThat is Ally, our community manager 🙆‍♀️"
             
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: footerHeight))
             let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.frame.width - 30, height: footerHeight))

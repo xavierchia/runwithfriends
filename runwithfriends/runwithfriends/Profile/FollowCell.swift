@@ -85,7 +85,8 @@ class FollowCell: UITableViewCell {
             // Action button constraints
             actionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             actionButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            actionButton.heightAnchor.constraint(equalToConstant: 36)
+            actionButton.heightAnchor.constraint(equalToConstant: 36),
+            actionButton.widthAnchor.constraint(equalToConstant: 105)
         ])
         
         // Add button target

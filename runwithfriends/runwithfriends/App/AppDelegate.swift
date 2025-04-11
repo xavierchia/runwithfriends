@@ -38,11 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearance.shadowColor = .clear
         navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.KefirBold(size: 22)]
         navigationBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.moss, .font: UIFont.KefirBold(size: 34)]
+        navigationBarAppearance.backButtonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.font: UIFont.QuicksandMedium(size: 17)]
         UINavigationBar.appearance().standardAppearance = navigationBarAppearance
         UINavigationBar.appearance().compactAppearance = navigationBarAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         
         UINavigationBar.appearance().tintColor = .accent
+                
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.QuicksandMedium(size: 17)], for: .normal)
     }
 
     // MARK: UISceneSession Lifecycle
