@@ -69,11 +69,11 @@ class UserData {
         do {
             try await Supabase.shared.client
                 .from("following")
-                .insert(["follower_id": user.user_id.uuidString, "followed_id": userId.uuidString])
+                .insert(["follower": user.user_id.uuidString, "followed": userId.uuidString])
                 .execute()
             
         } catch {
-            print("could not follow user")
+            print("could not follow user \(error)")
         }
     }
     
@@ -82,11 +82,11 @@ class UserData {
             try await Supabase.shared.client
                 .from("following")
                 .delete()
-                .eq("follower_id", value: user.user_id.uuidString)
-                .eq("followed_id", value: userId.uuidString)
+                .eq("follower", value: user.user_id.uuidString)
+                .eq("followed", value: userId.uuidString)
                 .execute()            
         } catch {
-            print("could not follow user")
+            print("could not unfollow user \(error)")
         }
     }
     

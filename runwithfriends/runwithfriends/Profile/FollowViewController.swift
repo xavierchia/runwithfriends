@@ -181,10 +181,17 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         trueFollowing.append(user)
         mainTableArray.prependIfNotExists(user)
         mainTableView.reloadData()
+        
+        Task {
+            await userData.follow(userId: user.user_id)
+        }
     }
     
     private func handleUnfollowUser(user: PeaUser) {
         trueFollowing.removeAll(where: {$0.user_id == user.user_id})
+        Task {
+            await userData.unfollow(userId: user.user_id)
+        }
     }
     
     private func showMaxFollowingAlert() {
