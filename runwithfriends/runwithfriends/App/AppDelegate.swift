@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = .accent
                 
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.QuicksandMedium(size: 17)], for: .normal)
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .black
     }
 
     // MARK: UISceneSession Lifecycle

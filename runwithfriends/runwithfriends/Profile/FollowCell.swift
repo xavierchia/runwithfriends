@@ -108,7 +108,7 @@ class FollowCell: UITableViewCell {
     // MARK: - Actions
     @objc private func actionButtonTapped() {
         let followAction: FollowAction = isFollowing ? .unfollow : .follow
-        isFollowing.toggle()
+//        isFollowing.toggle()
         buttonTapHandler?(followAction)
     }
     

@@ -156,10 +156,20 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         // Set up the button action
         cell.buttonTapHandler = { [weak self] followAction in
             if followAction == .follow {
+                guard let trueFollowingCount = self?.trueFollowing.count,
+                      trueFollowingCount < 8 else {
+                    let alert = UIAlertController(title: "Oopsies...", message: "Max follow count is 8", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "🤨 whaaat?", style: .default, handler: nil)
+                    alert.addAction(okAction)
+                    self?.present(alert, animated: true)
+                    return
+                }
+                cell.isFollowing.toggle()
                 self?.trueFollowing.append(item)
                 self?.mainTableArray.prependIfNotExists(item)
                 self?.mainTableView.reloadData()
             } else {
+                cell.isFollowing.toggle()
                 self?.trueFollowing.removeAll(where: {$0.user_id == item.user_id})
                 
                 if tableView == self?.resultsTableVC.tableView,
