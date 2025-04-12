@@ -205,11 +205,10 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         guard let defaults = PeaDefaults.shared else { return nil }
         
         if tableView == mainTableView {
-            var headerHeight: CGFloat = 30
+            var headerHeight: CGFloat = 60
             var headerText = "\(userData.user.search_id). \(userData.user.username) \(userData.user.emoji)"
             var textColor: UIColor = .baseText
             if !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
-                headerHeight = 60
                 headerText = "Hi! 👋 You start off with five friends!\nAren't you popular 🤭"
                 textColor = .gray
             }
@@ -244,11 +243,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         guard let defaults = PeaDefaults.shared,
               trueFollowing.count > 0 else { return 0 }
         if tableView == mainTableView {
-            if defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
-                return 30
-            } else {
-                return 60
-            }
+            return 60
         }
         return 0
     }
