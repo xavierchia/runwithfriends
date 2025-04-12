@@ -151,7 +151,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         
-        cell.configure(title: "\(item.search_id). \(item.username)", isFollowing: isFollowing)
+        cell.configure(title: "\(item.search_id). \(item.username) \(item.emoji)", isFollowing: isFollowing)
         
         cell.buttonTapHandler = { [weak self] followAction in
             if followAction == .follow {
@@ -206,7 +206,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         
         if tableView == mainTableView {
             var headerHeight: CGFloat = 30
-            var headerText = "\(userData.user.search_id). \(userData.user.username)"
+            var headerText = "\(userData.user.search_id). \(userData.user.username) \(userData.user.emoji)"
             var textColor: UIColor = .baseText
             if !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
                 headerHeight = 60
