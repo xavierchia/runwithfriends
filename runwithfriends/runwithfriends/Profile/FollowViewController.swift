@@ -153,7 +153,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.configure(title: "\(item.search_id). \(item.username)", isFollowing: isFollowing)
         
-        // Set up the button action
+        // TODO move to delegate?
         cell.buttonTapHandler = { [weak self] followAction in
             if followAction == .follow {
                 guard let trueFollowingCount = self?.trueFollowing.count,
