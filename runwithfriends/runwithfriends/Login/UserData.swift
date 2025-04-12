@@ -20,7 +20,7 @@ class UserData {
     }
     
     private var lastServerSync: Date?
-    private let minimumSyncInterval: TimeInterval = 60 * 5
+    private let minimumSyncInterval: TimeInterval = 60
     
     @MainActor
     init(user: PeaUser) {
@@ -62,6 +62,31 @@ class UserData {
         } catch {
             print("unable to get following users \(error)")
             return []
+        }
+    }
+    
+    func follow(userId: UUID) async {
+        do {
+            try await Supabase.shared.client
+                .from("following")
+                .insert(["follower_id": user.user_id.uuidString, "followed_id": userId.uuidString])
+                .execute()
+            
+        } catch {
+            print("could not follow user")
+        }
+    }
+    
+    func unfollow(userId: UUID) async {
+        do {
+            try await Supabase.shared.client
+                .from("following")
+                .delete()
+                .eq("follower_id", value: user.user_id.uuidString)
+                .eq("followed_id", value: userId.uuidString)
+                .execute()            
+        } catch {
+            print("could not follow user")
         }
     }
     
