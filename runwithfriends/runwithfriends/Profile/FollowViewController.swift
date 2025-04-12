@@ -153,24 +153,18 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.configure(title: "\(item.search_id). \(item.username)", isFollowing: isFollowing)
         
-        // TODO move to delegate?
         cell.buttonTapHandler = { [weak self] followAction in
             if followAction == .follow {
                 guard let trueFollowingCount = self?.trueFollowing.count,
                       trueFollowingCount < 8 else {
-                    let alert = UIAlertController(title: "Oopsies...", message: "Max follow count is 8", preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "🤨 whaaat?", style: .default, handler: nil)
-                    alert.addAction(okAction)
-                    self?.present(alert, animated: true)
+                    self?.showMaxFollowingAlert()
                     return
                 }
                 cell.isFollowing.toggle()
-                self?.trueFollowing.append(item)
-                self?.mainTableArray.prependIfNotExists(item)
-                self?.mainTableView.reloadData()
+                self?.handleFollowUser(user: item)
             } else {
                 cell.isFollowing.toggle()
-                self?.trueFollowing.removeAll(where: {$0.user_id == item.user_id})
+                self?.handleUnfollowUser(user: item)
                 
                 if tableView == self?.resultsTableVC.tableView,
                    let row = self?.mainTableArray.firstIndex(where: {$0.user_id == item.user_id}) {
@@ -181,6 +175,23 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         return cell
+    }
+    
+    private func handleFollowUser(user: PeaUser) {
+        trueFollowing.append(user)
+        mainTableArray.prependIfNotExists(user)
+        mainTableView.reloadData()
+    }
+    
+    private func handleUnfollowUser(user: PeaUser) {
+        trueFollowing.removeAll(where: {$0.user_id == user.user_id})
+    }
+    
+    private func showMaxFollowingAlert() {
+        let alert = UIAlertController(title: "Oopsies...", message: "Max follow count is 8", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "🤨 whaaat?", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

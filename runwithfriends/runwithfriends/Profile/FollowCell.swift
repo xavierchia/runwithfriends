@@ -8,6 +8,9 @@ class FollowCell: UITableViewCell {
     
     // MARK: - Properties
     static let identifier = "FollowCell"
+        
+    // MARK: - Action Callback
+    var buttonTapHandler: ((FollowAction) -> Void)?
     
     var isFollowing = false {
         didSet {
@@ -52,9 +55,6 @@ class FollowCell: UITableViewCell {
         button.configuration = configuration
         return button
     }()
-    
-    // MARK: - Action Callback
-    var buttonTapHandler: ((FollowAction) -> Void)?
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -108,7 +108,6 @@ class FollowCell: UITableViewCell {
     // MARK: - Actions
     @objc private func actionButtonTapped() {
         let followAction: FollowAction = isFollowing ? .unfollow : .follow
-//        isFollowing.toggle()
         buttonTapHandler?(followAction)
     }
     
