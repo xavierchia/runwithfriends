@@ -58,7 +58,12 @@ class UserData {
                 .execute()
                 .value
             
-            return following
+            let currentFollowing = following.filter { followingUser in
+                guard let weekDate = followingUser.weekDate else { return false }
+                return weekDate == Date.startOfWeek()
+            }
+            
+            return currentFollowing
         } catch {
             print("unable to get following users \(error)")
             return []
