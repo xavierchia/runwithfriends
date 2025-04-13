@@ -229,7 +229,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
             label.numberOfLines = 0
             headerView.backgroundColor = .baseBackground
             label.lineBreakMode = .byWordWrapping
-            label.font = UIFont.QuicksandMedium(size: label.font.pointSize)
+            label.font = UIFont.QuicksandMedium(size: 17)
             label.textColor = textColor
             
             headerView.addSubview(label)
@@ -271,7 +271,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
             label.numberOfLines = 0
             headerView.backgroundColor = .baseBackground
             label.lineBreakMode = .byWordWrapping
-            label.font = UIFont.QuicksandMedium(size: label.font.pointSize)
+            label.font = UIFont.QuicksandMedium(size: 17)
             label.textColor = .gray
             
             headerView.addSubview(label)

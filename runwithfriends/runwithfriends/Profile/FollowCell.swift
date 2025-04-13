@@ -36,7 +36,7 @@ class FollowCell: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.QuicksandMedium(size: label.font.pointSize)
+        label.font = UIFont.QuicksandMedium(size: 17)
         label.textColor = .baseText
         label.numberOfLines = 1
         return label
