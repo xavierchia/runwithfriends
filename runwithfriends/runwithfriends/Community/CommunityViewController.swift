@@ -44,12 +44,13 @@ class CommunityViewController: UIViewController {
             }
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateView), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSteps), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateView()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateSteps()
+        mapView.setMapRegion()
     }
     
     private func showMotionPermissionAlert() {
@@ -70,10 +71,8 @@ class CommunityViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    @objc private func updateView() {
-        print("updating view: region, annotations, labels")
-        // set map region
-        mapView.setMapRegion()
+    @objc private func updateSteps() {
+        print("updating view: annotations, labels")
         
         Task {
             let result = await stepCounter.getStepsForWeek()

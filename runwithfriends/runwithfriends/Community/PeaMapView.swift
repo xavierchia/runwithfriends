@@ -21,6 +21,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     private var currentMarathon: Marathon {
         return MarathonData.getCurrentMarathon()
     }
+    private var lastZoomedOut: Date?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +40,16 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     }
     
     func setMapRegion() {
-        self.setRegion(currentMarathon.region, animated: false)
+        guard let lastZoomedOut else {
+            self.setRegion(currentMarathon.region, animated: false)
+            self.lastZoomedOut = Date()
+            return
+        }
+        
+        if Date().timeIntervalSince(lastZoomedOut) > 60 * 5 {
+            self.setRegion(currentMarathon.region, animated: true)
+            self.lastZoomedOut = Date()
+        }
     }
 
     func addPath() {
@@ -151,6 +161,11 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
 //    }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if mapView.region.span.longitudeDelta < currentMarathon.region.span.longitudeDelta ||
+            mapView.region.span.latitudeDelta < currentMarathon.region.span.latitudeDelta {
+            
+        }
+        
         peaMapViewDelegate?.annotationViewSelected(view)
     }
 }
