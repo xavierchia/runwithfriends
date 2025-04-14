@@ -11,6 +11,7 @@ import SharedCode
 
 protocol PeaMapViewDelegate {
     func annotationViewSelected(_ annotationView: MKAnnotationView)
+    func updateZoomLabel(labelString: String)
 }
 
 class PeaMapView: MKMapView, MKMapViewDelegate {
@@ -156,23 +157,37 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         return renderer
     }
     
-//    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//        print(mapView.region)
-//    }
-    
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if mapView.region.span.longitudeDelta < currentMarathon.region.span.longitudeDelta ||
-            mapView.region.span.latitudeDelta < currentMarathon.region.span.latitudeDelta {
-            
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        if isZoomedIn() {
+            peaMapViewDelegate?.updateZoomLabel(labelString: "Zoom Out")
+        } else {
+            peaMapViewDelegate?.updateZoomLabel(labelString: "Zoom In")
         }
-        
-        peaMapViewDelegate?.annotationViewSelected(view)
     }
 }
 
 
 extension PeaMapView {
-    func zoomToCurrentUserContext(currentUserId: String) {
+    func zoomInOrOut(currentUserId: String) {
+        if isZoomedIn() {
+            self.setRegion(currentMarathon.region, animated: true)
+            peaMapViewDelegate?.updateZoomLabel(labelString: "Zoom In")
+        } else {
+            zoomToCurrentUserContext(currentUserId: currentUserId)
+            peaMapViewDelegate?.updateZoomLabel(labelString: "Zoom Out")
+        }
+    }
+    
+    private func isZoomedIn() -> Bool {
+        if self.region.span.longitudeDelta < currentMarathon.span.longitudeDelta ||
+            self.region.span.latitudeDelta < currentMarathon.span.latitudeDelta {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    private func zoomToCurrentUserContext(currentUserId: String) {
         // Find current user annotation
         guard let currentUserAnnotation = annotations.first(where: { annotation in
             if let emojiAnnotation = annotation as? EmojiAnnotation,

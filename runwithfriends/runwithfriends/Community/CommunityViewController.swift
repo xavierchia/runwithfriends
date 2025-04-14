@@ -19,6 +19,7 @@ class CommunityViewController: UIViewController {
     private let stepsTitle = UIImageView()
     private let weekSteps = UILabel()
     private let daySteps = UILabel()
+    private let zoomButton = UIButton()
     
     init(userData: UserData) {
         self.userData = userData
@@ -146,24 +147,23 @@ class CommunityViewController: UIViewController {
     }
     
     private func setupZoomButton() {
-        let zoomTitle = UIButton()
-        zoomTitle.setTitle("Zoom", for: .normal)
-        zoomTitle.titleLabel?.font = UIFont.KefirBold(size: 14)
-        zoomTitle.titleLabel?.textAlignment = .right
-        zoomTitle.setTitleColor(.cream, for: .normal)
-        zoomTitle.backgroundColor = .clear
-        view.addSubview(zoomTitle)
-        zoomTitle.translatesAutoresizingMaskIntoConstraints = false
+        zoomButton.setTitle("Zoom In", for: .normal)
+        zoomButton.titleLabel?.font = UIFont.KefirBold(size: 14)
+        zoomButton.titleLabel?.textAlignment = .right
+        zoomButton.setTitleColor(.cream, for: .normal)
+        zoomButton.backgroundColor = .clear
+        view.addSubview(zoomButton)
+        zoomButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            zoomTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            zoomTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            zoomButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            zoomButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
         
-        zoomTitle.addTarget(self, action: #selector(zoomToUser), for: .touchUpInside)
+        zoomButton.addTarget(self, action: #selector(zoomToUser), for: .touchUpInside)
     }
     
     @objc private func zoomToUser() {
-        mapView.zoomToCurrentUserContext(currentUserId: userData.user.user_id.uuidString)
+        mapView.zoomInOrOut(currentUserId: userData.user.user_id.uuidString)
     }
     
     private func setupUserDistance() {
@@ -210,6 +210,10 @@ class CommunityViewController: UIViewController {
 }
 
 extension CommunityViewController: PeaMapViewDelegate {
+    func updateZoomLabel(labelString: String) {
+        zoomButton.setTitle(labelString, for: .normal)
+    }
+    
     func annotationViewSelected(_ annotationView: MKAnnotationView) {
 
     }
