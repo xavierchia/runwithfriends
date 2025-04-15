@@ -46,13 +46,9 @@ class FollowCell: UITableViewCell {
     private let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.QuicksandMedium(size: button.titleLabel?.font.pointSize ?? 17)
         button.setTitle("Action", for: .normal)
-
-        var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = .clear
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-        button.configuration = configuration
+        button.titleLabel?.font = UIFont.QuicksandMedium(size: button.titleLabel?.font.pointSize ?? 17)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         return button
     }()
     
