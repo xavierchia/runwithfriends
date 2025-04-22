@@ -69,10 +69,12 @@ struct Pea_Widget: Widget {
                 default:
                     Pea_WidgetEntryView(entry: entry)
                         .containerBackground(creamColor, for: .widget)
+                        .environment(\.sizeCategory, .medium)  // This disables Dynamic Type scaling
                 }
             } else {
                 Pea_WidgetEntryView(entry: entry)
                     .containerBackground(creamColor, for: .widget)
+                    .environment(\.sizeCategory, .medium)  // This disables Dynamic Type scaling
             }
         }
         .configurationDisplayName("Steps Widget")

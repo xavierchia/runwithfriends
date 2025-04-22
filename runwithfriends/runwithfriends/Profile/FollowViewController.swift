@@ -68,7 +68,7 @@ class FollowViewController: UIViewController {
         navigationItem.title = "Following"
         navigationItem.hidesSearchBarWhenScrolling = false
     
-        searchController.searchBar.searchTextField.font = UIFont.QuicksandMedium(size: searchController.searchBar.searchTextField.font?.pointSize ?? 17)
+        searchController.searchBar.searchTextField.font = UIFont.QuicksandMedium(size: 17)
         searchController.searchBar.placeholder = "Search by id"
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
