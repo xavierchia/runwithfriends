@@ -22,10 +22,10 @@ struct Pea_WidgetEntryView : View {
                 Divider()
                 
                 // Friends list
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 6) {
                     ForEach(entry.friends, id: \.user_id) { friend in
                         HStack {
-                            Text(friend.username)
+                            Text("\(friend.ranking) \(friend.username)")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                                 .lineLimit(1)
@@ -40,8 +40,8 @@ struct Pea_WidgetEntryView : View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 4)
+        .padding(.vertical, 4)
         .foregroundColor(.black)
     }
 }

@@ -157,10 +157,7 @@ struct Provider: AppIntentTimelineProvider {
         
         await doNetworking(context: context, steps: data.steps)
                         
-        let leaderboard = createSandwichLeaderboard(context: context)
-        let friends = leaderboard.map { user in
-            return FriendProgress(user_id: user.user_id, steps: user.currentDaySteps, username: user.username)
-        }
+        let friends = createSandwichLeaderboard(context: context)
 
         let entry = SimpleEntry(
             date: Date(),
@@ -189,7 +186,7 @@ struct Provider: AppIntentTimelineProvider {
         Provider.networkUpdateCount += 1
     }
         
-    private func createSandwichLeaderboard(context: Context) -> [PeaUser] {
+    private func createSandwichLeaderboard(context: Context) -> [FriendProgress] {
         guard context.family == .systemSmall else {
             return []
         }
@@ -217,31 +214,52 @@ struct Provider: AppIntentTimelineProvider {
                 user1.currentDaySteps > user2.currentDaySteps
             }
             
+            // Create array of all users with rankings
+            var rankedUsers: [(user: PeaUser, ranking: Int)] = []
+            for (index, user) in allUsers.enumerated() {
+                rankedUsers.append((user: user, ranking: index + 1))  // Add 1 because rankings start at 1, not 0
+            }
+            
             // Find current user's position in the sorted list
-            guard let currentUserIndex = allUsers.firstIndex(where: { $0.user_id == currentUser.user_id }) else {
+            guard let currentUserIndex = rankedUsers.firstIndex(where: { $0.user.user_id == currentUser.user_id }) else {
                 // Fallback: return current user only if we can't find them in the sorted list
-                return [currentUser]
+                return [FriendProgress(
+                    user_id: currentUser.user_id,
+                    steps: currentUser.currentDaySteps,
+                    username: currentUser.username,
+                    ranking: 1
+                )]
             }
             
             // Create sandwich view based on user's position
-            var sandwichLeaderboard: [PeaUser] = []
+            var sandwichLeaderboard: [(user: PeaUser, ranking: Int)] = []
             
             if currentUserIndex == 0 {
                 // User is at the top, show them and up to 2 users below
-                let endIndex = min(currentUserIndex + 3, allUsers.count)
-                sandwichLeaderboard = Array(allUsers[currentUserIndex..<endIndex])
-            } else if currentUserIndex == allUsers.count - 1 {
+                let endIndex = min(currentUserIndex + 3, rankedUsers.count)
+                sandwichLeaderboard = Array(rankedUsers[currentUserIndex..<endIndex])
+            } else if currentUserIndex == rankedUsers.count - 1 {
                 // User is at the bottom, show up to 2 users above and them
                 let startIndex = max(currentUserIndex - 2, 0)
-                sandwichLeaderboard = Array(allUsers[startIndex...currentUserIndex])
+                sandwichLeaderboard = Array(rankedUsers[startIndex...currentUserIndex])
             } else {
                 // User is in the middle, show 1 above, them, and 1 below
                 let startIndex = max(currentUserIndex - 1, 0)
-                let endIndex = min(currentUserIndex + 2, allUsers.count)
-                sandwichLeaderboard = Array(allUsers[startIndex..<endIndex])
+                let endIndex = min(currentUserIndex + 2, rankedUsers.count)
+                sandwichLeaderboard = Array(rankedUsers[startIndex..<endIndex])
             }
             
-            return sandwichLeaderboard
+            // Convert to FriendProgress objects
+            let friendsProgress = sandwichLeaderboard.map { rankedUser in
+                return FriendProgress(
+                    user_id: rankedUser.user.user_id,
+                    steps: rankedUser.user.currentDaySteps,
+                    username: rankedUser.user.username,
+                    ranking: rankedUser.ranking
+                )
+            }
+            
+            return friendsProgress
         } catch {
             print("Failed to create sandwich leaderboard: \(error)")
             return []

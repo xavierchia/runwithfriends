@@ -12,6 +12,7 @@ struct FriendProgress {
     let user_id: UUID
     let steps: Int
     let username: String
+    let ranking: Int
 }
 
 struct SimpleEntry: TimelineEntry {
