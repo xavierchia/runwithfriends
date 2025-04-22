@@ -55,7 +55,7 @@ class FollowViewController: UIViewController {
         setupTables()
 
         Task { @MainActor in
-            var following = await userData.getFollowingUsers()
+            var following = await userData.getFollowingUsers(currentWeekOnly: false)
             following.sort { $0.search_id < $1.search_id }
             trueFollowing = following
             mainTableArray = following

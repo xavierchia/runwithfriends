@@ -51,19 +51,21 @@ class UserData {
         }
     }
     
-    func getFollowingUsers() async -> [PeaUser] {
+    func getFollowingUsers(currentWeekOnly: Bool) async -> [PeaUser] {
         do {
-            let following: [PeaUser] = try await Supabase.shared.client
+            var following: [PeaUser] = try await Supabase.shared.client
                 .rpc("get_following_users", params: ["follower_id": user.user_id.uuidString])
                 .execute()
                 .value
             
-            let currentFollowing = following.filter { followingUser in
-                guard let weekDate = followingUser.weekDate else { return false }
-                return weekDate == Date.startOfWeek()
+            if currentWeekOnly {
+                following = following.filter { followingUser in
+                    guard let weekDate = followingUser.weekDate else { return false }
+                    return weekDate == Date.startOfWeek()
+                }
             }
-            
-            return currentFollowing
+
+            return following
         } catch {
             print("unable to get following users \(error)")
             return []

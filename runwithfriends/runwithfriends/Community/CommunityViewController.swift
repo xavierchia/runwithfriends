@@ -93,7 +93,7 @@ class CommunityViewController: UIViewController {
             }
             
             userData.updateStepsIfNeeded(dailySteps: result)
-            var pubs = await userData.getFollowingUsers()
+            var pubs = await userData.getFollowingUsers(currentWeekOnly: true)
             let user = userData.user
             pubs.append(user)
             
