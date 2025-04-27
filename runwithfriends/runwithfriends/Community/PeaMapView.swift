@@ -179,8 +179,10 @@ extension PeaMapView {
     }
     
     private func isZoomedIn() -> Bool {
-        if self.region.span.longitudeDelta < (currentMarathon.span.longitudeDelta - 0.0001) ||
-            self.region.span.latitudeDelta < (currentMarathon.span.latitudeDelta - 0.0001) {
+        let smallLong = currentMarathon.span.longitudeDelta * 0.05
+        let smallLat = currentMarathon.span.latitudeDelta * 0.05
+        if self.region.span.longitudeDelta < (currentMarathon.span.longitudeDelta - smallLong) ||
+            self.region.span.latitudeDelta < (currentMarathon.span.latitudeDelta - smallLat) {
             return true
         } else {
             return false
