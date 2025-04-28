@@ -45,9 +45,6 @@ class DistanceViewController: UIViewController {
             let lifetimeStepsToBeginningOfToday = await StepCounter.shared.getCumulativeStepsFromHealthKit(from: userData.user.firstLoginDate, to: Date())
             let stepsToday = userData.user.currentDaySteps
             self.distance = lifetimeStepsToBeginningOfToday + stepsToday
-            
-            // testing
-//            self.distance = 0
                         
             self.navigationItem.title = "Milestones"
             distanceTableRows = Progression.getDistanceTableRows(for: distance)

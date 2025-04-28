@@ -25,8 +25,8 @@ struct MarathonData {
     static func getCurrentMarathon() -> Marathon {
         var currentWeek = Date.currentWeek()
         
-        // test
-        currentWeek = 26
+        // add marathon testing
+//        currentWeek = 29
         
         return marathons.first { marathon in
             marathon.weekOfYear == currentWeek
@@ -111,21 +111,40 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.20655971566657882, longitudeDelta: 0.191351140349989)
                 ),
         
-        Marathon(title: "Manchester\nMarathon\nin steps",
+        Marathon(title: "Paris\nMarathon\nin steps",
                  weekOfYear: 25,
-                 gpxFileName: "ManchesterMarathon",
-                 centerCoordinate: CLLocationCoordinate2D(latitude: 53.4402963515844, longitude: -2.2869387167788258),
-                 span: MKCoordinateSpan(latitudeDelta: 0.17492756144854837, longitudeDelta: 0.16040798667139589)
+                 gpxFileName: "ParisMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 48.85063842081964, longitude: 2.340887843462061),
+                 span: MKCoordinateSpan(latitudeDelta: 0.165476641290347, longitudeDelta: 0.3486521109872509)
                 ),
         
-        Marathon(title: "Nunavut\nMarathon\nin steps",
+        Marathon(title: "Rome\nMarathon\nin steps",
                  weekOfYear: 26,
-                 gpxFileName: "NunavutMarathon",
-                 centerCoordinate: CLLocationCoordinate2D(latitude: 53.4402963515844, longitude: -2.2869387167788258),
-                 span: MKCoordinateSpan(latitudeDelta: 0.17492756144854837, longitudeDelta: 0.16040798667139589)
+                 gpxFileName: "RomeMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 41.899998029154496, longitude: 12.47345306051092),
+                 span: MKCoordinateSpan(latitudeDelta: 0.12882686076494565, longitudeDelta: 0.09454053780581262)
                 ),
         
-         
+        Marathon(title: "Seoul\nMarathon\nin steps",
+                 weekOfYear: 27,
+                 gpxFileName: "SeoulMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 37.54081226992193, longitude: 127.02531523477654),
+                 span: MKCoordinateSpan(latitudeDelta: 0.14455122532028497, longitudeDelta: 0.2599643409570689)
+                ),
+        
+        Marathon(title: "Shakespeare\nMarathon\nin steps",
+                 weekOfYear: 28,
+                 gpxFileName: "ShakespeareMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 52.16378169841238, longitude: -1.7495618821167276),
+                 span: MKCoordinateSpan(latitudeDelta: 0.13991856117871038, longitudeDelta: 0.1245929145218927)
+                ),
+        
+        Marathon(title: "Tokyo\nMarathon\nin steps",
+                 weekOfYear: 29,
+                 gpxFileName: "TokyoMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 35.68341106232136, longitude: 139.734212182128),
+                 span: MKCoordinateSpan(latitudeDelta: 0.09969001968974567, longitudeDelta: 0.21647832730556615)
+                ),
     ]
 }
 

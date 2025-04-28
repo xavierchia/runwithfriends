@@ -57,20 +57,14 @@
 		A51A55922D8BB32500D5D818 /* SharedCode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A51A557C2D8BB32500D5D818 /* SharedCode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A531425E2D826F3100382837 /* PeaMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425D2D826F3100382837 /* PeaMapView.swift */; };
 		A53142602D827C3A00382837 /* PathSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425F2D827C3A00382837 /* PathSearch.swift */; };
-		A54818642DBB382500B3DA98 /* NunavutMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818572DBB382500B3DA98 /* NunavutMarathon.gpx */; };
 		A54818662DBB382500B3DA98 /* VenturaMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */; };
-		A54818672DBB382500B3DA98 /* CopenhagenMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818532DBB382500B3DA98 /* CopenhagenMarathon.gpx */; };
-		A54818682DBB382500B3DA98 /* StPeteMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185E2DBB382500B3DA98 /* StPeteMarathon.gpx */; };
 		A54818692DBB382500B3DA98 /* ParisMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818592DBB382500B3DA98 /* ParisMarathon.gpx */; };
 		A548186C2DBB382500B3DA98 /* BhutanMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548184E2DBB382500B3DA98 /* BhutanMarathon.gpx */; };
-		A548186D2DBB382500B3DA98 /* ManchesterMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818562DBB382500B3DA98 /* ManchesterMarathon.gpx */; };
 		A548186E2DBB382500B3DA98 /* ShakespeareMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185C2DBB382500B3DA98 /* ShakespeareMarathon.gpx */; };
 		A548186F2DBB382500B3DA98 /* CebuMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818522DBB382500B3DA98 /* CebuMarathon.gpx */; };
 		A54818702DBB382500B3DA98 /* LeedsMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818542DBB382500B3DA98 /* LeedsMarathon.gpx */; };
 		A54818712DBB382500B3DA98 /* RomeMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185A2DBB382500B3DA98 /* RomeMarathon.gpx */; };
 		A54818722DBB382500B3DA98 /* TokyoMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185F2DBB382500B3DA98 /* TokyoMarathon.gpx */; };
-		A54818742DBB382500B3DA98 /* StLouisMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185D2DBB382500B3DA98 /* StLouisMarathon.gpx */; };
-		A54818752DBB382500B3DA98 /* OmahaMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818582DBB382500B3DA98 /* OmahaMarathon.gpx */; };
 		A54818762DBB382500B3DA98 /* SeoulMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185B2DBB382500B3DA98 /* SeoulMarathon.gpx */; };
 		A54818772DBB382500B3DA98 /* TucsonMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */; };
 		A54818782DBB382500B3DA98 /* VancouverMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */; };
@@ -174,17 +168,11 @@
 		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PathSearch.swift; path = ../PathSearch.swift; sourceTree = "<group>"; };
 		A548184E2DBB382500B3DA98 /* BhutanMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BhutanMarathon.gpx; sourceTree = "<group>"; };
 		A54818522DBB382500B3DA98 /* CebuMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CebuMarathon.gpx; sourceTree = "<group>"; };
-		A54818532DBB382500B3DA98 /* CopenhagenMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CopenhagenMarathon.gpx; sourceTree = "<group>"; };
 		A54818542DBB382500B3DA98 /* LeedsMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LeedsMarathon.gpx; sourceTree = "<group>"; };
-		A54818562DBB382500B3DA98 /* ManchesterMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ManchesterMarathon.gpx; sourceTree = "<group>"; };
-		A54818572DBB382500B3DA98 /* NunavutMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = NunavutMarathon.gpx; sourceTree = "<group>"; };
-		A54818582DBB382500B3DA98 /* OmahaMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = OmahaMarathon.gpx; sourceTree = "<group>"; };
 		A54818592DBB382500B3DA98 /* ParisMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ParisMarathon.gpx; sourceTree = "<group>"; };
 		A548185A2DBB382500B3DA98 /* RomeMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = RomeMarathon.gpx; sourceTree = "<group>"; };
 		A548185B2DBB382500B3DA98 /* SeoulMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SeoulMarathon.gpx; sourceTree = "<group>"; };
 		A548185C2DBB382500B3DA98 /* ShakespeareMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ShakespeareMarathon.gpx; sourceTree = "<group>"; };
-		A548185D2DBB382500B3DA98 /* StLouisMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StLouisMarathon.gpx; sourceTree = "<group>"; };
-		A548185E2DBB382500B3DA98 /* StPeteMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StPeteMarathon.gpx; sourceTree = "<group>"; };
 		A548185F2DBB382500B3DA98 /* TokyoMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TokyoMarathon.gpx; sourceTree = "<group>"; };
 		A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TucsonMarathon.gpx; sourceTree = "<group>"; };
 		A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VancouverMarathon.gpx; sourceTree = "<group>"; };
@@ -217,7 +205,6 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A51A557D2D8BB32500D5D818 /* SharedCode */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A51A55932D8BB32500D5D818 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SharedCode; sourceTree = "<group>"; };
-		A51A558B2D8BB32500D5D818 /* SharedCodeTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SharedCodeTests; sourceTree = "<group>"; };
 		A575E5382D939E030035ED9C /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		A577BF832D82880D00E3789B /* GroupsArchived */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GroupsArchived; sourceTree = "<group>"; };
 		A5E917242D5058470060DD48 /* Pea Widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A5E917382D5058480060DD48 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Pea Widget"; sourceTree = "<group>"; };
@@ -289,7 +276,6 @@
 				952825B22AE1F74D0032B04B /* runwithfriends */,
 				A5E917242D5058470060DD48 /* Pea Widget */,
 				A51A557D2D8BB32500D5D818 /* SharedCode */,
-				A51A558B2D8BB32500D5D818 /* SharedCodeTests */,
 				952825B12AE1F74D0032B04B /* Products */,
 				25A8B3132B26EA03009502BA /* Frameworks */,
 			);
@@ -389,17 +375,11 @@
 				95A42DF72D93E488001022DE /* RoundAucklandMarathon.gpx */,
 				A548184E2DBB382500B3DA98 /* BhutanMarathon.gpx */,
 				A54818522DBB382500B3DA98 /* CebuMarathon.gpx */,
-				A54818532DBB382500B3DA98 /* CopenhagenMarathon.gpx */,
 				A54818542DBB382500B3DA98 /* LeedsMarathon.gpx */,
-				A54818562DBB382500B3DA98 /* ManchesterMarathon.gpx */,
-				A54818572DBB382500B3DA98 /* NunavutMarathon.gpx */,
-				A54818582DBB382500B3DA98 /* OmahaMarathon.gpx */,
 				A54818592DBB382500B3DA98 /* ParisMarathon.gpx */,
 				A548185A2DBB382500B3DA98 /* RomeMarathon.gpx */,
 				A548185B2DBB382500B3DA98 /* SeoulMarathon.gpx */,
 				A548185C2DBB382500B3DA98 /* ShakespeareMarathon.gpx */,
-				A548185D2DBB382500B3DA98 /* StLouisMarathon.gpx */,
-				A548185E2DBB382500B3DA98 /* StPeteMarathon.gpx */,
 				A548185F2DBB382500B3DA98 /* TokyoMarathon.gpx */,
 				A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */,
 				A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */,
@@ -585,20 +565,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */,
-				A54818642DBB382500B3DA98 /* NunavutMarathon.gpx in Resources */,
 				A54818662DBB382500B3DA98 /* VenturaMarathon.gpx in Resources */,
-				A54818672DBB382500B3DA98 /* CopenhagenMarathon.gpx in Resources */,
-				A54818682DBB382500B3DA98 /* StPeteMarathon.gpx in Resources */,
 				A54818692DBB382500B3DA98 /* ParisMarathon.gpx in Resources */,
 				A548186C2DBB382500B3DA98 /* BhutanMarathon.gpx in Resources */,
-				A548186D2DBB382500B3DA98 /* ManchesterMarathon.gpx in Resources */,
 				A548186E2DBB382500B3DA98 /* ShakespeareMarathon.gpx in Resources */,
 				A548186F2DBB382500B3DA98 /* CebuMarathon.gpx in Resources */,
 				A54818702DBB382500B3DA98 /* LeedsMarathon.gpx in Resources */,
 				A54818712DBB382500B3DA98 /* RomeMarathon.gpx in Resources */,
 				A54818722DBB382500B3DA98 /* TokyoMarathon.gpx in Resources */,
-				A54818742DBB382500B3DA98 /* StLouisMarathon.gpx in Resources */,
-				A54818752DBB382500B3DA98 /* OmahaMarathon.gpx in Resources */,
 				A54818762DBB382500B3DA98 /* SeoulMarathon.gpx in Resources */,
 				A54818772DBB382500B3DA98 /* TucsonMarathon.gpx in Resources */,
 				A54818782DBB382500B3DA98 /* VancouverMarathon.gpx in Resources */,
