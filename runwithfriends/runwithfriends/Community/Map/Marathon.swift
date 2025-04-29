@@ -26,7 +26,7 @@ struct MarathonData {
         var currentWeek = Date.currentWeek()
         
         // add marathon testing
-//        currentWeek = 29
+//        currentWeek = 33
         
         return marathons.first { marathon in
             marathon.weekOfYear == currentWeek
@@ -145,7 +145,26 @@ struct MarathonData {
                  centerCoordinate: CLLocationCoordinate2D(latitude: 35.68341106232136, longitude: 139.734212182128),
                  span: MKCoordinateSpan(latitudeDelta: 0.09969001968974567, longitudeDelta: 0.21647832730556615)
                 ),
+        
+        Marathon(title: "Tucson\nMarathon\nin steps",
+                 weekOfYear: 30,
+                 gpxFileName: "TucsonMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 32.21879980087396, longitude: -110.9817106432445),
+                 span: MKCoordinateSpan(latitudeDelta: 0.09449783568575754, longitudeDelta: 0.19854600953998158)
+                ),
+        
+        Marathon(title: "Vancouver\nMarathon\nin steps",
+                 weekOfYear: 31,
+                 gpxFileName: "VancouverMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 49.264796255442356, longitude: -123.17579659928514),
+                 span: MKCoordinateSpan(latitudeDelta: 0.2398689119721169, longitudeDelta: 0.2007784404449069)
+                ),
+        
+        Marathon(title: "Ventura\nMarathon\nin steps",
+                 weekOfYear: 32,
+                 gpxFileName: "VenturaMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 34.37907239741961, longitude: -119.25616223627699),
+                 span: MKCoordinateSpan(latitudeDelta: 0.2912229149009491, longitudeDelta: 0.19273914347496657)
+                ),
     ]
 }
-
-// add kaunas to leeds 28

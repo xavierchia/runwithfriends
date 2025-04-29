@@ -159,7 +159,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         // add marathon testing
-//        print("\(mapView.region.span) \(mapView.centerCoordinate)")
+        print("\(mapView.region.span) \(mapView.centerCoordinate)")
         
         if isZoomedIn() {
             peaMapViewDelegate?.updateZoomLabel(labelString: "Zoom Out")

@@ -68,7 +68,6 @@
 		A54818762DBB382500B3DA98 /* SeoulMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185B2DBB382500B3DA98 /* SeoulMarathon.gpx */; };
 		A54818772DBB382500B3DA98 /* TucsonMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */; };
 		A54818782DBB382500B3DA98 /* VancouverMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */; };
-		A54818792DBB382500B3DA98 /* ZurichMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818632DBB382500B3DA98 /* ZurichMarathon.gpx */; };
 		A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4442E2D5B1CE8003F632A /* StepCounter.swift */; };
 		A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E394D82D67FC13009BBC93 /* KeychainManager.swift */; };
 		A5E394F42D6C0F40009BBC93 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A5E394F32D6C0F40009BBC93 /* Supabase */; };
@@ -177,7 +176,6 @@
 		A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TucsonMarathon.gpx; sourceTree = "<group>"; };
 		A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VancouverMarathon.gpx; sourceTree = "<group>"; };
 		A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VenturaMarathon.gpx; sourceTree = "<group>"; };
-		A54818632DBB382500B3DA98 /* ZurichMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ZurichMarathon.gpx; sourceTree = "<group>"; };
 		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StepCounter.swift; path = ../StepCounter.swift; sourceTree = "<group>"; };
 		A5E394D82D67FC13009BBC93 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
@@ -384,7 +382,6 @@
 				A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */,
 				A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */,
 				A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */,
-				A54818632DBB382500B3DA98 /* ZurichMarathon.gpx */,
 			);
 			path = Marathons;
 			sourceTree = "<group>";
@@ -576,7 +573,6 @@
 				A54818762DBB382500B3DA98 /* SeoulMarathon.gpx in Resources */,
 				A54818772DBB382500B3DA98 /* TucsonMarathon.gpx in Resources */,
 				A54818782DBB382500B3DA98 /* VancouverMarathon.gpx in Resources */,
-				A54818792DBB382500B3DA98 /* ZurichMarathon.gpx in Resources */,
 				95F85B4F2B71AAEC005A705A /* README.md in Resources */,
 				95813B622BB4E76400B12525 /* NYCMarathon.gpx in Resources */,
 				95A42DFB2D93E488001022DE /* OkinawaMarathon.gpx in Resources */,
