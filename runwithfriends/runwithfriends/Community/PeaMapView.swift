@@ -48,7 +48,7 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         }
         
         if Date().timeIntervalSince(lastZoomedOut) > 60 * 5 {
-            self.setRegion(currentMarathon.region, animated: true)
+            setRegionAnimated(currentMarathon.region)
             self.lastZoomedOut = Date()
         }
     }
@@ -171,9 +171,15 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
 
 
 extension PeaMapView {
+    private func setRegionAnimated(_ region: MKCoordinateRegion) {
+        UIView.animate(withDuration: 1.5) {
+            self.setRegion(region, animated: true)
+        }
+    }
+    
     func zoomInOrOut(currentUserId: String) {
         if isZoomedIn() {
-            self.setRegion(currentMarathon.region, animated: true)
+            setRegionAnimated(currentMarathon.region)
             peaMapViewDelegate?.updateZoomLabel(labelString: "Zoom In")
         } else {
             zoomToCurrentUserContext(currentUserId: currentUserId)
@@ -246,7 +252,9 @@ extension PeaMapView {
         let rect = mapRectThatFits(annotations: annotationsToInclude)
         
         // Set the visible region
-        self.setVisibleMapRect(rect, animated: true)
+        UIView.animate(withDuration: 1.5) {
+            self.setVisibleMapRect(rect, animated: true)
+        }
     }
 
     // Helper function to calculate a map rect that includes all specified annotations
