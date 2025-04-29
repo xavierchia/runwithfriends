@@ -79,9 +79,10 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         self.addAnnotation(startPin)
         
         // add ending flag
-        guard let lastCoordinate = coordinates.last else { return }
-        let endPin = EmojiAnnotation(emojiImage: OriginalUIImage(emojiString: "🏁"), identifier: "end")
-        endPin.coordinate = lastCoordinate
+        guard let lastCoordinate = stepCoordinates.last else { return }
+        let steps = Int(lastCoordinate.steps).valueKM
+        let endPin = EmojiAnnotation(titleString: "Finish: \(steps)", emojiImage: OriginalUIImage(emojiString: "🏁"), identifier: "end")
+        endPin.coordinate = lastCoordinate.coordinate
         self.addAnnotation(endPin)
     }
     

@@ -42,10 +42,8 @@ class EmojiAnnotation: MKPointAnnotation {
         
         self.color = identifier == "user" ? .lightAccent : .white
         
-        if identifier == "user" || identifier == "other" {
-            title = titleString
-            subtitle = subtitleString
-        }
+        title = titleString
+        subtitle = subtitleString
     }
 }
 
