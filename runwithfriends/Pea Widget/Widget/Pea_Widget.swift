@@ -10,12 +10,13 @@ struct Pea_WidgetEntryView : View {
         VStack(alignment: .leading, spacing: 6) {
             // Header with steps count
             Text("TODAY'S STEPS")
-                .font(Font.quicksandBold(size: 12))
+                .font(Font.quicksandBold(size: 15))
                 .foregroundColor(.gray)
+                .frame(maxWidth: .infinity, alignment: .center)
             
             if entry.friends.isEmpty {
                 Text("\(entry.steps)")
-                    .font(.quicksandBold(size: 28))
+                    .font(.quicksandBold(size: 15))
             } else {
                 Divider()
                 
@@ -24,13 +25,13 @@ struct Pea_WidgetEntryView : View {
                     ForEach(entry.friends, id: \.user_id) { friend in
                         HStack {
                             Text("\(friend.ranking) \(friend.username)")
-                                .font(Font.quicksandSemiBold(size: 14))
+                                .font(Font.quicksandBold(size: 15))
                                 .lineLimit(1)
                             
                             Spacer()
                             
                             Text("\(friend.steps)")
-                                .font(Font.quicksand(size: 14))
+                                .font(Font.quicksandMedium(size: 15))
                         }
                     }
                 }
