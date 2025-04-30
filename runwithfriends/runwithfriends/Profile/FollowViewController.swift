@@ -73,6 +73,8 @@ class FollowViewController: UIViewController {
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.keyboardType = .numberPad
+        
         navigationItem.searchController = searchController
     }
     
