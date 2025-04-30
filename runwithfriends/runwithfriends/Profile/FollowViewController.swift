@@ -165,14 +165,28 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.isFollowing.toggle()
                 self?.handleFollowUser(user: item)
             } else {
-                cell.isFollowing.toggle()
-                self?.handleUnfollowUser(user: item)
+                let alert = UIAlertController(
+                    title: "Unfollow",
+                    message: "Stop following \(item.username) \(item.emoji)?",
+                    preferredStyle: .alert
+                )
                 
-                if tableView == self?.resultsTableVC.tableView,
-                   let row = self?.mainTableArray.firstIndex(where: {$0.user_id == item.user_id}) {
-                    let indexPath = IndexPath(row: row, section: 0)
-                    self?.mainTableView.reloadRows(at: [indexPath], with: .automatic)
-                }
+                alert.addAction(UIAlertAction(title: "Cancel", style: .default))
+                
+                alert.addAction(UIAlertAction(title: "Unfollow", style: .destructive) { _ in
+                    cell.isFollowing.toggle()
+                    self?.handleUnfollowUser(user: item)
+                    
+                    if tableView == self?.resultsTableVC.tableView,
+                       let row = self?.mainTableArray.firstIndex(where: {$0.user_id == item.user_id}) {
+                        let indexPath = IndexPath(row: row, section: 0)
+                        self?.mainTableView.reloadRows(at: [indexPath], with: .automatic)
+                    }
+                })
+                
+                self?.present(alert, animated: true)
+                
+
             }
         }
         

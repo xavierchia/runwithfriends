@@ -15,7 +15,7 @@ class FollowCell: UITableViewCell {
     var isFollowing = false {
         didSet {
             if isFollowing {
-                actionButton.setTitle("Following", for: .normal)
+                actionButton.setTitle("Unfollow", for: .normal)
                 actionButton.setTitleColor(.baseText, for: .normal)
                 actionButton.backgroundColor = .clear
                 actionButton.layer.cornerRadius = 5
