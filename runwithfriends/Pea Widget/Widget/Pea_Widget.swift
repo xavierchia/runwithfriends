@@ -10,14 +10,12 @@ struct Pea_WidgetEntryView : View {
         VStack(alignment: .leading, spacing: 6) {
             // Header with steps count
             Text("TODAY'S STEPS")
-                .font(.caption)
-                .fontWeight(.bold)
+                .font(Font.quicksandBold(size: 12))
                 .foregroundColor(.gray)
             
             if entry.friends.isEmpty {
                 Text("\(entry.steps)")
-                    .font(.title)
-                    .fontWeight(.bold)
+                    .font(.quicksandBold(size: 28))
             } else {
                 Divider()
                 
@@ -26,14 +24,13 @@ struct Pea_WidgetEntryView : View {
                     ForEach(entry.friends, id: \.user_id) { friend in
                         HStack {
                             Text("\(friend.ranking) \(friend.username)")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
+                                .font(Font.quicksandSemiBold(size: 14))
                                 .lineLimit(1)
                             
                             Spacer()
                             
                             Text("\(friend.steps)")
-                                .font(.subheadline)
+                                .font(Font.quicksand(size: 14))
                         }
                     }
                 }
@@ -94,5 +91,27 @@ extension ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
         intent.favoriteEmoji = "🤩"
         return intent
+    }
+}
+
+extension Font {
+    public static func quicksandBold(size: CGFloat) -> Font {
+        Font.custom("Quicksand-Bold", size: size)
+    }
+    
+    public static func quicksandSemiBold(size: CGFloat) -> Font {
+        Font.custom("Quicksand-SemiBold", size: size)
+    }
+    
+    public static func quicksandMedium(size: CGFloat) -> Font {
+        Font.custom("Quicksand-Medium", size: size)
+    }
+    
+    public static func quicksand(size: CGFloat) -> Font {
+        Font.custom("Quicksand-Regular", size: size)
+    }
+    
+    public static func quicksandLight(size: CGFloat) -> Font {
+        Font.custom("Quicksand-Light", size: size)
     }
 }

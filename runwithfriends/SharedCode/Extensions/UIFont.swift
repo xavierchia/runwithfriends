@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension UIFont {
     public static func KefirBold(size: CGFloat) -> UIFont {
