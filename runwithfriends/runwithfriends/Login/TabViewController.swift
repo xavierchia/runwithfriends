@@ -33,13 +33,18 @@ class TabViewController: UITabBarController {
         communityVC.tabBarItem.image = UIImage(systemName: "globe.europe.africa")
         communityVC.tabBarItem.selectedImage = UIImage(systemName: "globe.europe.africa.fill")
         
+        let graphVC = GraphViewController()
+        graphVC.tabBarItem.title = "Graphs"
+        graphVC.tabBarItem.image = UIImage(systemName: "chart.bar")
+        graphVC.tabBarItem.selectedImage = UIImage(systemName: "chart.bar.fill")
+        
         let profileVC = ProfileViewController(with: userData)
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem.title = "Profile"
         profileNav.tabBarItem.image = UIImage(systemName: "person")
         profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
         
-        setViewControllers([communityVC, profileNav], animated: false)
+        setViewControllers([communityVC, graphVC, profileNav], animated: false)
         self.selectedIndex = 0
         // for testing
 //        self.selectedIndex = 1

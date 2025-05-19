@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		257EC7A52B882FFE000759A8 /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257EC7A42B882FFE000759A8 /* Progression.swift */; };
 		951D1A652B32675F00171C62 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A642B32675F00171C62 /* Auth */; };
 		951D1A672B32675F00171C62 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A662B32675F00171C62 /* Functions */; };
 		951D1A692B32675F00171C62 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 951D1A682B32675F00171C62 /* PostgREST */; };
@@ -25,7 +24,6 @@
 		9536C16F2AF9ADA100263871 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9536C16E2AF9ADA100263871 /* UserData.swift */; };
 		953D209D2B7D973500A32185 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D209C2B7D973500A32185 /* ViewController.swift */; };
 		95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95457DFB2AF8C31400E4414C /* ProfileViewController.swift */; };
-		955151242B91583A001AD26B /* DistanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955151232B91583A001AD26B /* DistanceViewController.swift */; };
 		9557F76C2B350794002CAE30 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76B2B350794002CAE30 /* AlertController.swift */; };
 		9557F7702B35706D002CAE30 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9557F76F2B35706D002CAE30 /* User.swift */; };
 		95659B8E2AEF1FA4008D7BA8 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95659B8D2AEF1FA4008D7BA8 /* Labels.swift */; };
@@ -57,6 +55,7 @@
 		A51A55922D8BB32500D5D818 /* SharedCode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A51A557C2D8BB32500D5D818 /* SharedCode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A531425E2D826F3100382837 /* PeaMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425D2D826F3100382837 /* PeaMapView.swift */; };
 		A53142602D827C3A00382837 /* PathSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425F2D827C3A00382837 /* PathSearch.swift */; };
+		A5347F6A2DDAB81B00C18880 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5347F692DDAB81B00C18880 /* GraphViewController.swift */; };
 		A54818662DBB382500B3DA98 /* VenturaMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */; };
 		A54818692DBB382500B3DA98 /* ParisMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818592DBB382500B3DA98 /* ParisMarathon.gpx */; };
 		A548186C2DBB382500B3DA98 /* BhutanMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548184E2DBB382500B3DA98 /* BhutanMarathon.gpx */; };
@@ -119,7 +118,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		257EC7A42B882FFE000759A8 /* Progression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		951D1A702B326F1000171C62 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		952825B02AE1F74D0032B04B /* runwithfriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runwithfriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		952825B32AE1F74D0032B04B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -133,7 +131,6 @@
 		9536C16E2AF9ADA100263871 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		953D209C2B7D973500A32185 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		95457DFB2AF8C31400E4414C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		955151232B91583A001AD26B /* DistanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceViewController.swift; sourceTree = "<group>"; };
 		9557F76B2B350794002CAE30 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		9557F76F2B35706D002CAE30 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		95659B8D2AEF1FA4008D7BA8 /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
@@ -165,6 +162,7 @@
 		A51A557C2D8BB32500D5D818 /* SharedCode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SharedCode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A531425D2D826F3100382837 /* PeaMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PeaMapView.swift; path = ../PeaMapView.swift; sourceTree = "<group>"; };
 		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PathSearch.swift; path = ../PathSearch.swift; sourceTree = "<group>"; };
+		A5347F692DDAB81B00C18880 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		A548184E2DBB382500B3DA98 /* BhutanMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BhutanMarathon.gpx; sourceTree = "<group>"; };
 		A54818522DBB382500B3DA98 /* CebuMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CebuMarathon.gpx; sourceTree = "<group>"; };
 		A54818542DBB382500B3DA98 /* LeedsMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LeedsMarathon.gpx; sourceTree = "<group>"; };
@@ -296,7 +294,7 @@
 				9536C1702AF9AED800263871 /* App */,
 				9536C1712AF9AEE700263871 /* Login */,
 				95DBAC4F2BA18175002037F1 /* Community */,
-				955151222B915811001AD26B /* DistanceArchived */,
+				A5347F682DDAB7E300C18880 /* Graph */,
 				95457DFA2AF8C2F300E4414C /* Profile */,
 				95659B8C2AEF1F9B008D7BA8 /* Extensions */,
 				95D16BD22AFCD3C700AF3B89 /* AssetsCoreData */,
@@ -338,15 +336,6 @@
 				95FF68372DA5240B002BD296 /* FollowCell.swift */,
 			);
 			path = Profile;
-			sourceTree = "<group>";
-		};
-		955151222B915811001AD26B /* DistanceArchived */ = {
-			isa = PBXGroup;
-			children = (
-				955151232B91583A001AD26B /* DistanceViewController.swift */,
-				257EC7A42B882FFE000759A8 /* Progression.swift */,
-			);
-			path = DistanceArchived;
 			sourceTree = "<group>";
 		};
 		95659B8C2AEF1F9B008D7BA8 /* Extensions */ = {
@@ -418,6 +407,14 @@
 				A577BF832D82880D00E3789B /* GroupsArchived */,
 			);
 			path = Community;
+			sourceTree = "<group>";
+		};
+		A5347F682DDAB7E300C18880 /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				A5347F692DDAB81B00C18880 /* GraphViewController.swift */,
+			);
+			path = Graph;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -630,14 +627,13 @@
 				A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */,
 				9557F76C2B350794002CAE30 /* AlertController.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
-				955151242B91583A001AD26B /* DistanceViewController.swift in Sources */,
 				95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
 				95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
-				257EC7A52B882FFE000759A8 /* Progression.swift in Sources */,
 				A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
+				A5347F6A2DDAB81B00C18880 /* GraphViewController.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
 				95877BC32B042F7500A81839 /* Cell.swift in Sources */,
 			);
