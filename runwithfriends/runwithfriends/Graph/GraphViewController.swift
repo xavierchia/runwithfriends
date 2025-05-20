@@ -8,11 +8,30 @@
 import UIKit
 
 class GraphViewController: UIViewController {
+    
+    private let userData: UserData
+        
+    init(with userData: UserData) {
+        self.userData = userData
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemPink
-        // Do any additional setup after loading the view.
+        setupNavigationController()
+        
+        view.backgroundColor = .baseBackground
     }
 
+    private func setupNavigationController() {
+        self.navigationItem.title = "Graphs"
+        navigationItem.largeTitleDisplayMode = .always
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    }
 }
