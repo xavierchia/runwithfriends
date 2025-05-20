@@ -27,7 +27,7 @@ class GraphViewController: UIViewController {
         view.backgroundColor = .baseBackground
         
         Task {
-            let steps = await StepCounter.shared.getSteps12Weeks()
+            let steps = await GraphMachine.shared.getSteps12Weeks()
             print(steps)
         }
     }
