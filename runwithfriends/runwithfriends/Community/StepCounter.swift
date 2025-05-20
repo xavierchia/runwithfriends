@@ -11,7 +11,8 @@ import WidgetKit
 import CoreMotion
 import SharedCode
 
-struct DateSteps {
+struct DateSteps: Identifiable {
+    let id = UUID()
     let date: Date  // Start date of the period
     let steps: Double
 }

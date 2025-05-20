@@ -57,6 +57,7 @@
 		A53142602D827C3A00382837 /* PathSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531425F2D827C3A00382837 /* PathSearch.swift */; };
 		A5347F6A2DDAB81B00C18880 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5347F692DDAB81B00C18880 /* GraphViewController.swift */; };
 		A534E20C2DDC55D0006B866D /* GraphMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A534E20B2DDC55D0006B866D /* GraphMachine.swift */; };
+		A534E20E2DDC57C0006B866D /* StepsGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = A534E20D2DDC57C0006B866D /* StepsGraph.swift */; };
 		A54818662DBB382500B3DA98 /* VenturaMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */; };
 		A54818692DBB382500B3DA98 /* ParisMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818592DBB382500B3DA98 /* ParisMarathon.gpx */; };
 		A548186C2DBB382500B3DA98 /* BhutanMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548184E2DBB382500B3DA98 /* BhutanMarathon.gpx */; };
@@ -165,6 +166,7 @@
 		A531425F2D827C3A00382837 /* PathSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PathSearch.swift; path = ../PathSearch.swift; sourceTree = "<group>"; };
 		A5347F692DDAB81B00C18880 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		A534E20B2DDC55D0006B866D /* GraphMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMachine.swift; sourceTree = "<group>"; };
+		A534E20D2DDC57C0006B866D /* StepsGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsGraph.swift; sourceTree = "<group>"; };
 		A548184E2DBB382500B3DA98 /* BhutanMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BhutanMarathon.gpx; sourceTree = "<group>"; };
 		A54818522DBB382500B3DA98 /* CebuMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CebuMarathon.gpx; sourceTree = "<group>"; };
 		A54818542DBB382500B3DA98 /* LeedsMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LeedsMarathon.gpx; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 			children = (
 				A5347F692DDAB81B00C18880 /* GraphViewController.swift */,
 				A534E20B2DDC55D0006B866D /* GraphMachine.swift */,
+				A534E20D2DDC57C0006B866D /* StepsGraph.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A534E20E2DDC57C0006B866D /* StepsGraph.swift in Sources */,
 				95FF666A2DA0C57F002BD296 /* FollowViewController.swift in Sources */,
 				952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */,
 				951D1A712B326F1000171C62 /* Supabase.swift in Sources */,

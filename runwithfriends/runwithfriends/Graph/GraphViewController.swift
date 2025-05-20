@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class GraphViewController: UIViewController {
     
@@ -27,8 +28,18 @@ class GraphViewController: UIViewController {
         view.backgroundColor = .baseBackground
         
         Task {
-            let steps = await GraphMachine.shared.getSteps12Weeks()
-            print(steps)
+            let dateSteps = await GraphMachine.shared.getSteps12Weeks()
+            let controller = UIHostingController(rootView: StepsGraph(dateSteps: dateSteps))
+            guard let stepsGraphView = controller.view else { return }
+            
+            view.addSubview(stepsGraphView)
+            stepsGraphView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                stepsGraphView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                stepsGraphView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                stepsGraphView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                stepsGraphView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            ])
         }
     }
 
