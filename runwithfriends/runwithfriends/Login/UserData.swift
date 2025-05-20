@@ -27,7 +27,7 @@ class UserData {
         self.user = user
     }
     
-    func updateStepsIfNeeded(dailySteps: [DailySteps]) {
+    func updateStepsIfNeeded(dailySteps: [DateSteps]) {
         Task {
             if let lastSync = lastServerSync,
                 Date().timeIntervalSince(lastSync) < minimumSyncInterval {

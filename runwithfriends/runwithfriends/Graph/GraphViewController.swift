@@ -25,6 +25,11 @@ class GraphViewController: UIViewController {
         setupNavigationController()
         
         view.backgroundColor = .baseBackground
+        
+        Task {
+            let steps = await StepCounter.shared.getSteps12Weeks()
+            print(steps)
+        }
     }
 
     private func setupNavigationController() {
