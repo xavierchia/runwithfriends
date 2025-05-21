@@ -29,31 +29,44 @@ struct StepsGraph: View {
     }
     
     var body: some View {
-        Chart(dateSteps) { dateSteps in
+        Chart(dateSteps) { item in
+            let isLast = weekNumber(from: item.date) == maxWeek
+            
             LineMark(
-                x: .value("Week", weekNumber(from: dateSteps.date)),
-                y: .value("Steps", dateSteps.steps)
+                x: .value("Week", weekNumber(from: item.date)),
+                y: .value("Steps", item.steps)
             )
             .foregroundStyle(.moss)
             
             PointMark(
-                x: .value("Week", weekNumber(from: dateSteps.date)),
-                y: .value("Steps", dateSteps.steps)
+                x: .value("Week", weekNumber(from: item.date)),
+                y: .value("Steps", item.steps)
             )
             .foregroundStyle(.moss)
-            .annotation(position: .top) {
-                Text("\(String(format: "%.0f", (dateSteps.steps / 1000)))k")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .padding(4)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.white.opacity(0.8))
-                    )
+            .annotation(position: isLast ? .topLeading : .top) {
+                if isLast {
+                    Text("This week:\n\(String(format: "%.0f", (item.steps / 1000)))k")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.white.opacity(0.8))
+                        )
+                } else {
+                    Text("\(String(format: "%.0f", (item.steps / 1000)))k")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.white.opacity(0.8))
+                        )
+                }
             }
         }
         .chartXScale(domain: minWeek...maxWeek)
-        .chartXAxisLabel {
+        .chartXAxisLabel(position: .bottom, alignment: .center) {
             Text("Week")
                 .foregroundColor(.gray)
         }
@@ -63,7 +76,15 @@ struct StepsGraph: View {
                 .foregroundColor(.gray)
         }
         .chartYAxis {
-            AxisMarks(position: .leading)
+            AxisMarks(position: .leading) { value in
+                AxisGridLine()
+                AxisTick()
+                AxisValueLabel {
+                    if let steps = value.as(Double.self) {
+                        Text("\(String(format: "%.0f", steps / 1000))k")
+                    }
+                }
+            }
         }
         
         .chartBackground { _ in
