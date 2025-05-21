@@ -9,6 +9,46 @@ import Foundation
 import SwiftUI
 import Charts
 
+import Foundation
+import SwiftUI
+import Charts
+
+// Custom pulsing dot animation view
+struct PulsingDot: View {
+    let color: Color
+    
+    // Animation state
+    @State private var isAnimating = false
+    
+    var body: some View {
+        ZStack {
+            // Growing and fading outer ring
+            Circle()
+                .fill(color)
+                .opacity(isAnimating ? 0 : 0.5)
+                .frame(width: 10, height: 10)
+                .scaleEffect(isAnimating ? 4 : 1)
+                // Using easeOut animation to start fast and end slow
+                .animation(
+                    Animation.linear(duration: 2)
+                        .repeatForever(autoreverses: false),
+                    value: isAnimating
+                )
+            
+            // Solid center dot that never changes
+            Circle()
+                .fill(color)
+                .frame(width: 10, height: 10)
+        }
+        .onAppear {
+            // Short delay before starting animation to ensure view is fully rendered
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.isAnimating = true
+            }
+        }
+    }
+}
+
 struct StepsGraph: View {
     
     let dateSteps: [DateSteps]
@@ -31,7 +71,7 @@ struct StepsGraph: View {
     var body: some View {
         Chart {
             // Base chart content for previous weeks
-            ForEach(dateSteps) { item in
+            ForEach(dateSteps.dropLast()) { item in
                 LineMark(
                     x: .value("Week", weekNumber(from: item.date)),
                     y: .value("Steps", item.steps)
@@ -55,14 +95,44 @@ struct StepsGraph: View {
                 }
             }
             
-            // Add special blue point for current week
+            // Add line for the current week (connecting to previous point)
+            if let lastItem = dateSteps.last, dateSteps.count > 1 {
+                let previousItem = dateSteps[dateSteps.count - 2]
+                
+                // Create separate lines to avoid the type error
+                LineMark(
+                    x: .value("Week", weekNumber(from: previousItem.date)),
+                    y: .value("Steps", previousItem.steps)
+                )
+                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+                
+                LineMark(
+                    x: .value("Week", weekNumber(from: lastItem.date)),
+                    y: .value("Steps", lastItem.steps)
+                )
+                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+            }
+            
+            // Custom overlay for the pulsing dot at the last item's position
             if let lastItem = dateSteps.last {
                 PointMark(
                     x: .value("Week", weekNumber(from: lastItem.date)),
                     y: .value("Steps", lastItem.steps)
                 )
-                .foregroundStyle(by: .value("Series", "This Week"))
-                .symbolSize(100) // Make it slightly larger
+                .foregroundStyle(.clear) // Make the default point invisible
+                .annotation(position: .overlay) {
+                    PulsingDot(color: Color("AccentColor"))
+                }
+                .annotation(position: .top) {
+                    Text("\(String(format: "%.0f", (lastItem.steps / 1000)))k")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.white.opacity(0.8))
+                        )
+                }
             }
         }
         .chartForegroundStyleScale([
@@ -74,7 +144,6 @@ struct StepsGraph: View {
             Text("Week")
                 .foregroundColor(.gray)
         }
-        
         .chartYAxisLabel(position: .topLeading) {
             Text("Steps")
                 .foregroundColor(.gray)
