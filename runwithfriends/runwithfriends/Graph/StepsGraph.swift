@@ -29,31 +29,21 @@ struct StepsGraph: View {
     }
     
     var body: some View {
-        Chart(dateSteps) { item in
-            let isLast = weekNumber(from: item.date) == maxWeek
-            
-            LineMark(
-                x: .value("Week", weekNumber(from: item.date)),
-                y: .value("Steps", item.steps)
-            )
-            .foregroundStyle(.moss)
-            
-            PointMark(
-                x: .value("Week", weekNumber(from: item.date)),
-                y: .value("Steps", item.steps)
-            )
-            .foregroundStyle(.moss)
-            .annotation(position: isLast ? .topLeading : .top) {
-                if isLast {
-                    Text("This week:\n\(String(format: "%.0f", (item.steps / 1000)))k")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .padding(4)
-                        .background(
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color.white.opacity(0.8))
-                        )
-                } else {
+        Chart {
+            // Base chart content for previous weeks
+            ForEach(dateSteps) { item in
+                LineMark(
+                    x: .value("Week", weekNumber(from: item.date)),
+                    y: .value("Steps", item.steps)
+                )
+                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+                
+                PointMark(
+                    x: .value("Week", weekNumber(from: item.date)),
+                    y: .value("Steps", item.steps)
+                )
+                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+                .annotation(position: .top) {
                     Text("\(String(format: "%.0f", (item.steps / 1000)))k")
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -64,14 +54,28 @@ struct StepsGraph: View {
                         )
                 }
             }
+            
+            // Add special blue point for current week
+            if let lastItem = dateSteps.last {
+                PointMark(
+                    x: .value("Week", weekNumber(from: lastItem.date)),
+                    y: .value("Steps", lastItem.steps)
+                )
+                .foregroundStyle(by: .value("Series", "This Week"))
+                .symbolSize(100) // Make it slightly larger
+            }
         }
+        .chartForegroundStyleScale([
+            "Previous Weeks": .moss,
+            "This Week": Color("AccentColor")
+        ])
         .chartXScale(domain: minWeek...maxWeek)
         .chartXAxisLabel(position: .bottom, alignment: .center) {
             Text("Week")
                 .foregroundColor(.gray)
         }
         
-        .chartYAxisLabel {
+        .chartYAxisLabel(position: .topLeading) {
             Text("Steps")
                 .foregroundColor(.gray)
         }
@@ -86,10 +90,9 @@ struct StepsGraph: View {
                 }
             }
         }
-        
+        .chartLegend(position: .bottom, alignment: .center)
         .chartBackground { _ in
             Color(uiColor: .baseBackground)
         }
-        //        .background(Color(uiColor: .baseBackground))
     }
 }

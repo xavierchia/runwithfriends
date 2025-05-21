@@ -16,6 +16,8 @@ class CommunityViewController: UIViewController {
     
     // UI
     private let mapView = PeaMapView()
+    
+    private let waitingRoomTitle = UILabel()
     private let stepsTitle = UIImageView()
     private let weekSteps = UILabel()
     private let daySteps = UILabel()
@@ -50,6 +52,7 @@ class CommunityViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        waitingRoomTitle.text = MarathonData.getCurrentMarathon().title
         updateSteps()
         mapView.setMapRegion()
     }
@@ -131,8 +134,6 @@ class CommunityViewController: UIViewController {
     
     // MARK: Setup UI
     private func setupWaitingRoomTitle() {
-        let waitingRoomTitle = UILabel()
-        waitingRoomTitle.text = MarathonData.getCurrentMarathon().title
         waitingRoomTitle.font = UIFont.KefirBold(size: 28)
         waitingRoomTitle.numberOfLines = 0
         waitingRoomTitle.textAlignment = .left
@@ -176,21 +177,7 @@ class CommunityViewController: UIViewController {
             stepsTitle.widthAnchor.constraint(equalToConstant: 22),
             stepsTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             stepsTitle.heightAnchor.constraint(equalToConstant: 22),
-            stepsTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
-        ])
-        
-        weekSteps.font = UIFont.QuicksandMedium(size: 16)
-        weekSteps.text = "Week: 0 steps"
-        weekSteps.textAlignment = .left
-        weekSteps.textColor = .cream
-        weekSteps.backgroundColor = .clear
-        view.addSubview(weekSteps)
-        weekSteps.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            weekSteps.widthAnchor.constraint(equalToConstant: view.frame.width),
-            weekSteps.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            weekSteps.heightAnchor.constraint(equalToConstant: 40),
-            weekSteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            stepsTitle.topAnchor.constraint(equalTo: waitingRoomTitle.bottomAnchor, constant: 10),
         ])
         
         daySteps.font = UIFont.QuicksandMedium(size: 16)
@@ -203,8 +190,22 @@ class CommunityViewController: UIViewController {
         NSLayoutConstraint.activate([
             daySteps.widthAnchor.constraint(equalToConstant: view.frame.width),
             daySteps.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            daySteps.heightAnchor.constraint(equalToConstant: 40),
-            daySteps.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            daySteps.heightAnchor.constraint(equalToConstant: 30),
+            daySteps.topAnchor.constraint(equalTo: waitingRoomTitle.bottomAnchor, constant: 32),
+        ])
+        
+        weekSteps.font = UIFont.QuicksandMedium(size: 16)
+        weekSteps.text = "Week: 0 steps"
+        weekSteps.textAlignment = .left
+        weekSteps.textColor = .cream
+        weekSteps.backgroundColor = .clear
+        view.addSubview(weekSteps)
+        weekSteps.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            weekSteps.widthAnchor.constraint(equalToConstant: view.frame.width),
+            weekSteps.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            weekSteps.heightAnchor.constraint(equalToConstant: 30),
+            weekSteps.topAnchor.constraint(equalTo: waitingRoomTitle.bottomAnchor, constant: 52),
         ])
     }
 }
