@@ -26,8 +26,8 @@ struct PulsingDot: View {
             Circle()
                 .fill(color)
                 .opacity(isAnimating ? 0 : 0.5)
-                .frame(width: 10, height: 10)
-                .scaleEffect(isAnimating ? 4 : 1)
+                .frame(width: 12, height: 12)
+                .scaleEffect(isAnimating ? 2.5 : 1)
                 // Using easeOut animation to start fast and end slow
                 .animation(
                     Animation.linear(duration: 2)
@@ -38,7 +38,7 @@ struct PulsingDot: View {
             // Solid center dot that never changes
             Circle()
                 .fill(color)
-                .frame(width: 10, height: 10)
+                .frame(width: 12, height: 12)
         }
         .onAppear {
             // Short delay before starting animation to ensure view is fully rendered
@@ -68,21 +68,66 @@ struct StepsGraph: View {
         dateSteps.map { weekNumber(from: $0.date) }.max() ?? 0
     }
     
+    private func didAchieveMarathon(for item: DateSteps) -> Bool {
+        let week = weekNumber(from: item.date)
+        if let marathon = MarathonData.marathonsByWeekOfYear[week] {
+            return item.steps >= Double(marathon.steps)
+        } else {
+            // Fallback: if no marathon data, use 60k steps threshold
+            return item.steps >= 60000
+        }
+    }
+    
     var body: some View {
         Chart {
-            // Base chart content for previous weeks
+            // Base chart content for previous weeks - lines only
             ForEach(dateSteps.dropLast()) { item in
                 LineMark(
                     x: .value("Week", weekNumber(from: item.date)),
                     y: .value("Steps", item.steps)
                 )
-                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+                .foregroundStyle(.separate)
+                .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, dash: [5, 10]))
+            }
+            
+            // Point marks for previous weeks with conditional styling
+            ForEach(dateSteps.dropLast()) { item in
+                if didAchieveMarathon(for: item) {
+                    // Solid moss circle for marathon complete
+                    PointMark(
+                        x: .value("Week", weekNumber(from: item.date)),
+                        y: .value("Steps", item.steps)
+                    )
+                    .foregroundStyle(by: .value("Series", "Marathon complete"))
+                    .symbolSize(100)
+                } else {
+                    // Hollow moss circle for just walking
+                    PointMark(
+                        x: .value("Week", weekNumber(from: item.date)),
+                        y: .value("Steps", item.steps)
+                    )
+                    .foregroundStyle(by: .value("Series", "Just walking"))
+                    .symbolSize(100)
+                    .annotation(position: .overlay) {
+                        ZStack {
+                            // Background circle to hide line
+                            Circle()
+                                .fill(Color(uiColor: .baseBackground))
+                                .frame(width: 10, height: 10)
+                            // Hollow stroke
+                            Circle()
+                                .stroke(.moss, lineWidth: 3)
+                                .frame(width: 10, height: 10)
+                        }
+                    }
+                }
                 
+                // Step count annotation
                 PointMark(
                     x: .value("Week", weekNumber(from: item.date)),
                     y: .value("Steps", item.steps)
                 )
-                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+                .foregroundStyle(.clear)
                 .annotation(position: .top) {
                     Text("\(String(format: "%.0f", (item.steps / 1000)))k")
                         .font(.caption)
@@ -99,18 +144,17 @@ struct StepsGraph: View {
             if let lastItem = dateSteps.last, dateSteps.count > 1 {
                 let previousItem = dateSteps[dateSteps.count - 2]
                 
-                // Create separate lines to avoid the type error
                 LineMark(
                     x: .value("Week", weekNumber(from: previousItem.date)),
                     y: .value("Steps", previousItem.steps)
                 )
-                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+                .foregroundStyle(.separate)
                 
                 LineMark(
                     x: .value("Week", weekNumber(from: lastItem.date)),
                     y: .value("Steps", lastItem.steps)
                 )
-                .foregroundStyle(by: .value("Series", "Previous Weeks"))
+                .foregroundStyle(.separate)
             }
             
             // Custom overlay for the pulsing dot at the last item's position
@@ -119,7 +163,8 @@ struct StepsGraph: View {
                     x: .value("Week", weekNumber(from: lastItem.date)),
                     y: .value("Steps", lastItem.steps)
                 )
-                .foregroundStyle(.clear) // Make the default point invisible
+                .foregroundStyle(by: .value("Series", "This Week"))
+                .symbolSize(0) // Make invisible but contribute to legend
                 .annotation(position: .overlay) {
                     PulsingDot(color: Color("AccentColor"))
                 }
@@ -136,8 +181,13 @@ struct StepsGraph: View {
             }
         }
         .chartForegroundStyleScale([
-            "Previous Weeks": .moss,
+            "Marathon complete": .moss,
+            "Just walking": .clear, // Make the legend symbol transparent
             "This Week": Color("AccentColor")
+        ])
+        .chartSymbolScale([
+            "Marathon complete": .circle,
+            "Just walking": .circle
         ])
         .chartXScale(domain: minWeek...maxWeek)
         .chartXAxisLabel(position: .bottom, alignment: .center) {
@@ -159,7 +209,43 @@ struct StepsGraph: View {
                 }
             }
         }
-        .chartLegend(position: .bottom, alignment: .center)
+        .chartLegend(position: .bottom, alignment: .center) {
+            HStack {
+                // Marathon complete legend
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(.moss)
+                        .frame(width: 8, height: 8)
+                    Text("Marathon complete")
+                        .font(.caption)
+                        .foregroundColor(.primary)
+                }
+                
+                Spacer().frame(width: 16)
+                
+                // Just walking legend
+                HStack(spacing: 4) {
+                    Circle()
+                        .stroke(.moss, lineWidth: 2)
+                        .frame(width: 8, height: 8)
+                    Text("Just walking")
+                        .font(.caption)
+                        .foregroundColor(.primary)
+                }
+                
+                Spacer().frame(width: 16)
+                
+                // This week legend
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(Color("AccentColor"))
+                        .frame(width: 8, height: 8)
+                    Text("This Week")
+                        .font(.caption)
+                        .foregroundColor(.primary)
+                }
+            }
+        }
         .chartBackground { _ in
             Color(uiColor: .baseBackground)
         }
