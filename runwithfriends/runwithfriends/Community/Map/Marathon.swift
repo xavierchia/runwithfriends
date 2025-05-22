@@ -34,48 +34,56 @@ struct MarathonData {
     }
     
     static let marathons: [Marathon] = [
+        // 60120
         Marathon(title: "New York\nMarathon\nin steps",
                  weekOfYear: 13,
                  gpxFileName: "NYCMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 40.71588675681417, longitude: -74.01905943032843),
                  span: MKCoordinateSpan(latitudeDelta: 0.3298624346496055, longitudeDelta: 0.2226401886051832)),
         
+        // 60663
         Marathon(title: "Athens\nMarathon\nin steps",
                  weekOfYear: 14,
                  gpxFileName: "AthensMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 38.06201773742805, longitude: 23.88589039374063),
                  span: MKCoordinateSpan(latitudeDelta: 0.599918268596987, longitudeDelta: 0.4158423986708186)),
         
+        // 60818
         Marathon(title: "Boston\nMarathon\nin steps",
                  weekOfYear: 15,
                  gpxFileName: "BostonMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 42.31878632648681, longitude: -71.29739497153169),
                  span: MKCoordinateSpan(latitudeDelta: 0.7585921151221342, longitudeDelta: 0.5603891477298788)),
         
+        // 62482
         Marathon(title: "Calais\nMarathon\nin steps",
                  weekOfYear: 16,
                  gpxFileName: "CalaisMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 50.85608676017052, longitude: 1.7105548327002038),
                  span: MKCoordinateSpan(latitudeDelta: 0.3812118753885656, longitudeDelta: 0.32985037175532916)),
 
+        // 60136
         Marathon(title: "Fuerte\nMarathon\nin steps",
                  weekOfYear: 17,
                  gpxFileName: "FuerteMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 28.719594780727697, longitude: -13.941798763458294),
                  span: MKCoordinateSpan(latitudeDelta: 0.2792011533932701, longitudeDelta: 0.17389747861078142)),
         
+        // 63791
         Marathon(title: "Great\nOcean Road\nMarathon\nin steps",
                  weekOfYear: 18,
                  gpxFileName: "GreatOceanRoadMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: -38.657069530296695, longitude: 143.81591198965228),
                  span: MKCoordinateSpan(latitudeDelta: 0.5782065330188715, longitudeDelta: 0.40444118260995765)),
         
+        // 60467
         Marathon(title: "Kaunas\nMarathon\nin steps",
                  weekOfYear: 19,
                  gpxFileName: "KaunasMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 54.912947755642, longitude: 23.941856384123014),
                  span: MKCoordinateSpan(latitudeDelta: 0.3099376061539729, longitudeDelta: 0.29451538824405077)),
         
+        // 59269
         Marathon(title: "Okinawa\nMarathon\nin steps",
                  weekOfYear: 20,
                  gpxFileName: "OkinawaMarathon",
@@ -83,6 +91,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.2286997701270863, longitudeDelta: 0.13938997600371295)
                 ),
         
+        // 60275
         Marathon(title: "Round Auckland\nMarathon\nin steps",
                  weekOfYear: 21,
                  gpxFileName: "RoundAucklandMarathon",
@@ -90,6 +99,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.2893701533702995, longitudeDelta: 0.19759768594875027)
                 ),
         
+        // 60119
         Marathon(title: "Bhutan\nMarathon\nin steps",
                  weekOfYear: 22,
                  gpxFileName: "BhutanMarathon",
@@ -97,6 +107,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.47246024620439897, longitudeDelta: 0.2914376030924615)
                 ),
         
+        // 60204
         Marathon(title: "Cebu\nMarathon\nin steps",
                  weekOfYear: 23,
                  gpxFileName: "CebuMarathon",
@@ -104,6 +115,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.24144596343587565, longitudeDelta: 0.1340376173466069)
                 ),
         
+        // 61361
         Marathon(title: "Leeds\nMarathon\nin steps",
                  weekOfYear: 24,
                  gpxFileName: "LeedsMarathon",
@@ -111,6 +123,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.20655971566657882, longitudeDelta: 0.191351140349989)
                 ),
         
+        // 60343
         Marathon(title: "Paris\nMarathon\nin steps",
                  weekOfYear: 25,
                  gpxFileName: "ParisMarathon",
@@ -118,6 +131,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.165476641290347, longitudeDelta: 0.3486521109872509)
                 ),
         
+        // 61146
         Marathon(title: "Rome\nMarathon\nin steps",
                  weekOfYear: 26,
                  gpxFileName: "RomeMarathon",
@@ -125,6 +139,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.12882686076494565, longitudeDelta: 0.09454053780581262)
                 ),
         
+        // 60757
         Marathon(title: "Seoul\nMarathon\nin steps",
                  weekOfYear: 27,
                  gpxFileName: "SeoulMarathon",
@@ -132,6 +147,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.14455122532028497, longitudeDelta: 0.2599643409570689)
                 ),
         
+        // 60610
         Marathon(title: "Shakespeare\nMarathon\nin steps",
                  weekOfYear: 28,
                  gpxFileName: "ShakespeareMarathon",
@@ -139,6 +155,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.13991856117871038, longitudeDelta: 0.1245929145218927)
                 ),
         
+        // 61020
         Marathon(title: "Tokyo\nMarathon\nin steps",
                  weekOfYear: 29,
                  gpxFileName: "TokyoMarathon",
@@ -146,6 +163,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.09969001968974567, longitudeDelta: 0.21647832730556615)
                 ),
         
+        // 60033
         Marathon(title: "Tucson\nMarathon\nin steps",
                  weekOfYear: 30,
                  gpxFileName: "TucsonMarathon",
@@ -153,6 +171,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.09449783568575754, longitudeDelta: 0.19854600953998158)
                 ),
         
+        // 61168
         Marathon(title: "Vancouver\nMarathon\nin steps",
                  weekOfYear: 31,
                  gpxFileName: "VancouverMarathon",
@@ -160,6 +179,7 @@ struct MarathonData {
                  span: MKCoordinateSpan(latitudeDelta: 0.2398689119721169, longitudeDelta: 0.2007784404449069)
                 ),
         
+        // 60741
         Marathon(title: "Ventura\nMarathon\nin steps",
                  weekOfYear: 32,
                  gpxFileName: "VenturaMarathon",
