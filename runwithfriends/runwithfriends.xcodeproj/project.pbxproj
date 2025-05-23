@@ -69,6 +69,8 @@
 		A54818762DBB382500B3DA98 /* SeoulMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185B2DBB382500B3DA98 /* SeoulMarathon.gpx */; };
 		A54818772DBB382500B3DA98 /* TucsonMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */; };
 		A54818782DBB382500B3DA98 /* VancouverMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */; };
+		A5A1ACA72DE06067004D86A2 /* PulsingDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */; };
+		A5A1ACA92DE06089004D86A2 /* ToggleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */; };
 		A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4442E2D5B1CE8003F632A /* StepCounter.swift */; };
 		A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E394D82D67FC13009BBC93 /* KeychainManager.swift */; };
 		A5E394F42D6C0F40009BBC93 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A5E394F32D6C0F40009BBC93 /* Supabase */; };
@@ -178,6 +180,8 @@
 		A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TucsonMarathon.gpx; sourceTree = "<group>"; };
 		A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VancouverMarathon.gpx; sourceTree = "<group>"; };
 		A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VenturaMarathon.gpx; sourceTree = "<group>"; };
+		A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingDot.swift; sourceTree = "<group>"; };
+		A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleHeader.swift; sourceTree = "<group>"; };
 		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StepCounter.swift; path = ../StepCounter.swift; sourceTree = "<group>"; };
 		A5E394D82D67FC13009BBC93 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
@@ -419,6 +423,8 @@
 				A5347F692DDAB81B00C18880 /* GraphViewController.swift */,
 				A534E20B2DDC55D0006B866D /* GraphMachine.swift */,
 				A534E20D2DDC57C0006B866D /* StepsGraph.swift */,
+				A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */,
+				A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -621,6 +627,7 @@
 				95AD49302D95261800EC03D5 /* Marathon.swift in Sources */,
 				9557F7702B35706D002CAE30 /* User.swift in Sources */,
 				95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */,
+				A5A1ACA72DE06067004D86A2 /* PulsingDot.swift in Sources */,
 				95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */,
 				95966EB42AF329450086DABB /* TabViewController.swift in Sources */,
 				952CEECF2B9AFC760034BBF6 /* ProgressView.swift in Sources */,
@@ -641,6 +648,7 @@
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
 				A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
+				A5A1ACA92DE06089004D86A2 /* ToggleHeader.swift in Sources */,
 				A5347F6A2DDAB81B00C18880 /* GraphViewController.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
 				95877BC32B042F7500A81839 /* Cell.swift in Sources */,
@@ -816,7 +824,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -858,7 +866,7 @@
 				CODE_SIGN_ENTITLEMENTS = runwithfriends/runwithfriends.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = runwithfriends/Info.plist;
@@ -973,7 +981,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";
@@ -1004,7 +1012,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Pea WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = T4CL79J5Y8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pea Widget/Info.plist";

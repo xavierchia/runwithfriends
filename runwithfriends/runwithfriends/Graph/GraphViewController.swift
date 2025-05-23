@@ -28,16 +28,16 @@ class GraphViewController: UIViewController {
         view.backgroundColor = .baseBackground
         
         Task {
-            let dateSteps = await GraphMachine.shared.getSteps12Weeks()
+//            let dateSteps = await GraphMachine.shared.getSteps12Weeks()
             
             // for testing
-//            let calendar = Calendar.current
-//            let dateSteps = [
-//                DateSteps(date: calendar.date(byAdding: .day, value: -21, to: Date())!, steps: 50000),
-//                DateSteps(date: calendar.date(byAdding: .day, value: -14, to: Date())!, steps: 50000),
-//                DateSteps(date: calendar.date(byAdding: .day, value: -7, to: Date())!, steps: 50000),
-//                DateSteps(date: Date(), steps: 120000)
-//            ]
+            let calendar = Calendar.current
+            let dateSteps = [
+                DateSteps(date: calendar.date(byAdding: .day, value: -21, to: Date())!, steps: 50000),
+                DateSteps(date: calendar.date(byAdding: .day, value: -14, to: Date())!, steps: 50000),
+                DateSteps(date: calendar.date(byAdding: .day, value: -7, to: Date())!, steps: 50000),
+                DateSteps(date: Date(), steps: 120000)
+            ]
             
             let controller = UIHostingController(rootView: StepsGraph(dateSteps: dateSteps))
             guard let stepsGraphView = controller.view else { return }
