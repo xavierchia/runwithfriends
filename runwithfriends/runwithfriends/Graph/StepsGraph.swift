@@ -8,10 +8,7 @@
 import Foundation
 import SwiftUI
 import Charts
-
-import Foundation
-import SwiftUI
-import Charts
+import SharedCode
 
 // Custom pulsing dot animation view
 struct PulsingDot: View {
@@ -128,9 +125,9 @@ struct StepsGraph: View {
                     y: .value("Steps", item.steps)
                 )
                 .foregroundStyle(.clear)
-                .annotation(position: .top) {
+                .annotation(position: .top, spacing: 10) {
                     Text("\(String(format: "%.0f", (item.steps / 1000)))k")
-                        .font(.caption)
+                        .font(.quicksand(size: 12))
                         .foregroundColor(.secondary)
                         .padding(4)
                         .background(
@@ -165,18 +162,18 @@ struct StepsGraph: View {
                 )
                 .foregroundStyle(by: .value("Series", "This Week"))
                 .symbolSize(0) // Make invisible but contribute to legend
-                .annotation(position: .overlay) {
-                    PulsingDot(color: Color("AccentColor"))
-                }
-                .annotation(position: .top) {
+                .annotation(position: .top, spacing: 10) {
                     Text("\(String(format: "%.0f", (lastItem.steps / 1000)))k")
-                        .font(.caption)
+                        .font(.quicksand(size: 12))
                         .foregroundColor(.secondary)
                         .padding(4)
                         .background(
                             RoundedRectangle(cornerRadius: 4)
                                 .fill(Color.white.opacity(0.8))
                         )
+                }
+                .annotation(position: .overlay) {
+                    PulsingDot(color: Color("AccentColor"))
                 }
             }
         }
@@ -190,13 +187,28 @@ struct StepsGraph: View {
             "Just walking": .circle
         ])
         .chartXScale(domain: minWeek...maxWeek)
-        .chartXAxisLabel(position: .bottom, alignment: .center) {
+        .chartXAxisLabel(position: .bottom, alignment: .leading, spacing: 3) {
             Text("Week")
+                .font(.quicksandMedium(size: 12))
                 .foregroundColor(.gray)
         }
-        .chartYAxisLabel(position: .topLeading) {
+        .chartYAxisLabel(position: .top, alignment: .leading, spacing: 10) {
             Text("Steps")
+                .font(.quicksandMedium(size: 12))
                 .foregroundColor(.gray)
+        }
+        .chartXAxis {
+            AxisMarks(position: .bottom) { value in
+                AxisGridLine()
+                AxisTick()
+                AxisValueLabel {
+                    if let week = value.as(Int.self) {
+                        Text("\(week)")
+                            .font(.quicksand(size: 12))
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
         }
         .chartYAxis {
             AxisMarks(position: .leading) { value in
@@ -205,6 +217,7 @@ struct StepsGraph: View {
                 AxisValueLabel {
                     if let steps = value.as(Double.self) {
                         Text("\(String(format: "%.0f", steps / 1000))k")
+                        .font(.quicksand(size: 12))
                     }
                 }
             }
@@ -217,8 +230,8 @@ struct StepsGraph: View {
                         .fill(.moss)
                         .frame(width: 8, height: 8)
                     Text("Marathon complete")
-                        .font(.caption)
-                        .foregroundColor(.primary)
+                        .font(.quicksand(size: 12))
+                        .foregroundColor(.baseText)
                 }
                 
                 Spacer().frame(width: 16)
@@ -229,8 +242,8 @@ struct StepsGraph: View {
                         .stroke(.moss, lineWidth: 2)
                         .frame(width: 8, height: 8)
                     Text("Just walking")
-                        .font(.caption)
-                        .foregroundColor(.primary)
+                        .font(.quicksand(size: 12))
+                        .foregroundColor(.baseText)
                 }
                 
                 Spacer().frame(width: 16)
@@ -241,8 +254,8 @@ struct StepsGraph: View {
                         .fill(Color("AccentColor"))
                         .frame(width: 8, height: 8)
                     Text("This Week")
-                        .font(.caption)
-                        .foregroundColor(.primary)
+                        .font(.quicksand(size: 12))
+                        .foregroundColor(.baseText)
                 }
             }
         }

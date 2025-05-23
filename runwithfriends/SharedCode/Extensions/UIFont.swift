@@ -51,3 +51,25 @@ extension UIFont {
         UIFont(name: "Quicksand-Light", size: size) ?? UIFont.systemFont(ofSize: size, weight: .light)
     }
 }
+
+extension Font {
+    public static func quicksandBold(size: CGFloat) -> Font {
+        return Font(UIFont.QuicksandBold(size: size))
+    }
+    
+    public static func quicksandSemiBold(size: CGFloat) -> Font {
+        return Font(UIFont.QuicksandSemiBold(size: size))
+    }
+    
+    public static func quicksandMedium(size: CGFloat) -> Font {
+        return Font(UIFont.QuicksandMedium(size: size))
+    }
+    
+    public static func quicksand(size: CGFloat) -> Font {
+        return Font(UIFont.Quicksand(size: size))
+    }
+    
+    public static func quicksandLight(size: CGFloat) -> Font {
+        return Font(UIFont.QuicksandLight(size: size))
+    }
+}
