@@ -27,31 +27,96 @@ struct DayStepsChart: View {
         Calendar.current.isDate(date, inSameDayAs: Date())
     }
     
-    private func didAchieveTarget(for item: DateSteps) -> Bool {
-        // For daily view, let's use a simpler target like 10k steps
-        return item.steps >= 10000
-    }
-    
     var body: some View {
         Chart {
-            ForEach(sortedDateSteps) { item in
-                BarMark(
+            // Base chart content for previous days - lines only
+            ForEach(sortedDateSteps.filter { !isToday($0.date) }) { item in
+                LineMark(
                     x: .value("Day", dayFormatter().string(from: item.date)),
                     y: .value("Steps", item.steps)
                 )
-                .foregroundStyle(isToday(item.date) ? Color("AccentColor") : (didAchieveTarget(for: item) ? .moss : .gray.opacity(0.6)))
-                .cornerRadius(4)
-                .annotation(position: .top, spacing: 4) {
+                .foregroundStyle(.separate)
+                .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, dash: [5, 10]))
+            }
+            
+            // Point marks for previous days
+            ForEach(sortedDateSteps.filter { !isToday($0.date) }) { item in
+                PointMark(
+                    x: .value("Day", dayFormatter().string(from: item.date)),
+                    y: .value("Steps", item.steps)
+                )
+                .foregroundStyle(by: .value("Series", "Previous days"))
+                .symbolSize(100)
+                
+                // Step count annotation
+                PointMark(
+                    x: .value("Day", dayFormatter().string(from: item.date)),
+                    y: .value("Steps", item.steps)
+                )
+                .foregroundStyle(.clear)
+                .annotation(position: .top, spacing: 10) {
                     Text("\(String(format: "%.0f", (item.steps / 1000)))k")
-                        .font(.quicksand(size: 10))
+                        .font(.quicksand(size: 12))
                         .foregroundColor(.secondary)
+                        .padding(4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.white.opacity(0.8))
+                        )
+                }
+            }
+            
+            // Add line connecting to today if there are previous days
+            if let todayItem = sortedDateSteps.first(where: { isToday($0.date) }),
+               let previousItem = sortedDateSteps.filter({ !isToday($0.date) }).last {
+                
+                LineMark(
+                    x: .value("Day", dayFormatter().string(from: previousItem.date)),
+                    y: .value("Steps", previousItem.steps)
+                )
+                .foregroundStyle(.separate)
+                
+                LineMark(
+                    x: .value("Day", dayFormatter().string(from: todayItem.date)),
+                    y: .value("Steps", todayItem.steps)
+                )
+                .foregroundStyle(.separate)
+            }
+            
+            // Custom overlay for the pulsing dot at today's position
+            if let todayItem = sortedDateSteps.first(where: { isToday($0.date) }) {
+                PointMark(
+                    x: .value("Day", dayFormatter().string(from: todayItem.date)),
+                    y: .value("Steps", todayItem.steps)
+                )
+                .foregroundStyle(by: .value("Series", "Today"))
+                .symbolSize(0) // Make invisible but contribute to legend
+                .annotation(position: .top, spacing: 10) {
+                    Text("\(String(format: "%.0f", (todayItem.steps / 1000)))k")
+                        .font(.quicksand(size: 12))
+                        .foregroundColor(.secondary)
+                        .padding(4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.white.opacity(0.8))
+                        )
+                }
+                .annotation(position: .overlay) {
+                    PulsingDot(color: Color("AccentColor"))
                 }
             }
         }
+        .chartForegroundStyleScale([
+            "Previous days": .moss,
+            "Today": Color("AccentColor")
+        ])
+        .chartSymbolScale([
+            "Previous days": .circle
+        ])
         .chartXAxis {
             AxisMarks(position: .bottom) { value in
-                AxisGridLine(stroke: StrokeStyle(lineWidth: 0))
-                AxisTick(stroke: StrokeStyle(lineWidth: 0))
+                AxisGridLine()
+                AxisTick()
                 AxisValueLabel {
                     if let day = value.as(String.self) {
                         Text(day)
@@ -73,18 +138,14 @@ struct DayStepsChart: View {
                 }
             }
         }
-        .chartBackground { _ in
-            Color(uiColor: .baseBackground)
-        }
-        .overlay(alignment: .bottom) {
-            // Custom legend for day view
+        .chartLegend(position: .bottom, alignment: .center) {
             HStack {
-                // Target achieved legend
+                // Previous days legend
                 HStack(spacing: 4) {
-                    RoundedRectangle(cornerRadius: 2)
+                    Circle()
                         .fill(.moss)
-                        .frame(width: 12, height: 8)
-                    Text("Target hit (10k+)")
+                        .frame(width: 8, height: 8)
+                    Text("Previous days")
                         .font(.quicksand(size: 12))
                         .foregroundColor(.baseText)
                 }
@@ -93,15 +154,17 @@ struct DayStepsChart: View {
                 
                 // Today legend
                 HStack(spacing: 4) {
-                    RoundedRectangle(cornerRadius: 2)
+                    Circle()
                         .fill(Color("AccentColor"))
-                        .frame(width: 12, height: 8)
+                        .frame(width: 8, height: 8)
                     Text("Today")
                         .font(.quicksand(size: 12))
                         .foregroundColor(.baseText)
                 }
             }
-            .padding(.top, 20)
+        }
+        .chartBackground { _ in
+            Color(uiColor: .baseBackground)
         }
     }
 }

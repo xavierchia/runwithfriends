@@ -29,7 +29,7 @@ struct StepsGraph: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 15) {
             // Interactive header
             StepsToggleHeader(selectedMode: $chartMode)
             
