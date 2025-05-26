@@ -20,13 +20,6 @@ struct StepsGraph: View {
     @State private var chartMode: ChartMode = .week
     @State private var weekData: [DateSteps] = []
     @State private var dayData: [DateSteps] = []
-    @State private var isLoadingWeek = false
-    @State private var isLoadingDay = false
-    @State private var errorMessage: String?
-    
-    // Cache flags to track what we've loaded
-    @State private var hasLoadedWeekData = false
-    @State private var hasLoadedDayData = false
     
     // Debug mode for testing with dummy data
     private let useDummyData: Bool
@@ -40,37 +33,28 @@ struct StepsGraph: View {
             // Interactive header
             StepsToggleHeader(selectedMode: $chartMode)
             
-            // Chart content with loading states
+            // Chart content
             Group {
                 switch chartMode {
                 case .day:
-                    if isLoadingDay {
-                        loadingView
-                    } else if dayData.isEmpty && hasLoadedDayData {
-                        emptyStateView(for: "daily")
+                    if dayData.isEmpty {
+                        ProgressView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
                         DayStepsChart(dateSteps: dayData)
                     }
                     
                 case .week:
-                    if isLoadingWeek {
-                        loadingView
-                    } else if weekData.isEmpty && hasLoadedWeekData {
-                        emptyStateView(for: "weekly")
+                    if weekData.isEmpty {
+                        ProgressView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
                         WeekStepsChart(dateSteps: weekData)
                     }
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .animation(.easeInOut(duration: 0.3), value: chartMode)
-            
-            // Error message if any
-            if let errorMessage = errorMessage {
-                Text(errorMessage)
-                    .font(.quicksand(size: 12))
-                    .foregroundColor(.red)
-                    .padding(.top, 8)
-            }
         }
         .background(.baseBackground)
         .onAppear {
@@ -79,40 +63,6 @@ struct StepsGraph: View {
         .onChange(of: chartMode) { _, newMode in
             loadDataForMode(newMode)
         }
-    }
-    
-    // MARK: - Loading and Empty States
-    
-    private var loadingView: some View {
-        VStack {
-            ProgressView()
-                .scaleEffect(1.2)
-            Text("Loading steps data...")
-                .font(.quicksand(size: 14))
-                .foregroundColor(.secondary)
-                .padding(.top, 8)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 200)
-        .background(Color(uiColor: .baseBackground))
-    }
-    
-    private func emptyStateView(for dataType: String) -> some View {
-        VStack {
-            Image(systemName: "figure.walk")
-                .font(.system(size: 40))
-                .foregroundColor(.secondary)
-            Text("No \(dataType) data available")
-                .font(.quicksand(size: 16))
-                .foregroundColor(.secondary)
-                .padding(.top, 8)
-            Text("Start walking to see your progress!")
-                .font(.quicksand(size: 12))
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 200)
-        .background(Color(uiColor: .baseBackground))
     }
     
     // MARK: - Data Loading
@@ -133,13 +83,9 @@ struct StepsGraph: View {
     
     private func loadWeekData() {
         // Don't reload if we already have data
-        guard !hasLoadedWeekData else { return }
-        
-        isLoadingWeek = true
-        errorMessage = nil
+        guard weekData.isEmpty else { return }
         
         Task {
-            
             var data = await GraphMachine.shared.getSteps12Weeks()
             
             if useDummyData {
@@ -148,18 +94,13 @@ struct StepsGraph: View {
             
             await MainActor.run {
                 self.weekData = data
-                self.hasLoadedWeekData = true
-                self.isLoadingWeek = false
             }
         }
     }
     
     private func loadDayData() {
         // Don't reload if we already have data
-        guard !hasLoadedDayData else { return }
-        
-        isLoadingDay = true
-        errorMessage = nil
+        guard dayData.isEmpty else { return }
         
         Task {
             var data = await StepCounter.shared.getStepsForDateRange(.rollingWeek)
@@ -170,8 +111,6 @@ struct StepsGraph: View {
             
             await MainActor.run {
                 self.dayData = data
-                self.hasLoadedDayData = true
-                self.isLoadingDay = false
             }
         }
     }
@@ -179,9 +118,7 @@ struct StepsGraph: View {
     // MARK: - Public Methods for Refresh
     
     func refreshData() {
-        // Clear cache flags and reload current mode
-        hasLoadedWeekData = false
-        hasLoadedDayData = false
+        // Clear data and reload current mode
         weekData = []
         dayData = []
         loadDataForMode(chartMode)
@@ -191,11 +128,9 @@ struct StepsGraph: View {
         // Refresh only the current mode
         switch chartMode {
         case .week:
-            hasLoadedWeekData = false
             weekData = []
             loadWeekData()
         case .day:
-            hasLoadedDayData = false
             dayData = []
             loadDayData()
         }
