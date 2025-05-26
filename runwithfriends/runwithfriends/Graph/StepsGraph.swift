@@ -61,6 +61,11 @@ struct StepsGraph: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onAppear {
+                // Set custom page indicator colors
+                UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color.baseText)
+                UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color.secondary)
+            }
         }
         .background(.baseBackground)
         .onAppear {
