@@ -71,6 +71,8 @@
 		A54818782DBB382500B3DA98 /* VancouverMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */; };
 		A5A1ACA72DE06067004D86A2 /* PulsingDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */; };
 		A5A1ACA92DE06089004D86A2 /* ToggleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */; };
+		A5A1AD112DE3F34C004D86A2 /* WeekStepsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1AD102DE3F34C004D86A2 /* WeekStepsChart.swift */; };
+		A5A1AD132DE3F359004D86A2 /* DayStepsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1AD122DE3F359004D86A2 /* DayStepsChart.swift */; };
 		A5A4442F2D5B1CE8003F632A /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A4442E2D5B1CE8003F632A /* StepCounter.swift */; };
 		A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E394D82D67FC13009BBC93 /* KeychainManager.swift */; };
 		A5E394F42D6C0F40009BBC93 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A5E394F32D6C0F40009BBC93 /* Supabase */; };
@@ -182,6 +184,8 @@
 		A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VenturaMarathon.gpx; sourceTree = "<group>"; };
 		A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingDot.swift; sourceTree = "<group>"; };
 		A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleHeader.swift; sourceTree = "<group>"; };
+		A5A1AD102DE3F34C004D86A2 /* WeekStepsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekStepsChart.swift; sourceTree = "<group>"; };
+		A5A1AD122DE3F359004D86A2 /* DayStepsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayStepsChart.swift; sourceTree = "<group>"; };
 		A5A4442E2D5B1CE8003F632A /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StepCounter.swift; path = ../StepCounter.swift; sourceTree = "<group>"; };
 		A5E394D82D67FC13009BBC93 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		A5E5593E2D55A34100CF6245 /* Pea WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pea WidgetExtension.entitlements"; sourceTree = "<group>"; };
@@ -423,6 +427,8 @@
 				A5347F692DDAB81B00C18880 /* GraphViewController.swift */,
 				A534E20B2DDC55D0006B866D /* GraphMachine.swift */,
 				A534E20D2DDC57C0006B866D /* StepsGraph.swift */,
+				A5A1AD102DE3F34C004D86A2 /* WeekStepsChart.swift */,
+				A5A1AD122DE3F359004D86A2 /* DayStepsChart.swift */,
 				A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */,
 				A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */,
 			);
@@ -643,11 +649,13 @@
 				9557F76C2B350794002CAE30 /* AlertController.swift in Sources */,
 				952825B42AE1F74D0032B04B /* AppDelegate.swift in Sources */,
 				95B8E3392BAC6450003AB055 /* ParseGPX.swift in Sources */,
+				A5A1AD112DE3F34C004D86A2 /* WeekStepsChart.swift in Sources */,
 				952825B62AE1F74D0032B04B /* SceneDelegate.swift in Sources */,
 				95BC85312B0ECA9E00DD81BB /* NavigationController.swift in Sources */,
 				952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */,
 				A5E394D92D67FC13009BBC93 /* KeychainManager.swift in Sources */,
 				95AC658B2B0227860084FF15 /* UIView.swift in Sources */,
+				A5A1AD132DE3F359004D86A2 /* DayStepsChart.swift in Sources */,
 				A5A1ACA92DE06089004D86A2 /* ToggleHeader.swift in Sources */,
 				A5347F6A2DDAB81B00C18880 /* GraphViewController.swift in Sources */,
 				95D16BCD2AFCCA9300AF3B89 /* Prefixes.swift in Sources */,
