@@ -13,6 +13,17 @@ import SharedCode
 struct DayStepsChart: View {
     let dateSteps: [DateSteps]
     
+    // Add fake data point for spacing
+    private var chartData: [DateSteps] {
+        guard let lastItem = sortedDateSteps.last else { return sortedDateSteps }
+        
+        let calendar = Calendar.current
+        let fakeDate = calendar.date(byAdding: .day, value: 1, to: lastItem.date) ?? lastItem.date
+        let fakeDataPoint = DateSteps(date: fakeDate, steps: lastItem.steps) // Use same steps as last real point
+        
+        return sortedDateSteps + [fakeDataPoint]
+    }
+    
     private var sortedDateSteps: [DateSteps] {
         dateSteps.sorted { $0.date < $1.date }
     }
@@ -29,7 +40,7 @@ struct DayStepsChart: View {
     
     var body: some View {
         Chart {
-            // Base chart content for previous days - lines only
+            // Base chart content for previous days - lines only (exclude fake point)
             ForEach(sortedDateSteps.filter { !isToday($0.date) }) { item in
                 LineMark(
                     x: .value("Day", dayFormatter().string(from: item.date)),
@@ -39,7 +50,7 @@ struct DayStepsChart: View {
                 .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, dash: [5, 10]))
             }
             
-            // Point marks for previous days
+            // Point marks for previous days (exclude fake point)
             ForEach(sortedDateSteps.filter { !isToday($0.date) }) { item in
                 PointMark(
                     x: .value("Day", dayFormatter().string(from: item.date)),
@@ -66,7 +77,7 @@ struct DayStepsChart: View {
                 }
             }
             
-            // Add line connecting to today if there are previous days
+            // Add line connecting to today if there are previous days - only use real data
             if let todayItem = sortedDateSteps.first(where: { isToday($0.date) }),
                let previousItem = sortedDateSteps.filter({ !isToday($0.date) }).last {
                 
@@ -104,6 +115,16 @@ struct DayStepsChart: View {
                 .annotation(position: .overlay) {
                     PulsingDot(color: Color("AccentColor"))
                 }
+            }
+            
+            // Add invisible fake data point to extend chart bounds
+            if let fakePoint = chartData.last, fakePoint.date != sortedDateSteps.last?.date {
+                PointMark(
+                    x: .value("Day", dayFormatter().string(from: fakePoint.date)),
+                    y: .value("Steps", fakePoint.steps)
+                )
+                .foregroundStyle(.clear)
+                .symbolSize(0)
             }
         }
         .chartForegroundStyleScale([

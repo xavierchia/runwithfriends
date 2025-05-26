@@ -13,6 +13,17 @@ import SharedCode
 struct WeekStepsChart: View {
     let dateSteps: [DateSteps]
     
+    // Add fake data point for spacing
+    private var chartData: [DateSteps] {
+        guard let lastItem = dateSteps.last else { return dateSteps }
+        
+        let calendar = Calendar.current
+        let fakeDate = calendar.date(byAdding: .weekOfYear, value: 1, to: lastItem.date) ?? lastItem.date
+        let fakeDataPoint = DateSteps(date: fakeDate, steps: lastItem.steps) // Use same steps as last real point
+        
+        return dateSteps + [fakeDataPoint]
+    }
+    
     private func weekNumber(from date: Date) -> Int {
         var calendar = Calendar.current
         calendar.firstWeekday = 2  // 2 corresponds to Monday
@@ -21,11 +32,11 @@ struct WeekStepsChart: View {
     }
     
     private var minWeek: Int {
-        dateSteps.map { weekNumber(from: $0.date) }.min() ?? 0
+        chartData.map { weekNumber(from: $0.date) }.min() ?? 0
     }
     
     private var maxWeek: Int {
-        dateSteps.map { weekNumber(from: $0.date) }.max() ?? 0
+        chartData.map { weekNumber(from: $0.date) }.max() ?? 0
     }
     
     private func didAchieveMarathon(for item: DateSteps) -> Bool {
@@ -40,7 +51,7 @@ struct WeekStepsChart: View {
     
     var body: some View {
         Chart {
-            // Base chart content for previous weeks - lines only
+            // Base chart content for previous weeks - lines only (exclude fake point)
             ForEach(dateSteps.dropLast()) { item in
                 LineMark(
                     x: .value("Week", weekNumber(from: item.date)),
@@ -50,7 +61,7 @@ struct WeekStepsChart: View {
                 .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, dash: [5, 10]))
             }
             
-            // Point marks for previous weeks with conditional styling
+            // Point marks for previous weeks with conditional styling (exclude fake point)
             ForEach(dateSteps.dropLast()) { item in
                 if didAchieveMarathon(for: item) {
                     // Solid moss circle for marathon complete
@@ -100,7 +111,7 @@ struct WeekStepsChart: View {
                 }
             }
             
-            // Add line for the current week (connecting to previous point)
+            // Add line for the current week (connecting to previous point) - only use real data
             if let lastItem = dateSteps.last, dateSteps.count > 1 {
                 let previousItem = dateSteps[dateSteps.count - 2]
                 
@@ -117,7 +128,7 @@ struct WeekStepsChart: View {
                 .foregroundStyle(.separate)
             }
             
-            // Custom overlay for the pulsing dot at the last item's position
+            // Custom overlay for the pulsing dot at the last REAL item's position
             if let lastItem = dateSteps.last {
                 PointMark(
                     x: .value("Week", weekNumber(from: lastItem.date)),
@@ -138,6 +149,16 @@ struct WeekStepsChart: View {
                 .annotation(position: .overlay) {
                     PulsingDot(color: Color("AccentColor"))
                 }
+            }
+            
+            // Add invisible fake data point to extend chart bounds
+            if let fakePoint = chartData.last, fakePoint.date != dateSteps.last?.date {
+                PointMark(
+                    x: .value("Week", weekNumber(from: fakePoint.date)),
+                    y: .value("Steps", fakePoint.steps)
+                )
+                .foregroundStyle(.clear)
+                .symbolSize(0)
             }
         }
         .chartForegroundStyleScale([

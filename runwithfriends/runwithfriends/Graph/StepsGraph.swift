@@ -33,26 +33,34 @@ struct StepsGraph: View {
             // Interactive header
             StepsToggleHeader(selectedMode: $chartMode)
             
-            // Chart content
-            Group {
-                switch chartMode {
-                case .day:
+            // Swipeable chart content with page dots
+            TabView(selection: $chartMode) {
+                // Day view
+                VStack {
                     if dayData.isEmpty {
                         loadingView
                     } else {
                         DayStepsChart(dateSteps: dayData)
+                            .padding(.top, 10)
+                            .padding(.bottom, 50)
                     }
-                    
-                case .week:
+                }
+                .tag(ChartMode.day)
+                
+                // Week view
+                VStack {
                     if weekData.isEmpty {
                         loadingView
                     } else {
                         WeekStepsChart(dateSteps: weekData)
+                            .padding(.top, 10)
+                            .padding(.bottom, 50)
                     }
                 }
+                .tag(ChartMode.week)
             }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .animation(.easeInOut(duration: 0.3), value: chartMode)
         }
         .background(.baseBackground)
         .onAppear {
@@ -84,6 +92,7 @@ struct StepsGraph: View {
     private func loadInitialData() {
         // Load data for the default mode (week)
         loadDataForMode(chartMode)
+        loadDataForMode(.day)
     }
     
     private func loadDataForMode(_ mode: ChartMode) {
