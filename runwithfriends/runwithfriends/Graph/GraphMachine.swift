@@ -19,10 +19,13 @@ struct GraphMachine {
         // Calculate date ranges
         let currentWeekStart = Date.startOfWeek() // Your existing method to get Monday of current week
         let elevenWeeksAgo = calendar.date(byAdding: .weekOfYear, value: -11, to: currentWeekStart)!
+        
         let lastWeekEnd = calendar.date(byAdding: .day, value: -1, to: currentWeekStart)!
+        // Make sure lastWeekEnd is end of day (23:59:59)
+        let lastWeekEndOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: lastWeekEnd)!
         
         // 1. Get historical data (weeks 1-11) using efficient HealthKit weekly query
-        var historicalWeeks = await getHealthkitWeeklySteps(from: elevenWeeksAgo, to: lastWeekEnd)
+        var historicalWeeks = await getHealthkitWeeklySteps(from: elevenWeeksAgo, to: lastWeekEndOfDay)
         
         // 2. Get current week data using existing method
         let currentWeekDailySteps = await StepCounter.shared.getStepsForWeek()
