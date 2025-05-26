@@ -11,6 +11,7 @@ import SwiftUI
 class GraphViewController: UIViewController {
     
     private let userData: UserData
+    private var hostingController: UIHostingController<StepsGraph>?
         
     init(with userData: UserData) {
         self.userData = userData
@@ -24,33 +25,16 @@ class GraphViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationController()
+        setupStepsGraph()
         
         view.backgroundColor = .baseBackground
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        Task {
-//            let dateSteps = await GraphMachine.shared.getSteps12Weeks()
-            
-            // for testing
-            let calendar = Calendar.current
-            let dateSteps = [
-                DateSteps(date: calendar.date(byAdding: .day, value: -21, to: Date())!, steps: 50000),
-                DateSteps(date: calendar.date(byAdding: .day, value: -14, to: Date())!, steps: 50000),
-                DateSteps(date: calendar.date(byAdding: .day, value: -7, to: Date())!, steps: 50000),
-                DateSteps(date: Date(), steps: 120000)
-            ]
-            
-            let controller = UIHostingController(rootView: StepsGraph(dateSteps: dateSteps))
-            guard let stepsGraphView = controller.view else { return }
-            
-            view.addSubview(stepsGraphView)
-            stepsGraphView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                stepsGraphView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                stepsGraphView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                stepsGraphView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-                stepsGraphView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-            ])
-        }
+        // Refresh data when view appears (in case user switched from other tabs)
+        refreshStepsGraph()
     }
 
     private func setupNavigationController() {
@@ -59,5 +43,42 @@ class GraphViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    }
+    
+    private func setupStepsGraph() {
+        // Use dummy data in simulator for testing
+        #if targetEnvironment(simulator)
+        let stepsGraph = StepsGraph(useDummyData: true)
+        #else
+        let stepsGraph = StepsGraph(useDummyData: false)
+        #endif
+        
+        let controller = UIHostingController(rootView: stepsGraph)
+        
+        // Store reference for potential refresh calls
+        self.hostingController = controller
+        
+        guard let stepsGraphView = controller.view else { return }
+        
+        // Add to view hierarchy
+        addChild(controller)
+        view.addSubview(stepsGraphView)
+        controller.didMove(toParent: self)
+        
+        // Setup constraints
+        stepsGraphView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stepsGraphView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stepsGraphView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stepsGraphView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            stepsGraphView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
+    }
+    
+    private func refreshStepsGraph() {
+        // Refresh the current mode's data when view appears
+        if let hostingController = hostingController {
+            hostingController.rootView.refreshCurrentMode()
+        }
     }
 }

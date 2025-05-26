@@ -17,6 +17,16 @@ struct DateSteps: Identifiable {
     let steps: Double
 }
 
+enum DateRange {
+    case currentWeek        // Monday of current week to today
+    case rolling(days: Int) // Last N days from today
+    case custom(start: Date, end: Date)
+    
+    // Convenience static properties
+    static let rollingWeek = DateRange.rolling(days: 7)
+    static let rollingMonth = DateRange.rolling(days: 30)
+}
+
 class StepCounter {
     private let pedometer = CMPedometer()
     let healthStore = HKHealthStore()
@@ -29,16 +39,17 @@ class StepCounter {
     
     private init() {}
     
-    func getStepsForWeek() async -> [DateSteps] {
+    // New flexible method
+    func getStepsForDateRange(_ dateRange: DateRange = .currentWeek) async -> [DateSteps] {
         // Request HealthKit permission first
         let healthKitAuthorized = await requestHealthKitPermission()
         
-        // Get the week's date range
-        let weekRange = getWeekToDateRange()
+        // Calculate the actual date range based on the enum
+        let calculatedRange = calculateDateRange(for: dateRange)
         
-        // Get steps from both sources for the whole week
-        async let healthKitSteps = healthKitAuthorized ? await getStepsFromHealthKit(from: weekRange.start, to: weekRange.end) : [:]
-        async let coreMotionSteps = await getStepsFromCoreMotion(from: weekRange.start, to: weekRange.end)
+        // Get steps from both sources for the calculated range
+        async let healthKitSteps = healthKitAuthorized ? await getStepsFromHealthKit(from: calculatedRange.start, to: calculatedRange.end) : [:]
+        async let coreMotionSteps = await getStepsFromCoreMotion(from: calculatedRange.start, to: calculatedRange.end)
         
         // Await both results
         let (hkSteps, cmSteps) = await (healthKitSteps, coreMotionSteps)
@@ -48,27 +59,60 @@ class StepCounter {
         let calendar = Calendar.current
         let today = Date()
         
-        // Calculate days between start of week and today (inclusive)
-        let components = calendar.dateComponents([.day], from: calendar.startOfDay(for: weekRange.start), to: calendar.startOfDay(for: today))
-        let daysToProcess = min((components.day ?? 0) + 1, 7)
-        
-        for dayOffset in 0..<daysToProcess {
-            let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: weekRange.start)!
-            let startOfDay = calendar.startOfDay(for: dayDate)
+        // Generate daily data for the range
+        var currentDate = calculatedRange.start
+        while currentDate < calculatedRange.end {
+            let startOfDay = calendar.startOfDay(for: currentDate)
             
-            let hkCount = hkSteps[startOfDay] ?? 0
-            let cmCount = cmSteps[startOfDay] ?? 0
-            let finalCount = max(hkCount, cmCount)
-            
-            combinedSteps.append(DateSteps(date: startOfDay, steps: finalCount))
-            
-            // Update widget if this is today
-            if calendar.isDateInToday(startOfDay) {
-                updateWidgetData(steps: Int(finalCount), error: "")
+            // Only process days up to today
+            if startOfDay <= calendar.startOfDay(for: today) {
+                let hkCount = hkSteps[startOfDay] ?? 0
+                let cmCount = cmSteps[startOfDay] ?? 0
+                let finalCount = max(hkCount, cmCount)
+                
+                combinedSteps.append(DateSteps(date: startOfDay, steps: finalCount))
+                
+                // Update widget if this is today
+                if calendar.isDateInToday(startOfDay) {
+                    updateWidgetData(steps: Int(finalCount), error: "")
+                }
             }
+            
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         }
         
         return combinedSteps
+    }
+    
+    // Legacy method for backward compatibility
+    func getStepsForWeek() async -> [DateSteps] {
+        return await getStepsForDateRange(.currentWeek)
+    }
+    
+    // Helper method to calculate actual dates from enum
+    private func calculateDateRange(for dateRange: DateRange) -> (start: Date, end: Date) {
+        let calendar = Calendar.current
+        let today = Date()
+        let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: today))!
+        
+        switch dateRange {
+        case .currentWeek:
+            // Monday of current week to end of today
+            var weekCalendar = Calendar.current
+            weekCalendar.firstWeekday = 2  // 2 represents Monday
+            let startOfWeek = Date.startOfWeek()
+            return (start: startOfWeek, end: endOfToday)
+            
+        case .rolling(let days):
+            // N days back from today
+            let startDate = calendar.date(byAdding: .day, value: -days + 1, to: calendar.startOfDay(for: today))!
+            return (start: startDate, end: endOfToday)
+            
+        case .custom(let start, let end):
+            // Use provided dates, but ensure end doesn't go beyond today
+            let adjustedEnd = min(end, endOfToday)
+            return (start: start, end: adjustedEnd)
+        }
     }
     
     // Check and request motion permissions
@@ -92,17 +136,6 @@ class StepCounter {
                 }
             }
         }
-    }
-    
-    private func getWeekToDateRange() -> (start: Date, end: Date) {
-        var calendar = Calendar.current
-        calendar.firstWeekday = 2  // 2 represents Monday
-        
-        let today = Date()
-        let endOfToday = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: today))!        
-        let startOfWeek = Date.startOfWeek()
-
-        return (start: startOfWeek, end: endOfToday)
     }
     
     // Request HealthKit permission
