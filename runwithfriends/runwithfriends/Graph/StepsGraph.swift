@@ -38,16 +38,14 @@ struct StepsGraph: View {
                 switch chartMode {
                 case .day:
                     if dayData.isEmpty {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        loadingView
                     } else {
                         DayStepsChart(dateSteps: dayData)
                     }
                     
                 case .week:
                     if weekData.isEmpty {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        loadingView
                     } else {
                         WeekStepsChart(dateSteps: weekData)
                     }
@@ -62,6 +60,22 @@ struct StepsGraph: View {
         }
         .onChange(of: chartMode) { _, newMode in
             loadDataForMode(newMode)
+        }
+    }
+    
+    private var loadingView: some View {
+        VStack {
+            Spacer()
+            
+            VStack(spacing: 16) {
+                ProgressView()
+                    .scaleEffect(1.2)
+                Text("Loading steps data...")
+                    .font(.quicksand(size: 14))
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
         }
     }
     

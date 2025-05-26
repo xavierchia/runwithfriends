@@ -20,7 +20,6 @@
 		952825BE2AE1F74D0032B04B /* runwithfriends.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 952825BC2AE1F74D0032B04B /* runwithfriends.xcdatamodeld */; };
 		952825C02AE1F74E0032B04B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952825BF2AE1F74E0032B04B /* Assets.xcassets */; };
 		952825C32AE1F74E0032B04B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952825C12AE1F74E0032B04B /* LaunchScreen.storyboard */; };
-		952CEECF2B9AFC760034BBF6 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952CEECE2B9AFC760034BBF6 /* ProgressView.swift */; };
 		9536C16F2AF9ADA100263871 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9536C16E2AF9ADA100263871 /* UserData.swift */; };
 		953D209D2B7D973500A32185 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953D209C2B7D973500A32185 /* ViewController.swift */; };
 		95457DFC2AF8C31400E4414C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95457DFB2AF8C31400E4414C /* ProfileViewController.swift */; };
@@ -133,7 +132,6 @@
 		952825BF2AE1F74E0032B04B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		952825C22AE1F74E0032B04B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952825C42AE1F74E0032B04B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		952CEECE2B9AFC760034BBF6 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		9536C16E2AF9ADA100263871 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		953D209C2B7D973500A32185 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		95457DFB2AF8C31400E4414C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -266,7 +264,6 @@
 			children = (
 				95659B8D2AEF1FA4008D7BA8 /* Labels.swift */,
 				953D209C2B7D973500A32185 /* ViewController.swift */,
-				952CEECE2B9AFC760034BBF6 /* ProgressView.swift */,
 				95A4D56C2B900D6100FF7D38 /* UIApplication.swift */,
 				95877BC22B042F7500A81839 /* Cell.swift */,
 				95AC658A2B0227860084FF15 /* UIView.swift */,
@@ -633,7 +630,6 @@
 				A5A1ACA72DE06067004D86A2 /* PulsingDot.swift in Sources */,
 				95A4D56D2B900D6100FF7D38 /* UIApplication.swift in Sources */,
 				95966EB42AF329450086DABB /* TabViewController.swift in Sources */,
-				952CEECF2B9AFC760034BBF6 /* ProgressView.swift in Sources */,
 				9536C16F2AF9ADA100263871 /* UserData.swift in Sources */,
 				95AC65852B021CE50084FF15 /* EmojiAnnotation.swift in Sources */,
 				A53142602D827C3A00382837 /* PathSearch.swift in Sources */,
