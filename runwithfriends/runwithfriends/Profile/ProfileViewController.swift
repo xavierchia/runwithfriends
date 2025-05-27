@@ -10,35 +10,41 @@ import SharedCode
 
 class ProfileViewController: UIViewController {
     
+    enum Title {
+        static let profile = "Your profile"
+        static let following = "Who you follow"
+    }
+    
     struct CellData {
         let emoji: UIImage
         let title: String
     }
     
     private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
-    private let tableCellTitles = [
+    private var tableCellTitles = [
         [
-          CellData(emoji: "🥸".image(pointSize: 20), title: "Following")
+            CellData(emoji: "".image(pointSize: 20), title: Title.profile),
+            CellData(emoji: "🥸".image(pointSize: 20), title: Title.following)
         ]
     ]
     
-//    private let tableCellTitles = [
-//        [
-//            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
-//            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
-//        ],
-//        [
-//            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
-//            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
-//        ],
-//        [
-//            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
-//            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
-//            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
-//        ]
-//    ]
+    //    private let tableCellTitles = [
+    //        [
+    //            CellData(emoji: "🥸".image(pointSize: 20), title: "Profile"),
+    //            CellData(emoji: "🏃‍♂️".image(pointSize: 20), title: "Run settings")
+    //        ],
+    //        [
+    //            CellData(emoji: "🤷‍♀️".image(pointSize: 20), title: "How it works"),
+    //            CellData(emoji: "🕵️‍♂️".image(pointSize: 20), title: "Privacy"),
+    //        ],
+    //        [
+    //            CellData(emoji: "🧐".image(pointSize: 20), title: "FAQ"),
+    //            CellData(emoji: "⭐️".image(pointSize: 20), title: "Review"),
+    //            CellData(emoji: "💌".image(pointSize: 20), title: "Contact"),
+    //        ]
+    //    ]
     private let userData: UserData
-        
+    
     init(with userData: UserData) {
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
@@ -87,6 +93,7 @@ class ProfileViewController: UIViewController {
     
     private func setupProfile(with user: PeaUser) {
         self.navigationItem.title = userData.user.username
+        tableCellTitles[0][0] = CellData(emoji: userData.user.emoji.image(pointSize: 20), title: Title.profile)
     }
 }
 
@@ -112,7 +119,34 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let followVC = FollowViewController(with: userData)
-        navigationController?.pushViewController(followVC, animated: true)
+        
+        let cellData = tableCellTitles[indexPath.section][indexPath.row]
+        
+        switch cellData.title {
+        case Title.profile:
+            print("profile tapped")
+        case Title.following:
+            let followVC = FollowViewController(with: userData)
+            navigationController?.pushViewController(followVC, animated: true)
+        default:
+            return
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+
+        switch section {
+            case 0:
+                return "Personal"
+            default:
+                return ""
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.font = .QuicksandMedium(size: 14)
+        header.textLabel?.text =  header.textLabel?.text?.capitalized
+
     }
 }
