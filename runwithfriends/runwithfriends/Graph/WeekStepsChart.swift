@@ -179,7 +179,7 @@ struct WeekStepsChart: View {
                     if let week = value.as(Int.self) {
                         Text("\(week)")
                             .font(.quicksand(size: 12))
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                     }
                 }
             }

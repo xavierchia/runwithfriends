@@ -142,7 +142,7 @@ struct DayStepsChart: View {
                     if let day = value.as(String.self) {
                         Text(day)
                             .font(.quicksand(size: 12))
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                     }
                 }
             }
