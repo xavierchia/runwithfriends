@@ -68,6 +68,7 @@
 		A54818762DBB382500B3DA98 /* SeoulMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A548185B2DBB382500B3DA98 /* SeoulMarathon.gpx */; };
 		A54818772DBB382500B3DA98 /* TucsonMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */; };
 		A54818782DBB382500B3DA98 /* VancouverMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */; };
+		A554512B2DE69441007AA65A /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A554512A2DE69441007AA65A /* UserProfileViewController.swift */; };
 		A5A1ACA72DE06067004D86A2 /* PulsingDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */; };
 		A5A1ACA92DE06089004D86A2 /* ToggleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */; };
 		A5A1AD112DE3F34C004D86A2 /* WeekStepsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1AD102DE3F34C004D86A2 /* WeekStepsChart.swift */; };
@@ -180,6 +181,7 @@
 		A54818602DBB382500B3DA98 /* TucsonMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TucsonMarathon.gpx; sourceTree = "<group>"; };
 		A54818612DBB382500B3DA98 /* VancouverMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VancouverMarathon.gpx; sourceTree = "<group>"; };
 		A54818622DBB382500B3DA98 /* VenturaMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VenturaMarathon.gpx; sourceTree = "<group>"; };
+		A554512A2DE69441007AA65A /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingDot.swift; sourceTree = "<group>"; };
 		A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleHeader.swift; sourceTree = "<group>"; };
 		A5A1AD102DE3F34C004D86A2 /* WeekStepsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekStepsChart.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				95457DFB2AF8C31400E4414C /* ProfileViewController.swift */,
+				A554512A2DE69441007AA65A /* UserProfileViewController.swift */,
 				95FF66692DA0C57F002BD296 /* FollowViewController.swift */,
 				95FF68372DA5240B002BD296 /* FollowCell.swift */,
 			);
@@ -635,6 +638,7 @@
 				A53142602D827C3A00382837 /* PathSearch.swift in Sources */,
 				95FF68382DA5240B002BD296 /* FollowCell.swift in Sources */,
 				953D209D2B7D973500A32185 /* ViewController.swift in Sources */,
+				A554512B2DE69441007AA65A /* UserProfileViewController.swift in Sources */,
 				A531425E2D826F3100382837 /* PeaMapView.swift in Sources */,
 				A534E20C2DDC55D0006B866D /* GraphMachine.swift in Sources */,
 				95DBAC512BA18186002037F1 /* CommunityViewController.swift in Sources */,

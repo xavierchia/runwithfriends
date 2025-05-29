@@ -20,13 +20,14 @@ class ProfileViewController: UIViewController {
         let title: String
     }
     
-    private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     private var tableCellTitles = [
         [
             CellData(emoji: "".image(pointSize: 20), title: Title.profile),
             CellData(emoji: "🥸".image(pointSize: 20), title: Title.following)
         ]
     ]
+    
+    private let settingsTableView = UITableView(frame: .zero, style: .insetGrouped)
     
     //    private let tableCellTitles = [
     //        [
@@ -114,17 +115,19 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .baseText
-        cell.textLabel?.font = UIFont.QuicksandMedium(size: cell.textLabel?.font.pointSize ?? 15)
+        cell.textLabel?.font = UIFont.QuicksandMedium(size: 16)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         let cellData = tableCellTitles[indexPath.section][indexPath.row]
         
         switch cellData.title {
         case Title.profile:
-            print("profile tapped")
+            let userProfileVC = UserProfileViewController(with: userData)
+            navigationController?.pushViewController(userProfileVC, animated: true)
         case Title.following:
             let followVC = FollowViewController(with: userData)
             navigationController?.pushViewController(followVC, animated: true)
