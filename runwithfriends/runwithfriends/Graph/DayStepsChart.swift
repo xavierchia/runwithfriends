@@ -68,7 +68,7 @@ struct DayStepsChart: View {
                 .annotation(position: .top, spacing: 10) {
                     Text("\(String(format: "%.0f", (item.steps / 1000)))k")
                         .font(.quicksand(size: 12))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondaryText)
                         .padding(4)
                         .background(
                             RoundedRectangle(cornerRadius: 4)
@@ -105,7 +105,7 @@ struct DayStepsChart: View {
                 .annotation(position: .top, spacing: 10) {
                     Text("\(String(format: "%.0f", (todayItem.steps / 1000)))k")
                         .font(.quicksand(size: 12))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondaryText)
                         .padding(4)
                         .background(
                             RoundedRectangle(cornerRadius: 4)
@@ -142,7 +142,7 @@ struct DayStepsChart: View {
                     if let day = value.as(String.self) {
                         Text(day)
                             .font(.quicksand(size: 12))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.secondaryText)
                     }
                 }
             }

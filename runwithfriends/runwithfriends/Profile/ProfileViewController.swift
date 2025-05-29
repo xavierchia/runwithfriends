@@ -150,6 +150,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.font = .QuicksandMedium(size: 14)
         header.textLabel?.text =  header.textLabel?.text?.capitalized
-
+        header.textLabel?.textColor = .secondaryText
     }
 }

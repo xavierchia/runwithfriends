@@ -10,7 +10,7 @@ import UIKit
 // Colors
 // Background button color: .systemFill
 // Background button color if content behind like map: .backgroundContentFill
-// Disabled or unselected font color: .secondaryLabel
+// Disabled or unselected font color: .secondaryText
 // Accent: .accentColor
 
 class UIPaddingLabel: UILabel {

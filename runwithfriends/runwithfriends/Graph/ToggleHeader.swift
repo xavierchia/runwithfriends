@@ -42,7 +42,7 @@ struct ToggleHeader: View {
                     if index > 0 {
                         Text("or")
                             .font(.quicksandMedium(size: 18))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.baseText)
                     }
                     
                     // Toggle option
@@ -53,7 +53,7 @@ struct ToggleHeader: View {
                     }) {
                             Text(option.rawValue)
                             .font(selectedOption == option ? .quicksandBold(size: 18) : .quicksandMedium(size: 18))
-                                .foregroundColor(selectedOption == option ? .baseText : .secondary)
+                                .foregroundColor(selectedOption == option ? .baseText : .baseText)
 
                     }
                     .buttonStyle(PlainButtonStyle())

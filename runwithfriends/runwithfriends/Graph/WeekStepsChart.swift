@@ -102,7 +102,7 @@ struct WeekStepsChart: View {
                 .annotation(position: .top, spacing: 10) {
                     Text("\(String(format: "%.0f", (item.steps / 1000)))k")
                         .font(.quicksand(size: 12))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondaryText)
                         .padding(4)
                         .background(
                             RoundedRectangle(cornerRadius: 4)
@@ -139,7 +139,7 @@ struct WeekStepsChart: View {
                 .annotation(position: .top, spacing: 10) {
                     Text("\(String(format: "%.0f", (lastItem.steps / 1000)))k")
                         .font(.quicksand(size: 12))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondaryText)
                         .padding(4)
                         .background(
                             RoundedRectangle(cornerRadius: 4)
@@ -179,7 +179,7 @@ struct WeekStepsChart: View {
                     if let week = value.as(Int.self) {
                         Text("\(week)")
                             .font(.quicksand(size: 12))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.secondaryText)
                     }
                 }
             }

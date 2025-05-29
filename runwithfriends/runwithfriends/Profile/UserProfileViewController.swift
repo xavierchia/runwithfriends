@@ -12,8 +12,7 @@ class UserProfileViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private var userData: UserData
-    private var originalUsername: String
-    private var currentUsername: String
+    private var username: String
     
     enum Title {
         static let username = "Username"
@@ -31,8 +30,7 @@ class UserProfileViewController: UIViewController {
     
     init(with userData: UserData) {
         self.userData = userData
-        self.originalUsername = userData.user.username
-        self.currentUsername = userData.user.username
+        self.username = userData.user.username
         
         tableCellTitles = [
             [
@@ -75,6 +73,53 @@ class UserProfileViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    // MARK: - Username Edit
+    
+    private func presentUsernameEditAlert() {
+        let alert = UIAlertController(title: "Change Username", message: "Max 7 characters", preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.text = self.username
+            textField.placeholder = "Enter username"
+            textField.autocapitalizationType = .none
+            textField.autocorrectionType = .no
+            textField.clearButtonMode = .whileEditing
+            
+            // Set up character limit
+            textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            if let textField = alert.textFields?.first,
+               let newUsername = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+               !newUsername.isEmpty,
+               newUsername != self.username {
+                self.updateUsername(newUsername)
+            }
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(saveAction)
+        
+        present(alert, animated: true)
+    }
+    
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        let text = textField.text ?? ""
+        
+        // Limit to 7 characters
+        if text.count > 7 {
+            textField.text = String(text.prefix(7))
+        }
+    }
+    
+    private func updateUsername(_ newUsername: String) {
+        username = newUsername
+        tableCellTitles[0][0] = CellData(title: Title.username, subtitle: newUsername, isEditable: true)
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+    }
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
@@ -99,6 +144,23 @@ extension UserProfileViewController: UITableViewDataSource, UITableViewDelegate 
         cell.textLabel?.textColor = .baseText
         cell.textLabel?.font = UIFont.QuicksandMedium(size: 16)
         cell.detailTextLabel?.font = UIFont.QuicksandMedium(size: 16)
+        cell.detailTextLabel?.textColor = .secondaryText
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let cellData = tableCellTitles[indexPath.section][indexPath.row]
+        guard cellData.isEditable else {
+            return
+        }
+        
+        switch cellData.title {
+        case Title.username:
+            presentUsernameEditAlert()
+        default:
+            print("do nothing")
+        }
     }
 }

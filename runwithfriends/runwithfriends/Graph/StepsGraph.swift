@@ -85,7 +85,7 @@ struct StepsGraph: View {
                     .scaleEffect(1.2)
                 Text("Loading steps data...")
                     .font(.quicksand(size: 14))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.secondaryText)
             }
             
             Spacer()
