@@ -14,7 +14,7 @@ class UserProfileViewController: UIViewController {
     private var userData: UserData
     private var username: String
     
-    private let allowedCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-")
+    private let allowedCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._- ")
     
     enum Title {
         static let username = "Username"
