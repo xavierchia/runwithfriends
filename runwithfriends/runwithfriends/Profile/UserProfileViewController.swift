@@ -14,6 +14,8 @@ class UserProfileViewController: UIViewController {
     private var userData: UserData
     private var username: String
     
+    private let allowedCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-")
+    
     enum Title {
         static let username = "Username"
         static let emoji = "Emoji"
@@ -109,10 +111,14 @@ class UserProfileViewController: UIViewController {
     @objc private func textFieldDidChange(_ textField: UITextField) {
         let text = textField.text ?? ""
         
+        // Filter out characters not in the allowed character set
+        let filteredText = text.unicodeScalars.filter { allowedCharacterSet.contains($0) }
+        let filteredString = String(filteredText)
+        
         // Limit to 7 characters
-        if text.count > 7 {
-            textField.text = String(text.prefix(7))
-        }
+        let finalText = filteredString.count > 7 ? String(filteredString.prefix(7)) : filteredString
+        
+        textField.text = finalText
     }
     
     private func updateUsername(_ newUsername: String) {
