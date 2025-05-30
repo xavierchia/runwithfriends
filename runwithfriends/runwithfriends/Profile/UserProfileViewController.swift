@@ -116,9 +116,34 @@ class UserProfileViewController: UIViewController {
     }
     
     private func updateUsername(_ newUsername: String) {
-        username = newUsername
-        tableCellTitles[0][0] = CellData(title: Title.username, subtitle: newUsername, isEditable: true)
-        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+        // Show loading state
+        let loadingAlert = UIAlertController(title: "Updating...", message: "Please wait", preferredStyle: .alert)
+        present(loadingAlert, animated: true)
+        
+        Task {
+            let success = await userData.updateUsername(newUsername)
+            
+            await MainActor.run {
+                loadingAlert.dismiss(animated: true) {
+                    if success {
+                        // Update local UI with the new username from userData.user
+                        self.username = self.userData.user.username
+                        self.tableCellTitles[0][0] = CellData(title: Title.username, subtitle: self.userData.user.username, isEditable: true)
+                        self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+                        
+                        // Show success message
+                        let successAlert = UIAlertController(title: "Success", message: "Username updated successfully", preferredStyle: .alert)
+                        successAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(successAlert, animated: true)
+                    } else {
+                        // Show error message
+                        let errorAlert = UIAlertController(title: "Error", message: "Failed to update username. Please try again.", preferredStyle: .alert)
+                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(errorAlert, animated: true)
+                    }
+                }
+            }
+        }
     }
 }
 

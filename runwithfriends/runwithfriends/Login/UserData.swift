@@ -113,6 +113,28 @@ class UserData {
         return nil
     }
     
+    func updateUsername(_ newUsername: String) async -> Bool {
+        do {
+            let updatedUser: PeaUser = try await Supabase.shared.client
+                .from("users")
+                .update(["username": newUsername])
+                .eq("user_id", value: user.user_id.uuidString)
+                .single()
+                .execute()
+                .value
+            
+            await MainActor.run {
+                self.user = updatedUser
+            }
+            
+            print("Username updated successfully on server")
+            return true
+        } catch {
+            print("Failed to update username on server: \(error)")
+            return false
+        }
+    }
+    
     // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> PeaUser {
         var session = try await Supabase.shared.client.auth.session
