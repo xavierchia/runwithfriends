@@ -137,6 +137,11 @@ class UserProfileViewController: UIViewController {
                         self.tableCellTitles[0][0] = CellData(title: Title.username, subtitle: self.userData.user.username, isEditable: true)
                         self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
                         
+                        // Update parent ProfileViewController's navigation title for back button
+                        if let profileVC = self.navigationController?.viewControllers.first(where: { $0 is ProfileViewController }) as? ProfileViewController {
+                            profileVC.navigationItem.title = self.userData.user.username
+                        }
+                        
                         // Show success message
                         let successAlert = UIAlertController(title: "Success", message: "Username updated successfully", preferredStyle: .alert)
                         successAlert.addAction(UIAlertAction(title: "OK", style: .default))
