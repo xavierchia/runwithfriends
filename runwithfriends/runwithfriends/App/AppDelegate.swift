@@ -50,8 +50,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UISegmentedControl.appearance().selectedSegmentTintColor = .cream
         UISegmentedControl.appearance().backgroundColor = .baseBackground
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.baseText, .font: UIFont.QuicksandBold(size: 18)], for: .selected)
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.baseText, .font: UIFont.QuicksandMedium(size: 18)], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.baseText, .font: UIFont.QuicksandBold(size: 16)], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.baseText, .font: UIFont.QuicksandMedium(size: 16)], for: .normal)
     }
 
     // MARK: UISceneSession Lifecycle
