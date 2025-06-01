@@ -131,7 +131,7 @@ struct StepsGraph: View {
         guard dayData.isEmpty else { return }
         
         Task {
-            var data = await StepCounter.shared.getStepsForDateRange(.rollingWeek)
+            var data = await StepCounter.shared.getStepsForDateRange(.currentWeek)
             
             if useDummyData {
                 data = generateDummyDayData()

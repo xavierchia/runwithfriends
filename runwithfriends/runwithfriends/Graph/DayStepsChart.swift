@@ -28,6 +28,14 @@ struct DayStepsChart: View {
         dateSteps.sorted { $0.date < $1.date }
     }
     
+    private var cumulativeSteps: [(date: Date, dailySteps: Double, cumulativeSteps: Double)] {
+        var cumulative = 0.0
+        return sortedDateSteps.map { dateStep in
+            cumulative += dateStep.steps
+            return (date: dateStep.date, dailySteps: dateStep.steps, cumulativeSteps: cumulative)
+        }
+    }
+    
     private func dayFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "E" // Mon, Tue, Wed, etc.
@@ -41,20 +49,20 @@ struct DayStepsChart: View {
     var body: some View {
         Chart {
             // Base chart content for previous days - lines only (exclude fake point)
-            ForEach(sortedDateSteps.filter { !isToday($0.date) }) { item in
+            ForEach(cumulativeSteps.filter { !isToday($0.date) }, id: \.date) { item in
                 LineMark(
                     x: .value("Day", dayFormatter().string(from: item.date)),
-                    y: .value("Steps", item.steps)
+                    y: .value("Steps", item.cumulativeSteps)
                 )
                 .foregroundStyle(.separate)
                 .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, dash: [5, 10]))
             }
             
             // Point marks for previous days (exclude fake point)
-            ForEach(sortedDateSteps.filter { !isToday($0.date) }) { item in
+            ForEach(cumulativeSteps.filter { !isToday($0.date) }, id: \.date) { item in
                 PointMark(
                     x: .value("Day", dayFormatter().string(from: item.date)),
-                    y: .value("Steps", item.steps)
+                    y: .value("Steps", item.cumulativeSteps)
                 )
                 .foregroundStyle(by: .value("Series", "Previous days"))
                 .symbolSize(100)
@@ -62,55 +70,65 @@ struct DayStepsChart: View {
                 // Step count annotation
                 PointMark(
                     x: .value("Day", dayFormatter().string(from: item.date)),
-                    y: .value("Steps", item.steps)
+                    y: .value("Steps", item.cumulativeSteps)
                 )
                 .foregroundStyle(.clear)
                 .annotation(position: .top, spacing: 10) {
-                    Text("\(String(format: "%.0f", (item.steps / 1000)))k")
-                        .font(.quicksand(size: 12))
-                        .foregroundColor(.secondaryText)
-                        .padding(4)
-                        .background(
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color.white.opacity(0.8))
-                        )
+                    VStack(spacing: 2) {
+                        Text("\(String(format: "%.0f", (item.cumulativeSteps / 1000)))k")
+                            .font(.quicksand(size: 12))
+                            .foregroundColor(.secondaryText)
+                        Text("(+\(String(format: "%.0f", (item.dailySteps / 1000)))k)")
+                            .font(.quicksand(size: 10))
+                            .foregroundColor(.secondaryText)
+                    }
+                    .padding(4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white.opacity(0.8))
+                    )
                 }
             }
             
             // Add line connecting to today if there are previous days - only use real data
-            if let todayItem = sortedDateSteps.first(where: { isToday($0.date) }),
-               let previousItem = sortedDateSteps.filter({ !isToday($0.date) }).last {
+            if let todayItem = cumulativeSteps.first(where: { isToday($0.date) }),
+               let previousItem = cumulativeSteps.filter({ !isToday($0.date) }).last {
                 
                 LineMark(
                     x: .value("Day", dayFormatter().string(from: previousItem.date)),
-                    y: .value("Steps", previousItem.steps)
+                    y: .value("Steps", previousItem.cumulativeSteps)
                 )
                 .foregroundStyle(.separate)
                 
                 LineMark(
                     x: .value("Day", dayFormatter().string(from: todayItem.date)),
-                    y: .value("Steps", todayItem.steps)
+                    y: .value("Steps", todayItem.cumulativeSteps)
                 )
                 .foregroundStyle(.separate)
             }
             
             // Custom overlay for the pulsing dot at today's position
-            if let todayItem = sortedDateSteps.first(where: { isToday($0.date) }) {
+            if let todayItem = cumulativeSteps.first(where: { isToday($0.date) }) {
                 PointMark(
                     x: .value("Day", dayFormatter().string(from: todayItem.date)),
-                    y: .value("Steps", todayItem.steps)
+                    y: .value("Steps", todayItem.cumulativeSteps)
                 )
                 .foregroundStyle(by: .value("Series", "Today"))
                 .symbolSize(0) // Make invisible but contribute to legend
                 .annotation(position: .top, spacing: 10) {
-                    Text("\(String(format: "%.0f", (todayItem.steps / 1000)))k")
-                        .font(.quicksand(size: 12))
-                        .foregroundColor(.secondaryText)
-                        .padding(4)
-                        .background(
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color.white.opacity(0.8))
-                        )
+                    VStack(spacing: 2) {
+                        Text("\(String(format: "%.0f", (todayItem.cumulativeSteps / 1000)))k")
+                            .font(.quicksand(size: 12))
+                            .foregroundColor(.secondaryText)
+                        Text("(+\(String(format: "%.0f", (todayItem.dailySteps / 1000)))k)")
+                            .font(.quicksand(size: 10))
+                            .foregroundColor(.secondaryText)
+                    }
+                    .padding(4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white.opacity(0.8))
+                    )
                 }
                 .annotation(position: .overlay) {
                     PulsingDot(color: Color("AccentColor"))
@@ -118,10 +136,13 @@ struct DayStepsChart: View {
             }
             
             // Add invisible fake data point to extend chart bounds
-            if let fakePoint = chartData.last, fakePoint.date != sortedDateSteps.last?.date {
+            if let lastReal = sortedDateSteps.last,
+               let fakePoint = chartData.last,
+               fakePoint.date != lastReal.date {
+                let lastCumulative = cumulativeSteps.last?.cumulativeSteps ?? 0
                 PointMark(
                     x: .value("Day", dayFormatter().string(from: fakePoint.date)),
-                    y: .value("Steps", fakePoint.steps)
+                    y: .value("Steps", lastCumulative)
                 )
                 .foregroundStyle(.clear)
                 .symbolSize(0)
