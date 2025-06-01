@@ -47,6 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.QuicksandMedium(size: 17)], for: .normal)
         UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .black
+        
+        UISegmentedControl.appearance().selectedSegmentTintColor = .cream
+        UISegmentedControl.appearance().backgroundColor = .baseBackground
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.baseText, .font: UIFont.QuicksandBold(size: 18)], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.baseText, .font: UIFont.QuicksandMedium(size: 18)], for: .normal)
     }
 
     // MARK: UISceneSession Lifecycle

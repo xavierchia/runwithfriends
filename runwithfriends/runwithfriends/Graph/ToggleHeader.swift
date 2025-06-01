@@ -27,7 +27,7 @@ struct ToggleHeader: View {
     @Binding var selectedOption: ChartMode
     
     var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 4) {
+        HStack(alignment: .center, spacing: 0) {
             // Static prefix text
             Text(prefix)
                 .font(.quicksandMedium(size: 18))
@@ -35,31 +35,14 @@ struct ToggleHeader: View {
             
             Spacer()
             
-            // Toggle options
-            HStack(spacing: 4) {
-                ForEach(Array(options.enumerated()), id: \.offset) { index, option in
-                    // Add separator between options
-                    if index > 0 {
-                        Text("or")
-                            .font(.quicksandMedium(size: 18))
-                            .foregroundColor(.baseText)
-                    }
-                    
-                    // Toggle option
-                    Button(action: {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            selectedOption = option
-                        }
-                    }) {
-                            Text(option.rawValue)
-                            .font(selectedOption == option ? .quicksandBold(size: 18) : .quicksandMedium(size: 18))
-                                .foregroundColor(selectedOption == option ? .baseText : .baseText)
-
-                    }
-                    .buttonStyle(PlainButtonStyle())
+            // Segmented control
+            Picker("", selection: $selectedOption) {
+                ForEach(options, id: \.self) { option in
+                    Text(option.rawValue)
                 }
             }
-            .fixedSize()
+            .pickerStyle(.segmented)
+            .frame(width: 130)  // Adjust this width as needed
         }
     }
 }
