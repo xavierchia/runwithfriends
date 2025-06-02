@@ -13,6 +13,11 @@ import SharedCode
 struct DayStepsChart: View {
     let dateSteps: [DateSteps]
     
+    // Get current marathon for completion threshold
+    private var currentMarathon: Marathon {
+        MarathonData.getCurrentMarathon()
+    }
+    
     // Add fake data point for spacing
     private var chartData: [DateSteps] {
         guard let lastItem = sortedDateSteps.last else { return sortedDateSteps }
@@ -48,6 +53,39 @@ struct DayStepsChart: View {
     
     var body: some View {
         Chart {
+            // Marathon completion threshold line
+            RuleMark(
+                y: .value("Marathon Threshold", Double(currentMarathon.steps))
+            )
+            .foregroundStyle(.brightPumpkin)
+            .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 10]))
+            
+            // Marathon threshold annotation - positioned on the line within chart bounds
+            if let firstDay = sortedDateSteps.first {
+                PointMark(
+                    x: .value("Day", dayFormatter().string(from: firstDay.date)),
+                    y: .value("Steps", Double(currentMarathon.steps))
+                )
+                .foregroundStyle(.clear)
+                .symbolSize(0)
+                .annotation(position: .top, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(currentMarathon.title)"
+                            .replacingOccurrences(of: "\n", with: " ")
+                            .replacingOccurrences(of: "in steps", with: ""))
+                        Text("\(String(format: "%.0f", Double(currentMarathon.steps) / 1000))k")
+                    }
+                    .font(.quicksand(size: 12))
+                    .foregroundColor(.pumpkin)
+                    .padding(4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white.opacity(0.8))
+                            .stroke(.brightPumpkin, lineWidth: 1)
+                    )
+                }
+            }
+            
             // Base chart content for previous days - lines only (exclude fake point)
             ForEach(cumulativeSteps.filter { !isToday($0.date) }, id: \.date) { item in
                 LineMark(
