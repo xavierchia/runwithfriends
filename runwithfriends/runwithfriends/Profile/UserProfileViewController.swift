@@ -20,6 +20,7 @@ class UserProfileViewController: UIViewController {
         static let username = "Username"
         static let emoji = "Emoji"
         static let id = "ID"
+        static let signOut = "Sign out"
         static let deleteAccount = "Delete account"
     }
     
@@ -54,6 +55,7 @@ class UserProfileViewController: UIViewController {
                 CellData(title: Title.id, subtitle: String(userData.user.search_id), isEditable: false)
             ],
             [
+                CellData(title: Title.signOut, isEditable: true),
                 CellData(title: Title.deleteAccount, isEditable: true)
             ]
         ]
@@ -173,6 +175,59 @@ class UserProfileViewController: UIViewController {
         }
     }
     
+    private func showSignOutAlert() {
+        let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        let signOutAction = UIAlertAction(title: "Sign Out", style: .destructive) { _ in
+            self.signOut()
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(signOutAction)
+        
+        present(alert, animated: true)
+    }
+    
+    private func signOut() {
+        // Show loading state
+        let loadingAlert = UIAlertController(title: "Signing out...", message: "Please wait", preferredStyle: .alert)
+        present(loadingAlert, animated: true)
+        
+        Task {
+            do {
+                // Sign out from Supabase
+                try await Supabase.shared.client.auth.signOut()
+                
+                // Clear local data
+                try KeychainManager.shared.deleteTokens()
+                
+                await MainActor.run {
+                    loadingAlert.dismiss(animated: true) {
+                        // Navigate to login screen
+                        if let window = self.view.window {
+                            window.rootViewController = LoginViewController()
+                            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+                        }
+                    }
+                }
+                
+                print("User signed out successfully")
+            } catch {
+                print("Failed to sign out: \(error)")
+                
+                await MainActor.run {
+                    loadingAlert.dismiss(animated: true) {
+                        // Show error message
+                        let errorAlert = UIAlertController(title: "Error", message: "Failed to sign out. Please try again.", preferredStyle: .alert)
+                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(errorAlert, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
     private func showDeleteAccountAlert() {
         let alert = UIAlertController(title: "Delete Account", message: "This action cannot be undone. Type 'DELETE' to confirm.", preferredStyle: .alert)
         
@@ -272,6 +327,8 @@ extension UserProfileViewController: UITableViewDataSource, UITableViewDelegate 
         switch cellData.title {
         case Title.username:
             presentUsernameEditAlert()
+        case Title.signOut:
+            showSignOutAlert()
         case Title.deleteAccount:
             showDeleteAccountAlert()
         default:
