@@ -20,12 +20,25 @@ class UserProfileViewController: UIViewController {
         static let username = "Username"
         static let emoji = "Emoji"
         static let id = "ID"
+        static let deleteAccount = "Delete account"
     }
     
     struct CellData {
         let title: String
-        let subtitle: String
+        let subtitle: String?
         let isEditable: Bool
+        
+        init(title: String, subtitle: String, isEditable: Bool) {
+            self.title = title
+            self.subtitle = subtitle
+            self.isEditable = isEditable
+        }
+        
+        init(title: String, isEditable: Bool) {
+            self.title = title
+            self.subtitle = nil
+            self.isEditable = isEditable
+        }
     }
     
     private var tableCellTitles = [[CellData]]()
@@ -39,6 +52,9 @@ class UserProfileViewController: UIViewController {
                 CellData(title: Title.username, subtitle: userData.user.username, isEditable: true),
                 CellData(title: Title.emoji, subtitle: userData.user.emoji, isEditable: false),
                 CellData(title: Title.id, subtitle: String(userData.user.search_id), isEditable: false)
+            ],
+            [
+                CellData(title: Title.deleteAccount, isEditable: true)
             ]
         ]
         super.init(nibName: nil, bundle: nil)
@@ -156,6 +172,66 @@ class UserProfileViewController: UIViewController {
             }
         }
     }
+    
+    private func showDeleteAccountAlert() {
+        let alert = UIAlertController(title: "Delete Account", message: "This action cannot be undone. Type 'DELETE' to confirm.", preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.placeholder = "Type DELETE to confirm"
+            textField.autocapitalizationType = .allCharacters
+            textField.autocorrectionType = .no
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            if let textField = alert.textFields?.first,
+               let confirmationText = textField.text,
+               confirmationText.uppercased() == "DELETE" {
+                self.deleteAccount()
+            } else {
+                // Show error if confirmation doesn't match
+                let errorAlert = UIAlertController(title: "Confirmation Required", message: "You must type 'DELETE' to confirm account deletion.", preferredStyle: .alert)
+                errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(errorAlert, animated: true)
+            }
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
+        
+        present(alert, animated: true)
+    }
+    
+    private func deleteAccount() {
+        // Show loading state
+        let loadingAlert = UIAlertController(title: "Deleting...", message: "Please wait", preferredStyle: .alert)
+        present(loadingAlert, animated: true)
+        
+        Task {
+            let success = await userData.deleteAccount()
+            
+            await MainActor.run {
+                loadingAlert.dismiss(animated: true) {
+                    if success {
+                        // Show success message
+                        let successAlert = UIAlertController(title: "Success", message: "Account deleted successfully", preferredStyle: .alert)
+                        successAlert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { _ in
+                            if let window = self.view.window {
+                                window.rootViewController = LoginViewController()
+                                UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+                            }
+                        }))
+                        self.present(successAlert, animated: true)
+                    } else {
+                        // Show error message
+                        let errorAlert = UIAlertController(title: "Error", message: "Failed to delete account. Please try again.", preferredStyle: .alert)
+                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(errorAlert, animated: true)
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
@@ -176,6 +252,7 @@ extension UserProfileViewController: UITableViewDataSource, UITableViewDelegate 
         cell.textLabel?.text = cellData.title
         cell.detailTextLabel?.text = cellData.subtitle
         cell.accessoryType = cellData.isEditable ? .disclosureIndicator : .none
+        cell.isUserInteractionEnabled = cellData.isEditable ? true : false
         cell.backgroundColor = .shadow
         cell.textLabel?.textColor = .baseText
         cell.textLabel?.font = UIFont.QuicksandMedium(size: 16)
@@ -195,6 +272,8 @@ extension UserProfileViewController: UITableViewDataSource, UITableViewDelegate 
         switch cellData.title {
         case Title.username:
             presentUsernameEditAlert()
+        case Title.deleteAccount:
+            showDeleteAccountAlert()
         default:
             print("do nothing")
         }

@@ -135,6 +135,38 @@ class UserData {
         }
     }
     
+    func deleteAccount() async -> Bool {
+        do {
+            // The Edge Function will extract user ID from the Authorization header
+            // No need to pass user_id in the body - more secure approach
+            try await Supabase.shared.client.functions.invoke("delete-user-complete")
+            
+            // If successful, sign out from Supabase (this will trigger auth state change)
+            try await Supabase.shared.client.auth.signOut()
+            
+            // Clear local data after successful signout
+            try KeychainManager.shared.deleteTokens()
+            
+            print("Account deleted successfully")
+            return true
+        } catch let error {
+            print("Failed to delete account: \(error)")
+            
+            // If it's a network error, the tokens might still be valid
+            // Only clear tokens if we're sure the backend deletion succeeded
+            if let funcError = error as? FunctionsError,
+               case .httpError(let statusCode, _) = funcError,
+               statusCode == 200 {
+                // Backend deletion succeeded but signout failed
+                try? await Supabase.shared.client.auth.signOut()
+                try? KeychainManager.shared.deleteTokens()
+                return true
+            }
+            
+            return false
+        }
+    }
+    
     // MARK: User methods before UserData has been created
     static func getUserOnAppInit() async throws -> PeaUser {
         var session = try await Supabase.shared.client.auth.session
