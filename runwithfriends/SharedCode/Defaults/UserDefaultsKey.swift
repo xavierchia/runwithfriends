@@ -14,4 +14,5 @@ public struct UserDefaultsKey {
     public static let hasSearchedFollowing = "hasSearchedFollowing"
 
     public static let friendsProgress = "friendsProgress"
+    public static let graphChartMode = "graphChartMode"
 }

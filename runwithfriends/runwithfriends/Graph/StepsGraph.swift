@@ -69,10 +69,11 @@ struct StepsGraph: View {
         }
         .background(.baseBackground)
         .onAppear {
+            loadSavedChartMode()
             loadInitialData()
         }
         .onChange(of: chartMode) { _, newMode in
-            loadDataForMode(newMode)
+            saveChartMode(newMode)
         }
     }
     
@@ -95,17 +96,13 @@ struct StepsGraph: View {
     // MARK: - Data Loading
     
     private func loadInitialData() {
-        // Load data for the default mode (week)
-        loadDataForMode(chartMode)
-        loadDataForMode(.day)
-    }
-    
-    private func loadDataForMode(_ mode: ChartMode) {
-        switch mode {
-        case .week:
+        switch chartMode {
+        case ChartMode.week:
             loadWeekData()
-        case .day:
             loadDayData()
+        case ChartMode.day:
+            loadDayData()
+            loadWeekData()
         }
     }
     
@@ -143,27 +140,6 @@ struct StepsGraph: View {
         }
     }
     
-    // MARK: - Public Methods for Refresh
-    
-    func refreshData() {
-        // Clear data and reload current mode
-        weekData = []
-        dayData = []
-        loadDataForMode(chartMode)
-    }
-    
-    func refreshCurrentMode() {
-        // Refresh only the current mode
-        switch chartMode {
-        case .week:
-            weekData = []
-            loadWeekData()
-        case .day:
-            dayData = []
-            loadDayData()
-        }
-    }
-    
     // MARK: - Dummy Data Generation
     
     private func generateDummyWeekData() -> [DateSteps] {
@@ -185,5 +161,19 @@ struct StepsGraph: View {
             let startOfDay = calendar.startOfDay(for: date)
             return DateSteps(date: startOfDay, steps: Double(steps))
         }
+    }
+    
+    // MARK: - UserDefaults Persistence
+    
+    private func loadSavedChartMode() {
+        guard let defaults = PeaDefaults.shared else { return }
+        if let savedMode = defaults.string(forKey: UserDefaultsKey.graphChartMode),
+        let savedMode = ChartMode(rawValue: savedMode) {
+            chartMode = savedMode
+        }
+    }
+    
+    private func saveChartMode(_ mode: ChartMode) {
+        PeaDefaults.shared?.set(mode.rawValue, forKey: UserDefaultsKey.graphChartMode)
     }
 }

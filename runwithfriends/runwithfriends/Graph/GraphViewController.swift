@@ -29,13 +29,6 @@ class GraphViewController: UIViewController {
         
         view.backgroundColor = .baseBackground
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Refresh data when view appears (in case user switched from other tabs)
-        refreshStepsGraph()
-    }
 
     private func setupNavigationController() {
         self.navigationItem.title = "Graphs"
@@ -73,12 +66,5 @@ class GraphViewController: UIViewController {
             stepsGraphView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             stepsGraphView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
-    }
-    
-    private func refreshStepsGraph() {
-        // Refresh the current mode's data when view appears
-        if let hostingController = hostingController {
-            hostingController.rootView.refreshCurrentMode()
-        }
     }
 }
