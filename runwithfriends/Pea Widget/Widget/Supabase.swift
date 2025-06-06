@@ -11,6 +11,7 @@ import SharedCode
 
 enum SessionError: Error {
     case expired
+    case unsynced
 }
 
 class Supabase {
@@ -39,8 +40,15 @@ class Supabase {
     
     func setSessionIfNeeded() async {
         do {
-            let session = try await client.auth.session
-            if session.expiresIn < 86400 {
+            let authSession = try await client.auth.session
+            let keychainSession = try KeychainManager.shared.getSession()
+            
+            if authSession.accessToken != keychainSession.accessToken ||
+                authSession.refreshToken != keychainSession.refreshToken {
+                throw SessionError.unsynced
+            }
+            
+            if authSession.expiresIn < 86400 {
                 throw SessionError.expired
             }
             print("there is a session")
@@ -48,7 +56,6 @@ class Supabase {
             print("No session, let's make one! \(noSessionError)")
             do {
                 let session = try KeychainManager.shared.getSession()
-                print(session)
                 let newSession = try await client.auth.refreshSession(refreshToken: session.refreshToken)
                 KeychainManager.shared.saveSession(session: newSession)
             } catch let setSessionError {
