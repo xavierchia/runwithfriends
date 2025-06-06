@@ -17,7 +17,7 @@ enum ChartMode: String, CaseIterable {
 
 struct StepsGraph: View {
     
-    @State private var chartMode: ChartMode = .week
+    @State private var chartMode: ChartMode
     @State private var weekData: [DateSteps] = []
     @State private var dayData: [DateSteps] = []
     
@@ -26,6 +26,15 @@ struct StepsGraph: View {
     
     init(useDummyData: Bool = false) {
         self.useDummyData = useDummyData
+        
+        // Initialize chartMode from UserDefaults
+        if let defaults = PeaDefaults.shared,
+           let savedMode = defaults.string(forKey: UserDefaultsKey.graphChartMode),
+           let savedMode = ChartMode(rawValue: savedMode) {
+            _chartMode = State(initialValue: savedMode)
+        } else {
+            _chartMode = State(initialValue: .week)
+        }
     }
     
     var body: some View {
@@ -69,7 +78,6 @@ struct StepsGraph: View {
         }
         .background(.baseBackground)
         .onAppear {
-            loadSavedChartMode()
             loadInitialData()
         }
         .onChange(of: chartMode) { _, newMode in
@@ -164,14 +172,6 @@ struct StepsGraph: View {
     }
     
     // MARK: - UserDefaults Persistence
-    
-    private func loadSavedChartMode() {
-        guard let defaults = PeaDefaults.shared else { return }
-        if let savedMode = defaults.string(forKey: UserDefaultsKey.graphChartMode),
-        let savedMode = ChartMode(rawValue: savedMode) {
-            chartMode = savedMode
-        }
-    }
     
     private func saveChartMode(_ mode: ChartMode) {
         PeaDefaults.shared?.set(mode.rawValue, forKey: UserDefaultsKey.graphChartMode)
