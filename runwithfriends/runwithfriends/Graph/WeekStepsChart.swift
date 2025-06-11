@@ -227,7 +227,7 @@ struct WeekStepsChart: View {
                     Circle()
                         .fill(Color("AccentColor"))
                         .frame(width: 8, height: 8)
-                    Text("This Week")
+                    Text("This week")
                         .font(.quicksand(size: 12))
                         .foregroundColor(.baseText)
                 }
