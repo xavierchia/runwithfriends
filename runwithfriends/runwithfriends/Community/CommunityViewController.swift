@@ -39,12 +39,7 @@ class CommunityViewController: UIViewController {
         
         // Request motion permission when view loads
         stepCounter.requestMotionPermission { authorized in
-            if !authorized {
-                // Handle the case where permission is denied
-                DispatchQueue.main.async {
-                    self.showMotionPermissionAlert()
-                }
-            }
+            print("motion is authorized? \(authorized)")
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateSteps), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -57,23 +52,23 @@ class CommunityViewController: UIViewController {
         mapView.setMapRegion()
     }
     
-    private func showMotionPermissionAlert() {
-        let alert = UIAlertController(
-            title: "Motion Access Required",
-            message: "Please enable motion and fitness access in Settings to track your steps.",
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL)
-            }
-        })
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
-        present(alert, animated: true)
-    }
+//    private func showMotionPermissionAlert() {
+//        let alert = UIAlertController(
+//            title: "Motion Access Required",
+//            message: "Please enable motion and fitness access in Settings to track your steps.",
+//            preferredStyle: .alert
+//        )
+//        
+//        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+//            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+//                UIApplication.shared.open(settingsURL)
+//            }
+//        })
+//        
+//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+//        
+//        present(alert, animated: true)
+//    }
     
     @objc private func updateSteps() {
         print("updating view: annotations, labels")

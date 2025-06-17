@@ -145,15 +145,11 @@ class StepCounter {
         let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
         let typesToRead = Set([stepType])
         
-        return await withCheckedContinuation { continuation in
-            healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
-                if let error = error {
-                    print("HealthKit authorization error: \(error.localizedDescription)")
-                    continuation.resume(returning: false)
-                } else {
-                    continuation.resume(returning: success)
-                }
-            }
+        do {
+            try await healthStore.requestAuthorization(toShare: Set<HKSampleType>(), read: typesToRead)
+            return true
+        } catch {
+            return false
         }
     }
     
