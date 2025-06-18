@@ -109,56 +109,49 @@ struct MarathonData {
                  steps: 61168
                 ),
         
-        25: Marathon(title: "Ventura\nMarathon\nin steps",
-                 gpxFileName: "VenturaMarathon",
-                 centerCoordinate: CLLocationCoordinate2D(latitude: 34.37907239741961, longitude: -119.25616223627699),
-                 span: MKCoordinateSpan(latitudeDelta: 0.2912229149009491, longitudeDelta: 0.19273914347496657),
-                 steps: 60741
-                ),
-        
-        26: Marathon(title: "Beacons\nMarathon\nin steps",
+        25: Marathon(title: "Beacons\nMarathon\nin steps",
                  gpxFileName: "BeaconsMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 51.8767911633905, longitude: -3.342025105544787),
                  span: MKCoordinateSpan(latitudeDelta: 0.2506334343346026, longitudeDelta: 0.22175351096449303),
                  steps: 60528
                 ),
                 
-        27: Marathon(title: "Bellingham Bay\nMarathon\nin steps",
+        26: Marathon(title: "Bellingham Bay\nMarathon\nin steps",
                  gpxFileName: "BellinghamBayMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 48.76611619509299, longitude: -122.57453635683568),
                  span: MKCoordinateSpan(latitudeDelta: 0.30667296089279006, longitudeDelta: 0.25413694601579095),
                  steps: 60493
                 ),
                         
-        28: Marathon(title: "Buckeye\nMarathon\nin steps",
+        27: Marathon(title: "Buckeye\nMarathon\nin steps",
                  gpxFileName: "BuckeyeMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 33.56191514166886, longitude: -112.68463384949983),
                  span: MKCoordinateSpan(latitudeDelta: 0.4167960039967866, longitudeDelta: 0.2732089248652727),
                  steps: 60134
                 ),
                 
-        29: Marathon(title: "Cape Peninsula\nMarathon\nin steps",
+        28: Marathon(title: "Cape Peninsula\nMarathon\nin steps",
                  gpxFileName: "CapePeninsulaMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: -34.03347247527706, longitude: 18.43795532880132),
                  span: MKCoordinateSpan(latitudeDelta: 0.43330553432979, longitudeDelta: 0.28560001348096975),
                  steps: 61259
                 ),
                 
-        30: Marathon(title: "Hayden Lake\nMarathon\nin steps",
+        29: Marathon(title: "Hayden Lake\nMarathon\nin steps",
                  gpxFileName: "HaydenLakeMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 47.77790105900975, longitude: -116.71680864059869),
                  span: MKCoordinateSpan(latitudeDelta: 0.18084785165452644, longitudeDelta: 0.14699629483591536),
                  steps: 60252
                 ),
                 
-        31: Marathon(title: "Holland Haven\nMarathon\nin steps",
+        30: Marathon(title: "Holland Haven\nMarathon\nin steps",
                  gpxFileName: "HollandHavenMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 42.923232554836396, longitude: -86.1945641933043),
                  span: MKCoordinateSpan(latitudeDelta: 0.3771343064685482, longitudeDelta: 0.281315193229716),
                  steps: 60303
                 ),
                 
-        32: Marathon(title: "Sandman\nMarathon\nin steps",
+        31: Marathon(title: "Sandman\nMarathon\nin steps",
                  gpxFileName: "SandmanMarathon",
                  centerCoordinate: CLLocationCoordinate2D(latitude: 53.195416971002594, longitude: -4.320565513245658),
                  span: MKCoordinateSpan(latitudeDelta: 0.32572169475001544, longitudeDelta: 0.37213920358449837),
