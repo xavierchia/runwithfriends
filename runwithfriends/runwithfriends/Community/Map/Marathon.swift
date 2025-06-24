@@ -26,7 +26,7 @@ struct MarathonData {
         var currentWeek = Date.currentWeek()
         
         // add marathon testing
-//        currentWeek = 32
+        currentWeek = 36
         
         return marathonsByWeekOfYear[currentWeek] ?? marathonsByWeekOfYear[13]!
     }
@@ -156,6 +156,41 @@ struct MarathonData {
                  centerCoordinate: CLLocationCoordinate2D(latitude: 53.195416971002594, longitude: -4.320565513245658),
                  span: MKCoordinateSpan(latitudeDelta: 0.32572169475001544, longitudeDelta: 0.37213920358449837),
                  steps: 60741
+                ),
+        
+        32: Marathon(title: "Swiss Alpine\nMarathon\nin steps",
+                 gpxFileName: "SwissAlpineMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 46.85458047025109, longitude: 9.242401354039336),
+                 span: MKCoordinateSpan(latitudeDelta: 0.24109360218598397, longitudeDelta: 0.19257046496920083),
+                 steps: 61092
+                ),
+        
+        33: Marathon(title: "Coast to Coast\nMarathon\nin steps",
+                 gpxFileName: "CoastToCoastMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 51.14890018620591, longitude: 1.2078652510074985),
+                 span: MKCoordinateSpan(latitudeDelta: 0.5534085149453958, longitudeDelta: 0.4818778740175933),
+                 steps: 60426
+                ),
+        
+        34: Marathon(title: "Aachen\nMarathon\nin steps",
+                 gpxFileName: "AachenMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 50.69671363285187, longitude: 6.091359154895335),
+                 span: MKCoordinateSpan(latitudeDelta: 0.21098036139572685, longitudeDelta: 0.18193360728906427),
+                 steps: 60495
+                ),
+        
+        35: Marathon(title: "Bakewell\nMarathon\nin steps",
+                 gpxFileName: "BakewellMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 53.21534817761688, longitude: -1.7400841387548487),
+                 span: MKCoordinateSpan(latitudeDelta: 0.2626808569624757, longitudeDelta: 0.23961066435393086),
+                 steps: 60485
+                ),
+        
+        36: Marathon(title: "Barbury Castle\nMarathon\nin steps",
+                 gpxFileName: "BarburyCastleMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 51.571968625979565, longitude: -1.6718555270347857),
+                 span: MKCoordinateSpan(latitudeDelta: 0.33605044636614423, longitudeDelta: 0.2953300423661709),
+                 steps: 61555
                 ),
     ]
 }

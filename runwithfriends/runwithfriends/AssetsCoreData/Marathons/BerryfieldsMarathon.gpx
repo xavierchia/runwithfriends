@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" creator="www.plotaroute.com" version="1.1"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<desc>Route created on plotaroute.com</desc>
+</metadata>
+<trk>
+<name>BerryfieldsMarathon</name>
+<trkseg>
+<trkpt lat="51.8325952" lon="-0.8591652">
+<ele>75</ele>
+<time>2025-06-24T00:00:00Z</time></trkpt>
+<trkpt lat="51.8333378" lon="-0.8771896">
+<ele>76</ele>
+<time>2025-06-24T00:14:55Z</time></trkpt>
+<trkpt lat="51.8403384" lon="-0.9029388">
+<ele>85</ele>
+<time>2025-06-24T00:38:08Z</time></trkpt>
+<trkpt lat="51.8397551" lon="-0.9231091">
+<ele>106</ele>
+<time>2025-06-24T00:54:48Z</time></trkpt>
+<trkpt lat="51.8278744" lon="-0.9107494">
+<ele>136</ele>
+<time>2025-06-24T01:13:40Z</time></trkpt>
+<trkpt lat="51.8236306" lon="-0.898819">
+<ele>90</ele>
+<time>2025-06-24T01:25:02Z</time></trkpt>
+<trkpt lat="51.8147703" lon="-0.8877897">
+<ele>68</ele>
+<time>2025-06-24T01:39:58Z</time></trkpt>
+<trkpt lat="51.8130723" lon="-0.886116">
+<ele>69</ele>
+<time>2025-06-24T01:42:37Z</time></trkpt>
+<trkpt lat="51.8063328" lon="-0.8882618">
+<ele>71</ele>
+<time>2025-06-24T01:51:48Z</time></trkpt>
+<trkpt lat="51.7970444" lon="-0.8912659">
+<ele>111</ele>
+<time>2025-06-24T02:04:27Z</time></trkpt>
+<trkpt lat="51.8004415" lon="-0.8744431">
+<ele>101</ele>
+<time>2025-06-24T02:19:04Z</time></trkpt>
+<trkpt lat="51.7908865" lon="-0.8660316">
+<ele>76</ele>
+<time>2025-06-24T02:33:36Z</time></trkpt>
+<trkpt lat="51.7778246" lon="-0.8387375">
+<ele>80</ele>
+<time>2025-06-24T03:02:07Z</time></trkpt>
+<trkpt lat="51.7784619" lon="-0.8088684">
+<ele>85</ele>
+<time>2025-06-24T03:26:49Z</time></trkpt>
+<trkpt lat="51.7653965" lon="-0.8080101">
+<ele>93</ele>
+<time>2025-06-24T03:44:17Z</time></trkpt>
+<trkpt lat="51.759553" lon="-0.7983971">
+<ele>115</ele>
+<time>2025-06-24T03:55:26Z</time></trkpt>
+<trkpt lat="51.7512646" lon="-0.7995987">
+<ele>116</ele>
+<time>2025-06-24T04:06:33Z</time></trkpt>
+<trkpt lat="51.760403" lon="-0.7458687">
+<ele>134</ele>
+<time>2025-06-24T04:52:37Z</time></trkpt>
+<trkpt lat="51.7632185" lon="-0.7409763">
+<ele>122</ele>
+<time>2025-06-24T04:58:09Z</time></trkpt>
+<trkpt lat="51.7789929" lon="-0.7442379">
+<ele>120</ele>
+<time>2025-06-24T05:19:23Z</time></trkpt>
+<trkpt lat="51.794868" lon="-0.70261">
+<ele>121</ele>
+<time>2025-06-24T05:59:48Z</time></trkpt>
+<trkpt lat="51.8035199" lon="-0.6826115">
+<ele>127</ele>
+<time>2025-06-24T06:19:58Z</time></trkpt>
+<trkpt lat="51.8010253" lon="-0.6804657">
+<ele>129</ele>
+<time>2025-06-24T06:23:44Z</time></trkpt>
+<trkpt lat="51.8065981" lon="-0.6744576">
+<ele>119</ele>
+<time>2025-06-24T06:32:41Z</time></trkpt>
+<trkpt lat="51.8088801" lon="-0.6606388">
+<ele>121</ele>
+<time>2025-06-24T06:44:30Z</time></trkpt>
+<trkpt lat="51.8155131" lon="-0.6537724">
+<ele>119</ele>
+<time>2025-06-24T06:55:01Z</time></trkpt>
+<trkpt lat="51.8204474" lon="-0.6695652">
+<ele>106</ele>
+<time>2025-06-24T07:09:38Z</time></trkpt>
+<trkpt lat="51.8165743" lon="-0.719347">
+<ele>87</ele>
+<time>2025-06-24T07:51:03Z</time></trkpt>
+<trkpt lat="51.8204474" lon="-0.766468">
+<ele>83</ele>
+<time>2025-06-24T08:30:19Z</time></trkpt>
+<trkpt lat="51.8202352" lon="-0.7789993">
+<ele>82</ele>
+<time>2025-06-24T08:40:40Z</time></trkpt>
+</trkseg>
+</trk>
+</gpx>
