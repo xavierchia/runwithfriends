@@ -68,7 +68,6 @@
 		A56A44C22E0A4FE200B4C40B /* VerbierMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44C02E0A4FE200B4C40B /* VerbierMarathon.gpx */; };
 		A56A44C32E0A4FE200B4C40B /* MusselburghMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44BB2E0A4FE200B4C40B /* MusselburghMarathon.gpx */; };
 		A56A44C42E0A4FE200B4C40B /* BakewellMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44AE2E0A4FE200B4C40B /* BakewellMarathon.gpx */; };
-		A56A44C52E0A4FE200B4C40B /* IkeaMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44B42E0A4FE200B4C40B /* IkeaMarathon.gpx */; };
 		A56A44C62E0A4FE200B4C40B /* BrightonBeachMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44B22E0A4FE200B4C40B /* BrightonBeachMarathon.gpx */; };
 		A56A44C72E0A4FE200B4C40B /* BarburyCastleMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44AF2E0A4FE200B4C40B /* BarburyCastleMarathon.gpx */; };
 		A56A44C82E0A4FE200B4C40B /* BielsaMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44B12E0A4FE200B4C40B /* BielsaMarathon.gpx */; };
@@ -206,7 +205,6 @@
 		A56A44B12E0A4FE200B4C40B /* BielsaMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BielsaMarathon.gpx; sourceTree = "<group>"; };
 		A56A44B22E0A4FE200B4C40B /* BrightonBeachMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BrightonBeachMarathon.gpx; sourceTree = "<group>"; };
 		A56A44B32E0A4FE200B4C40B /* DurhamMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DurhamMarathon.gpx; sourceTree = "<group>"; };
-		A56A44B42E0A4FE200B4C40B /* IkeaMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = IkeaMarathon.gpx; sourceTree = "<group>"; };
 		A56A44B52E0A4FE200B4C40B /* KinsolTrestleMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = KinsolTrestleMarathon.gpx; sourceTree = "<group>"; };
 		A56A44B62E0A4FE200B4C40B /* LightUpTheLakesMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LightUpTheLakesMarathon.gpx; sourceTree = "<group>"; };
 		A56A44B72E0A4FE200B4C40B /* LongfordMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LongfordMarathon.gpx; sourceTree = "<group>"; };
@@ -435,7 +433,6 @@
 				A56A44B12E0A4FE200B4C40B /* BielsaMarathon.gpx */,
 				A56A44B22E0A4FE200B4C40B /* BrightonBeachMarathon.gpx */,
 				A56A44B32E0A4FE200B4C40B /* DurhamMarathon.gpx */,
-				A56A44B42E0A4FE200B4C40B /* IkeaMarathon.gpx */,
 				A56A44B52E0A4FE200B4C40B /* KinsolTrestleMarathon.gpx */,
 				A56A44B62E0A4FE200B4C40B /* LightUpTheLakesMarathon.gpx */,
 				A56A44B72E0A4FE200B4C40B /* LongfordMarathon.gpx */,
@@ -668,7 +665,6 @@
 				A56A44C22E0A4FE200B4C40B /* VerbierMarathon.gpx in Resources */,
 				A56A44C32E0A4FE200B4C40B /* MusselburghMarathon.gpx in Resources */,
 				A56A44C42E0A4FE200B4C40B /* BakewellMarathon.gpx in Resources */,
-				A56A44C52E0A4FE200B4C40B /* IkeaMarathon.gpx in Resources */,
 				A56A44C62E0A4FE200B4C40B /* BrightonBeachMarathon.gpx in Resources */,
 				A56A44C72E0A4FE200B4C40B /* BarburyCastleMarathon.gpx in Resources */,
 				A56A44C82E0A4FE200B4C40B /* BielsaMarathon.gpx in Resources */,

@@ -26,7 +26,7 @@ struct MarathonData {
         var currentWeek = Date.currentWeek()
         
         // add marathon testing
-        currentWeek = 36
+//        currentWeek = 52
         
         return marathonsByWeekOfYear[currentWeek] ?? marathonsByWeekOfYear[13]!
     }
@@ -191,6 +191,118 @@ struct MarathonData {
                  centerCoordinate: CLLocationCoordinate2D(latitude: 51.571968625979565, longitude: -1.6718555270347857),
                  span: MKCoordinateSpan(latitudeDelta: 0.33605044636614423, longitudeDelta: 0.2953300423661709),
                  steps: 61555
+                ),
+        
+        37: Marathon(title: "Berryfields\nMarathon\nin steps",
+                 gpxFileName: "BerryfieldsMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 51.84097688141144, longitude: -0.7894297278427735),
+                 span: MKCoordinateSpan(latitudeDelta: 0.4030633501077858, longitudeDelta: 0.3563352337249537),
+                 steps: 62059
+                ),
+        
+        38: Marathon(title: "Bielsa\nMarathon\nin steps",
+                 gpxFileName: "BielsaMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 42.708894468074185, longitude: 0.3596079806158722),
+                 span: MKCoordinateSpan(latitudeDelta: 0.5978445547405471, longitudeDelta: 0.453160965391346),
+                 steps: 61739
+                ),
+        
+        39: Marathon(title: "Brighton Beach\nMarathon\nin steps",
+                 gpxFileName: "BrightonBeachMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: -37.85950541798401, longitude: 145.03971744685288),
+                 span: MKCoordinateSpan(latitudeDelta: 0.3194031685227472, longitudeDelta: 0.287112303423271),
+                 steps: 60909
+                ),
+        
+        40: Marathon(title: "Durham\nMarathon\nin steps",
+                 gpxFileName: "DurhamMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 35.97748135273559, longitude: -78.9282650916153),
+                 span: MKCoordinateSpan(latitudeDelta: 0.16310065567964926, longitudeDelta: 0.11008814824626256),
+                 steps: 60195
+                ),
+        
+        41: Marathon(title: "Kinsol\nMarathon\nin steps",
+                 gpxFileName: "KinsolTrestleMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 48.60073989557082, longitude: -123.62431573623829),
+                 span: MKCoordinateSpan(latitudeDelta: 0.44347165325517324, longitudeDelta: 0.36629584873747945),
+                 steps: 61462
+                ),
+        
+        42: Marathon(title: "Light up the lakes\nMarathon\nin steps",
+                 gpxFileName: "LightUpTheLakesMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 54.39863177395313, longitude: -3.148102105566462),
+                 span: MKCoordinateSpan(latitudeDelta: 0.23539466244472607, longitudeDelta: 0.22086836517313024),
+                 steps: 60583
+                ),
+        
+        43: Marathon(title: "Longford\nMarathon\nin steps",
+                 gpxFileName: "LongfordMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 53.79530640358901, longitude: -7.854300053567845),
+                 span: MKCoordinateSpan(latitudeDelta: 0.259982175608485, longitudeDelta: 0.24041603557308555),
+                 steps: 60354
+                ),
+        
+        44: Marathon(title: "Manchester\nMarathon\nin steps",
+                 gpxFileName: "ManchesterMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 53.63301737152056, longitude: -2.118723978214487),
+                 span: MKCoordinateSpan(latitudeDelta: 0.3788813097013417, longitudeDelta: 0.3493839041055935),
+                 steps: 60402
+                ),
+        
+        45: Marathon(title: "Manitou\nMarathon\nin steps",
+                 gpxFileName: "ManitouMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 42.25005628229398, longitude: -74.0822518302387),
+                 span: MKCoordinateSpan(latitudeDelta: 0.30935893062633824, longitudeDelta: 0.22828102673653916),
+                 steps: 60722
+                ),
+        
+        46: Marathon(title: "Mud Mountain\nMarathon\nin steps",
+                 gpxFileName: "MudMountainMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 47.17629735681361, longitude: -122.0953305814743),
+                 span: MKCoordinateSpan(latitudeDelta: 0.5561502961022171, longitudeDelta: 0.4469021111612079),
+                 steps: 60398
+                ),
+        
+        47: Marathon(title: "Musselburgh\nMarathon\nin steps",
+                 gpxFileName: "MusselburghMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 56.0174569674746, longitude: -2.7654727319948287),
+                 span: MKCoordinateSpan(latitudeDelta: 0.8045887168405628, longitudeDelta: 0.7862745136097371),
+                 steps: 60665
+                ),
+        
+        48: Marathon(title: "Snowdonia\nMarathon\nin steps",
+                 gpxFileName: "SnowdoniaMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 53.087914437652465, longitude: -4.081364432314987),
+                 span: MKCoordinateSpan(latitudeDelta: 0.20944963620668489, longitudeDelta: 0.1904883957559238),
+                 steps: 62881
+                ),
+        
+        49: Marathon(title: "Toledo\nMarathon\nin steps",
+                 gpxFileName: "ToledoMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 41.62558907568954, longitude: -83.57947819675391),
+                 span: MKCoordinateSpan(latitudeDelta: 0.22307411298950797, longitudeDelta: 0.1630059891674307),
+                 steps: 60294
+                ),
+        
+        50: Marathon(title: "Toronto\nMarathon\nin steps",
+                 gpxFileName: "TorontoMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 43.7200440561874, longitude: -79.40031285217906),
+                 span: MKCoordinateSpan(latitudeDelta: 0.32624754658051813, longitudeDelta: 0.24657008127424263),
+                 steps: 60267
+                ),
+        
+        51: Marathon(title: "Tregastel\nMarathon\nin steps",
+                 gpxFileName: "TregastelMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 48.792737531298506, longitude: -3.520522140991255),
+                 span: MKCoordinateSpan(latitudeDelta: 0.20765438660025382, longitudeDelta: 0.1721725239220362),
+                 steps: 60782
+                ),
+        
+        52: Marathon(title: "Verbier\nMarathon\nin steps",
+                 gpxFileName: "VerbierMarathon",
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 46.06559401076846, longitude: 7.243147049153979),
+                 span: MKCoordinateSpan(latitudeDelta: 0.19785063419053017, longitudeDelta: 0.15575715380027333),
+                 steps: 60927
                 ),
     ]
 }
