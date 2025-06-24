@@ -118,8 +118,8 @@ struct MarathonData {
                 
         26: Marathon(title: "Bellingham Bay\nMarathon\nin steps",
                  gpxFileName: "BellinghamBayMarathon",
-                 centerCoordinate: CLLocationCoordinate2D(latitude: 48.76611619509299, longitude: -122.57453635683568),
-                 span: MKCoordinateSpan(latitudeDelta: 0.30667296089279006, longitudeDelta: 0.25413694601579095),
+                 centerCoordinate: CLLocationCoordinate2D(latitude: 48.79223815146294, longitude: -122.57540520772434),
+                 span: MKCoordinateSpan(latitudeDelta: 0.30651340908590186, longitudeDelta: 0.25413694601579095),
                  steps: 60493
                 ),
                         
