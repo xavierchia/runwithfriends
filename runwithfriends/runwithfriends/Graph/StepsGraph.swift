@@ -115,9 +115,6 @@ struct StepsGraph: View {
     }
     
     private func loadWeekData() {
-        // Don't reload if we already have data
-        guard weekData.isEmpty else { return }
-        
         Task {
             var data = await GraphMachine.shared.getSteps12Weeks()
             
@@ -132,9 +129,6 @@ struct StepsGraph: View {
     }
     
     private func loadDayData() {
-        // Don't reload if we already have data
-        guard dayData.isEmpty else { return }
-        
         Task {
             var data = await StepCounter.shared.getStepsForDateRange(.currentWeek)
             
