@@ -80,6 +80,9 @@ struct StepsGraph: View {
         .onAppear {
             loadInitialData()
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            loadInitialData()
+        }
         .onChange(of: chartMode) { _, newMode in
             saveChartMode(newMode)
         }
