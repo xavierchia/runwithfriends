@@ -29,9 +29,9 @@ struct StepsGraph: View {
         
         // Initialize chartMode from UserDefaults
         if let defaults = PeaDefaults.shared,
-           let savedMode = defaults.string(forKey: UserDefaultsKey.graphChartMode),
-           let savedMode = ChartMode(rawValue: savedMode) {
-            _chartMode = State(initialValue: savedMode)
+           let savedModeString = defaults.string(forKey: UserDefaultsKey.graphChartMode),
+           let savedModeChart = ChartMode(rawValue: savedModeString) {
+            _chartMode = State(initialValue: savedModeChart)
         } else {
             _chartMode = State(initialValue: .week)
         }
