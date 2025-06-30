@@ -163,6 +163,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                         
                         spinner.stopAnimating()
                         let userData = UserData(user: user)
+                        // xxavier set to onboarding if necessary
                         let tabVC = TabViewController(with: userData)
                         print("User signed in, routing to TabViewController")
                         self.view.window!.rootViewController = tabVC

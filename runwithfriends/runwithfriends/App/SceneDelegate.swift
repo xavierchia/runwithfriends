@@ -46,9 +46,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let user = try await UserData.getUserOnAppInit()
                 let userData = UserData(user: user)
                 print("User signed in, routing to TabViewConroller")
-                DispatchQueue.main.async {
-                    window.rootViewController = TabViewController(with: userData)
-                    UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+                
+                if let peaDefaults = PeaDefaults.shared,
+                   peaDefaults.bool(forKey: UserDefaultsKey.isOnboardingComplete) {
+                    DispatchQueue.main.async {
+                        window.rootViewController = TabViewController(with: userData)
+                        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        window.rootViewController = OnboardingViewController()
+                        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+                    }
                 }
             } catch {
                 print("User not signed in or force sign out, routing to LoginViewController")

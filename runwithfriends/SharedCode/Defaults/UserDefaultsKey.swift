@@ -8,9 +8,13 @@
 import Foundation
 
 public struct UserDefaultsKey {
-    // bump up to next version number if needed
+    // true false
     public static let hasSearchedFollowing = "hasSearchedFollowing"
-
-    public static let friendsProgress = "friendsProgress"
+    public static let isOnboardingComplete = "isOnboardingComplete"
+    
+    // last settings
     public static let graphChartMode = "graphChartMode"
+    
+    // data
+    public static let friendsProgress = "friendsProgress"
 }

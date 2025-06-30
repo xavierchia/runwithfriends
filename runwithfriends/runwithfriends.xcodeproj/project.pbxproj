@@ -83,6 +83,7 @@
 		A56A44D22E0A4FE200B4C40B /* ToledoMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44BD2E0A4FE200B4C40B /* ToledoMarathon.gpx */; };
 		A56A44D32E0A4FE200B4C40B /* TregastelMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44BF2E0A4FE200B4C40B /* TregastelMarathon.gpx */; };
 		A56A44D42E0A4FE200B4C40B /* ManitouMarathon.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A56A44B92E0A4FE200B4C40B /* ManitouMarathon.gpx */; };
+		A56EB6852E12199A00CB8B2C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56EB6842E12199A00CB8B2C /* OnboardingViewController.swift */; };
 		A5A1ACA72DE06067004D86A2 /* PulsingDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */; };
 		A5A1ACA92DE06089004D86A2 /* ToggleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */; };
 		A5A1AD112DE3F34C004D86A2 /* WeekStepsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1AD102DE3F34C004D86A2 /* WeekStepsChart.swift */; };
@@ -217,6 +218,7 @@
 		A56A44BE2E0A4FE200B4C40B /* TorontoMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TorontoMarathon.gpx; sourceTree = "<group>"; };
 		A56A44BF2E0A4FE200B4C40B /* TregastelMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TregastelMarathon.gpx; sourceTree = "<group>"; };
 		A56A44C02E0A4FE200B4C40B /* VerbierMarathon.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VerbierMarathon.gpx; sourceTree = "<group>"; };
+		A56EB6842E12199A00CB8B2C /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingDot.swift; sourceTree = "<group>"; };
 		A5A1ACA82DE06089004D86A2 /* ToggleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleHeader.swift; sourceTree = "<group>"; };
 		A5A1AD102DE3F34C004D86A2 /* WeekStepsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekStepsChart.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 			children = (
 				95F961CE2AE7418400D4AA30 /* runwithfriends.entitlements */,
 				9536C1702AF9AED800263871 /* App */,
+				A56EB6802E12198A00CB8B2C /* Onboarding */,
 				9536C1712AF9AEE700263871 /* Login */,
 				95DBAC4F2BA18175002037F1 /* Community */,
 				A5347F682DDAB7E300C18880 /* Graph */,
@@ -494,6 +497,14 @@
 				A5A1ACA62DE06067004D86A2 /* PulsingDot.swift */,
 			);
 			path = Graph;
+			sourceTree = "<group>";
+		};
+		A56EB6802E12198A00CB8B2C /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				A56EB6842E12199A00CB8B2C /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -706,6 +717,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A56EB6852E12199A00CB8B2C /* OnboardingViewController.swift in Sources */,
 				A534E20E2DDC57C0006B866D /* StepsGraph.swift in Sources */,
 				95FF666A2DA0C57F002BD296 /* FollowViewController.swift in Sources */,
 				952825B82AE1F74D0032B04B /* LoginViewController.swift in Sources */,

@@ -256,8 +256,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let defaults = PeaDefaults.shared,
-              trueFollowing.count > 0 else { return 0 }
+        guard trueFollowing.count > 0 else { return 0 }
         if tableView == mainTableView {
             return 60
         }
