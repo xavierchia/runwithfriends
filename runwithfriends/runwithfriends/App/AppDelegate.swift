@@ -20,11 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         setupGlobalUI()
         
-        if let shared = AppDelegate.appUserDefaults,
-           shared.bool(forKey: UserDefaultsKey.appFirstInstallVersion) == false {
-            shared.set(true, forKey: UserDefaultsKey.appFirstInstallVersion)
-        }
-        
         print("did finish launching")
         
         return true
