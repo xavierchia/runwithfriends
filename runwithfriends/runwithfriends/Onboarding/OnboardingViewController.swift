@@ -46,7 +46,7 @@ class OnboardingViewController: UIViewController {
         // Skip Button
         skipButton.setTitle("Skip", for: .normal)
         skipButton.setTitleColor(.baseText, for: .normal)
-        skipButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        skipButton.titleLabel?.font = UIFont.KefirBold(size: 16)
         skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
         view.addSubview(skipButton)
         skipButton.translatesAutoresizingMaskIntoConstraints = false
@@ -56,30 +56,32 @@ class OnboardingViewController: UIViewController {
         ])
         
         // Title Label
-        titleLabel.text = "General Knowledge Quiz"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
+        titleLabel.text = "Glorified Onboarding"
+        titleLabel.font = UIFont.KefirBold(size: 28)
+
         titleLabel.textColor = .baseText
         titleLabel.textAlignment = .center
         
         // Progress View
         progressView.trackTintColor = UIColor.white.withAlphaComponent(0.3)
-        progressView.progressTintColor = UIColor.systemGreen
+        progressView.progressTintColor = UIColor.moss
         progressView.layer.cornerRadius = 4
         progressView.clipsToBounds = true
         
         // Card View
-        cardView.backgroundColor = .white
+        cardView.backgroundColor = .card
         cardView.layer.cornerRadius = 20
         cardView.layer.masksToBounds = true
         cardView.translatesAutoresizingMaskIntoConstraints = false
         
         // Question Number Label
         questionNumberLabel.textColor = .gray
-        questionNumberLabel.font = UIFont.systemFont(ofSize: 14)
+        questionNumberLabel.font = UIFont.QuicksandMedium(size: 14)
+
         
         // Question Label
-        questionLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        questionLabel.textColor = .black
+        questionLabel.font = UIFont.QuicksandBold(size: 18)
+        questionLabel.textColor = .baseText
         questionLabel.numberOfLines = 0
         questionLabel.textAlignment = .left
         
