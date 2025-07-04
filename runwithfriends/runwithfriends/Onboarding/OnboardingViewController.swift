@@ -100,7 +100,7 @@ class OnboardingViewController: UIViewController {
         
         // Answer Buttons
         for i in 0..<2 {
-            let button = UIButton(type: .system)
+            let button = UIButton(type: .custom)
             button.tag = i
             button.titleLabel?.font = UIFont.QuicksandMedium(size: 16)
             button.layer.cornerRadius = 12
