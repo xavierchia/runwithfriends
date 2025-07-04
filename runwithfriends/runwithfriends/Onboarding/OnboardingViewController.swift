@@ -143,12 +143,11 @@ class OnboardingViewController: UIViewController {
         
         // Next Button
         nextButton.setTitle("Continue", for: .normal)
-        nextButton.backgroundColor = UIColor.accent
-        nextButton.setTitleColor(.white, for: .normal)
+        nextButton.backgroundColor = UIColor.lightGray
+        nextButton.setTitleColor(.baseBackground, for: .normal)
         nextButton.layer.cornerRadius = 16
         nextButton.titleLabel?.font = UIFont.QuicksandBold(size: 18)
         nextButton.isEnabled = false
-        nextButton.alpha = 0.5
         nextButton.addTarget(self, action: #selector(nextQuestionTapped), for: .touchUpInside)
         view.addSubview(nextButton)
         nextButton.translatesAutoresizingMaskIntoConstraints = false
@@ -174,7 +173,7 @@ class OnboardingViewController: UIViewController {
             button.isEnabled = true
         }
         nextButton.isEnabled = false
-        nextButton.alpha = 0.5
+        nextButton.backgroundColor = UIColor.lightGray
         progressView.progress = Float(currentQuestionIndex + 1) / Float(questions.count)
         nextButton.setTitle(currentQuestionIndex == questions.count - 1 ? "Finish" : "Continue", for: .normal)
     }
@@ -184,10 +183,10 @@ class OnboardingViewController: UIViewController {
         let index = sender.tag
         for (i, button) in answerButtons.enumerated() {
             if i == index {
-                button.backgroundColor = UIColor.moss
-                button.setTitleColor(.card, for: .normal)
+                button.backgroundColor = UIColor.clear
+                button.setTitleColor(.accent, for: .normal)
                 button.layer.borderWidth = 2
-                button.layer.borderColor = UIColor.moss.cgColor
+                button.layer.borderColor = UIColor.accent.cgColor
             } else {
                 button.backgroundColor = UIColor.clear
                 button.setTitleColor(.baseText, for: .normal)
@@ -196,7 +195,7 @@ class OnboardingViewController: UIViewController {
             }
         }
         nextButton.isEnabled = true
-        nextButton.alpha = 1.0
+        nextButton.backgroundColor = UIColor.moss
     }
     
     @objc private func nextQuestionTapped() {
