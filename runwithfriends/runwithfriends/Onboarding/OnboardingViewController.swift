@@ -34,6 +34,17 @@ class OnboardingViewController: UIViewController {
     ]
     private var currentQuestionIndex = 0
     
+    let userData: UserData
+
+    init(with userData: UserData) {
+        self.userData = userData
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .baseBackground
@@ -204,12 +215,19 @@ class OnboardingViewController: UIViewController {
             loadCurrentQuestion()
         } else {
             // Finish onboarding: dismiss or transition
-            dismiss(animated: true, completion: nil)
+            DispatchQueue.main.async {
+                let window = self.view.window!
+                window.rootViewController = TabViewController(with: self.userData)
+                UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+            }
         }
     }
     
     @objc private func skipTapped() {
-        // Skip onboarding: dismiss or transition
-        dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let window = self.view.window!
+            window.rootViewController = TabViewController(with: self.userData)
+            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+        }
     }
 }

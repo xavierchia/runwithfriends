@@ -163,10 +163,19 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                         
                         spinner.stopAnimating()
                         let userData = UserData(user: user)
-                        // xxavier set to onboarding if necessary
-                        let tabVC = TabViewController(with: userData)
-                        print("User signed in, routing to TabViewController")
-                        self.view.window!.rootViewController = tabVC
+                        let window = self.view.window!
+                        if let peaDefaults = PeaDefaults.shared,
+                           peaDefaults.bool(forKey: UserDefaultsKey.isOnboardingComplete) {
+                            DispatchQueue.main.async {
+                                window.rootViewController = TabViewController(with: userData)
+                                UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                window.rootViewController = OnboardingViewController(with: userData)
+                                UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+                            }
+                        }
                     }
                     catch {
                         print("unable to save session")

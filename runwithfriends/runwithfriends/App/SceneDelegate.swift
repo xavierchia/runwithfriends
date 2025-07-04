@@ -38,9 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             // when we need to log out the user
             
-//            if let shared = AppDelegate.appUserDefaults {
-//                try await Supabase.shared.client.auth.signOut()
-//            }
+//            try await Supabase.shared.client.auth.signOut()
                         
             do {
                 let user = try await UserData.getUserOnAppInit()
@@ -55,7 +53,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        window.rootViewController = OnboardingViewController()
+                        window.rootViewController = OnboardingViewController(with: userData)
                         UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
                     }
                 }
