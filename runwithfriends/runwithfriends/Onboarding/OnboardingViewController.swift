@@ -26,11 +26,11 @@ class OnboardingViewController: UIViewController {
     
     // MARK: - Data
     private let questions: [OnboardingQuestion] = [
-        OnboardingQuestion(question: "What is your favorite color?", answers: ["Red", "Blue", "Green", "Yellow"]),
-        OnboardingQuestion(question: "What is your favorite sport?", answers: ["Soccer", "Basketball", "Tennis", "Running"]),
-        OnboardingQuestion(question: "What is your favorite season?", answers: ["Spring", "Summer", "Autumn", "Winter"]),
-        OnboardingQuestion(question: "What is your favorite food?", answers: ["Pizza", "Sushi", "Burger", "Salad"]),
-        OnboardingQuestion(question: "What is your favorite animal?", answers: ["Dog", "Cat", "Bird", "Fish"])
+        OnboardingQuestion(question: "Looking for a walking app that won't judge your snack breaks?\n\nYou've found your people.", answers: ["Snacks are part of my training.", "Is there a snack leaderboard?"]),
+        OnboardingQuestion(question: "Each week we’ll drop a new marathon route from around the world.\n\nThis week you might be ‘walking’ through Tokyo, next week maybe Paris.\n\nIt’s like traveling, but with more sweat and less passport stamps.", answers: ["My couch has never been to Tokyo.", "Do I get frequent walker miles?"]),
+        OnboardingQuestion(question: "The best part?\n\nYou can walk with your friends and pretend you’re all training for something important.", answers: ["We’re very serious walkers.", "Bold of you to assume I have friends"]),
+        OnboardingQuestion(question: "We need permission to count your steps.\n\nYes, all 47 of them from today.", answers: ["I only walk to the fridge", "Fine, expose my laziness."]),
+        OnboardingQuestion(question: "What is your favorite animal?", answers: ["Dog", "Cat"])
     ]
     private var currentQuestionIndex = 0
     
@@ -46,7 +46,7 @@ class OnboardingViewController: UIViewController {
         // Skip Button
         skipButton.setTitle("Skip", for: .normal)
         skipButton.setTitleColor(.baseText, for: .normal)
-        skipButton.titleLabel?.font = UIFont.KefirBold(size: 16)
+        skipButton.titleLabel?.font = UIFont.KefirMedium(size: 16)
         skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
         view.addSubview(skipButton)
         skipButton.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +57,7 @@ class OnboardingViewController: UIViewController {
         
         // Title Label
         titleLabel.text = "Glorified Onboarding"
-        titleLabel.font = UIFont.KefirBold(size: 28)
+        titleLabel.font = UIFont.KefirMedium(size: 28)
 
         titleLabel.textColor = .baseText
         titleLabel.textAlignment = .center
@@ -80,7 +80,7 @@ class OnboardingViewController: UIViewController {
 
         
         // Question Label
-        questionLabel.font = UIFont.QuicksandBold(size: 18)
+        questionLabel.font = UIFont.QuicksandMedium(size: 18)
         questionLabel.textColor = .baseText
         questionLabel.numberOfLines = 0
         questionLabel.textAlignment = .left
@@ -99,14 +99,15 @@ class OnboardingViewController: UIViewController {
         ])
         
         // Answer Buttons
-        for i in 0..<4 {
+        for i in 0..<2 {
             let button = UIButton(type: .system)
             button.tag = i
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+            button.titleLabel?.font = UIFont.QuicksandMedium(size: 16)
             button.layer.cornerRadius = 12
-            button.backgroundColor = UIColor.systemGray5
-            button.setTitleColor(.gray, for: .normal)
-            button.layer.borderWidth = 0
+            button.backgroundColor = UIColor.clear
+            button.setTitleColor(.baseText, for: .normal)
+            button.layer.borderWidth = 2
+            button.layer.borderColor = UIColor.baseText.cgColor
             button.contentEdgeInsets = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
             button.addTarget(self, action: #selector(answerButtonTapped(_:)), for: .touchUpInside)
             answerButtons.append(button)
@@ -141,11 +142,11 @@ class OnboardingViewController: UIViewController {
         ])
         
         // Next Button
-        nextButton.setTitle("Next Question", for: .normal)
-        nextButton.backgroundColor = UIColor.systemRed
+        nextButton.setTitle("Continue", for: .normal)
+        nextButton.backgroundColor = UIColor.accent
         nextButton.setTitleColor(.white, for: .normal)
         nextButton.layer.cornerRadius = 16
-        nextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        nextButton.titleLabel?.font = UIFont.QuicksandBold(size: 18)
         nextButton.isEnabled = false
         nextButton.alpha = 0.5
         nextButton.addTarget(self, action: #selector(nextQuestionTapped), for: .touchUpInside)
@@ -166,16 +167,16 @@ class OnboardingViewController: UIViewController {
         questionLabel.text = current.question
         for (i, button) in answerButtons.enumerated() {
             button.setTitle(current.answers[i], for: .normal)
-            button.backgroundColor = UIColor.systemGray5
-            button.setTitleColor(.gray, for: .normal)
-            button.layer.borderWidth = 0
-            button.layer.borderColor = UIColor.clear.cgColor
+            button.backgroundColor = UIColor.clear
+            button.setTitleColor(.baseText, for: .normal)
+            button.layer.borderWidth = 2
+            button.layer.borderColor = UIColor.baseText.cgColor
             button.isEnabled = true
         }
         nextButton.isEnabled = false
         nextButton.alpha = 0.5
         progressView.progress = Float(currentQuestionIndex + 1) / Float(questions.count)
-        nextButton.setTitle(currentQuestionIndex == questions.count - 1 ? "Finish" : "Next Question", for: .normal)
+        nextButton.setTitle(currentQuestionIndex == questions.count - 1 ? "Finish" : "Continue", for: .normal)
     }
     
     // MARK: - Actions
@@ -183,15 +184,15 @@ class OnboardingViewController: UIViewController {
         let index = sender.tag
         for (i, button) in answerButtons.enumerated() {
             if i == index {
-                button.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
-                button.setTitleColor(.systemGreen, for: .normal)
+                button.backgroundColor = UIColor.moss
+                button.setTitleColor(.card, for: .normal)
                 button.layer.borderWidth = 2
-                button.layer.borderColor = UIColor.systemGreen.cgColor
+                button.layer.borderColor = UIColor.moss.cgColor
             } else {
-                button.backgroundColor = UIColor.systemGray5
-                button.setTitleColor(.gray, for: .normal)
-                button.layer.borderWidth = 0
-                button.layer.borderColor = UIColor.clear.cgColor
+                button.backgroundColor = UIColor.clear
+                button.setTitleColor(.baseText, for: .normal)
+                button.layer.borderWidth = 2
+                button.layer.borderColor = UIColor.baseText.cgColor
             }
         }
         nextButton.isEnabled = true
