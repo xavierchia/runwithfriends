@@ -139,7 +139,7 @@ class StepCounter {
     }
     
     // Request HealthKit permission
-    private func requestHealthKitPermission() async -> Bool {
+    public func requestHealthKitPermission() async -> Bool {
         guard HKHealthStore.isHealthDataAvailable() else { return false }
         
         let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!

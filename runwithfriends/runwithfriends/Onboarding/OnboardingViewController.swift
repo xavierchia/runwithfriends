@@ -208,6 +208,16 @@ class OnboardingViewController: UIViewController {
         }
         nextButton.isEnabled = true
         nextButton.backgroundColor = UIColor.moss
+        
+        // request permissions
+        if currentQuestionIndex == 3 {
+            Task {
+                let _ = await StepCounter.shared.requestHealthKitPermission()
+                StepCounter.shared.requestMotionPermission { authorized in
+                    print("motion is authorized? \(authorized)")
+                }
+            }
+        }
     }
     
     @objc private func nextQuestionTapped() {
