@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SharedCode
 
 struct OnboardingQuestion {
     let question: String
@@ -26,8 +27,8 @@ class OnboardingViewController: UIViewController {
     
     // MARK: - Data
     private let questions: [OnboardingQuestion] = [
-        OnboardingQuestion(question: "Looking for a walking app that won't judge your snack breaks 🥨?\n\nYou've found your people.", answers: ["Snacks are part of my training 🍪", "Is there a snack leaderboard? 🏆"]),
-        OnboardingQuestion(question: "Each week we’ll drop a new marathon route from around the world.\n\nThis week you might be ‘walking’ through Tokyo 🗼.\n\nNext week maybe Paris.\n\nIt’s like traveling, but with more sweat and less passport stamps.", answers: ["My couch has never been to Tokyo.", "Do I get frequent walker miles? ✈️"]),
+        OnboardingQuestion(question: "Looking for a walking app that won't judge your snack breaks?\n\nYou've found your people 💁", answers: ["Snacks are part of my training 🍪", "Is there a snack leaderboard? 🤤"]),
+        OnboardingQuestion(question: "Each week we’ll drop a new marathon route from around the world.\n\nThis week you might be ‘walking’ through Tokyo 🍣\n\nNext week maybe Paris 🥐", answers: ["My couch has never been to Tokyo.", "Do I get frequent walker miles? ✈️"]),
         OnboardingQuestion(question: "The best part? 🤔\n\nYou can walk with your friends and pretend you’re all training for something important.", answers: ["We’re very serious walkers 😤", "What friends? 🤭"]),
         OnboardingQuestion(question: "P.S. we need permission to count your steps.\n\nYes, all 47 of them from today 😆", answers: ["I only walk to the fridge 🍦", "Fine, expose my laziness 🙄"]),
         OnboardingQuestion(question: "Ready to join thousands of people who are oddly proud of their daily shuffling? 🚶‍♂️", answers: ["Let’s shuffle together. 💪", "I prefer competitive sitting. 🧘"])
@@ -125,8 +126,8 @@ class OnboardingViewController: UIViewController {
             cardView.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                button.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
-                button.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+                button.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 18),
+                button.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -18),
                 button.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
             ])
             if i == 0 {
@@ -215,15 +216,19 @@ class OnboardingViewController: UIViewController {
             loadCurrentQuestion()
         } else {
             // Finish onboarding: dismiss or transition
-            DispatchQueue.main.async {
-                let window = self.view.window!
-                window.rootViewController = TabViewController(with: self.userData)
-                UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
-            }
+            goToTabVC()
         }
     }
     
     @objc private func skipTapped() {
+        goToTabVC()
+    }
+    
+    private func goToTabVC() {
+        if let peaDefaults = PeaDefaults.shared {
+            peaDefaults.setValue(true, forKey: UserDefaultsKey.isOnboardingComplete)
+        }
+        
         DispatchQueue.main.async {
             let window = self.view.window!
             window.rootViewController = TabViewController(with: self.userData)

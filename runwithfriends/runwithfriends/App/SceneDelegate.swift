@@ -37,8 +37,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             
             // when we need to log out the user
-            
 //            try await Supabase.shared.client.auth.signOut()
+            
+            // redo onboarding
+            if let peaDefaults = PeaDefaults.shared {
+                peaDefaults.setValue(false, forKey: UserDefaultsKey.isOnboardingComplete)
+            }
                         
             do {
                 let user = try await UserData.getUserOnAppInit()
