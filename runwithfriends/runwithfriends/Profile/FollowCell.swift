@@ -24,7 +24,7 @@ class FollowCell: UITableViewCell {
             } else {
                 actionButton.setTitle("Follow", for: .normal)
                 actionButton.setTitleColor(.cream, for: .normal)
-                actionButton.backgroundColor = .moss
+                actionButton.backgroundColor = .accent
                 actionButton.layer.cornerRadius = 5
                 actionButton.layer.borderWidth = 0
                 actionButton.layer.borderColor = UIColor.clear.cgColor
@@ -44,10 +44,10 @@ class FollowCell: UITableViewCell {
     
     // Right button
     private let actionButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Action", for: .normal)
-        button.titleLabel?.font = UIFont.QuicksandMedium(size: button.titleLabel?.font.pointSize ?? 17)
+        button.titleLabel?.font = UIFont.QuicksandMedium(size: 17)
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         return button
     }()

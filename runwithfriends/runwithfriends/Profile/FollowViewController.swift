@@ -194,6 +194,7 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     private func handleFollowUser(user: PeaUser) {
+        searchController.isActive = false
         trueFollowing.append(user)
         mainTableArray.prependIfNotExists(user)
         mainTableView.reloadData()
@@ -218,35 +219,24 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let defaults = PeaDefaults.shared else { return nil }
-        
         if tableView == mainTableView {
-            let headerHeight: CGFloat = 60
-            var headerText = "\(userData.user.search_id). \(userData.user.username) \(userData.user.emoji)"
-            var textColor: UIColor = .baseText
-            if !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
-                headerText = "Hi! 👋 You start off with five friends!\nAren't you popular 🤭"
-                textColor = .secondaryText
-            }
+            guard let defaults = PeaDefaults.shared else { return nil }
 
+            var headerHeight: CGFloat = 60
+            var headerText = ""
+            if !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
+                headerText = "Hi! 👋 You start off with five friends!\nAren't you popular.\n\nTry searching for id 28.\nThat is Ally, our community manager 🙆‍♀️\n\n"
+                headerHeight = 180
+            }
+            headerText += "\(userData.user.search_id). \(userData.user.username) \(userData.user.emoji)"
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight))
             let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.frame.width - 30, height: headerHeight))
-            
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineSpacing = 4
-            let attributedString = NSAttributedString(
-                string: headerText,
-                attributes: [
-                    .paragraphStyle: paragraphStyle
-                ]
-            )
-            label.attributedText = attributedString
-            
+
+            label.text = headerText
             label.numberOfLines = 0
             headerView.backgroundColor = .baseBackground
-            label.lineBreakMode = .byWordWrapping
             label.font = UIFont.QuicksandMedium(size: 17)
-            label.textColor = textColor
+            label.textColor = .baseText
             
             headerView.addSubview(label)
             return headerView
@@ -256,51 +246,15 @@ extension FollowViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard trueFollowing.count > 0 else { return 0 }
+        guard trueFollowing.count > 0,
+            let defaults = PeaDefaults.shared else { return 0 }
+
         if tableView == mainTableView {
-            return 60
-        }
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let defaults = PeaDefaults.shared else { return nil }
-        
-        if tableView == mainTableView && !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
-            let footerHeight: CGFloat = 60
-            let footerText = "Try searching for id 28 🧐\nThat is Ally, our community manager 🙆‍♀️"
-            
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: footerHeight))
-            let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.frame.width - 30, height: footerHeight))
-            
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineSpacing = 4
-            let attributedString = NSAttributedString(
-                string: footerText,
-                attributes: [
-                    .paragraphStyle: paragraphStyle
-                ]
-            )
-            label.attributedText = attributedString
-            
-            label.numberOfLines = 0
-            headerView.backgroundColor = .baseBackground
-            label.lineBreakMode = .byWordWrapping
-            label.font = UIFont.QuicksandMedium(size: 17)
-            label.textColor = .secondaryText
-            
-            headerView.addSubview(label)
-            return headerView
-        } else {
-            return nil
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard let defaults = PeaDefaults.shared else { return 0 }
-        
-        if tableView == mainTableView && !defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
-            return 60
+            if defaults.bool(forKey: UserDefaultsKey.hasSearchedFollowing) {
+                return 60
+            } else {
+                return 180
+            }
         }
         return 0
     }

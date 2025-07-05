@@ -174,7 +174,7 @@ class OnboardingViewController: UIViewController {
     // MARK: - Load Question
     private func loadCurrentQuestion() {
         let current = questions[currentQuestionIndex]
-        questionNumberLabel.text = "Question \(currentQuestionIndex + 1)/\(questions.count)"
+        questionNumberLabel.text = "\(currentQuestionIndex + 1)/\(questions.count)"
         questionLabel.text = current.question
         for (i, button) in answerButtons.enumerated() {
             button.setTitle(current.answers[i], for: .normal)
@@ -192,6 +192,16 @@ class OnboardingViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func answerButtonTapped(_ sender: UIButton) {
+        // request permissions
+        if currentQuestionIndex == 3 {
+            StepCounter.shared.requestMotionPermission { authorized in
+                print("motion is authorized? \(authorized)")
+            }
+            Task { @MainActor in
+                let _ = await StepCounter.shared.requestHealthKitPermission()
+            }
+        }
+        
         let index = sender.tag
         for (i, button) in answerButtons.enumerated() {
             if i == index {
@@ -208,16 +218,6 @@ class OnboardingViewController: UIViewController {
         }
         nextButton.isEnabled = true
         nextButton.backgroundColor = UIColor.moss
-        
-        // request permissions
-        if currentQuestionIndex == 3 {
-            Task {
-                let _ = await StepCounter.shared.requestHealthKitPermission()
-                StepCounter.shared.requestMotionPermission { authorized in
-                    print("motion is authorized? \(authorized)")
-                }
-            }
-        }
     }
     
     @objc private func nextQuestionTapped() {
