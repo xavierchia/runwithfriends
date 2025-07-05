@@ -9,17 +9,17 @@ struct Pea_WidgetEntryView : View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             // Header with steps count
-            Text("TODAY'S STEPS")
+            Text("Today's steps")
                 .font(Font.quicksandBold(size: 15))
                 .foregroundColor(.gray)
-                .frame(maxWidth: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
+            Spacer()
+                .frame(height: 5)
             if entry.friends.isEmpty {
                 Text("\(entry.steps)")
                     .font(.quicksandBold(size: 15))
             } else {
-                Divider()
-                
                 // Friends list
                 VStack(alignment: .leading, spacing: 6) {
                     ForEach(entry.friends, id: \.user_id) { friend in
