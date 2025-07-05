@@ -40,9 +40,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            try await Supabase.shared.client.auth.signOut()
             
             // redo onboarding
-            if let peaDefaults = PeaDefaults.shared {
-                peaDefaults.setValue(false, forKey: UserDefaultsKey.isOnboardingComplete)
-            }
+//            if let peaDefaults = PeaDefaults.shared {
+//                peaDefaults.setValue(false, forKey: UserDefaultsKey.isOnboardingComplete)
+//            }
                         
             do {
                 let user = try await UserData.getUserOnAppInit()
