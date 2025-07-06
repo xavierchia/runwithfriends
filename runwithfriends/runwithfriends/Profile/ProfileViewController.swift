@@ -13,6 +13,7 @@ class ProfileViewController: UIViewController {
     enum Title {
         static let profile = "Your profile"
         static let following = "Who you follow"
+        static let review = "Leave a review"
     }
     
     struct CellData {
@@ -24,6 +25,9 @@ class ProfileViewController: UIViewController {
         [
             CellData(emoji: "".image(pointSize: 20), title: Title.profile),
             CellData(emoji: "🥸".image(pointSize: 20), title: Title.following)
+        ],
+        [
+            CellData(emoji: "⭐️".image(pointSize: 20), title: Title.review)
         ]
     ]
     
@@ -131,6 +135,17 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         case Title.following:
             let followVC = FollowViewController(with: userData)
             navigationController?.pushViewController(followVC, animated: true)
+        case Title.review:
+            let appStoreString = "itms-apps://itunes.apple.com/gb/app/id6479013121?action=write-review&mt=8"
+            guard let appStoreURL = URL(string: appStoreString) else { return }
+            if UIApplication.shared.canOpenURL(appStoreURL) {
+                UIApplication.shared.open(appStoreURL)
+            } else {
+                let alert = UIAlertController(title: "Oopsies...", message: "Please find WalkingPeas on the AppStore and write a review.\n\nThanks 🙇", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "🤨 weird...", style: .default, handler: nil)
+                alert.addAction(okAction)
+                present(alert, animated: true)
+            }
         default:
             return
         }
@@ -141,6 +156,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         switch section {
             case 0:
                 return "Personal"
+            case 1:
+                return "Support"
             default:
                 return ""
         }
