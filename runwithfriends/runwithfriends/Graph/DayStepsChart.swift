@@ -53,16 +53,16 @@ struct DayStepsChart: View {
     
     var body: some View {
         Chart {
-            // Marathon completion threshold line
+            // Half marathon threshold line (always shown)
             RuleMark(
-                y: .value("Marathon Threshold", Double(currentMarathon.steps))
+                y: .value("Half Marathon Threshold", Double(currentMarathon.steps) / 2)
             )
             .foregroundStyle(.brightPumpkin)
             .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 10]))
             .annotation(position: .top, alignment: .leading, spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Full marathon")
-                    Text("\(String(format: "%.0f", Double(currentMarathon.steps) / 1000))k")
+                    Text("Half marathon")
+                    Text("\(String(format: "%.0f", Double(currentMarathon.steps) / 2000))k")
                 }
                 .font(.quicksand(size: 12))
                 .foregroundColor(.pumpkin)
@@ -73,6 +73,30 @@ struct DayStepsChart: View {
                         .stroke(.brightPumpkin, lineWidth: 1)
                 )
                 .offset(x: 5)
+            }
+            // Show full marathon rulemark only if half marathon exceeded
+            if let lastCumulative = cumulativeSteps.last?.cumulativeSteps,
+               lastCumulative > Double(currentMarathon.steps) / 2 {
+                RuleMark(
+                    y: .value("Marathon Threshold", Double(currentMarathon.steps))
+                )
+                .foregroundStyle(.brightPumpkin)
+                .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 10]))
+                .annotation(position: .top, alignment: .leading, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Full marathon")
+                        Text("\(String(format: "%.0f", Double(currentMarathon.steps) / 1000))k")
+                    }
+                    .font(.quicksand(size: 12))
+                    .foregroundColor(.pumpkin)
+                    .padding(4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white.opacity(0.8))
+                            .stroke(.brightPumpkin, lineWidth: 1)
+                    )
+                    .offset(x: 5)
+                }
             }
             
             // Base chart content for previous days - lines only (exclude fake point)
