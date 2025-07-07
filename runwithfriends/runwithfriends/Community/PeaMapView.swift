@@ -78,6 +78,15 @@ class PeaMapView: MKMapView, MKMapViewDelegate {
         startPin.coordinate = firstCoordinate
         self.addAnnotation(startPin)
         
+        // Add midpoint annotation
+        let totalSteps = Double(currentMarathon.steps)
+        let halfSteps = totalSteps / 2
+        if let midpointCoord = PathSearch.findCoordinateForSteps(in: stepCoordinates, targetSteps: halfSteps) {
+            let midpointPin = EmojiAnnotation(titleString: "Midpoint: \(Int(halfSteps).valueKM)", emojiImage: OriginalUIImage(emojiString: "🎪"), identifier: "midpoint")
+            midpointPin.coordinate = midpointCoord
+            self.addAnnotation(midpointPin)
+        }
+        
         // add ending flag
         guard let lastCoordinate = stepCoordinates.last else { return }
         let steps = Int(lastCoordinate.steps).valueKM
