@@ -61,9 +61,7 @@ struct DayStepsChart: View {
             .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 10]))
             .annotation(position: .top, alignment: .leading, spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(currentMarathon.title)"
-                        .replacingOccurrences(of: "\n", with: " ")
-                        .replacingOccurrences(of: "in steps", with: ""))
+                    Text("Full marathon")
                     Text("\(String(format: "%.0f", Double(currentMarathon.steps) / 1000))k")
                 }
                 .font(.quicksand(size: 12))
