@@ -49,6 +49,18 @@ struct WeekStepsChart: View {
         }
     }
     
+    private func didAchieveHalfMarathon(for item: DateSteps) -> Bool {
+        let week = weekNumber(from: item.date)
+        if let marathon = MarathonData.marathonsByWeekOfYear[week] {
+            let halfThreshold = Double(marathon.steps) / 2
+            let fullThreshold = Double(marathon.steps)
+            return item.steps >= halfThreshold && item.steps < fullThreshold
+        } else {
+            // Fallback: if no marathon data, use 30k steps threshold
+            return item.steps >= 30000 && item.steps < 60000
+        }
+    }
+    
     var body: some View {
         Chart {
             // Base chart content for previous weeks - lines only (exclude fake point)
@@ -71,6 +83,31 @@ struct WeekStepsChart: View {
                     )
                     .foregroundStyle(by: .value("Series", "Marathon complete"))
                     .symbolSize(100)
+                } else if didAchieveHalfMarathon(for: item) {
+                    // Half-filled moss circle for half marathon complete
+                    PointMark(
+                        x: .value("Week", weekNumber(from: item.date)),
+                        y: .value("Steps", item.steps)
+                    )
+                    .foregroundStyle(by: .value("Series", "Just walking"))
+                    .symbolSize(100)
+                    .annotation(position: .overlay) {
+                        ZStack {
+                            // Background circle to hide line
+                            Circle()
+                                .fill(Color(uiColor: .baseBackground))
+                                .frame(width: 10, height: 10)
+                            // Hollow stroke
+                            Circle()
+                                .stroke(.moss, lineWidth: 3)
+                                .frame(width: 10, height: 10)
+                            // Half-filled semicircle
+                            Circle()
+                                .trim(from: 0, to: 0.5)
+                                .fill(.moss)
+                                .frame(width: 10, height: 10)
+                        }
+                    }
                 } else {
                     // Hollow moss circle for just walking
                     PointMark(

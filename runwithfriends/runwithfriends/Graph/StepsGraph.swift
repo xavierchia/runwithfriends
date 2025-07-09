@@ -149,7 +149,7 @@ struct StepsGraph: View {
     
     private func generateDummyWeekData() -> [DateSteps] {
         let calendar = Calendar.current
-        let baseSteps = [45000, 52000, 38000, 65000, 71000, 42000, 58000, 48000, 55000, 39000, 62000, 120000]
+        let baseSteps = [45000, 52000, 20000, 65000, 71000, 42000, 58000, 48000, 55000, 39000, 62000, 120000]
         
         return baseSteps.enumerated().map { index, steps in
             let date = calendar.date(byAdding: .weekOfYear, value: -11 + index, to: Date()) ?? Date()
