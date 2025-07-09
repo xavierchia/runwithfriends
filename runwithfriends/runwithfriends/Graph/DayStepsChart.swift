@@ -54,10 +54,14 @@ struct DayStepsChart: View {
     var body: some View {
         Chart {
             // Half marathon threshold line (always shown)
+            let currentSteps = cumulativeSteps.last?.cumulativeSteps ?? 0
+            
+            let hasPassedHalfMarathon = currentSteps > Double(currentMarathon.steps) / 2
+            
             RuleMark(
                 y: .value("Half Marathon Threshold", Double(currentMarathon.steps) / 2)
             )
-            .foregroundStyle(.brightPumpkin)
+            .foregroundStyle(hasPassedHalfMarathon ? .lightGreen : .brightPumpkin)
             .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 10]))
             .annotation(position: .top, alignment: .leading, spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
@@ -65,18 +69,20 @@ struct DayStepsChart: View {
                     Text("\(String(format: "%.0f", Double(currentMarathon.steps) / 2000))k")
                 }
                 .font(.quicksand(size: 12))
-                .foregroundColor(.pumpkin)
+                .foregroundColor(hasPassedHalfMarathon ? .moss : .pumpkin)
                 .padding(4)
                 .background(
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.white.opacity(0.8))
-                        .stroke(.brightPumpkin, lineWidth: 1)
+                        .stroke(hasPassedHalfMarathon ? .lightGreen : .brightPumpkin, lineWidth: 1)
                 )
                 .offset(x: 5)
+//                .opacity(hasPassedHalfMarathon ? 0.5 : 1.0)
             }
+//            .opacity(hasPassedHalfMarathon ? 0.5 : 1.0)
+            
             // Show full marathon rulemark only if half marathon exceeded
-            if let lastCumulative = cumulativeSteps.last?.cumulativeSteps,
-               lastCumulative > Double(currentMarathon.steps) / 2 {
+            if currentSteps > Double(currentMarathon.steps) / 2 {
                 RuleMark(
                     y: .value("Marathon Threshold", Double(currentMarathon.steps))
                 )
@@ -190,10 +196,9 @@ struct DayStepsChart: View {
             if let lastReal = sortedDateSteps.last,
                let fakePoint = chartData.last,
                fakePoint.date != lastReal.date {
-                let lastCumulative = cumulativeSteps.last?.cumulativeSteps ?? 0
                 PointMark(
                     x: .value("Day", dayFormatter().string(from: fakePoint.date)),
-                    y: .value("Steps", lastCumulative)
+                    y: .value("Steps", currentSteps)
                 )
                 .foregroundStyle(.clear)
                 .symbolSize(0)
