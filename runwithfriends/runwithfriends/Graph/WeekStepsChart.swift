@@ -61,6 +61,14 @@ struct WeekStepsChart: View {
         }
     }
     
+    private func didAchieveCenturyClub(for item: DateSteps) -> Bool {
+        return item.steps >= 100000
+    }
+    
+    private var hasCenturyClubAchievement: Bool {
+        return dateSteps.dropLast().contains { didAchieveCenturyClub(for: $0) }
+    }
+    
     var body: some View {
         Chart {
             // Base chart content for previous weeks - lines only (exclude fake point)
@@ -75,7 +83,27 @@ struct WeekStepsChart: View {
             
             // Point marks for previous weeks with conditional styling (exclude fake point)
             ForEach(dateSteps.dropLast()) { item in
-                if didAchieveMarathon(for: item) {
+                if didAchieveCenturyClub(for: item) {
+                    // Crown symbol for century club
+                    PointMark(
+                        x: .value("Week", weekNumber(from: item.date)),
+                        y: .value("Steps", item.steps)
+                    )
+                    .foregroundStyle(by: .value("Series", "Century Club"))
+                    .symbolSize(100)
+                    .annotation(position: .overlay) {
+                        ZStack {
+                            // Background circle to hide line
+                            Circle()
+                                .fill(Color(uiColor: .baseBackground))
+                                .frame(width: 12, height: 12)
+                            // Hollow stroke
+                            Image(systemName: "crown.fill")
+                                .foregroundColor(.moss)
+                                .font(.system(size: 15))
+                        }
+                    }
+                } else if didAchieveMarathon(for: item) {
                     // Solid moss circle for marathon complete
                     PointMark(
                         x: .value("Week", weekNumber(from: item.date)),
@@ -199,11 +227,13 @@ struct WeekStepsChart: View {
             }
         }
         .chartForegroundStyleScale([
+            "Century Club": .moss,
             "Marathon complete": .moss,
             "Just walking": .clear, // Make the legend symbol transparent
             "This Week": Color("AccentColor")
         ])
         .chartSymbolScale([
+            "Century Club": .circle,
             "Marathon complete": .circle,
             "Just walking": .circle
         ])
@@ -235,12 +265,26 @@ struct WeekStepsChart: View {
         }
         .chartLegend(position: .bottom, alignment: .center) {
             HStack {
+                // Century Club legend (only show if achieved)
+                if hasCenturyClubAchievement {
+                    HStack(spacing: 4) {
+                        Image(systemName: "crown.fill")
+                            .foregroundColor(.moss)
+                            .font(.system(size: 8))
+                        Text("Century")
+                            .font(.quicksand(size: 12))
+                            .foregroundColor(.baseText)
+                    }
+                    
+                    Spacer().frame(width: 16)
+                }
+                
                 // Marathon complete legend
                 HStack(spacing: 4) {
                     Circle()
                         .fill(.moss)
                         .frame(width: 8, height: 8)
-                    Text("Marathon complete")
+                    Text("Marathon")
                         .font(.quicksand(size: 12))
                         .foregroundColor(.baseText)
                 }
