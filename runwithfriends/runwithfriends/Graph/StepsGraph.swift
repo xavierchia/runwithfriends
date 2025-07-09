@@ -159,7 +159,7 @@ struct StepsGraph: View {
     
     private func generateDummyDayData() -> [DateSteps] {
         let calendar = Calendar.current
-        let baseSteps = [8500, 12200, 6700, 14800, 11300, 9600, 13100]
+        let baseSteps = [8500, 12200, 6700, 14800, 11300, 9600, 50000]
         
         return baseSteps.enumerated().map { index, steps in
             let date = calendar.date(byAdding: .day, value: -6 + index, to: Date()) ?? Date()

@@ -77,16 +77,16 @@ struct DayStepsChart: View {
                         .stroke(hasPassedHalfMarathon ? .lightGreen : .brightPumpkin, lineWidth: 1)
                 )
                 .offset(x: 5)
-//                .opacity(hasPassedHalfMarathon ? 0.5 : 1.0)
             }
-//            .opacity(hasPassedHalfMarathon ? 0.5 : 1.0)
             
             // Show full marathon rulemark only if half marathon exceeded
-            if currentSteps > Double(currentMarathon.steps) / 2 {
+            let hasPassedFullMarathon = currentSteps > Double(currentMarathon.steps)
+            
+            if hasPassedHalfMarathon {
                 RuleMark(
                     y: .value("Marathon Threshold", Double(currentMarathon.steps))
                 )
-                .foregroundStyle(.brightPumpkin)
+                .foregroundStyle(hasPassedFullMarathon ? .lightGreen : .brightPumpkin)
                 .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 10]))
                 .annotation(position: .top, alignment: .leading, spacing: 10) {
                     VStack(alignment: .leading, spacing: 2) {
@@ -94,12 +94,38 @@ struct DayStepsChart: View {
                         Text("\(String(format: "%.0f", Double(currentMarathon.steps) / 1000))k")
                     }
                     .font(.quicksand(size: 12))
-                    .foregroundColor(.pumpkin)
+                    .foregroundColor(hasPassedFullMarathon ? .moss : .pumpkin)
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
                             .fill(Color.white.opacity(0.8))
-                            .stroke(.brightPumpkin, lineWidth: 1)
+                            .stroke(hasPassedFullMarathon ? .lightGreen : .brightPumpkin, lineWidth: 1)
+                    )
+                    .offset(x: 5)
+                }
+            }
+            
+            // Show 100k club rulemark only if full marathon exceeded
+            let hasPassed100kClub = currentSteps > 100000
+            
+            if currentSteps > Double(currentMarathon.steps) {
+                RuleMark(
+                    y: .value("Century Club Threshold", 100000)
+                )
+                .foregroundStyle(hasPassed100kClub ? .lightGreen : .brightPumpkin)
+                .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 10]))
+                .annotation(position: .top, alignment: .leading, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Century club")
+                        Text("100k")
+                    }
+                    .font(.quicksand(size: 12))
+                    .foregroundColor(hasPassed100kClub ? .moss : .pumpkin)
+                    .padding(4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white.opacity(0.8))
+                            .stroke(hasPassed100kClub ? .lightGreen : .brightPumpkin, lineWidth: 1)
                     )
                     .offset(x: 5)
                 }
