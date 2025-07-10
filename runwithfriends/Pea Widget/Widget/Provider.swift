@@ -155,8 +155,10 @@ struct Provider: AppIntentTimelineProvider {
         
         updateUserSteps(steps: data.steps)
         
-        await doNetworking(context: context, steps: data.steps)
-                        
+        if context.family == .systemSmall {
+            await doNetworking(context: context, steps: data.steps)
+        }
+        
         let friends = createSandwichLeaderboard(context: context)
 
         let entry = SimpleEntry(
@@ -171,11 +173,6 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     private func doNetworking(context: Context, steps: Int) async {
-        
-        guard context.family == .systemSmall else {
-            return
-        }
-                
         await Supabase.shared.setSessionIfNeeded()
         if Provider.networkUpdateCount % 2 == 0 {
             let _: () = await Supabase.shared.upsert(steps: steps)

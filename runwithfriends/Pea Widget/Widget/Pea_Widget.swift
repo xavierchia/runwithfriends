@@ -61,23 +61,25 @@ struct Pea_Widget: Widget {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             if #available(iOSApplicationExtension 16.0, *) {
                 switch entry.family {
-                case .accessoryCircular, .accessoryRectangular, .accessoryInline:
+                case .accessoryCircular:
                     LockScreenWidgetView(entry: entry)
                         .containerBackground(Color.black, for: .widget)
-                default:
+                case .systemSmall:
                     Pea_WidgetEntryView(entry: entry)
                         .containerBackground(creamColor, for: .widget)
                         .environment(\.sizeCategory, .medium)  // This disables Dynamic Type scaling
+                default:
+                    Text("Unsupported")
+                        .foregroundColor(.secondary)
                 }
             } else {
-                Pea_WidgetEntryView(entry: entry)
-                    .containerBackground(creamColor, for: .widget)
-                    .environment(\.sizeCategory, .medium)  // This disables Dynamic Type scaling
+                Text("Unsupported")
+                    .foregroundColor(.secondary)
             }
         }
         .configurationDisplayName("Steps Widget")
         .description("Track your daily steps")
-        .supportedFamilies([.systemSmall, .accessoryCircular, .accessoryRectangular, .accessoryInline])
+        .supportedFamilies([.systemSmall, .accessoryCircular])
     }
 }
 
